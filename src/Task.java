@@ -16,6 +16,11 @@ public class Task {
 	private String category;
 	private int taskID;
 	
+	//constructor
+	public Task(){
+		
+	}
+	
 	
 	public String getDetails() {
 		return details;

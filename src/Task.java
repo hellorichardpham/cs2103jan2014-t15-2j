@@ -14,6 +14,7 @@ public class Task {
 	private String location;
 	private String priority;
 	private String category;
+	private int taskID;
 	
 	
 	public String getDetails() {
@@ -127,4 +128,13 @@ public class Task {
 	public void setCategory(String category) {
 		this.category = category;
 	}
+	
+	public int getTaskID() {
+		return this.taskID;
+	}
+	
+	public void setTaskID(int taskID) {
+		this.taskID = taskID;
+	}
+	
 }

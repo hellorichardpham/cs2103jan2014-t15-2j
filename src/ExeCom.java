@@ -56,7 +56,7 @@
 
   public static void add() {
    //Create new instance of a task class to add into the taskList
-   Task taskToAdd = new Task();
+   Task taskToAdd = new Task(info);
    System.out.println("Created a new blank task");
    /*Update the previous taskList to the instance before it was changed
    so that we can undo the action if we wanted to */

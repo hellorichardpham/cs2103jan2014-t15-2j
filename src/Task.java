@@ -15,13 +15,27 @@ public class Task {
 	private String priority;
 	private String category;
 	private int taskID;
-	
+
 	//constructor
-	public Task(){
-		
+	taskID=0;
+	public Task(String[] info){
+		details = info[1];
+		startDay = info[2];
+		startMonth = info[3];
+		startYear = info[4];
+		endDay = info[5];
+		endMonth = info[6];
+		endYear = info[7];
+		startHours = info[8];
+		startMin = info[9];
+		endHours = info[10];
+		endMins = info[11];
+		location = info[12];
+		priority = info[13];
+		category = info[14];
+		taskID = taskID++;
 	}
-	
-	
+
 	public String getDetails() {
 		return details;
 	}
@@ -133,13 +147,13 @@ public class Task {
 	public void setCategory(String category) {
 		this.category = category;
 	}
-	
+
 	public int getTaskID() {
 		return this.taskID;
 	}
-	
+
 	public void setTaskID(int taskID) {
 		this.taskID = taskID;
 	}
-	
+
 }

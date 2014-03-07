@@ -128,7 +128,6 @@ public class ExeCom {
 		String infoString = info[1];
 		
 		for (int counter = 0; counter < taskList.size(); counter++) {
-			System.out.println(taskList.get(counter).getDetails() + " " + infoString);
 			if (taskList.get(counter).getDetails().contains(infoString)) {
 				searchResults.add(taskList.get(counter));
 				isFound = true;

@@ -61,13 +61,7 @@ public class ExeCom {
 	}
 
 	public static void addToTaskList() {
-		// Create new instance of a task class to add into the taskList
 		Task taskToAdd = new Task(info);
-		System.out.println("Created a new blank task");
-		/*
-		 * Update the previous taskList to the instance before it was changed so
-		 * that we can undo the action if we wanted to
-		 */
 		saveProgress();
 		taskList.add(taskToAdd);
 		System.out.println("Added to taskList");
@@ -77,13 +71,8 @@ public class ExeCom {
 	}
 
 	public static void delete() {
-		// Go Through search results
 		Scanner scan = new Scanner(System.in);
 		boolean isFound = false;
-		// The searchResults attributes now contain the tasks that matched
-		// our search
-		// Prompt user to input what line they would like to delete like in
-		// CE2
 		System.out.println(PROMPT_USER_DELETE_MESSAGE);
 		int taskIdNumber = scan.nextInt();
 		
@@ -122,8 +111,6 @@ public class ExeCom {
 	public static void search() {
 		boolean isFound = false;
 		reinitializeSearchResults();
-		// Is this right? I don't think infoString is found in index 0.
-		// Definitely not right.
 		String infoString = info[1];
 
 		for (int counter = 0; counter < taskList.size(); counter++) {
@@ -144,7 +131,7 @@ public class ExeCom {
 		searchResults = new ArrayList<Task>();
 	}
 
-	// prevTaskList holds all the information of taskList before tL is changed
+	
 	public static void saveProgress() {
 		reinitializePrevTaskList();
 		for (int i = 0; i < taskList.size(); i++) {

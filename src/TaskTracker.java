@@ -1,53 +1,27 @@
-import java.util.ArrayList;
 import java.util.Scanner;
 
-public class TaskTracker {
-	
-	public void main(String[] args){
-		String userInput;
-		String messageToPrint;
-		ArrayList<String> info;
-
-		while(true){
-			userInput = getUserInput();
-			info = processCommand(userInput);
-			messageToPrint = executeCommand(info);
-			showToUser(messageToPrint);
-		}
-	}
+public class TaskTasker {
 
 	/**
-	 * @param none
-	 * @return userInput
+	 * @param args
 	 */
-	private String getUserInput() {
-		Scanner sc = new Scanner(System.in);
-		String userInput = sc.nextLine();
-		sc.close();
-		return userInput;
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		  Scanner scanner = new Scanner(System.in);
+		  ExeCom test = new ExeCom();
+		  boolean go = true;
+		  while(go) {
+		  System.out.println("Enter Command: ");
+		  String userInput = scanner.nextLine();
+		  if(userInput.equals("stop")) {
+			  go = false;
+		  }
+		  ProcessCommand pc = new ProcessCommand();
+		  String[] info = pc.process(userInput);
+		  test.executeCommand(info);
+		  }
+		  scanner.close();
+		 }
 	}
 
-	/**
-	 * @param userInput
-	 * @return info array containing all attributes of a task
-	 */
-	private ArrayList<String> processCommand(String userInput) {
-		ProcessCommand pc = new ProcessCommand(userInput);
-		ArrayList<String> info = pc.breakDownCommand();
-		return info;
-	}
 
-	/**
-	 * @param info
-	 * @return messageToPrint
-	 */
-	private String executeCommand(ArrayList<String> info) {
-		ExecuteCommand ec = new ExecuteCommand(info);
-		String messageToPrint = ec.executeCommand();
-		return messageToPrint;
-	}
-
-	private void showToUser(String messageToPrint) {
-		System.out.println(messageToPrint);
-	}
-}

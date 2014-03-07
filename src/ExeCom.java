@@ -25,21 +25,18 @@ public class ExeCom {
 	public static String executeCommand(String[] userCommandInfo) {
 		info = userCommandInfo;
 		String command = info[0];
-		printAllTaskInfo();
 		switch (command) {
 		case ADD:
 			addToTaskList();
 			return " ";
 		case DISPLAY:
 			display();
-			
 			return " ";
 		case DELETE:
 			delete();
 			return " ";
 		case SEARCH:
 			search();
-			printSearch();
 			return " ";
 		case UNDO:
 			undo();
@@ -79,7 +76,6 @@ public class ExeCom {
 		// Search the taskList for tasks that much the info list and display the
 		// results
 		if (search()) { // CHANGE THIS BECAUSE if(search()) doesn't make sense.
-			printSearch();
 			Scanner scan = new Scanner(System.in);
 			boolean isFound = false;
 			// The searchResults attributes now contain the tasks that matched
@@ -87,21 +83,22 @@ public class ExeCom {
 			// Prompt user to input what line they would like to delete like in
 			// CE2
 			System.out.println(PROMPT_USER_DELETE_MESSAGE);
-
 			int taskIdNumber = scan.nextInt();
+			
 			for (int i = 0; i < searchResults.size(); i++) {
 				if (searchResults.get(i).getTaskID() == taskIdNumber) {
 					Task taskToDelete = searchResults.get(i);
 					saveProgress();
 					taskList.remove(taskToDelete);
+					System.out.println("Deleted: " + taskToDelete.getDetails());
 					isFound = true;
 				}
 			}
+			
 			if (!isFound) {
 				System.out.println(TASKID_NOT_FOUND_MESSAGE);
 			}
-
-			scan.close();
+			
 		} else {
 			System.out.println(TASK_NOT_FOUND_MESSAGE);
 		}
@@ -138,7 +135,13 @@ public class ExeCom {
 				isFound = true;
 			}
 		}
-		return isFound;
+		if(isFound) {
+			printSearch();
+			return isFound;
+		}
+		else {
+			return isFound;
+		}
 	}
 
 	public static void reinitializeSearchResults() {
@@ -175,75 +178,4 @@ public class ExeCom {
 		for(int i =0; i < info.length; i++) 
 			System.out.print(info[i] + " ");
 	}
-	
-	  public void editContent(String[] info) {
-          //int id;
-          //id = Integer.parseInt(info[counter]);
-          // Task task = new Task();
-          int counter;
-          for (counter = 1; counter < info.length; counter++) {
-                  if (info[counter] != null || info[counter] != "") {
-                  switch (counter) {
-                  case 1:
-                          taskList.get(counter).setDetails(info[counter]);
-              case 2:
-                  taskList.get(counter).setStartDay(info[counter]);
-              case 3:
-                  taskList.get(counter).setStartMonth(info[counter]);
-              case 4:
-                  taskList.get(counter).setStartYear(info[counter]);
-              case 5:
-                  taskList.get(counter).setEndDay(info[counter]);
-              case 6:
-                  taskList.get(counter).setEndMonth(info[counter]);
-              case 7:
-                  taskList.get(counter).setEndYear(info[counter]);
-              case 8:
-                  taskList.get(counter).setStartHours(info[counter]);
-              case 9:
-                  taskList.get(counter).setStartMin(info[counter]);
-              case 10:
-                  taskList.get(counter).setEndHours(info[counter]);
-              case 11:
-                  taskList.get(counter).setEndMins(info[counter]);
-              case 12:
-                  taskList.get(counter).setLocation(info[counter]);
-              case 13:
-                  taskList.get(counter).setLocation(info[counter]);
-              case 14:
-                  taskList.get(counter).setPriority(info[counter]);
-              case 15:
-                  taskList.get(counter).setCategory(info[counter]);
-              default: 
-                  //invalid message
-                  }
-                  }
-          }
-  }
-
-  public void displayAll(ArrayList<Task> taskList) {
-          int counter;
-          for (counter = 0; counter < taskList.size(); counter++) {
-                  System.out.println(taskList.get(counter));
-          }
-  }
-
-  public static ArrayList<Task> search(ArrayList<String> info) {
-
-          searchResults = new ArrayList<Task>();
-
-          String details;
-          details = info.get(0).toString();
-          int counter;
-          // Task task = new Task();
-          for (counter = 0; counter < taskList.size(); counter++) {
-                  if (taskList.get(counter).getDetails().contains(details)) {
-                          searchResults.add(taskList.get(counter));
-                  }
-          }
-          return searchResults;
-  }
-
-}
-	
 }

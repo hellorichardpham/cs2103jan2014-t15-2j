@@ -52,7 +52,7 @@ public class ExeCom {
 	private static void display() {
 		if (taskList.size() > 0) {
 			for (int i = 0; i < taskList.size(); i++) {
-				System.out.println(taskList.get(i));
+				System.out.println(taskList.get(i).getDetails());
 			}
 		}
 		else {

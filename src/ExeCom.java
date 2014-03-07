@@ -71,7 +71,6 @@ public class ExeCom {
 	}
 
 	public static void delete() {
-		printAllTaskInfo();
 		// Search the taskList for tasks that much the info list and display the
 		// results
 		if (search()) { // CHANGE THIS BECAUSE if(search()) doesn't make sense.
@@ -172,9 +171,5 @@ public class ExeCom {
 			System.out.println("added to taskList: "
 					+ prevTaskList.get(counter));
 		}
-	}
-	public static void printAllTaskInfo() {
-		for(int i =0; i < info.length; i++) 
-			System.out.print(info[i] + " ");
 	}
 }

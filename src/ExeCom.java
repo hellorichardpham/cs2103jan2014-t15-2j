@@ -51,7 +51,6 @@ public class ExeCom {
 	private static void display() {
 		for (int i = 0; i < taskList.size(); i++) {
 			System.out.println(taskList.get(i));
-			System.out.println("WOOOOOOO");
 		}
 	}
 
@@ -140,6 +139,7 @@ public class ExeCom {
 			return isFound;
 		}
 		else {
+			System.out.println(TASK_NOT_FOUND_MESSAGE);
 			return isFound;
 		}
 	}

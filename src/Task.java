@@ -14,10 +14,10 @@ public class Task {
 	private String location;
 	private String priority;
 	private String category;
+	private static int totalNumberTaskID = 1;
 	private int taskID;
-
+	
 	//constructor
-	taskID=0;
 	public Task(String[] info){
 		details = info[1];
 		startDay = info[2];
@@ -33,7 +33,8 @@ public class Task {
 		location = info[12];
 		priority = info[13];
 		category = info[14];
-		taskID = taskID++;
+		taskID = totalNumberTaskID;
+		totalNumberTaskID++;
 	}
 
 	public String getDetails() {

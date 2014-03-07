@@ -50,7 +50,7 @@ public class ExeCom {
 	}
 
 	private static void display() {
-		if (taskList.size() > 0) {
+		if (!taskList.isEmpty()) {
 			for (int i = 0; i < taskList.size(); i++) {
 				System.out.println(taskList.get(i).getDetails());
 			}
@@ -169,6 +169,7 @@ public class ExeCom {
 			System.out.println("added to taskList: "
 					+ prevTaskList.get(counter));
 		}
+		
 	}
 
 	public static void printAllTaskInfo() {

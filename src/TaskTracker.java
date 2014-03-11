@@ -1,27 +1,37 @@
 import java.util.Scanner;
 
-public class TaskTasker {
+public class TaskTracker {
 
 	/**
 	 * @param args
+	 * @throws Exception 
 	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		  Scanner scanner = new Scanner(System.in);
-		  ExeCom test = new ExeCom();
-		  boolean go = true;
-		  while(go) {
-		  System.out.println("Enter Command: ");
-		  String userInput = scanner.nextLine();
-		  if(userInput.equals("stop")) {
-			  go = false;
-		  }
-		  ProcessCommand pc = new ProcessCommand();
-		  String[] info = pc.process(userInput);
-		  test.executeCommand(info);
-		  }
-		  scanner.close();
-		 }
+	public static void main(String[] args) throws Exception {
+		Scanner scanner = new Scanner(System.in);
+		ExeCom test = new ExeCom();
+		Storage s = new Storage();
+		s.loadStorage();
+		
+		System.out.println("   .    .  .  .. .. ........  ...   ............................................... ........  ..................................................................");
+		System.out.println(" ..~~....~:...:~....... .??.................................... ............... ...~~~~~~~~...............?+....:~~~~~~~................. ...?+..................");
+		System.out.println(" ..??...???...??.........?? ...................................... I?................~?+......... .......=?,.. ....?I.............. ........=?:..................");
+		System.out.println(" ..??..???? .??..,??+?,.,?:..????..=????,..?~?+?.+???...????=....,????..=????,.......??....~???:?..????,.??..+?...=?:...??+?:.????+?..=???? ?? .??..+??+?..??I?..");
+		System.out.println(" ..+?.~?.??.+?..=?,..+?.??..??....??...??.~?+..??..??..??..?+. ...+?...??...??.......??...=?:..??.~?,.. .??+?~....??....??,..?+..:?=.??,....??=?=..??..+?,.?I....");
+		System.out.println(" ..??,?,.??,?,..???+=...?+.??....,??...??.??..~?...?+.????+, .....??...?=...?+......:?=...??..:?=..~I?+.~?~??.....?? ..,?,..:?~..??..?+....:?~??..:???+,..=?,....");
+		System.out.println(" ..=???..+??+...??...+.:?=.??,.:..??.,??..??..??..~?~.??,..+.. ...+?...??..??.......??....??.:??..,..??.??.~?+...+?:. .??...~?+.???..??..?.I?.~?+.~?=..~..+?.....");
+		System.out.println("   ,~~. .,~~.. ..+??+..~~...=??~...???:...~,..=~..~~   =???,.. ...=?+..,??+:........~~.   .??,~~..+??:..~~..~~...~~..  ~~....~?+.~,..,+?+..~~..~~..:??+~..~~.....");
+		System.out.println("  .....  .....    ............ .............. ................ ... ..............................................................................................");
+		
+		while (true) {
+			System.out.println("Enter Command: ");
+			String userInput = scanner.nextLine();
+			if (userInput.equals("stop")||userInput.equals("exit")||userInput.equals("quit")) {
+				scanner.close();
+				System.exit(0);
+			}
+			ProcessCommand pc = new ProcessCommand();
+			String[] info = pc.process(userInput);
+			test.executeCommand(info);
+		}
 	}
-
-
+}

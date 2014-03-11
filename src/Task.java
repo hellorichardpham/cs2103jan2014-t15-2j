@@ -37,6 +37,10 @@ public class Task {
 		totalNumberTaskID++;
 	}
 
+	public Task() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public String getDetails() {
 		return details;
 	}
@@ -155,6 +159,10 @@ public class Task {
 
 	public void setTaskID(int taskID) {
 		this.taskID = taskID;
+	}
+	
+	public String getAll() {
+		return details + " " + startDay + " " + startMonth + " " + startYear + " " + endDay + " " + endMonth + " " + endYear + " " + startHours + " " + startMin + " " + endHours + " " + endMins + " " + location + " " + priority + " " + category;
 	}
 
 }

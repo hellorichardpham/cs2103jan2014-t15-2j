@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ExeCom {
-	private static ArrayList<Task> taskList;
+	static ArrayList<Task> taskList;
 	private static ArrayList<Task> prevTaskList;
 	private static ArrayList<Task> searchResults;
 	private static String[] info;
@@ -21,26 +21,31 @@ public class ExeCom {
 	ExeCom() {
 		taskList = new ArrayList<Task>();
 		prevTaskList = new ArrayList<Task>();
+
 	}
 
-	public static String executeCommand(String[] userCommandInfo) {
+	public static String executeCommand(String[] userCommandInfo) throws Exception {
 		info = userCommandInfo;
 		String command = info[0];
+		Storage s = new Storage();
 		switch (command) {
 		case ADD:
 			addToTaskList();
+			s.saveStorage();
 			return " ";
 		case DISPLAY:
 			display();
 			return " ";
 		case DELETE:
 			delete();
+			s.saveStorage();
 			return " ";
 		case SEARCH:
 			search();
 			return " ";
 		case UNDO:
 			undo();
+			s.saveStorage();
 			return " ";
 		case "print":
 			printAllTaskInfo();
@@ -51,14 +56,18 @@ public class ExeCom {
 
 	private static void display() {
 		if (!taskList.isEmpty()) {
+			System.out.println("~~~~~ Listing of all tasks ~~~~~");
 			for (int i = 0; i < taskList.size(); i++) {
-				System.out.println(taskList.get(i).getDetails());
+				String print;
+				print = (i+1) + ")" + " " + taskList.get(i).getAll();
+				print = print.replace("NULL ", "");
+				System.out.println(print);
 			}
-		}
-		else {
+		} else {
 			System.out.println(TASKLIST_EMPTY_MESSAGE);
 		}
 	}
+
 
 	public static void addToTaskList() {
 		Task taskToAdd = new Task(info);
@@ -157,6 +166,66 @@ public class ExeCom {
 					+ prevTaskList.get(counter));
 		}
 		
+	}
+	
+	public void editContent(String[] info) {
+		int id = Integer.parseInt(info[15]);
+		// Task task = new Task();
+		int counter;
+		for (counter = 1; counter < info.length; counter++) {
+			System.out.println("Counter: " + counter + " " + info[counter]);
+			if (info[counter] != "" || info[counter] != null) {
+				switch (counter) {
+				case 1:
+					taskList.get(id).setDetails(info[counter]);
+					break;
+				case 2:
+					taskList.get(id).setStartDay(info[counter]);
+					break;
+				case 3:
+					taskList.get(id).setStartMonth(info[counter]);
+					break;
+				case 4:
+					taskList.get(id).setStartYear(info[counter]);
+					break;
+				case 5:
+					taskList.get(id).setEndDay(info[counter]);
+					break;
+				case 6:
+					taskList.get(id).setEndMonth(info[counter]);
+					break;
+				case 7:
+					taskList.get(id).setEndYear(info[counter]);
+					break;
+				case 8:
+					taskList.get(id).setStartHours(info[counter]);
+					break;
+				case 9:
+					taskList.get(id).setStartMin(info[counter]);
+					break;
+				case 10:
+					taskList.get(id).setEndHours(info[counter]);
+					break;
+				case 11:
+					taskList.get(id).setEndMins(info[counter]);
+					break;
+				case 12:
+					taskList.get(id).setLocation(info[counter]);
+					break;
+				case 13:
+					taskList.get(id).setLocation(info[counter]);
+					break;
+				case 14:
+					taskList.get(id).setPriority(info[counter]);
+					break;
+				case 15:
+					taskList.get(id).setCategory(info[counter]);
+					break;
+				default:
+					// invalid message
+				}
+			}
+		}
 	}
 
 	public static void printAllTaskInfo() {

@@ -60,7 +60,7 @@ public class ExeCom {
 			for (int i = 0; i < taskList.size(); i++) {
 				String print;
 				print = (i+1) + ")" + " " + taskList.get(i).getAll();
-				print = print.replace("NULL ", "");
+				print = print.replace("null ", "");
 				System.out.println(print);
 			}
 		} else {

@@ -98,6 +98,7 @@ public class ExeCom {
 		if (!isFound) {
 			System.out.println(TASKID_NOT_FOUND_MESSAGE);
 		}
+		scan.close();
 	}
 
 	public static void printSearch() {
@@ -118,21 +119,25 @@ public class ExeCom {
 	}
 
 	public static void search() {
-		boolean isFound = false;
-		reinitializeSearchResults();
-		String infoString = info[1];
-
-		for (int counter = 0; counter < taskList.size(); counter++) {
-			if (taskList.get(counter).getDetails().contains(infoString)) {
-				searchResults.add(taskList.get(counter));
-				isFound = true;
+		if (info[1] != null) {
+			boolean isFound = false;
+			reinitializeSearchResults();
+			String infoString = info[1];
+			for (int counter = 0; counter < taskList.size(); counter++) {
+				if (taskList.get(counter).getDetails().contains(infoString)) {
+					searchResults.add(taskList.get(counter));
+					isFound = true;
+				}
+			}
+			if (isFound) {
+				printSearch();
+				delete();
+			} else {
+				System.out.println(TASK_NOT_FOUND_MESSAGE);
 			}
 		}
-		if (isFound) {
-			printSearch();
-			delete();
-		} else {
-			System.out.println(TASK_NOT_FOUND_MESSAGE);
+		else {
+			System.out.println("That is an Invalid Command.");
 		}
 	}
 

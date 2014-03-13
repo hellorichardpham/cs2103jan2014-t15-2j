@@ -98,7 +98,6 @@ public class ExeCom {
 		if (!isFound) {
 			System.out.println(TASKID_NOT_FOUND_MESSAGE);
 		}
-		scan.close();
 	}
 
 	public static void printSearch() {

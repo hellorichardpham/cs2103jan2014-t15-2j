@@ -167,8 +167,6 @@ public class ExeCom {
 		reinitializeTaskList();
 		for (int counter = 0; counter < prevTaskList.size(); counter++) {
 			taskList.add(prevTaskList.get(counter));
-			System.out.println("added to taskList: "
-					+ prevTaskList.get(counter).getDetails());
 		}
 
 	}

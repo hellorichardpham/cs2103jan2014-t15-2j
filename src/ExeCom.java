@@ -42,6 +42,7 @@ public class ExeCom {
 			return " ";
 		case SEARCH:
 			search();
+			s.saveStorage();
 			return " ";
 		case UNDO:
 			undo();
@@ -160,11 +161,10 @@ public class ExeCom {
 	// This needs to be changed so that tL holds pTL data
 	public static void undo() {
 		reinitializeTaskList();
-		System.out.println("taskList has been reinitialized");
 		for (int counter = 0; counter < prevTaskList.size(); counter++) {
 			taskList.add(prevTaskList.get(counter));
 			System.out.println("added to taskList: "
-					+ prevTaskList.get(counter));
+					+ prevTaskList.get(counter).getDetails());
 		}
 		
 	}

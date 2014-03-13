@@ -57,6 +57,7 @@ public class Storage {
 				task.setPriority(retrieve[setContent]);
 				setContent++;
 				task.setCategory(retrieve[setContent]);
+				task.incrementTotalNumberTaskID();
 				String details = "";
 
 				for (counter = 0; counter < content; counter++) {

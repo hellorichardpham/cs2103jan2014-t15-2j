@@ -74,9 +74,6 @@ public class ExeCom {
 		saveProgress();
 		taskList.add(taskToAdd);
 		System.out.println("Added to taskList");
-		System.out.println("content of last item in taskList: "
-				+ taskList.get(taskList.size() - 1).getDetails());
-		System.out.println("size of taskList: " + taskList.size());
 	}
 
 	public static void delete() {

@@ -232,9 +232,4 @@ public class ExeCom {
 			}
 		}
 	}
-
-	public static void printAllTaskInfo() {
-		for (int i = 0; i < info.length; i++)
-			System.out.print(info[i] + " ");
-	}
 }

@@ -59,7 +59,7 @@ public class ExeCom {
 			System.out.println("~~~~~ Listing of all tasks ~~~~~");
 			for (int i = 0; i < taskList.size(); i++) {
 				String print;
-				print = (i+1) + ")" + " " + taskList.get(i).displayAll();
+				print = taskList.get(i).displayAll();
 				print = print.replace("null ", "");
 				System.out.println(print);
 			}

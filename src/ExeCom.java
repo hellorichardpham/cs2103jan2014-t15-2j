@@ -8,6 +8,7 @@ public class ExeCom {
 	private static String[] info;
 	private final static String ADD = "add";
 	private final static String DISPLAY = "display";
+	private final static String DELETE = "delete";
 	private final static String SEARCH = "search";
 	private final static String UNDO = "undo";
 	private final static String UNDO_SUCCESS_MESSAGE = "Action has successfully been undone.";
@@ -34,6 +35,10 @@ public class ExeCom {
 			return " ";
 		case DISPLAY:
 			display();
+			return " ";
+		case DELETE:
+			delete();
+			s.saveStorage();
 			return " ";
 		case SEARCH:
 			search();

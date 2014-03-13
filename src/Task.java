@@ -161,6 +161,10 @@ public class Task {
 		this.taskID = taskID;
 	}
 	
+	public void incrementTotalNumberTaskID() {
+		totalNumberTaskID = this.taskID + 1;
+	}
+	
 	public String getAll() {
 		return details + " " + startDay + " " + startMonth + " " + startYear + " " + endDay + " " + endMonth + " " + endYear + " " + startHours + " " + startMin + " " + endHours + " " + endMins + " " + location + " " + priority + " " + category + " " + taskID;
 	}

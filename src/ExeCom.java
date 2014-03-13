@@ -13,7 +13,7 @@ public class ExeCom {
 	private final static String UNDO = "undo";
 	private final static String UNDO_SUCCESS_MESSAGE = "Action has successfully been undone.";
 	private final static String UNDO_UNSUCCESSFUL_MESSAGE = "Cannot perform undo on consecutive actions";
-	private final static String PROMPT_USER_DELETE_MESSAGE = "Select which task you would like to delete based on its Task ID Number.";
+	private final static String PROMPT_USER_DELETE_MESSAGE = "Select which task you would like to delete based on its Task ID Number. Type 0 to cancel.";
 	private final static String TASK_NOT_FOUND_MESSAGE = "That task could not be found.";
 	private final static String TASKID_NOT_FOUND_MESSAGE = "That Task ID Number was not found";
 	private final static String TASKLIST_EMPTY_MESSAGE = "There are no tasks in the task list.";
@@ -24,7 +24,8 @@ public class ExeCom {
 
 	}
 
-	public static String executeCommand(String[] userCommandInfo) throws Exception {
+	public static String executeCommand(String[] userCommandInfo)
+			throws Exception {
 		info = userCommandInfo;
 		String command = info[0];
 		Storage s = new Storage();
@@ -48,7 +49,7 @@ public class ExeCom {
 			undo();
 			s.saveStorage();
 			return " ";
-		case "print":
+		case "format":
 			printAllTaskInfo();
 			return " ";
 		}
@@ -69,7 +70,6 @@ public class ExeCom {
 		}
 	}
 
-
 	public static void addToTaskList() {
 		Task taskToAdd = new Task(info);
 		saveProgress();
@@ -82,20 +82,24 @@ public class ExeCom {
 		boolean isFound = false;
 		System.out.println(PROMPT_USER_DELETE_MESSAGE);
 		int taskIdNumber = scan.nextInt();
-		
-		for (int i = 0; i < searchResults.size(); i++) {
-			if (searchResults.get(i).getTaskID() == taskIdNumber) {
-				Task taskToDelete = searchResults.get(i);
-				saveProgress();
-				taskList.remove(taskToDelete);
-				System.out.println("Deleted: " + taskToDelete.getDetails());
-				isFound = true;
+		if (taskIdNumber != 0) {
+			for (int i = 0; i < searchResults.size(); i++) {
+				if (searchResults.get(i).getTaskID() == taskIdNumber) {
+					Task taskToDelete = searchResults.get(i);
+					saveProgress();
+					taskList.remove(taskToDelete);
+					System.out.println("Deleted: " + taskToDelete.getDetails());
+					isFound = true;
+				}
 			}
+
+			if (!isFound) {
+				System.out.println(TASKID_NOT_FOUND_MESSAGE);
+			}
+		} else {
+
 		}
 
-		if (!isFound) {
-			System.out.println(TASKID_NOT_FOUND_MESSAGE);
-		}
 	}
 
 	public static void printSearch() {
@@ -132,8 +136,7 @@ public class ExeCom {
 			} else {
 				System.out.println(TASK_NOT_FOUND_MESSAGE);
 			}
-		}
-		else {
+		} else {
 			System.out.println("That is an Invalid Command.");
 		}
 	}
@@ -142,7 +145,6 @@ public class ExeCom {
 		searchResults = new ArrayList<Task>();
 	}
 
-	
 	public static void saveProgress() {
 		reinitializePrevTaskList();
 		for (int i = 0; i < taskList.size(); i++) {
@@ -166,9 +168,9 @@ public class ExeCom {
 			System.out.println("added to taskList: "
 					+ prevTaskList.get(counter).getDetails());
 		}
-		
+
 	}
-	
+
 	public void editContent(String[] info) {
 		int id = Integer.parseInt(info[15]);
 		// Task task = new Task();

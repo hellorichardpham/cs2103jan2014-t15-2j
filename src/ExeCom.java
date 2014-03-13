@@ -97,9 +97,8 @@ public class ExeCom {
 				System.out.println(TASKID_NOT_FOUND_MESSAGE);
 			}
 		} else {
-
+			// Do nothing
 		}
-
 	}
 
 	public static void printSearch() {
@@ -171,63 +170,74 @@ public class ExeCom {
 
 	}
 
-	public void editContent(String[] info) {
+	public static void editContent() {
 		int id = Integer.parseInt(info[15]);
-		// Task task = new Task();
 		int counter;
-		for (counter = 1; counter < info.length; counter++) {
-			System.out.println("Counter: " + counter + " " + info[counter]);
-			if (info[counter] != "" || info[counter] != null) {
-				switch (counter) {
-				case 1:
-					taskList.get(id).setDetails(info[counter]);
-					break;
-				case 2:
-					taskList.get(id).setStartDay(info[counter]);
-					break;
-				case 3:
-					taskList.get(id).setStartMonth(info[counter]);
-					break;
-				case 4:
-					taskList.get(id).setStartYear(info[counter]);
-					break;
-				case 5:
-					taskList.get(id).setEndDay(info[counter]);
-					break;
-				case 6:
-					taskList.get(id).setEndMonth(info[counter]);
-					break;
-				case 7:
-					taskList.get(id).setEndYear(info[counter]);
-					break;
-				case 8:
-					taskList.get(id).setStartHours(info[counter]);
-					break;
-				case 9:
-					taskList.get(id).setStartMin(info[counter]);
-					break;
-				case 10:
-					taskList.get(id).setEndHours(info[counter]);
-					break;
-				case 11:
-					taskList.get(id).setEndMins(info[counter]);
-					break;
-				case 12:
-					taskList.get(id).setLocation(info[counter]);
-					break;
-				case 13:
-					taskList.get(id).setLocation(info[counter]);
-					break;
-				case 14:
-					taskList.get(id).setPriority(info[counter]);
-					break;
-				case 15:
-					taskList.get(id).setCategory(info[counter]);
-					break;
-				default:
-					// invalid message
+		int i;
+
+		// System.out.println(info[1] + " " +info[2] + " " +info[3] + " "
+		// +info[4] + " " +info[5] + " " +info[6] + " " +info[7] + " " +info[8]
+		// + " " +info[9] + " " +info[10] + " " +info[11] + " " +info[12] + " "
+		// + info[13]+ " " + info[14]+ " " + info[15]);
+
+		for (counter = 0; counter < taskList.size(); counter++) {
+			if (taskList.get(counter).getTaskID() == id) {
+				for (i = 1; i < info.length; i++) {
+					if (info[i] != null) {
+						switch (i) {
+						case 1:
+							taskList.get(counter).setDetails(info[i]);
+							break;
+						case 2:
+							taskList.get(counter).setStartDay(info[i]);
+							break;
+						case 3:
+							taskList.get(counter).setStartMonth(info[i]);
+							break;
+						case 4:
+							taskList.get(counter).setStartYear(info[i]);
+							break;
+						case 5:
+							taskList.get(counter).setEndDay(info[i]);
+							break;
+						case 6:
+							taskList.get(counter).setEndMonth(info[i]);
+							break;
+						case 7:
+							taskList.get(counter).setEndYear(info[i]);
+							break;
+						case 8:
+							taskList.get(counter).setStartHours(info[i]);
+							break;
+						case 9:
+							taskList.get(counter).setStartMin(info[i]);
+							break;
+						case 10:
+							taskList.get(counter).setEndHours(info[i]);
+							break;
+						case 11:
+							taskList.get(counter).setEndMins(info[i]);
+							break;
+						case 12:
+							taskList.get(counter).setLocation(info[i]);
+							break;
+						case 13:
+							taskList.get(counter).setPriority(info[i]);
+							break;
+						case 14:
+							taskList.get(counter).setCategory(info[i]);
+							break;
+						case 15:
+							// taskList.get(counter).setTaskID(info[i]);
+							break;
+						default:
+							// invalid message
+						}
+					}
 				}
 			}
+
 		}
+
 	}
 }

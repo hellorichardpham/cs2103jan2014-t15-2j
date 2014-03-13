@@ -74,7 +74,7 @@ public class ExeCom {
 		Task taskToAdd = new Task(info);
 		saveProgress();
 		taskList.add(taskToAdd);
-		System.out.println("Added to taskList");
+		System.out.println(ADD_SUCCESSFUL_MESSAGE);
 	}
 
 	public static void delete() {

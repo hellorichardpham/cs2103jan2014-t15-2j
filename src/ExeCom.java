@@ -100,7 +100,7 @@ public class ExeCom {
 				System.out.println(TASKID_NOT_FOUND_MESSAGE);
 			}
 		} else {
-			//do nothing
+			// do nothing
 		}
 
 	}
@@ -168,7 +168,7 @@ public class ExeCom {
 		for (int counter = 0; counter < prevTaskList.size(); counter++) {
 			taskList.add(prevTaskList.get(counter));
 		}
-
+		System.out.println(UNDO_SUCCESS_MESSAGE);
 	}
 
 	public static void editContent() {

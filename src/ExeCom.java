@@ -11,12 +11,14 @@ public class ExeCom {
 	private final static String DELETE = "delete";
 	private final static String SEARCH = "search";
 	private final static String UNDO = "undo";
+	private final static String EDIT = "edit";
 	private final static String UNDO_SUCCESS_MESSAGE = "Action has successfully been undone.";
 	private final static String UNDO_UNSUCCESSFUL_MESSAGE = "Cannot perform undo on consecutive actions";
 	private final static String PROMPT_USER_DELETE_MESSAGE = "Select which task you would like to delete based on its Task ID Number. Type 0 to cancel.";
 	private final static String TASK_NOT_FOUND_MESSAGE = "That task could not be found.";
 	private final static String TASKID_NOT_FOUND_MESSAGE = "That Task ID Number was not found";
 	private final static String TASKLIST_EMPTY_MESSAGE = "There are no tasks in the task list.";
+	private final static String ADD_SUCCESSFUL_MESSAGE = "That task has successfully been added to the Task List.";
 
 	ExeCom() {
 		taskList = new ArrayList<Task>();
@@ -49,8 +51,9 @@ public class ExeCom {
 			undo();
 			s.saveStorage();
 			return " ";
-		case "format":
-			printAllTaskInfo();
+		case EDIT:
+			editContent();
+			s.saveStorage();
 			return " ";
 		}
 		return " ";
@@ -97,15 +100,15 @@ public class ExeCom {
 				System.out.println(TASKID_NOT_FOUND_MESSAGE);
 			}
 		} else {
-			// Do nothing
+			//do nothing
 		}
+
 	}
 
 	public static void printSearch() {
 		if (!searchResults.isEmpty()) {
 			for (int i = 0; i < searchResults.size(); i++) {
-				System.out.println(searchResults.get(i).getTaskID() + " "
-						+ searchResults.get(i).getDetails());
+				System.out.println(searchResults.get(i).displayAll());
 			}
 		} else {
 			System.out.println(TASK_NOT_FOUND_MESSAGE);
@@ -240,4 +243,5 @@ public class ExeCom {
 		}
 
 	}
+
 }

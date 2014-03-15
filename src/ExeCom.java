@@ -76,6 +76,7 @@ public class ExeCom {
 	public static void addToTaskList() {
 		Task taskToAdd = new Task(info);
 		saveProgress();
+		taskToAdd.setTaskID(Integer.toString(taskList.size()+1));
 		taskList.add(taskToAdd);
 		System.out.println(ADD_SUCCESSFUL_MESSAGE);
 	}
@@ -106,7 +107,7 @@ public class ExeCom {
 	}
 
 	public static boolean isTaskIDMatch(Task task, int taskIdNumber) {
-		return task.getTaskID() == taskIdNumber;
+		return Integer.parseInt(task.getTaskID()) == taskIdNumber;
 	}
 	
 	public static void printSearch() {
@@ -190,7 +191,7 @@ public class ExeCom {
 		// + info[13]+ " " + info[14]+ " " + info[15]);
 
 		for (counter = 0; counter < taskList.size(); counter++) {
-			if (taskList.get(counter).getTaskID() == id) {
+			if (Integer.parseInt(taskList.get(counter).getTaskID())  == id) {
 				for (i = 1; i < info.length; i++) {
 					if (info[i] != null) {
 						switch (i) {

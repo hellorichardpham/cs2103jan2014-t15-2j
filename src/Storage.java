@@ -25,11 +25,9 @@ public class Storage {
 
 			while ((text = fileReader.readLine()) != null) {
 				Task task = new Task();
-				//i++;
-				//System.out.println(i + ". " + text);
 				retrieve = text.split(" ");
 				arraySize = retrieve.length;
-				content = arraySize - 13;
+				content = arraySize - 14;
 				setContent = content;
 
 				task.setStartDay(retrieve[setContent]);
@@ -57,7 +55,9 @@ public class Storage {
 				task.setPriority(retrieve[setContent]);
 				setContent++;
 				task.setCategory(retrieve[setContent]);
-				task.incrementTotalNumberTaskID();
+				setContent++;
+				task.setTaskID(retrieve[setContent]);
+				
 				String details = "";
 
 				for (counter = 0; counter < content; counter++) {
@@ -79,7 +79,7 @@ public class Storage {
 		currentFile.delete();
 		PrintWriter pw = new PrintWriter(new FileOutputStream("Storage.txt"));
 		for (Task t : ExeCom.taskList)
-			pw.println(t.getAll());
+			pw.println(t.format());
 		pw.close();
 	}
 }

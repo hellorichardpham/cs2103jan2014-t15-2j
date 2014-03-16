@@ -159,8 +159,8 @@ public class Task {
 		this.taskID = taskID;
 	}
 	
-	public String format() {
-		return details + " " + startDay + " " + startMonth + " " + startYear + " " + endDay + " " + endMonth + " " + endYear + " " + startHours + " " + startMin + " " + endHours + " " + endMins + " " + location + " " + priority + " " + category + " " + taskID;
+	public String display() {
+		return details + " " + startDay + " " + startMonth + " " + startYear + " " + endDay + " " + endMonth + " " + endYear + " " + startHours + " " + startMin + " " + endHours + " " + endMins + " " + location + " " + priority + " " + category + " ";
 	}
 	
 	public String displayAll() {

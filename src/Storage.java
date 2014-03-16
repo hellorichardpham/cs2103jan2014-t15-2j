@@ -6,6 +6,14 @@ import java.io.PrintWriter;
 
 public class Storage {
 
+	/**
+	 * 
+	 * loadStorage: retrieve tasks found in the external file called Storage.txt to taskList
+	 * 
+	 * @author 	Khaleef
+	 * @param 	void
+	 * @return 	void
+	 */
 	public void loadStorage() throws Exception {
 
 		File f = new File("Storage.txt");
@@ -74,12 +82,20 @@ public class Storage {
 		}
 	}
 
+	/**
+	 * 
+	 * saveStorage: save taskList to external file called Storage.txt
+	 * 
+	 * @author 	Khaleef
+	 * @param 	void
+	 * @return 	void
+	 */
 	public void saveStorage() throws Exception {
 		File currentFile = new File("Storage.txt");
 		currentFile.delete();
 		PrintWriter pw = new PrintWriter(new FileOutputStream("Storage.txt"));
 		for (Task t : ExeCom.taskList)
-			pw.println(t.format());
+			pw.println(t.display() + (ExeCom.taskList.indexOf(t)+1));
 		pw.close();
 	}
 }

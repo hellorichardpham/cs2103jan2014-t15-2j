@@ -133,12 +133,6 @@ public class ExeCom {
 		}
 	}
 
-	public static void displayAll(ArrayList<Task> taskList) {
-		for (int counter = 0; counter < taskList.size(); counter++) {
-			System.out.println(taskList.get(counter).getDetails());
-		}
-	}
-
 	public static void search() {
 		if (isValidSearchCommand(info)) {
 			boolean isFound = false;

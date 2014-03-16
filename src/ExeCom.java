@@ -66,6 +66,7 @@ public class ExeCom {
 			for (int i = 0; i < taskList.size(); i++) {
 				String print = taskList.get(i).displayAll();
 				print = print.replace("null", "");
+				print = print.replace("null", "");
 				System.out.println(print);
 			}
 		} else {

@@ -65,7 +65,7 @@ public class ExeCom {
 			for (int i = 0; i < taskList.size(); i++) {
 				String print;
 				print = taskList.get(i).displayAll();
-				print = print.replace("null ", "");
+				print = print.replace("null", "");
 				System.out.println(print);
 			}
 		} else {
@@ -80,6 +80,7 @@ public class ExeCom {
 		taskList.add(taskToAdd);
 		System.out.println(ADD_SUCCESSFUL_MESSAGE);
 	}
+
 
 	public static void delete() {
 		Scanner scan = new Scanner(System.in);

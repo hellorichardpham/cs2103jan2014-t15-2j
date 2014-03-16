@@ -19,7 +19,8 @@ public class ExeCom {
 	private final static String TASKID_NOT_FOUND_MESSAGE = "That Task ID Number was not found";
 	private final static String TASKLIST_EMPTY_MESSAGE = "There are no tasks in the task list.";
 	private final static String ADD_SUCCESSFUL_MESSAGE = "That task has successfully been added to the Task List.";
-
+	private final static String INVALID_COMMAND_MESSAGE = "That is an invalid command.";
+	
 	ExeCom() {
 		taskList = new ArrayList<Task>();
 		prevTaskList = new ArrayList<Task>();
@@ -63,8 +64,7 @@ public class ExeCom {
 		if (!taskList.isEmpty()) {
 			System.out.println("~~~~~ Listing of all tasks ~~~~~");
 			for (int i = 0; i < taskList.size(); i++) {
-				String print;
-				print = taskList.get(i).displayAll();
+				String print = taskList.get(i).displayAll();
 				print = print.replace("null", "");
 				System.out.println(print);
 			}
@@ -80,7 +80,6 @@ public class ExeCom {
 		taskList.add(taskToAdd);
 		System.out.println(ADD_SUCCESSFUL_MESSAGE);
 	}
-
 
 	public static void delete() {
 		Scanner scan = new Scanner(System.in);
@@ -134,9 +133,9 @@ public class ExeCom {
 		if (isValidSearchCommand(info)) {
 			boolean isFound = false;
 			reinitializeSearchResults();
-			String infoString = info[1];
+			String searchKeyword = info[1];
 			for (int counter = 0; counter < taskList.size(); counter++) {
-				if(hasMatchingKeyword(taskList.get(counter), infoString)) {
+				if(hasMatchingKeyword(taskList.get(counter), searchKeyword)) {
 					searchResults.add(taskList.get(counter));
 					isFound = true;
 				}
@@ -148,7 +147,7 @@ public class ExeCom {
 				System.out.println(TASK_NOT_FOUND_MESSAGE);
 			}
 		} else {
-			System.out.println("That is an Invalid Command.");
+			System.out.println(INVALID_COMMAND_MESSAGE);
 		}
 	}
 	
@@ -156,8 +155,8 @@ public class ExeCom {
 		return info[1] != null;
 	}
 	
-	public static boolean hasMatchingKeyword(Task task, String infoString) {
-		return task.getDetails().contains(infoString);
+	public static boolean hasMatchingKeyword(Task task, String searchKeyword) {
+		return task.getDetails().contains(searchKeyword);
 	}
 
 	public static void reinitializeSearchResults() {

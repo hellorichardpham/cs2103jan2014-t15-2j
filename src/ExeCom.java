@@ -131,7 +131,7 @@ public class ExeCom {
 	}
 
 	public static void search() {
-		if (info[1] != null) {
+		if (isValidSearchCommand(info)) {
 			boolean isFound = false;
 			reinitializeSearchResults();
 			String infoString = info[1];
@@ -150,6 +150,10 @@ public class ExeCom {
 		} else {
 			System.out.println("That is an Invalid Command.");
 		}
+	}
+	
+	public static boolean isValidSearchCommand(String[] info) {
+		return info[1] != null;
 	}
 	
 	public static boolean hasMatchingKeyword(Task task, String infoString) {

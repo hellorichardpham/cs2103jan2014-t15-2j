@@ -131,7 +131,7 @@ public class ExeCom {
 			reinitializeSearchResults();
 			String infoString = info[1];
 			for (int counter = 0; counter < taskList.size(); counter++) {
-				if (taskList.get(counter).getDetails().contains(infoString)) {
+				if(hasMatchingKeyword(taskList.get(counter), infoString)) {
 					searchResults.add(taskList.get(counter));
 					isFound = true;
 				}
@@ -145,6 +145,10 @@ public class ExeCom {
 		} else {
 			System.out.println("That is an Invalid Command.");
 		}
+	}
+	
+	public static boolean hasMatchingKeyword(Task task, String infoString) {
+		return task.getDetails().contains(infoString);
 	}
 
 	public static void reinitializeSearchResults() {

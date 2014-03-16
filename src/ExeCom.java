@@ -87,7 +87,7 @@ public class ExeCom {
 		int taskIdNumber = scan.nextInt();
 		if (taskIdNumber != 0) {
 			for (int i = 0; i < searchResults.size(); i++) {
-				if (searchResults.get(i).getTaskID() == taskIdNumber) {
+				if (isTaskIDMatch(searchResults.get(i), taskIdNumber)) {
 					Task taskToDelete = searchResults.get(i);
 					saveProgress();
 					taskList.remove(taskToDelete);
@@ -105,6 +105,10 @@ public class ExeCom {
 
 	}
 
+	public static boolean isTaskIDMatch(Task task, int taskIdNumber) {
+		return task.getTaskID() == taskIdNumber;
+	}
+	
 	public static void printSearch() {
 		if (!searchResults.isEmpty()) {
 			for (int i = 0; i < searchResults.size(); i++) {

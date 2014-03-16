@@ -20,7 +20,7 @@ public class ExeCom {
 	private final static String TASKLIST_EMPTY_MESSAGE = "There are no tasks in the task list.";
 	private final static String ADD_SUCCESSFUL_MESSAGE = "That task has successfully been added to the Task List.";
 	private final static String INVALID_COMMAND_MESSAGE = "That is an invalid command.";
-	
+
 	ExeCom() {
 		taskList = new ArrayList<Task>();
 		prevTaskList = new ArrayList<Task>();
@@ -60,11 +60,19 @@ public class ExeCom {
 		return " ";
 	}
 
+	/**
+	 * 
+	 * display: display all task found in the taskList
+	 * 
+	 * @author	Khaleef
+	 * @param 	void
+	 * @return 	void
+	 */
 	private static void display() {
 		if (!taskList.isEmpty()) {
 			System.out.println("~~~~~ Listing of all tasks ~~~~~");
 			for (int i = 0; i < taskList.size(); i++) {
-				String print = taskList.get(i).displayAll();
+				String print = (i + 1) + ": " + taskList.get(i).display();
 				print = print.replace("null ", "");
 				print = print.replace("null", "");
 				System.out.println(print);
@@ -77,7 +85,7 @@ public class ExeCom {
 	public static void addToTaskList() {
 		Task taskToAdd = new Task(info);
 		saveToPrevTaskList();
-		taskToAdd.setTaskID(Integer.toString(taskList.size()+1));
+		taskToAdd.setTaskID(Integer.toString(taskList.size() + 1));
 		taskList.add(taskToAdd);
 		System.out.println(ADD_SUCCESSFUL_MESSAGE);
 	}
@@ -102,10 +110,11 @@ public class ExeCom {
 				System.out.println(TASKID_NOT_FOUND_MESSAGE);
 			}
 		} else {
-			//User has cancelled the delete command. Revert back to user command prompt.
+			// User has cancelled the delete command. Revert back to user
+			// command prompt.
 		}
 	}
-	
+
 	public static boolean isCancelNumber(int taskIdNumber) {
 		return taskIdNumber == 0;
 	}
@@ -113,7 +122,7 @@ public class ExeCom {
 	public static boolean isTaskIDMatch(Task task, int taskIdNumber) {
 		return Integer.parseInt(task.getTaskID()) == taskIdNumber;
 	}
-	
+
 	public static void printSearch() {
 		if (!searchResults.isEmpty()) {
 			for (int i = 0; i < searchResults.size(); i++) {
@@ -136,7 +145,7 @@ public class ExeCom {
 			reinitializeSearchResults();
 			String searchKeyword = info[1];
 			for (int counter = 0; counter < taskList.size(); counter++) {
-				if(hasMatchingKeyword(taskList.get(counter), searchKeyword)) {
+				if (hasMatchingKeyword(taskList.get(counter), searchKeyword)) {
 					searchResults.add(taskList.get(counter));
 					isFound = true;
 				}
@@ -151,11 +160,11 @@ public class ExeCom {
 			System.out.println(INVALID_COMMAND_MESSAGE);
 		}
 	}
-	
+
 	public static boolean isValidSearchCommand(String[] info) {
 		return info[1] != null;
 	}
-	
+
 	public static boolean hasMatchingKeyword(Task task, String searchKeyword) {
 		return task.getDetails().contains(searchKeyword);
 	}
@@ -187,19 +196,22 @@ public class ExeCom {
 		}
 		System.out.println(UNDO_SUCCESS_MESSAGE);
 	}
-
+	
+	/**
+	 * 
+	 * editContent: edit content of specific task using the taskID based on user's input
+	 * 
+	 * @author 	Khaleef
+	 * @param 	void
+	 * @return 	void
+	 */
 	public static void editContent() {
 		int id = Integer.parseInt(info[15]);
 		int counter;
 		int i;
 
-		// System.out.println(info[1] + " " +info[2] + " " +info[3] + " "
-		// +info[4] + " " +info[5] + " " +info[6] + " " +info[7] + " " +info[8]
-		// + " " +info[9] + " " +info[10] + " " +info[11] + " " +info[12] + " "
-		// + info[13]+ " " + info[14]+ " " + info[15]);
-
 		for (counter = 0; counter < taskList.size(); counter++) {
-			if (Integer.parseInt(taskList.get(counter).getTaskID())  == id) {
+			if (Integer.parseInt(taskList.get(counter).getTaskID()) == id) {
 				for (i = 1; i < info.length; i++) {
 					if (info[i] != null) {
 						switch (i) {

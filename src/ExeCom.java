@@ -75,7 +75,7 @@ public class ExeCom {
 
 	public static void addToTaskList() {
 		Task taskToAdd = new Task(info);
-		saveProgress();
+		saveToPrevTaskList();
 		taskToAdd.setTaskID(Integer.toString(taskList.size()+1));
 		taskList.add(taskToAdd);
 		System.out.println(ADD_SUCCESSFUL_MESSAGE);
@@ -86,11 +86,11 @@ public class ExeCom {
 		boolean isFound = false;
 		System.out.println(PROMPT_USER_DELETE_MESSAGE);
 		int taskIdNumber = scan.nextInt();
-		if (taskIdNumber != 0) {
+		if (!isCancelNumber(taskIdNumber)) {
 			for (int i = 0; i < searchResults.size(); i++) {
 				if (isTaskIDMatch(searchResults.get(i), taskIdNumber)) {
 					Task taskToDelete = searchResults.get(i);
-					saveProgress();
+					saveToPrevTaskList();
 					taskList.remove(taskToDelete);
 					System.out.println("Deleted: " + taskToDelete.getDetails());
 					isFound = true;
@@ -101,9 +101,12 @@ public class ExeCom {
 				System.out.println(TASKID_NOT_FOUND_MESSAGE);
 			}
 		} else {
-			// do nothing
+			//User has cancelled the delete command. Revert back to user command prompt.
 		}
-
+	}
+	
+	public static boolean isCancelNumber(int taskIdNumber) {
+		return taskIdNumber == 0;
 	}
 
 	public static boolean isTaskIDMatch(Task task, int taskIdNumber) {
@@ -156,7 +159,7 @@ public class ExeCom {
 		searchResults = new ArrayList<Task>();
 	}
 
-	public static void saveProgress() {
+	public static void saveToPrevTaskList() {
 		reinitializePrevTaskList();
 		for (int i = 0; i < taskList.size(); i++) {
 			prevTaskList.add(taskList.get(i));

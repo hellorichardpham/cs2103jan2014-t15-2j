@@ -83,7 +83,7 @@ public class ExeCom {
 		if (!taskList.isEmpty()) {
 			System.out.println("~~~~~ Listing of all tasks ~~~~~");
 			for (int i = 0; i < taskList.size(); i++) {
-				String print = taskList.get(i).displayAll();
+				String print = Integer.toString(i+1) + ": " +  taskList.get(i).display();
 				print = print.replace("null ", "");
 				print = print.replace("null", "");
 				System.out.println(print);

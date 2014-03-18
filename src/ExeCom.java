@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ExeCom {
@@ -20,13 +21,23 @@ public class ExeCom {
 	private final static String TASKLIST_EMPTY_MESSAGE = "There are no tasks in the task list.";
 	private final static String ADD_SUCCESSFUL_MESSAGE = "That task has successfully been added to the Task List.";
 	private final static String INVALID_COMMAND_MESSAGE = "That is an invalid command.";
+	private final static String NOT_INTEGER_MESSAGE = "ERROR: This is not an integer.";
 
 	ExeCom() {
 		taskList = new ArrayList<Task>();
 		prevTaskList = new ArrayList<Task>();
-
 	}
 
+	/**
+	 * 
+	 * executeCommand: determines which action to perform based on the
+	 * userCommand then calls the appropriate method.
+	 * 
+	 * @author Richard
+	 * @param userCommandInfo
+	 * @return String
+	 * 
+	 */
 	public static String executeCommand(String[] userCommandInfo)
 			throws Exception {
 		info = userCommandInfo;
@@ -64,15 +75,15 @@ public class ExeCom {
 	 * 
 	 * display: display all task found in the taskList
 	 * 
-	 * @author	Khaleef
-	 * @param 	void
-	 * @return 	void
+	 * @author Khaleef
+	 * @param void
+	 * @return void
 	 */
 	private static void display() {
 		if (!taskList.isEmpty()) {
 			System.out.println("~~~~~ Listing of all tasks ~~~~~");
 			for (int i = 0; i < taskList.size(); i++) {
-				String print = (i + 1) + ": " + taskList.get(i).display();
+				String print = taskList.get(i).displayAll();
 				print = print.replace("null ", "");
 				print = print.replace("null", "");
 				System.out.println(print);
@@ -82,6 +93,14 @@ public class ExeCom {
 		}
 	}
 
+	/**
+	 * 
+	 * addToTaskList: Add tasks to arraylist and set taskID.
+	 * 
+	 * @author Richard
+	 * @param void
+	 * @return void
+	 */
 	public static void addToTaskList() {
 		Task taskToAdd = new Task(info);
 		saveToPrevTaskList();
@@ -90,29 +109,61 @@ public class ExeCom {
 		System.out.println(ADD_SUCCESSFUL_MESSAGE);
 	}
 
-	public static void delete() {
-		Scanner scan = new Scanner(System.in);
-		boolean isFound = false;
-		System.out.println(PROMPT_USER_DELETE_MESSAGE);
-		int taskIdNumber = scan.nextInt();
-		if (!isCancelNumber(taskIdNumber)) {
-			for (int i = 0; i < searchResults.size(); i++) {
-				if (isTaskIDMatch(searchResults.get(i), taskIdNumber)) {
-					Task taskToDelete = searchResults.get(i);
-					saveToPrevTaskList();
-					taskList.remove(taskToDelete);
-					System.out.println("Deleted: " + taskToDelete.getDetails());
-					isFound = true;
-				}
-			}
+	/**
+	 * 
+	 * delete: Go through taskList and remove task with matching taskID
+	 * 
+	 * @author Richard
+	 * @param void
+	 * @return void
+	 * 
+	 */
 
-			if (!isFound) {
-				System.out.println(TASKID_NOT_FOUND_MESSAGE);
+	public static void delete() {
+		if (isInteger(info[15])) {
+			int taskIdNumber = retrieveTaskIdNumber(info[15]);
+			boolean isFound = false;
+			if (!isCancelNumber(taskIdNumber) && isValidTaskId(taskIdNumber)) {
+				for (int i = 0; i < taskList.size(); i++) {
+					if (isTaskIDMatch(taskList.get(i), taskIdNumber)) {
+						saveToPrevTaskList();
+						System.out.println("Deleted: " + taskList.get(i).getDetails());
+						taskList.remove(taskList.get(i));
+						isFound = true;
+					}
+				}
+				if (!isFound) {
+					System.out.println(TASKID_NOT_FOUND_MESSAGE);
+				}
+			} else if (isCancelNumber(taskIdNumber)
+					&& isValidTaskId(taskIdNumber)) {
+				// User has cancelled the delete command. Revert back to user
+				// command prompt.
+			} else {
+				//User input was not a valid integer
+				System.out.println(NOT_INTEGER_MESSAGE);
 			}
 		} else {
-			// User has cancelled the delete command. Revert back to user
-			// command prompt.
+			System.out.println(INVALID_COMMAND_MESSAGE);
 		}
+	}
+
+	public static boolean isInteger(String s) {
+		try {
+			Integer.parseInt(s);
+		} catch (NumberFormatException e) {
+			return false;
+		}
+		// only got here if we didn't return false
+		return true;
+	}
+
+	public static boolean isValidTaskId(int taskIdNumber) {
+		return taskIdNumber > 0;
+	}
+
+	public static int retrieveTaskIdNumber(String s) {
+		return Integer.parseInt(s);
 	}
 
 	public static boolean isCancelNumber(int taskIdNumber) {
@@ -122,6 +173,15 @@ public class ExeCom {
 	public static boolean isTaskIDMatch(Task task, int taskIdNumber) {
 		return Integer.parseInt(task.getTaskID()) == taskIdNumber;
 	}
+
+	/**
+	 * 
+	 * printSearch: Display task details of all tasks in Search Results
+	 * 
+	 * @author Richard
+	 * @param void
+	 * @return void
+	 */
 
 	public static void printSearch() {
 		if (!searchResults.isEmpty()) {
@@ -133,20 +193,30 @@ public class ExeCom {
 		}
 	}
 
+	/**
+	 * 
+	 * search: Cycle through entire taskList looking for User-specified keyword.
+	 * Add all tasks that contain keyword ino the searchResults ArrayList.
+	 * 
+	 * @author Richard
+	 * @param void
+	 * @return void
+	 */
+
 	public static void search() {
 		if (isValidSearchCommand(info)) {
 			boolean isFound = false;
 			reinitializeSearchResults();
 			String searchKeyword = info[1];
-			for (int counter = 0; counter < taskList.size(); counter++) {
-				if (hasMatchingKeyword(taskList.get(counter), searchKeyword)) {
-					searchResults.add(taskList.get(counter));
+			for (int i = 0; i < taskList.size(); i++) {
+				if (hasMatchingKeyword(taskList.get(i), searchKeyword)) {
+					searchResults.add(taskList.get(i));
 					isFound = true;
 				}
 			}
 			if (isFound) {
 				printSearch();
-				delete();
+				// delete();
 			} else {
 				System.out.println(TASK_NOT_FOUND_MESSAGE);
 			}
@@ -167,6 +237,16 @@ public class ExeCom {
 		searchResults = new ArrayList<Task>();
 	}
 
+	/**
+	 * 
+	 * saveToPrevTaskList: Reset prevTaskList and add all objects from taskList
+	 * to pTL
+	 * 
+	 * @author Richard
+	 * @param void
+	 * @return void
+	 * 
+	 */
 	public static void saveToPrevTaskList() {
 		reinitializePrevTaskList();
 		for (int i = 0; i < taskList.size(); i++) {
@@ -182,22 +262,38 @@ public class ExeCom {
 		taskList = new ArrayList<Task>();
 	}
 
-	// This needs to be changed so that tL holds pTL data
+	/**
+	 * 
+	 * undo: Reset taskList then add contents of pTL to tL.
+	 * 
+	 * @author Richard
+	 * @param void
+	 * @return void
+	 */
 	public static void undo() {
 		reinitializeTaskList();
-		for (int counter = 0; counter < prevTaskList.size(); counter++) {
-			taskList.add(prevTaskList.get(counter));
+		for (int i = 0; i < prevTaskList.size(); i++) {
+			taskList.add(prevTaskList.get(i));
 		}
 		System.out.println(UNDO_SUCCESS_MESSAGE);
 	}
-	
+
+	/* if (isUndoable()) { */
+	/*
+	 * else { System.out.println(UNDO_UNSUCCESSFUL_MESSAGE); }
+	 */
+	public static boolean isUndoable() {
+		return taskList.size() != prevTaskList.size();
+	}
+
 	/**
 	 * 
-	 * editContent: edit content of specific task using the taskID based on user's input
+	 * editContent: edit content of specific task using the taskID based on
+	 * user's input
 	 * 
-	 * @author 	Khaleef
-	 * @param 	void
-	 * @return 	void
+	 * @author Khaleef
+	 * @param void
+	 * @return void
 	 */
 	public static void editContent() {
 		int id = Integer.parseInt(info[15]);

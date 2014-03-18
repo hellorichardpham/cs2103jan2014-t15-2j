@@ -83,7 +83,7 @@ public class ExeCom {
 		if (!taskList.isEmpty()) {
 			System.out.println("~~~~~ Listing of all tasks ~~~~~");
 			for (int i = 0; i < taskList.size(); i++) {
-				String print = Integer.toString(i+1) + ": " +  taskList.get(i).display();
+				String print = taskList.get(i).displayAll();
 				print = print.replace("null ", "");
 				print = print.replace("null", "");
 				System.out.println(print);
@@ -120,14 +120,15 @@ public class ExeCom {
 	 */
 
 	public static void delete() {
-		if (isInteger(info[15])) {
-			int taskIdNumber = retrieveTaskIdNumber(info[15]);
+		if (isInteger()) {
+			int taskIdNumber = retrieveTaskIdNumber();
 			boolean isFound = false;
 			if (!isCancelNumber(taskIdNumber) && isValidTaskId(taskIdNumber)) {
 				for (int i = 0; i < taskList.size(); i++) {
 					if (isTaskIDMatch(taskList.get(i), taskIdNumber)) {
 						saveToPrevTaskList();
-						System.out.println("Deleted: " + taskList.get(i).getDetails());
+						System.out.println("Deleted: "
+								+ taskList.get(i).getDetails());
 						taskList.remove(taskList.get(i));
 						isFound = true;
 					}
@@ -140,7 +141,7 @@ public class ExeCom {
 				// User has cancelled the delete command. Revert back to user
 				// command prompt.
 			} else {
-				//User input was not a valid integer
+				// User input was not a valid integer
 				System.out.println(NOT_INTEGER_MESSAGE);
 			}
 		} else {
@@ -148,9 +149,9 @@ public class ExeCom {
 		}
 	}
 
-	public static boolean isInteger(String s) {
+	public static boolean isInteger() {
 		try {
-			Integer.parseInt(s);
+			Integer.parseInt(info[15]);
 		} catch (NumberFormatException e) {
 			return false;
 		}
@@ -162,8 +163,8 @@ public class ExeCom {
 		return taskIdNumber > 0;
 	}
 
-	public static int retrieveTaskIdNumber(String s) {
-		return Integer.parseInt(s);
+	public static int retrieveTaskIdNumber() {
+		return Integer.parseInt(info[15]);
 	}
 
 	public static boolean isCancelNumber(int taskIdNumber) {
@@ -271,19 +272,27 @@ public class ExeCom {
 	 * @return void
 	 */
 	public static void undo() {
-		reinitializeTaskList();
-		for (int i = 0; i < prevTaskList.size(); i++) {
-			taskList.add(prevTaskList.get(i));
+		if (isValidUndoCommand()) {
+			reinitializeTaskList();
+			for (int i = 0; i < prevTaskList.size(); i++) {
+				taskList.add(prevTaskList.get(i));
+			}
+			System.out.println(UNDO_SUCCESS_MESSAGE);
+		} else {
+			System.out.println(INVALID_COMMAND_MESSAGE);
 		}
-		System.out.println(UNDO_SUCCESS_MESSAGE);
 	}
 
 	/* if (isUndoable()) { */
 	/*
 	 * else { System.out.println(UNDO_UNSUCCESSFUL_MESSAGE); }
 	 */
-	public static boolean isUndoable() {
-		return taskList.size() != prevTaskList.size();
+	public static boolean isValidUndoCommand() {
+		if (info[1] == null) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**

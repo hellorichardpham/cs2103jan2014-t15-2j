@@ -42,6 +42,7 @@ public class ExeCom {
 			throws Exception {
 		info = userCommandInfo;
 		String command = info[0];
+
 		Storage s = new Storage();
 		switch (command) {
 		case ADD:
@@ -80,7 +81,7 @@ public class ExeCom {
 	 * @return void
 	 */
 	private static void display() {
-		if (!taskList.isEmpty()) {
+		if (!taskList.isEmpty() && isValidDisplayCommand()) {
 			System.out.println("~~~~~ Listing of all tasks ~~~~~");
 			for (int i = 0; i < taskList.size(); i++) {
 				String print = taskList.get(i).displayAll();
@@ -88,8 +89,18 @@ public class ExeCom {
 				print = print.replace("null", "");
 				System.out.println(print);
 			}
-		} else {
+		} else if (taskList.isEmpty() && isValidDisplayCommand()) {
 			System.out.println(TASKLIST_EMPTY_MESSAGE);
+		} else {
+			System.out.println(INVALID_COMMAND_MESSAGE);
+		}
+	}
+
+	public static boolean isValidDisplayCommand() {
+		if (info[1] == null) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 

@@ -8,7 +8,6 @@ import java.io.PrintWriter;
 public class Storage {
 	
 	private static final String FILENAME = "Storage.txt"; 
-	
 	private static Storage theOne;
 	
 	public static Storage getInstance() {

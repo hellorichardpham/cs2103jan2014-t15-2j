@@ -21,7 +21,7 @@ public class ExeCom {
 	private final static String TASKLIST_EMPTY_MESSAGE = "There are no tasks in the task list.";
 	private final static String ADD_SUCCESSFUL_MESSAGE = "That task has successfully been added to the Task List.";
 	private final static String INVALID_COMMAND_MESSAGE = "That is an invalid command.";
-	private final static String NOT_INTEGER_MESSAGE = "ERROR: This is not an integer.";
+	private final static String NOT_INTEGER_MESSAGE = "ERROR: This is not a positive integer.";
 
 	ExeCom() {
 		taskList = new ArrayList<Task>();
@@ -89,14 +89,14 @@ public class ExeCom {
 				print = print.replace("null", "");
 				System.out.println(print);
 			}
-			
+
 		} else if (taskList.isEmpty() && isValidDisplayCommand()) {
 			System.out.println(TASKLIST_EMPTY_MESSAGE);
 		} else {
 			System.out.println(INVALID_COMMAND_MESSAGE);
 		}
 	}
-	
+
 	public static boolean isValidDisplayCommand() {
 		if (info[1] == null) {
 			return true;
@@ -132,45 +132,37 @@ public class ExeCom {
 	 */
 
 	public static void delete() {
-		if (isInteger()) {
+		if (isPositiveInteger()) {
 			int taskIdNumber = retrieveTaskIdNumber();
 			boolean isFound = false;
-			if (!isCancelNumber(taskIdNumber) && isValidTaskId(taskIdNumber)) {
-				for (int i = 0; i < taskList.size(); i++) {
-					if (isTaskIDMatch(taskList.get(i), taskIdNumber)) {
-						saveToPrevTaskList();
-						System.out.println("Deleted: "
-								+ taskList.get(i).getDetails());
-						taskList.remove(taskList.get(i));
-						isFound = true;
-					}
+			for (int i = 0; i < taskList.size(); i++) {
+				if (isTaskIDMatch(taskList.get(i), taskIdNumber)) {
+					saveToPrevTaskList();
+					System.out.println("Deleted: "
+							+ taskList.get(i).getDetails());
+					taskList.remove(taskList.get(i));
+					isFound = true;
 				}
-				
-				if (!isFound) {
-					System.out.println(TASKID_NOT_FOUND_MESSAGE);
-				}
-			} else if (isCancelNumber(taskIdNumber)
-					&& isValidTaskId(taskIdNumber)) {
-				// User has cancelled the delete command. Revert back to user
-				// command prompt.
-			} else {
-				// User input was not a valid integer (ex: -1)
-				System.out.println(NOT_INTEGER_MESSAGE);
+			}
+			if (!isFound) {
+				System.out.println(TASKID_NOT_FOUND_MESSAGE);
 			}
 		} else {
-			//User input was "delete (String)"
-			System.out.println(INVALID_COMMAND_MESSAGE);
+			// User input was "delete (String)" or "delete (negative #)"
+			System.out.println(NOT_INTEGER_MESSAGE);
 		}
 	}
 
-	public static boolean isInteger() {
+	public static boolean isPositiveInteger() {
 		try {
-			Integer.parseInt(info[15]);
+			if (Integer.parseInt(info[15]) > 0) {
+				return true;
+			} else {
+				return false;
+			}
 		} catch (NumberFormatException e) {
 			return false;
 		}
-		// only got here if we didn't return false
-		return true;
 	}
 
 	public static boolean isValidTaskId(int taskIdNumber) {
@@ -200,7 +192,7 @@ public class ExeCom {
 
 	public static void printSearch() {
 		if (!searchResults.isEmpty()) {
-			for(Task task : searchResults) {
+			for (Task task : searchResults) {
 				System.out.println(task.displayAll());
 			}
 		} else {
@@ -223,7 +215,7 @@ public class ExeCom {
 			boolean isFound = false;
 			resetSearchResults();
 			String searchKeyword = info[1];
-			for(Task task : taskList) {
+			for (Task task : taskList) {
 				if (hasMatchingKeyword(task, searchKeyword)) {
 					searchResults.add(task);
 					isFound = true;
@@ -263,8 +255,8 @@ public class ExeCom {
 	 */
 	public static void saveToPrevTaskList() {
 		resetPrevTaskList();
-		for(Task task : taskList) {
-			 prevTaskList.add(new Task(task));
+		for (Task task : taskList) {
+			prevTaskList.add(new Task(task));
 		}
 	}
 
@@ -287,7 +279,7 @@ public class ExeCom {
 	public static void undo() {
 		if (isValidUndoCommand()) {
 			resetTaskList();
-			for (Task task: prevTaskList) {
+			for (Task task : prevTaskList) {
 				taskList.add(task);
 			}
 			System.out.println(UNDO_SUCCESS_MESSAGE);
@@ -327,7 +319,7 @@ public class ExeCom {
 				saveToPrevTaskList();
 				for (i = 1; i < info.length; i++) {
 					if (info[i] != null) {
-						
+
 						switch (i) {
 						case 1:
 							taskList.get(counter).setDetails(info[i]);

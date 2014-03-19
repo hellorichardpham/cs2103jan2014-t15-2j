@@ -221,7 +221,7 @@ public class ExeCom {
 	public static void search() {
 		if (isValidSearchCommand(info)) {
 			boolean isFound = false;
-			reinitializeSearchResults();
+			resetSearchResults();
 			String searchKeyword = info[1];
 			for(Task task : taskList) {
 				if (hasMatchingKeyword(task, searchKeyword)) {
@@ -247,7 +247,7 @@ public class ExeCom {
 		return task.getDetails().contains(searchKeyword);
 	}
 
-	public static void reinitializeSearchResults() {
+	public static void resetSearchResults() {
 		searchResults = new ArrayList<Task>();
 	}
 
@@ -262,17 +262,17 @@ public class ExeCom {
 	 * 
 	 */
 	public static void saveToPrevTaskList() {
-		reinitializePrevTaskList();
+		resetPrevTaskList();
 		for(Task task : taskList) {
 			 prevTaskList.add(new Task(task));
 		}
 	}
 
-	public static void reinitializePrevTaskList() {
+	public static void resetPrevTaskList() {
 		prevTaskList = new ArrayList<Task>();
 	}
 
-	public static void reinitializeTaskList() {
+	public static void resetTaskList() {
 		taskList = new ArrayList<Task>();
 	}
 
@@ -286,7 +286,7 @@ public class ExeCom {
 	 */
 	public static void undo() {
 		if (isValidUndoCommand()) {
-			reinitializeTaskList();
+			resetTaskList();
 			for (Task task: prevTaskList) {
 				taskList.add(task);
 			}

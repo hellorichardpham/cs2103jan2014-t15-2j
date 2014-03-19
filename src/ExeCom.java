@@ -56,7 +56,7 @@ public class ExeCom {
 		info = userCommandInfo;
 		String command = info[0];
 
-		Storage s = new Storage();
+		Storage s = Storage.getInstance();
 		switch (command) {
 		case ADD:
 			addToTaskList();

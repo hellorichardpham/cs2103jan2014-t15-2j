@@ -83,12 +83,13 @@ public class ExeCom {
 	private static void display() {
 		if (!taskList.isEmpty() && isValidDisplayCommand()) {
 			System.out.println("~~~~~ Listing of all tasks ~~~~~");
-			for (int i = 0; i < taskList.size(); i++) {
-				String print = taskList.get(i).displayAll();
+			for (Task task : taskList) {
+				String print = task.displayAll();
 				print = print.replace("null ", "");
 				print = print.replace("null", "");
 				System.out.println(print);
 			}
+			
 		} else if (taskList.isEmpty() && isValidDisplayCommand()) {
 			System.out.println(TASKLIST_EMPTY_MESSAGE);
 		} else {
@@ -144,6 +145,7 @@ public class ExeCom {
 						isFound = true;
 					}
 				}
+				
 				if (!isFound) {
 					System.out.println(TASKID_NOT_FOUND_MESSAGE);
 				}
@@ -221,15 +223,14 @@ public class ExeCom {
 			boolean isFound = false;
 			reinitializeSearchResults();
 			String searchKeyword = info[1];
-			for (int i = 0; i < taskList.size(); i++) {
-				if (hasMatchingKeyword(taskList.get(i), searchKeyword)) {
-					searchResults.add(taskList.get(i));
+			for(Task task : taskList) {
+				if (hasMatchingKeyword(task, searchKeyword)) {
+					searchResults.add(task);
 					isFound = true;
 				}
 			}
 			if (isFound) {
 				printSearch();
-				// delete();
 			} else {
 				System.out.println(TASK_NOT_FOUND_MESSAGE);
 			}
@@ -262,8 +263,8 @@ public class ExeCom {
 	 */
 	public static void saveToPrevTaskList() {
 		reinitializePrevTaskList();
-		for(Task t : taskList) {
-			 prevTaskList.add(new Task(t));
+		for(Task task : taskList) {
+			 prevTaskList.add(new Task(task));
 		}
 	}
 
@@ -286,8 +287,8 @@ public class ExeCom {
 	public static void undo() {
 		if (isValidUndoCommand()) {
 			reinitializeTaskList();
-			for (int i = 0; i < prevTaskList.size(); i++) {
-				taskList.add(prevTaskList.get(i));
+			for (Task task: prevTaskList) {
+				taskList.add(task);
 			}
 			System.out.println(UNDO_SUCCESS_MESSAGE);
 		} else {

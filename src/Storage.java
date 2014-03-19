@@ -1,10 +1,13 @@
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.PrintWriter;
 
 public class Storage {
+	
+	private static final String FILENAME = "Storage.txt"; 
 	
 	private static Storage theOne;
 	
@@ -25,20 +28,16 @@ public class Storage {
 	 */
 	public void loadStorage() throws Exception {
 
-		File f = new File("Storage.txt");
-		if (!f.exists()) {
-			//System.out.println("File do not exists");
-		} else {
+		BufferedReader fileReader;
+		fileReader = createFileIfNotExist();
+		
 			String[] retrieve;
-
-			BufferedReader fileReader;
 			int arraySize;
 			int content;
 			int setContent;
 			int counter;
 			String text;
-			fileReader = new BufferedReader(new FileReader(f));
-
+		
 			while ((text = fileReader.readLine()) != null) {
 				Task task = new Task();
 				retrieve = text.split(" ");
@@ -84,26 +83,37 @@ public class Storage {
 					}
 				}
 				task.setDetails(details);
-				ExeCom.taskList.add(task);
+				ExeCom.getTaskListInstance().add(task);
 			}
 			fileReader.close();
 		}
+	
+	private BufferedReader createFileIfNotExist() throws FileNotFoundException {
+		BufferedReader input;
+		try {
+			input = new BufferedReader(new FileReader(FILENAME));
+		} catch (FileNotFoundException ex) {
+			PrintWriter writer = new PrintWriter(FILENAME);
+			input = new BufferedReader(new FileReader(FILENAME));
+			writer.close();
+		}
+		return input;
 	}
 
 	/**
 	 * 
-	 * saveStorage: save taskList to external file called Storage.txt
+	 * saveStorage: save taskList to external file fileName
 	 * 
 	 * @author 	Khaleef
 	 * @param 	void
 	 * @return 	void
 	 */
 	public void saveStorage() throws Exception {
-		File currentFile = new File("Storage.txt");
+		File currentFile = new File(FILENAME);
 		currentFile.delete();
-		PrintWriter pw = new PrintWriter(new FileOutputStream("Storage.txt"));
-		for (Task t : ExeCom.taskList)
-			pw.println(t.display() + (ExeCom.taskList.indexOf(t)+1));
+		PrintWriter pw = new PrintWriter(new FileOutputStream(FILENAME));
+		for (Task t : ExeCom.getTaskListInstance())
+			pw.println(t.display() + (ExeCom.getTaskListInstance().indexOf(t)+1));
 		pw.close();
 	}
 }

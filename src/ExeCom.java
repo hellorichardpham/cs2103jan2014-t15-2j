@@ -95,7 +95,7 @@ public class ExeCom {
 			System.out.println(INVALID_COMMAND_MESSAGE);
 		}
 	}
-
+	
 	public static boolean isValidDisplayCommand() {
 		if (info[1] == null) {
 			return true;
@@ -261,8 +261,8 @@ public class ExeCom {
 	 */
 	public static void saveToPrevTaskList() {
 		reinitializePrevTaskList();
-		for (int i = 0; i < taskList.size(); i++) {
-			prevTaskList.add(taskList.get(i));
+		for(Task t : taskList) {
+			 prevTaskList.add(new Task(t));
 		}
 	}
 
@@ -322,8 +322,10 @@ public class ExeCom {
 
 		for (counter = 0; counter < taskList.size(); counter++) {
 			if (Integer.parseInt(taskList.get(counter).getTaskID()) == id) {
+				saveToPrevTaskList();
 				for (i = 1; i < info.length; i++) {
 					if (info[i] != null) {
+						
 						switch (i) {
 						case 1:
 							taskList.get(counter).setDetails(info[i]);

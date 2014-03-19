@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ExeCom {
-	static ArrayList<Task> taskList;
+	private static ArrayList<Task> taskList;
 	private static ArrayList<Task> prevTaskList;
 	private static ArrayList<Task> redoTaskList;
 	private static ArrayList<Task> searchResults;
@@ -28,6 +28,13 @@ public class ExeCom {
 	private static ExeCom theOne;
 	Scanner scanner = new Scanner(System.in);
 	
+	public static ArrayList<Task> getTaskListInstance() {
+		if(taskList==null) {
+			taskList = new ArrayList<Task>();
+		}
+		return taskList;
+	}
+	
 	public static ExeCom getInstance() {
 		if(theOne==null){
 			theOne = new ExeCom();
@@ -36,7 +43,9 @@ public class ExeCom {
 	}
 	
 	ExeCom() {
-		taskList = new ArrayList<Task>();
+		if(taskList==null) {
+			taskList = new ArrayList<Task>();
+		}
 		prevTaskList = new ArrayList<Task>();
 		redoTaskList = new ArrayList<Task>();
 	}

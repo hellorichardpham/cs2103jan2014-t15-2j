@@ -242,11 +242,20 @@ public class ProcessCommand {
 		case "edit":
 		case "update":
 		case "delete":
+			assert(isTaskIDValid(splitInput[1]));
 			info[15] = splitInput[1]; //assign user specified TaskID
 			splitInput[1] = "";
 			break;
 		default:
 
 		}
+	}
+
+	private boolean isTaskIDValid(String string) {
+		int taskID = Integer.parseInt(string);
+		if (taskID <= ExeCom.taskList.size())
+			return true;
+		else 
+			return false;
 	}
 }

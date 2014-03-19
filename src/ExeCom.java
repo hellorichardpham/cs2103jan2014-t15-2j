@@ -152,10 +152,11 @@ public class ExeCom {
 				// User has cancelled the delete command. Revert back to user
 				// command prompt.
 			} else {
-				// User input was not a valid integer
+				// User input was not a valid integer (ex: -1)
 				System.out.println(NOT_INTEGER_MESSAGE);
 			}
 		} else {
+			//User input was "delete (String)"
 			System.out.println(INVALID_COMMAND_MESSAGE);
 		}
 	}
@@ -197,8 +198,8 @@ public class ExeCom {
 
 	public static void printSearch() {
 		if (!searchResults.isEmpty()) {
-			for (int i = 0; i < searchResults.size(); i++) {
-				System.out.println(searchResults.get(i).displayAll());
+			for(Task task : searchResults) {
+				System.out.println(task.displayAll());
 			}
 		} else {
 			System.out.println(TASK_NOT_FOUND_MESSAGE);

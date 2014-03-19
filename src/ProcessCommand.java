@@ -21,16 +21,16 @@ public class ProcessCommand {
 	
 	public String[] process(String userInput) {
 
-		String[] original = new String[100];
-		original = userInput.split(" ");
+		String[] splitInput = new String[100];
+		splitInput = userInput.split(" ");
 
-		processFirstWordAsCommand(original);
-		processLocationPriorityCategory(original);
-		processDate(original);
+		processFirstWordAsCommand(splitInput);
+		processLocationPriorityCategory(splitInput);
+		processDate(splitInput);
 
-		String timeDetails = extractTime(original);
+		String timeDetails = extractTime(splitInput);
 		processTime(timeDetails);
-		processDetails(original);
+		processDetails(splitInput);
 
 		return info;
 	}
@@ -88,12 +88,12 @@ public class ProcessCommand {
 		return formattedDate;
 	}
 
-	private void processDate(String[] original) {
-		for (int i = original.length - 2; i > 0; i--) {
+	private void processDate(String[] splitInput) {
+		for (int i = splitInput.length - 2; i > 0; i--) {
 
 			String month = null;
 
-			switch (original[i].toLowerCase()) {
+			switch (splitInput[i].toLowerCase()) {
 			case "jan":
 			case "january":
 				month = "01";
@@ -147,19 +147,19 @@ public class ProcessCommand {
 			if (month != null) {
 				if (info[6] == null) {
 					info[6] = month;
-					info[5] = original[i - 1];
-					info[7] = original[i + 1];
+					info[5] = splitInput[i - 1];
+					info[7] = splitInput[i + 1];
 				} else {
 					info[3] = month;
-					info[2] = original[i - 1];
-					info[4] = original[i + 1];
-					if (!original[i + 2].equals("")) {
-						original[i + 2] = "";
+					info[2] = splitInput[i - 1];
+					info[4] = splitInput[i + 1];
+					if (!splitInput[i + 2].equals("")) {
+						splitInput[i + 2] = "";
 					}
 				}
-				original[i] = "";
-				original[i - 1] = "";
-				original[i + 1] = "";
+				splitInput[i] = "";
+				splitInput[i - 1] = "";
+				splitInput[i + 1] = "";
 			}
 		}
 		if (info[6] == null) {
@@ -170,44 +170,44 @@ public class ProcessCommand {
 		}
 	}
 
-	private void processLocationPriorityCategory(String[] original) {
-		for (int i = 0; i < original.length; i++) {
-			if (original[i] != null) {
-				switch (original[i]) {
+	private void processLocationPriorityCategory(String[] splitInput) {
+		for (int i = 0; i < splitInput.length; i++) {
+			if (splitInput[i] != null) {
+				switch (splitInput[i]) {
 				case "//Location":
 				case "//location":
 				case "//L":
 				case "//l":
-					info[12] = original[i + 1];
-					original[i] = "";
-					original[i + 1] = "";
+					info[12] = splitInput[i + 1];
+					splitInput[i] = "";
+					splitInput[i + 1] = "";
 					break;
 				case "//Priority":
 				case "//priority":
 				case "//P":
 				case "//p":
-					info[13] = original[i + 1];
-					original[i] = "";
-					original[i + 1] = "";
+					info[13] = splitInput[i + 1];
+					splitInput[i] = "";
+					splitInput[i + 1] = "";
 					break;
 				case "//Category":
 				case "//category":
 				case "//C":
 				case "//c":
-					info[14] = original[i + 1];
-					original[i] = "";
-					original[i + 1] = "";
+					info[14] = splitInput[i + 1];
+					splitInput[i] = "";
+					splitInput[i + 1] = "";
 					break;
 				}
 			}
 		}
 	}
 
-	private void processDetails(String[] original) {
+	private void processDetails(String[] splitInput) {
 		String details = "";
-		for (int i = 0; i < original.length; i++) {
-			if (!original[i].equals("")) {
-				details = details + original[i] + " ";
+		for (int i = 0; i < splitInput.length; i++) {
+			if (!splitInput[i].equals("")) {
+				details = details + splitInput[i] + " ";
 			}
 		}
 		if (!details.equals("")) {
@@ -217,20 +217,20 @@ public class ProcessCommand {
 		}
 	}
 
-	private String extractTime(String[] original) {
+	private String extractTime(String[] splitInput) {
 		String time = "";
-		for (int i = 2; i < original.length; i++) {
-			if (original[i].contains("hrs")) {
-				time = time + original[i];
-				original[i] = "";
-				if (i + 1 < original.length && original[i + 1].contains("hrs")) {
-					time = time + original[i + 1];
-					original[i + 1] = "";
-				} else if (i + 2 < original.length
-						&& original[i + 2].contains("hrs")) {
-					time = time + original[i + 1] + original[i + 2];
-					original[i + 1] = "";
-					original[i + 2] = "";
+		for (int i = 2; i < splitInput.length; i++) {
+			if (splitInput[i].contains("hrs")) {
+				time = time + splitInput[i];
+				splitInput[i] = "";
+				if (i + 1 < splitInput.length && splitInput[i + 1].contains("hrs")) {
+					time = time + splitInput[i + 1];
+					splitInput[i + 1] = "";
+				} else if (i + 2 < splitInput.length
+						&& splitInput[i + 2].contains("hrs")) {
+					time = time + splitInput[i + 1] + splitInput[i + 2];
+					splitInput[i + 1] = "";
+					splitInput[i + 2] = "";
 				}
 				return time;
 			}
@@ -238,11 +238,11 @@ public class ProcessCommand {
 		return null;
 	}
 
-	private void processFirstWordAsCommand(String[] original) {
+	private void processFirstWordAsCommand(String[] splitInput) {
 
-		String firstWord = original[0];
+		String firstWord = splitInput[0];
 		info[0] = firstWord;
-		original[0] = "";
+		splitInput[0] = "";
 
 		switch (firstWord) {
 		case "Edit":
@@ -251,8 +251,8 @@ public class ProcessCommand {
 		case "Update":
 		case "Delete":
 		case "delete":
-			info[15] = original[1];
-			original[1] = "";
+			info[15] = splitInput[1];
+			splitInput[1] = "";
 			break;
 		default:
 

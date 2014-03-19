@@ -204,6 +204,7 @@ public class ProcessCommand {
 				details = details + splitInput[i] + " ";
 			}
 		}
+		details = details.trim();
 		if (!details.equals("")) {
 			info[1] = details;
 		} else {

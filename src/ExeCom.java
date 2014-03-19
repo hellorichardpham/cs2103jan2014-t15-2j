@@ -23,6 +23,16 @@ public class ExeCom {
 	private final static String INVALID_COMMAND_MESSAGE = "That is an invalid command.";
 	private final static String NOT_INTEGER_MESSAGE = "ERROR: This is not a positive integer.";
 
+	private static ExeCom theOne;
+	Scanner scanner = new Scanner(System.in);
+	
+	public static ExeCom getInstance() {
+		if(theOne==null){
+			theOne = new ExeCom();
+		}
+		return theOne;
+	}
+	
 	ExeCom() {
 		taskList = new ArrayList<Task>();
 		prevTaskList = new ArrayList<Task>();
@@ -38,7 +48,7 @@ public class ExeCom {
 	 * @return String
 	 * 
 	 */
-	public static String executeCommand(String[] userCommandInfo)
+	public String executeCommand(String[] userCommandInfo)
 			throws Exception {
 		info = userCommandInfo;
 		String command = info[0];

@@ -3,7 +3,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.PrintWriter;
-import java.util.Scanner;
 
 public class Storage {
 	
@@ -33,7 +32,6 @@ public class Storage {
 			String[] retrieve;
 
 			BufferedReader fileReader;
-			int i = 0;
 			int arraySize;
 			int content;
 			int setContent;

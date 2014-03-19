@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ExeCom {
@@ -52,7 +51,7 @@ public class ExeCom {
 	 * @return String
 	 * 
 	 */
-	public static String executeCommand(String[] userCommandInfo)
+	public String executeCommand(String[] userCommandInfo)
 			throws Exception {
 		info = userCommandInfo;
 		String command = info[0];

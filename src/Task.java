@@ -34,6 +34,24 @@ public class Task {
 		category = info[14];
 		taskID = info[15];
 	}
+	
+	public Task(Task task) {
+		this.details = task.getDetails();
+		this.startDay = task.getStartDay();
+		this.startMonth = task.getStartMonth();
+		this.startYear = task.getStartYear();
+		this.endDay = task.getEndDay();
+		this.endMonth = task.getEndMonth();
+		this.endYear = task.getEndYear();
+		this.startHours = task.getStartHours();
+		this.startMin = task.getStartMin();
+		this.endHours = task.getEndHours();
+		this.endMins = task.getEndMins();
+		this.location = task.getLocation();
+		this.priority = task.getPriority();
+		this.category = task.getCategory();
+		this.taskID = task.getTaskID();
+	}
 
 	public Task() {
 		// TODO Auto-generated constructor stub

@@ -173,26 +173,20 @@ public class ProcessCommand {
 	private void processLocationPriorityCategory(String[] splitInput) {
 		for (int i = 0; i < splitInput.length; i++) {
 			if (splitInput[i] != null) {
-				switch (splitInput[i]) {
-				case "//Location":
+				switch (splitInput[i].toLowerCase()) {
 				case "//location":
-				case "//L":
 				case "//l":
 					info[12] = splitInput[i + 1];
 					splitInput[i] = "";
 					splitInput[i + 1] = "";
 					break;
-				case "//Priority":
 				case "//priority":
-				case "//P":
 				case "//p":
 					info[13] = splitInput[i + 1];
 					splitInput[i] = "";
 					splitInput[i + 1] = "";
 					break;
-				case "//Category":
 				case "//category":
-				case "//C":
 				case "//c":
 					info[14] = splitInput[i + 1];
 					splitInput[i] = "";
@@ -244,14 +238,11 @@ public class ProcessCommand {
 		info[0] = firstWord;
 		splitInput[0] = "";
 
-		switch (firstWord) {
-		case "Edit":
+		switch (firstWord.toLowerCase()) {
 		case "edit":
 		case "update":
-		case "Update":
-		case "Delete":
 		case "delete":
-			info[15] = splitInput[1];
+			info[15] = splitInput[1]; //assign user specified TaskID
 			splitInput[1] = "";
 			break;
 		default:

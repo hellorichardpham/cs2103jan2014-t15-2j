@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ExeCom {
@@ -19,17 +20,29 @@ public class ExeCom {
 	private final static String TASKID_NOT_FOUND_MESSAGE = "That Task ID Number was not found";
 	private final static String TASKLIST_EMPTY_MESSAGE = "There are no tasks in the task list.";
 	private final static String ADD_SUCCESSFUL_MESSAGE = "That task has successfully been added to the Task List.";
+	private final static String INVALID_COMMAND_MESSAGE = "That is an invalid command.";
+	private final static String NOT_INTEGER_MESSAGE = "ERROR: This is not a positive integer.";
 
 	ExeCom() {
 		taskList = new ArrayList<Task>();
 		prevTaskList = new ArrayList<Task>();
-
 	}
 
+	/**
+	 * 
+	 * executeCommand: determines which action to perform based on the
+	 * userCommand then calls the appropriate method.
+	 * 
+	 * @author Richard
+	 * @param userCommandInfo
+	 * @return String
+	 * 
+	 */
 	public static String executeCommand(String[] userCommandInfo)
 			throws Exception {
 		info = userCommandInfo;
 		String command = info[0];
+
 		Storage s = new Storage();
 		switch (command) {
 		case ADD:
@@ -59,132 +72,246 @@ public class ExeCom {
 		return " ";
 	}
 
+	/**
+	 * 
+	 * display: display all task found in the taskList
+	 * 
+	 * @author Khaleef
+	 * @param void
+	 * @return void
+	 */
 	private static void display() {
-		if (!taskList.isEmpty()) {
+		if (!taskList.isEmpty() && isValidDisplayCommand()) {
 			System.out.println("~~~~~ Listing of all tasks ~~~~~");
-			for (int i = 0; i < taskList.size(); i++) {
-				String print;
-				print = taskList.get(i).displayAll();
+			for (Task task : taskList) {
+				String print = task.displayAll();
 				print = print.replace("null ", "");
+				print = print.replace("null", "");
 				System.out.println(print);
 			}
-		} else {
+
+		} else if (taskList.isEmpty() && isValidDisplayCommand()) {
 			System.out.println(TASKLIST_EMPTY_MESSAGE);
+		} else {
+			System.out.println(INVALID_COMMAND_MESSAGE);
 		}
 	}
 
+	public static boolean isValidDisplayCommand() {
+		if (info[1] == null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * 
+	 * addToTaskList: Add tasks to arraylist and set taskID.
+	 * 
+	 * @author Richard
+	 * @param void
+	 * @return void
+	 */
 	public static void addToTaskList() {
 		Task taskToAdd = new Task(info);
-		saveProgress();
+		saveToPrevTaskList();
+		taskToAdd.setTaskID(Integer.toString(taskList.size() + 1));
 		taskList.add(taskToAdd);
 		System.out.println(ADD_SUCCESSFUL_MESSAGE);
 	}
 
+	/**
+	 * 
+	 * delete: Go through taskList and remove task with matching taskID
+	 * 
+	 * @author Richard
+	 * @param void
+	 * @return void
+	 * 
+	 */
+
 	public static void delete() {
-		Scanner scan = new Scanner(System.in);
-		boolean isFound = false;
-		System.out.println(PROMPT_USER_DELETE_MESSAGE);
-		int taskIdNumber = scan.nextInt();
-		if (taskIdNumber != 0) {
-			for (int i = 0; i < searchResults.size(); i++) {
-				if (searchResults.get(i).getTaskID() == taskIdNumber) {
-					Task taskToDelete = searchResults.get(i);
-					saveProgress();
-					taskList.remove(taskToDelete);
-					System.out.println("Deleted: " + taskToDelete.getDetails());
+		if (isPositiveInteger()) {
+			int taskIdNumber = retrieveTaskIdNumber();
+			boolean isFound = false;
+			for (int i = 0; i < taskList.size(); i++) {
+				if (isTaskIDMatch(taskList.get(i), taskIdNumber)) {
+					saveToPrevTaskList();
+					System.out.println("Deleted: "
+							+ taskList.get(i).getDetails());
+					taskList.remove(taskList.get(i));
 					isFound = true;
 				}
 			}
-
 			if (!isFound) {
 				System.out.println(TASKID_NOT_FOUND_MESSAGE);
 			}
 		} else {
-			// do nothing
+			// User input was "delete (String)" or "delete (negative #)"
+			System.out.println(NOT_INTEGER_MESSAGE);
 		}
-
 	}
+
+	public static boolean isPositiveInteger() {
+		try {
+			if (Integer.parseInt(info[15]) > 0) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (NumberFormatException e) {
+			return false;
+		}
+	}
+
+	public static int retrieveTaskIdNumber() {
+		return Integer.parseInt(info[15]);
+	}
+
+	public static boolean isTaskIDMatch(Task task, int taskIdNumber) {
+		return Integer.parseInt(task.getTaskID()) == taskIdNumber;
+	}
+
+	/**
+	 * 
+	 * printSearch: Display task details of all tasks in Search Results
+	 * 
+	 * @author Richard
+	 * @param void
+	 * @return void
+	 */
 
 	public static void printSearch() {
 		if (!searchResults.isEmpty()) {
-			for (int i = 0; i < searchResults.size(); i++) {
-				System.out.println(searchResults.get(i).displayAll());
+			for (Task task : searchResults) {
+				System.out.println(task.displayAll());
 			}
 		} else {
 			System.out.println(TASK_NOT_FOUND_MESSAGE);
 		}
 	}
 
-	public static void displayAll(ArrayList<Task> taskList) {
-		for (int counter = 0; counter < taskList.size(); counter++) {
-			System.out.println(taskList.get(counter).getDetails());
-		}
-	}
+	/**
+	 * 
+	 * search: Cycle through entire taskList looking for User-specified keyword.
+	 * Add all tasks that contain keyword ino the searchResults ArrayList.
+	 * 
+	 * @author Richard
+	 * @param void
+	 * @return void
+	 */
 
 	public static void search() {
-		if (info[1] != null) {
+		if (isValidSearchCommand(info)) {
 			boolean isFound = false;
-			reinitializeSearchResults();
-			String infoString = info[1];
-			for (int counter = 0; counter < taskList.size(); counter++) {
-				if (taskList.get(counter).getDetails().contains(infoString)) {
-					searchResults.add(taskList.get(counter));
+			resetSearchResults();
+			String searchKeyword = info[1];
+			for (Task task : taskList) {
+				if (hasMatchingKeyword(task, searchKeyword)) {
+					searchResults.add(task);
 					isFound = true;
 				}
 			}
 			if (isFound) {
 				printSearch();
-				delete();
 			} else {
 				System.out.println(TASK_NOT_FOUND_MESSAGE);
 			}
 		} else {
-			System.out.println("That is an Invalid Command.");
+			System.out.println(INVALID_COMMAND_MESSAGE);
 		}
 	}
 
-	public static void reinitializeSearchResults() {
+	public static boolean isValidSearchCommand(String[] info) {
+		return info[1] != null;
+	}
+
+	public static boolean hasMatchingKeyword(Task task, String searchKeyword) {
+		return task.getDetails().contains(searchKeyword);
+	}
+
+	public static void resetSearchResults() {
 		searchResults = new ArrayList<Task>();
 	}
 
-	public static void saveProgress() {
-		reinitializePrevTaskList();
-		for (int i = 0; i < taskList.size(); i++) {
-			prevTaskList.add(taskList.get(i));
+	/**
+	 * 
+	 * saveToPrevTaskList: Reset prevTaskList and add all objects from taskList
+	 * to pTL
+	 * 
+	 * @author Richard
+	 * @param void
+	 * @return void
+	 * 
+	 */
+	public static void saveToPrevTaskList() {
+		resetPrevTaskList();
+		for (Task task : taskList) {
+			prevTaskList.add(new Task(task));
 		}
 	}
 
-	public static void reinitializePrevTaskList() {
+	public static void resetPrevTaskList() {
 		prevTaskList = new ArrayList<Task>();
 	}
 
-	public static void reinitializeTaskList() {
+	public static void resetTaskList() {
 		taskList = new ArrayList<Task>();
 	}
 
-	// This needs to be changed so that tL holds pTL data
+	/**
+	 * 
+	 * undo: Reset taskList then add contents of pTL to tL.
+	 * 
+	 * @author Richard
+	 * @param void
+	 * @return void
+	 */
 	public static void undo() {
-		reinitializeTaskList();
-		for (int counter = 0; counter < prevTaskList.size(); counter++) {
-			taskList.add(prevTaskList.get(counter));
+		if (isValidUndoCommand()) {
+			resetTaskList();
+			for (Task task : prevTaskList) {
+				taskList.add(task);
+			}
+			System.out.println(UNDO_SUCCESS_MESSAGE);
+		} else {
+			System.out.println(INVALID_COMMAND_MESSAGE);
 		}
-		System.out.println(UNDO_SUCCESS_MESSAGE);
 	}
 
+	/* if (isUndoable()) { */
+	/*
+	 * else { System.out.println(UNDO_UNSUCCESSFUL_MESSAGE); }
+	 */
+	public static boolean isValidUndoCommand() {
+		if (info[1] == null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * 
+	 * editContent: edit content of specific task using the taskID based on
+	 * user's input
+	 * 
+	 * @author Khaleef
+	 * @param void
+	 * @return void
+	 */
 	public static void editContent() {
 		int id = Integer.parseInt(info[15]);
 		int counter;
 		int i;
 
-		// System.out.println(info[1] + " " +info[2] + " " +info[3] + " "
-		// +info[4] + " " +info[5] + " " +info[6] + " " +info[7] + " " +info[8]
-		// + " " +info[9] + " " +info[10] + " " +info[11] + " " +info[12] + " "
-		// + info[13]+ " " + info[14]+ " " + info[15]);
-
 		for (counter = 0; counter < taskList.size(); counter++) {
-			if (taskList.get(counter).getTaskID() == id) {
+			if (Integer.parseInt(taskList.get(counter).getTaskID()) == id) {
+				saveToPrevTaskList();
 				for (i = 1; i < info.length; i++) {
 					if (info[i] != null) {
+
 						switch (i) {
 						case 1:
 							taskList.get(counter).setDetails(info[i]);

@@ -32,6 +32,7 @@ public class TaskTracker {
 			ProcessCommand pc = new ProcessCommand();
 			String[] info = pc.process(userInput);
 			test.executeCommand(info);
+			
 		}
 	}
 }

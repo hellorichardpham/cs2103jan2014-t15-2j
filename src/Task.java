@@ -14,8 +14,7 @@ public class Task {
 	private String location;
 	private String priority;
 	private String category;
-	private static int totalNumberTaskID = 1;
-	private int taskID;
+	private String taskID;
 	
 	//constructor
 	public Task(String[] info){
@@ -33,8 +32,25 @@ public class Task {
 		location = info[12];
 		priority = info[13];
 		category = info[14];
-		taskID = totalNumberTaskID;
-		totalNumberTaskID++;
+		taskID = info[15];
+	}
+	
+	public Task(Task task) {
+		this.details = task.getDetails();
+		this.startDay = task.getStartDay();
+		this.startMonth = task.getStartMonth();
+		this.startYear = task.getStartYear();
+		this.endDay = task.getEndDay();
+		this.endMonth = task.getEndMonth();
+		this.endYear = task.getEndYear();
+		this.startHours = task.getStartHours();
+		this.startMin = task.getStartMin();
+		this.endHours = task.getEndHours();
+		this.endMins = task.getEndMins();
+		this.location = task.getLocation();
+		this.priority = task.getPriority();
+		this.category = task.getCategory();
+		this.taskID = task.getTaskID();
 	}
 
 	public Task() {
@@ -153,20 +169,16 @@ public class Task {
 		this.category = category;
 	}
 
-	public int getTaskID() {
-		return this.taskID;
+	public String getTaskID() {
+		return taskID;
 	}
 
-	public void setTaskID(int taskID) {
+	public void setTaskID(String taskID) {
 		this.taskID = taskID;
 	}
 	
-	public void incrementTotalNumberTaskID() {
-		totalNumberTaskID = this.taskID + 1;
-	}
-	
-	public String getAll() {
-		return details + " " + startDay + " " + startMonth + " " + startYear + " " + endDay + " " + endMonth + " " + endYear + " " + startHours + " " + startMin + " " + endHours + " " + endMins + " " + location + " " + priority + " " + category + " " + taskID;
+	public String display() {
+		return details + " " + startDay + " " + startMonth + " " + startYear + " " + endDay + " " + endMonth + " " + endYear + " " + startHours + " " + startMin + " " + endHours + " " + endMins + " " + location + " " + priority + " " + category + " ";
 	}
 	
 	public String displayAll() {

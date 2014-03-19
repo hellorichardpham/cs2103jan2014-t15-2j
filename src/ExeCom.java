@@ -165,16 +165,8 @@ public class ExeCom {
 		}
 	}
 
-	public static boolean isValidTaskId(int taskIdNumber) {
-		return taskIdNumber > 0;
-	}
-
 	public static int retrieveTaskIdNumber() {
 		return Integer.parseInt(info[15]);
-	}
-
-	public static boolean isCancelNumber(int taskIdNumber) {
-		return taskIdNumber == 0;
 	}
 
 	public static boolean isTaskIDMatch(Task task, int taskIdNumber) {

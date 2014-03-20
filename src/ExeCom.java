@@ -122,14 +122,6 @@ public class ExeCom {
 		}
 	}
 
-	public static boolean isValidDisplayCommand() {
-		if (info[1] == null) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
 	/**
 	 * 
 	 * addToTaskList: Add tasks to arraylist and set taskID.
@@ -448,8 +440,8 @@ public class ExeCom {
 
 	/**
 	 * 
-	 * isValidUndoRedoCommand: Checks if the user specified an invalid command
-	 * where undo/redo is followed by another String.
+	 * isValidUndoRedoDisplayCommand: Checks if the user specified an invalid command
+	 * where undo/redo/display is followed by another String.
 	 * 
 	 * @author Richard
 	 * @param void

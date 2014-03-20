@@ -150,7 +150,8 @@ public class ExeCom {
 	 */
 
 	public static void delete() {
-		if (isPositiveInteger()) {
+		//if (isPositiveInteger()) {
+			assert(isPositiveInteger());
 			int taskIdNumber = retrieveTaskIdNumber();
 			boolean isFound = false;
 			for (int i = 0; i < taskList.size(); i++) {
@@ -166,11 +167,10 @@ public class ExeCom {
 			if (!isFound) {
 				System.out.println(TASKID_NOT_FOUND_MESSAGE);
 			}
-		} else {
+		/*} else {
 			// User input was "delete (String)" or "delete (negative #)"
 			System.out.println(NOT_INTEGER_MESSAGE);
-
-		}
+		}*/
 	}
 
 	/**

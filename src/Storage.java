@@ -4,15 +4,17 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.PrintWriter;
+import java.util.logging.*;
 
 public class Storage {
-	
-	private static final String FILENAME = "Storage.txt"; 
-	
+
+	private static final String FILENAME = "Storage.txt";
+	private static Logger logger = Logger.getLogger("MyLog");
+
 	private static Storage theOne;
-	
+
 	public static Storage getInstance() {
-		if(theOne==null){
+		if (theOne == null) {
 			theOne = new Storage();
 		}
 		return theOne;
@@ -20,24 +22,33 @@ public class Storage {
 
 	/**
 	 * 
-	 * loadStorage: retrieve tasks found in the external file called Storage.txt to taskList
+	 * loadStorage: retrieve tasks found in the external file called Storage.txt
+	 * to taskList
 	 * 
-	 * @author 	Khaleef
-	 * @param 	void
-	 * @return 	void
+	 * @author Khaleef
+	 * @param void
+	 * @return void
 	 */
 	public void loadStorage() throws Exception {
+	    //FileHandler fh;  
+		//logger.setUseParentHandlers(false);
+        //fh = new FileHandler("MyLogFile.txt");  
 
 		BufferedReader fileReader;
 		fileReader = createFileIfNotExist();
-		
-			String[] retrieve;
-			int arraySize;
-			int content;
-			int setContent;
-			int counter;
-			String text;
-		
+
+		String[] retrieve;
+		int arraySize;
+		int content;
+		int setContent;
+		int counter;
+		String text;
+		try {
+	        //logger.addHandler(fh);
+	        //SimpleFormatter formatter = new SimpleFormatter();  
+	        //fh.setFormatter(formatter); 
+			logger.log(Level.INFO, "Start of retrieving tasks");
+			
 			while ((text = fileReader.readLine()) != null) {
 				Task task = new Task();
 				retrieve = text.split(" ");
@@ -72,7 +83,7 @@ public class Storage {
 				task.setCategory(retrieve[setContent]);
 				setContent++;
 				task.setTaskID(retrieve[setContent]);
-				
+
 				String details = "";
 
 				for (counter = 0; counter < content; counter++) {
@@ -86,8 +97,12 @@ public class Storage {
 				ExeCom.getTaskListInstance().add(task);
 			}
 			fileReader.close();
+		} catch (Exception ex) {
+			logger.log(Level.WARNING, "Processing error", ex);
 		}
-	
+		logger.log(Level.INFO, "Retrieve task successful");
+	}
+
 	private BufferedReader createFileIfNotExist() throws FileNotFoundException {
 		BufferedReader input;
 		try {
@@ -104,16 +119,17 @@ public class Storage {
 	 * 
 	 * saveStorage: save taskList to external file fileName
 	 * 
-	 * @author 	Khaleef
-	 * @param 	void
-	 * @return 	void
+	 * @author Khaleef
+	 * @param void
+	 * @return void
 	 */
 	public void saveStorage() throws Exception {
 		File currentFile = new File(FILENAME);
 		currentFile.delete();
 		PrintWriter pw = new PrintWriter(new FileOutputStream(FILENAME));
 		for (Task t : ExeCom.getTaskListInstance())
-			pw.println(t.display() + (ExeCom.getTaskListInstance().indexOf(t)+1));
+			pw.println(t.display()
+					+ (ExeCom.getTaskListInstance().indexOf(t) + 1));
 		pw.close();
 	}
 }

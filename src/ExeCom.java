@@ -17,7 +17,8 @@ public class ExeCom {
 	private final static String REDO = "redo";
 	private final static String UNDO_SUCCESS_MESSAGE = "Action has successfully been undone.";
 	private static final String REDO_SUCCESS_MESSAGE = "Action has successfully been redone";
-	private final static String UNDO_UNSUCCESSFUL_MESSAGE = "Cannot perform undo on consecutive actions";
+	private final static String UNDO_UNSUCCESSFUL_MESSAGE = "There are no actions that can be undone.";
+	private static final String REDO_UNSUCCESSFUL_MESSAGE = "There are no actions that can be redone.";
 	private final static String TASK_NOT_FOUND_MESSAGE = "That task could not be found.";
 	private final static String TASKID_NOT_FOUND_MESSAGE = "That Task ID Number was not found";
 	private final static String TASKLIST_EMPTY_MESSAGE = "There are no tasks in the task list.";
@@ -289,38 +290,34 @@ public class ExeCom {
 	 * @return void
 	 */
 	public static void undo() {
-		if (isValidUndoCommand()) {
+		if (isValidUndoRedoCommand() && !prevTaskList.isEmpty()) {
 			resetTaskList();
 			for (Task task : prevTaskList) {
 				taskList.add(task);
 			}
 			System.out.println(UNDO_SUCCESS_MESSAGE);
+		} else if (isValidUndoRedoCommand() && prevTaskList.isEmpty()) {
+			System.out.println(UNDO_UNSUCCESSFUL_MESSAGE);
 		} else {
 			System.out.println(INVALID_COMMAND_MESSAGE);
 		}
 	}
 
 	public static void redo() {
-		if (isValidRedoCommand()) {
+		if (isValidUndoRedoCommand() && !redoTaskList.isEmpty()) {
 			resetTaskList();
 			for (Task task : redoTaskList) {
 				taskList.add(task);
 			}
 			System.out.println(REDO_SUCCESS_MESSAGE);
+		} else if (isValidUndoRedoCommand() && redoTaskList.isEmpty()) {
+			System.out.println(REDO_UNSUCCESSFUL_MESSAGE);
 		} else {
 			System.out.println(INVALID_COMMAND_MESSAGE);
 		}
 	}
 
-	public static boolean isValidUndoCommand() {
-		if (info[1] == null) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	public static boolean isValidRedoCommand() {
+	public static boolean isValidUndoRedoCommand() {
 		if (info[1] == null) {
 			return true;
 		} else {

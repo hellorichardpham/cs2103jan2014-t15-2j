@@ -163,6 +163,15 @@ public class ExeCom {
 		}
 	}
 
+	/**
+	 * 
+	 * isPositiveInteger: Checks if the delete parameter is a valid taskID (positive integer)
+	 * 
+	 * @author Richard
+	 * @param void
+	 * @return boolean
+	 * 
+	 */
 	public static boolean isPositiveInteger() {
 		try {
 			if (Integer.parseInt(info[15]) > 0) {
@@ -174,11 +183,33 @@ public class ExeCom {
 			return false;
 		}
 	}
-
+	
+	/**
+	 * 
+	 * retrieveTaskIdNumber: retrieves user-specified taskID. We know it's valid because it passed
+	 * the isPositiveInteger() test
+	 * 
+	 * @author Richard
+	 * @param void
+	 * @return int
+	 * 
+	 */
+	
 	public static int retrieveTaskIdNumber() {
 		return Integer.parseInt(info[15]);
 	}
-
+	
+	/**
+	 * 
+	 * isTaskIDMatch: Checks if a task's taskID is equal to the userSpecified taskIdNumber that he's
+	 * searching for.
+	 * 
+	 * @author Richard
+	 * @param Task, int
+	 * @return boolean
+	 * 
+	 */
+	
 	public static boolean isTaskIDMatch(Task task, int taskIdNumber) {
 		return Integer.parseInt(task.getTaskID()) == taskIdNumber;
 	}
@@ -232,15 +263,44 @@ public class ExeCom {
 			System.out.println(INVALID_COMMAND_MESSAGE);
 		}
 	}
+	
+	/**
+	 * 
+	 * isValidSearchCommand: Makes sure there is a keyword that the user is
+	 * searching for instead of an invalid command like "search"
+	 * 
+	 * @author Richard
+	 * @param String[]
+	 * @return boolean
+	 */
 
 	public static boolean isValidSearchCommand(String[] info) {
 		return info[1] != null;
 	}
-
+	
+	/**
+	 * 
+	 * hasMatchingKeyword: checks if a task contains the keyword that a user 
+	 * specified in the search command
+	 * 
+	 * @author Richard
+	 * @param String[], String
+	 * @return boolean
+	 */
+	
 	public static boolean hasMatchingKeyword(Task task, String searchKeyword) {
 		return task.getDetails().contains(searchKeyword);
 	}
-
+	
+	/**
+	 * 
+	 * resetSearchResults: Reinitializes searchResults so it will be empty when we search.
+	 * 
+	 * @author Richard
+	 * @param void
+	 * @return void
+	 */
+	
 	public static void resetSearchResults() {
 		searchResults = new ArrayList<Task>();
 	}
@@ -262,21 +322,56 @@ public class ExeCom {
 		}
 	}
 
+	/**
+	 * 
+	 * saveToRedoTaskList: Reset redoTaskList and add all objects from taskList
+	 * to rTL
+	 * 
+	 * @author Richard
+	 * @param void
+	 * @return void
+	 * 
+	 */
+	
 	public static void saveToRedoTaskList() {
 		resetRedoTaskList();
 		for (Task task : taskList) {
 			redoTaskList.add(new Task(task));
 		}
 	}
-
+	
+	/**
+	 * 
+	 * resetRedoTaskList: Reinitializes redoTaskList so it will be empty when we redo a command.
+	 * 
+	 * @author Richard
+	 * @param void
+	 * @return void
+	 */
 	public static void resetRedoTaskList() {
 		redoTaskList = new ArrayList<Task>();
 	}
 
+	/**
+	 * 
+	 * resetPrevTaskList: Reinitializes prevTaskList so it will be empty when we undo a command.
+	 * 
+	 * @author Richard
+	 * @param void
+	 * @return void
+	 */
 	public static void resetPrevTaskList() {
 		prevTaskList = new ArrayList<Task>();
 	}
-
+	
+	/**
+	 * 
+	 * resetTaskList: Reinitializes taskList so it will be empty when we perform undo or redo.
+	 * 
+	 * @author Richard
+	 * @param void
+	 * @return void
+	 */
 	public static void resetTaskList() {
 		taskList = new ArrayList<Task>();
 	}
@@ -302,7 +397,14 @@ public class ExeCom {
 			System.out.println(INVALID_COMMAND_MESSAGE);
 		}
 	}
-
+	/**
+	 * 
+	 * redo: Reperforms any task that was done before undo() was called.
+	 * 
+	 * @author Richard
+	 * @param void
+	 * @return void
+	 */
 	public static void redo() {
 		if (isValidUndoRedoCommand() && !redoTaskList.isEmpty()) {
 			resetTaskList();
@@ -316,7 +418,16 @@ public class ExeCom {
 			System.out.println(INVALID_COMMAND_MESSAGE);
 		}
 	}
-
+	
+	/**
+	 * 
+	 * isValidUndoRedoCommand: Checks if the user specified an invalid command where undo/redo
+	 * is followed by another String.
+	 * 
+	 * @author Richard
+	 * @param void
+	 * @return boolean
+	 */
 	public static boolean isValidUndoRedoCommand() {
 		if (info[1] == null) {
 			return true;
@@ -396,7 +507,7 @@ public class ExeCom {
 						}
 					}
 				}
-				saveToRedoTaskList(); // not sure if it should be here.
+				saveToRedoTaskList(); 
 			}
 
 		}

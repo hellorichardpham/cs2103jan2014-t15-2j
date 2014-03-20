@@ -24,26 +24,26 @@ public class ExeCom {
 	private final static String ADD_SUCCESSFUL_MESSAGE = "That task has successfully been added to the Task List.";
 	private final static String INVALID_COMMAND_MESSAGE = "That is an invalid command.";
 	private final static String NOT_INTEGER_MESSAGE = "ERROR: This is not a positive integer.";
-	
+
 	private static ExeCom theOne;
 	Scanner scanner = new Scanner(System.in);
-	
+
 	public static ArrayList<Task> getTaskListInstance() {
-		if(taskList==null) {
+		if (taskList == null) {
 			taskList = new ArrayList<Task>();
 		}
 		return taskList;
 	}
-	
+
 	public static ExeCom getInstance() {
-		if(theOne==null){
+		if (theOne == null) {
 			theOne = new ExeCom();
 		}
 		return theOne;
 	}
-	
+
 	ExeCom() {
-		if(taskList==null) {
+		if (taskList == null) {
 			taskList = new ArrayList<Task>();
 		}
 		prevTaskList = new ArrayList<Task>();
@@ -60,8 +60,7 @@ public class ExeCom {
 	 * @return String
 	 * 
 	 */
-	public String executeCommand(String[] userCommandInfo)
-			throws Exception {
+	public String executeCommand(String[] userCommandInfo) throws Exception {
 		info = userCommandInfo;
 		String command = info[0];
 
@@ -107,7 +106,7 @@ public class ExeCom {
 	 * @return void
 	 */
 	private static void display() {
-		if (!taskList.isEmpty() && isValidDisplayCommand()) {
+		if (!taskList.isEmpty() && isValidUndoRedoDisplayCommand()) {
 			System.out.println("~~~~~ Listing of all tasks ~~~~~");
 			for (Task task : taskList) {
 				String print = task.displayAll();
@@ -116,7 +115,7 @@ public class ExeCom {
 				System.out.println(print);
 			}
 
-		} else if (taskList.isEmpty() && isValidDisplayCommand()) {
+		} else if (taskList.isEmpty() && isValidUndoRedoDisplayCommand()) {
 			System.out.println(TASKLIST_EMPTY_MESSAGE);
 		} else {
 			System.out.println(INVALID_COMMAND_MESSAGE);
@@ -178,12 +177,14 @@ public class ExeCom {
 		} else {
 			// User input was "delete (String)" or "delete (negative #)"
 			System.out.println(NOT_INTEGER_MESSAGE);
+
 		}
 	}
 
 	/**
 	 * 
-	 * isPositiveInteger: Checks if the delete parameter is a valid taskID (positive integer)
+	 * isPositiveInteger: Checks if the delete parameter is a valid taskID
+	 * (positive integer)
 	 * 
 	 * @author Richard
 	 * @param void
@@ -201,33 +202,34 @@ public class ExeCom {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * 
-	 * retrieveTaskIdNumber: retrieves user-specified taskID. We know it's valid because it passed
-	 * the isPositiveInteger() test
+	 * retrieveTaskIdNumber: retrieves user-specified taskID. We know it's valid
+	 * because it passed the isPositiveInteger() test
 	 * 
 	 * @author Richard
 	 * @param void
 	 * @return int
 	 * 
 	 */
-	
+
 	public static int retrieveTaskIdNumber() {
 		return Integer.parseInt(info[15]);
 	}
-	
+
 	/**
 	 * 
-	 * isTaskIDMatch: Checks if a task's taskID is equal to the userSpecified taskIdNumber that he's
-	 * searching for.
+	 * isTaskIDMatch: Checks if a task's taskID is equal to the userSpecified
+	 * taskIdNumber that he's searching for.
 	 * 
 	 * @author Richard
-	 * @param Task, int
+	 * @param Task
+	 *            , int
 	 * @return boolean
 	 * 
 	 */
-	
+
 	public static boolean isTaskIDMatch(Task task, int taskIdNumber) {
 		return Integer.parseInt(task.getTaskID()) == taskIdNumber;
 	}
@@ -281,44 +283,47 @@ public class ExeCom {
 			System.out.println(INVALID_COMMAND_MESSAGE);
 		}
 	}
-	
+
 	/**
 	 * 
 	 * isValidSearchCommand: Makes sure there is a keyword that the user is
 	 * searching for instead of an invalid command like "search"
 	 * 
 	 * @author Richard
-	 * @param String[]
+	 * @param String
+	 *            []
 	 * @return boolean
 	 */
 
 	public static boolean isValidSearchCommand(String[] info) {
 		return info[1] != null;
 	}
-	
+
 	/**
 	 * 
-	 * hasMatchingKeyword: checks if a task contains the keyword that a user 
+	 * hasMatchingKeyword: checks if a task contains the keyword that a user
 	 * specified in the search command
 	 * 
 	 * @author Richard
-	 * @param String[], String
+	 * @param String
+	 *            [], String
 	 * @return boolean
 	 */
-	
+
 	public static boolean hasMatchingKeyword(Task task, String searchKeyword) {
 		return task.getDetails().contains(searchKeyword);
 	}
-	
+
 	/**
 	 * 
-	 * resetSearchResults: Reinitializes searchResults so it will be empty when we search.
+	 * resetSearchResults: Reinitializes searchResults so it will be empty when
+	 * we search.
 	 * 
 	 * @author Richard
 	 * @param void
 	 * @return void
 	 */
-	
+
 	public static void resetSearchResults() {
 		searchResults = new ArrayList<Task>();
 	}
@@ -350,17 +355,18 @@ public class ExeCom {
 	 * @return void
 	 * 
 	 */
-	
+
 	public static void saveToRedoTaskList() {
 		resetRedoTaskList();
 		for (Task task : taskList) {
 			redoTaskList.add(new Task(task));
 		}
 	}
-	
+
 	/**
 	 * 
-	 * resetRedoTaskList: Reinitializes redoTaskList so it will be empty when we redo a command.
+	 * resetRedoTaskList: Reinitializes redoTaskList so it will be empty when we
+	 * redo a command.
 	 * 
 	 * @author Richard
 	 * @param void
@@ -372,7 +378,8 @@ public class ExeCom {
 
 	/**
 	 * 
-	 * resetPrevTaskList: Reinitializes prevTaskList so it will be empty when we undo a command.
+	 * resetPrevTaskList: Reinitializes prevTaskList so it will be empty when we
+	 * undo a command.
 	 * 
 	 * @author Richard
 	 * @param void
@@ -381,10 +388,11 @@ public class ExeCom {
 	public static void resetPrevTaskList() {
 		prevTaskList = new ArrayList<Task>();
 	}
-	
+
 	/**
 	 * 
-	 * resetTaskList: Reinitializes taskList so it will be empty when we perform undo or redo.
+	 * resetTaskList: Reinitializes taskList so it will be empty when we perform
+	 * undo or redo.
 	 * 
 	 * @author Richard
 	 * @param void
@@ -403,18 +411,19 @@ public class ExeCom {
 	 * @return void
 	 */
 	public static void undo() {
-		if (isValidUndoRedoCommand() && !prevTaskList.isEmpty()) {
+		if (isValidUndoRedoDisplayCommand() && !prevTaskList.isEmpty()) {
 			resetTaskList();
 			for (Task task : prevTaskList) {
 				taskList.add(task);
 			}
 			System.out.println(UNDO_SUCCESS_MESSAGE);
-		} else if (isValidUndoRedoCommand() && prevTaskList.isEmpty()) {
+		} else if (isValidUndoRedoDisplayCommand() && prevTaskList.isEmpty()) {
 			System.out.println(UNDO_UNSUCCESSFUL_MESSAGE);
 		} else {
 			System.out.println(INVALID_COMMAND_MESSAGE);
 		}
 	}
+
 	/**
 	 * 
 	 * redo: Reperforms any task that was done before undo() was called.
@@ -424,29 +433,29 @@ public class ExeCom {
 	 * @return void
 	 */
 	public static void redo() {
-		if (isValidUndoRedoCommand() && !redoTaskList.isEmpty()) {
+		if (isValidUndoRedoDisplayCommand() && !redoTaskList.isEmpty()) {
 			resetTaskList();
 			for (Task task : redoTaskList) {
 				taskList.add(task);
 			}
 			System.out.println(REDO_SUCCESS_MESSAGE);
-		} else if (isValidUndoRedoCommand() && redoTaskList.isEmpty()) {
+		} else if (isValidUndoRedoDisplayCommand() && redoTaskList.isEmpty()) {
 			System.out.println(REDO_UNSUCCESSFUL_MESSAGE);
 		} else {
 			System.out.println(INVALID_COMMAND_MESSAGE);
 		}
 	}
-	
+
 	/**
 	 * 
-	 * isValidUndoRedoCommand: Checks if the user specified an invalid command where undo/redo
-	 * is followed by another String.
+	 * isValidUndoRedoCommand: Checks if the user specified an invalid command
+	 * where undo/redo is followed by another String.
 	 * 
 	 * @author Richard
 	 * @param void
 	 * @return boolean
 	 */
-	public static boolean isValidUndoRedoCommand() {
+	public static boolean isValidUndoRedoDisplayCommand() {
 		if (info[1] == null) {
 			return true;
 		} else {
@@ -525,7 +534,7 @@ public class ExeCom {
 						}
 					}
 				}
-				saveToRedoTaskList(); 
+				saveToRedoTaskList();
 			}
 
 		}

@@ -331,11 +331,17 @@ public class ExeCom {
 	 */
 	public static void saveToPrevTaskList() {
 		resetPrevTaskList();
-		for (Task task : taskList) {
+		transferTasksFromTo(taskList,prevTaskList);
+		/*for (Task task : taskList) {
 			prevTaskList.add(new Task(task));
+		}*/
+	}
+	
+	public static void transferTasksFromTo(ArrayList<Task> source, ArrayList<Task> target) {
+		for(Task task : source) {
+			target.add(new Task(task));
 		}
 	}
-
 	/**
 	 * 
 	 * saveToRedoTaskList: Reset redoTaskList and add all objects from taskList
@@ -349,9 +355,11 @@ public class ExeCom {
 
 	public static void saveToRedoTaskList() {
 		resetRedoTaskList();
-		for (Task task : taskList) {
+		transferTasksFromTo(taskList,redoTaskList);
+		
+		/*for (Task task : taskList) {
 			redoTaskList.add(new Task(task));
-		}
+		}*/
 	}
 
 	/**
@@ -404,9 +412,10 @@ public class ExeCom {
 	public static void undo() {
 		if (isValidUndoRedoDisplayCommand() && !prevTaskList.isEmpty()) {
 			resetTaskList();
-			for (Task task : prevTaskList) {
+			transferTasksFromTo(prevTaskList,taskList);
+			/*for (Task task : prevTaskList) {
 				taskList.add(task);
-			}
+			}*/
 			System.out.println(UNDO_SUCCESS_MESSAGE);
 		} else if (isValidUndoRedoDisplayCommand() && prevTaskList.isEmpty()) {
 			System.out.println(UNDO_UNSUCCESSFUL_MESSAGE);
@@ -426,9 +435,10 @@ public class ExeCom {
 	public static void redo() {
 		if (isValidUndoRedoDisplayCommand() && !redoTaskList.isEmpty()) {
 			resetTaskList();
-			for (Task task : redoTaskList) {
+			transferTasksFromTo(redoTaskList,taskList);
+			/*for (Task task : redoTaskList) {
 				taskList.add(task);
-			}
+			}*/
 			System.out.println(REDO_SUCCESS_MESSAGE);
 		} else if (isValidUndoRedoDisplayCommand() && redoTaskList.isEmpty()) {
 			System.out.println(REDO_UNSUCCESSFUL_MESSAGE);

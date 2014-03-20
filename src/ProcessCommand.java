@@ -10,10 +10,15 @@ public class ProcessCommand {
 	 * priority 14.) category 15.) id
 	 */
 	private String[] info = new String[16];
-
-	public ProcessCommand() {
+	private static ProcessCommand theOne;
+	
+	public static ProcessCommand getInstance() {
+		if(theOne==null){
+			theOne = new ProcessCommand();
+		}
+		return theOne;
 	}
-
+	
 	public String[] process(String userInput) {
 
 		String[] original = new String[100];

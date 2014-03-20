@@ -61,6 +61,7 @@ public class ExeCom {
 	 * 
 	 */
 	public String executeCommand(String[] userCommandInfo) throws Exception {
+		assert(userCommandInfo.length==16);
 		info = userCommandInfo;
 		String command = info[0].toLowerCase();
 

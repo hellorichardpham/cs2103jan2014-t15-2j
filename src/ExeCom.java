@@ -5,6 +5,7 @@ import java.util.Scanner;
 public class ExeCom {
 	static ArrayList<Task> taskList;
 	private static ArrayList<Task> prevTaskList;
+	private static ArrayList<Task> redoTaskList;
 	private static ArrayList<Task> searchResults;
 	private static String[] info;
 	private final static String ADD = "add";
@@ -13,9 +14,10 @@ public class ExeCom {
 	private final static String SEARCH = "search";
 	private final static String UNDO = "undo";
 	private final static String EDIT = "edit";
+	private final static String REDO = "redo";
 	private final static String UNDO_SUCCESS_MESSAGE = "Action has successfully been undone.";
+	private static final String REDO_SUCCESS_MESSAGE = "Action has successfully been redone";
 	private final static String UNDO_UNSUCCESSFUL_MESSAGE = "Cannot perform undo on consecutive actions";
-	private final static String PROMPT_USER_DELETE_MESSAGE = "Select which task you would like to delete based on its Task ID Number. Type 0 to cancel.";
 	private final static String TASK_NOT_FOUND_MESSAGE = "That task could not be found.";
 	private final static String TASKID_NOT_FOUND_MESSAGE = "That Task ID Number was not found";
 	private final static String TASKLIST_EMPTY_MESSAGE = "There are no tasks in the task list.";
@@ -26,6 +28,7 @@ public class ExeCom {
 	ExeCom() {
 		taskList = new ArrayList<Task>();
 		prevTaskList = new ArrayList<Task>();
+		redoTaskList = new ArrayList<Task>();
 	}
 
 	/**
@@ -66,6 +69,10 @@ public class ExeCom {
 			return " ";
 		case EDIT:
 			editContent();
+			s.saveStorage();
+			return " ";
+		case REDO:
+			redo();
 			s.saveStorage();
 			return " ";
 		}
@@ -118,6 +125,7 @@ public class ExeCom {
 		saveToPrevTaskList();
 		taskToAdd.setTaskID(Integer.toString(taskList.size() + 1));
 		taskList.add(taskToAdd);
+		saveToRedoTaskList();
 		System.out.println(ADD_SUCCESSFUL_MESSAGE);
 	}
 
@@ -141,6 +149,7 @@ public class ExeCom {
 					System.out.println("Deleted: "
 							+ taskList.get(i).getDetails());
 					taskList.remove(taskList.get(i));
+					saveToRedoTaskList();
 					isFound = true;
 				}
 			}
@@ -252,6 +261,17 @@ public class ExeCom {
 		}
 	}
 
+	public static void saveToRedoTaskList() {
+		resetRedoTaskList();
+		for (Task task : taskList) {
+			redoTaskList.add(new Task(task));
+		}
+	}
+
+	public static void resetRedoTaskList() {
+		redoTaskList = new ArrayList<Task>();
+	}
+
 	public static void resetPrevTaskList() {
 		prevTaskList = new ArrayList<Task>();
 	}
@@ -280,11 +300,27 @@ public class ExeCom {
 		}
 	}
 
-	/* if (isUndoable()) { */
-	/*
-	 * else { System.out.println(UNDO_UNSUCCESSFUL_MESSAGE); }
-	 */
+	public static void redo() {
+		if (isValidRedoCommand()) {
+			resetTaskList();
+			for (Task task : redoTaskList) {
+				taskList.add(task);
+			}
+			System.out.println(REDO_SUCCESS_MESSAGE);
+		} else {
+			System.out.println(INVALID_COMMAND_MESSAGE);
+		}
+	}
+
 	public static boolean isValidUndoCommand() {
+		if (info[1] == null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public static boolean isValidRedoCommand() {
 		if (info[1] == null) {
 			return true;
 		} else {
@@ -363,6 +399,7 @@ public class ExeCom {
 						}
 					}
 				}
+				saveToRedoTaskList(); // not sure if it should be here.
 			}
 
 		}

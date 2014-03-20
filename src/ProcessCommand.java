@@ -254,7 +254,7 @@ public class ProcessCommand {
 
 	private boolean isTaskIDValid(String string) {
 		int taskID = Integer.parseInt(string);
-		if (taskID <= ExeCom.getTaskListInstance().size())
+		if (taskID <= ExeCom.getTaskListInstance().size()) //the taskList size does not necessarily dictate if a taskID is valid in it's current state. 
 			return true;
 		else 
 			return false;

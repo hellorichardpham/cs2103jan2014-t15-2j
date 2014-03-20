@@ -3,8 +3,18 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.PrintWriter;
+import java.util.Scanner;
 
 public class Storage {
+	
+	private static Storage theOne;
+	
+	public static Storage getInstance() {
+		if(theOne==null){
+			theOne = new Storage();
+		}
+		return theOne;
+	}
 
 	/**
 	 * 

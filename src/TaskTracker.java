@@ -1,4 +1,3 @@
-import java.util.Scanner;
 
 public class TaskTracker {
 
@@ -7,31 +6,37 @@ public class TaskTracker {
 	 * @throws Exception 
 	 */
 	public static void main(String[] args) throws Exception {
-		Scanner scanner = new Scanner(System.in);
-		ExeCom test = new ExeCom();
-		Storage s = new Storage();
-		s.loadStorage();
 		
-		System.out.println("   .    .  .  .. .. ........  ...   ............................................... ........  ..................................................................");
-		System.out.println(" ..~~....~:...:~....... .??.................................... ............... ...~~~~~~~~...............?+....:~~~~~~~................. ...?+..................");
-		System.out.println(" ..??...???...??.........?? ...................................... I?................~?+......... .......=?,.. ....?I.............. ........=?:..................");
-		System.out.println(" ..??..???? .??..,??+?,.,?:..????..=????,..?~?+?.+???...????=....,????..=????,.......??....~???:?..????,.??..+?...=?:...??+?:.????+?..=???? ?? .??..+??+?..??I?..");
-		System.out.println(" ..+?.~?.??.+?..=?,..+?.??..??....??...??.~?+..??..??..??..?+. ...+?...??...??.......??...=?:..??.~?,.. .??+?~....??....??,..?+..:?=.??,....??=?=..??..+?,.?I....");
-		System.out.println(" ..??,?,.??,?,..???+=...?+.??....,??...??.??..~?...?+.????+, .....??...?=...?+......:?=...??..:?=..~I?+.~?~??.....?? ..,?,..:?~..??..?+....:?~??..:???+,..=?,....");
-		System.out.println(" ..=???..+??+...??...+.:?=.??,.:..??.,??..??..??..~?~.??,..+.. ...+?...??..??.......??....??.:??..,..??.??.~?+...+?:. .??...~?+.???..??..?.I?.~?+.~?=..~..+?.....");
-		System.out.println("   ,~~. .,~~.. ..+??+..~~...=??~...???:...~,..=~..~~   =???,.. ...=?+..,??+:........~~.   .??,~~..+??:..~~..~~...~~..  ~~....~?+.~,..,+?+..~~..~~..:??+~..~~.....");
-		System.out.println("  .....  .....    ............ .............. ................ ... ..............................................................................................");
+		String userInput;
+		UI ui = null;
+		Storage s = null;
+		
+		ui = UI.getInstance();
+		s = Storage.getInstance();
+		
+		s.loadStorage();
+		ui.printWelcomeMessage();
 		
 		while (true) {
-			System.out.println("Enter Command: ");
-			String userInput = scanner.nextLine();
-			if (userInput.equals("stop")||userInput.equals("exit")||userInput.equals("quit")) {
-				scanner.close();
-				System.exit(0);
-			}
-			ProcessCommand pc = new ProcessCommand();
-			String[] info = pc.process(userInput);
-			test.executeCommand(info);
+			userInput = ui.promptUser();
+			exitIfUserWants(userInput);
+			elseProcessInput(userInput);
+
 		}
+	}//end main
+
+	private static void elseProcessInput(String userInput) throws Exception {
+		ProcessCommand pc = ProcessCommand.getInstance();
+		ExeCom ec = ExeCom.getInstance();
+		
+		String[] info = pc.process(userInput);
+		ec.executeCommand(info);
 	}
-}
+
+	private static void exitIfUserWants(String userInput) {
+		if(userInput.equals("stop")||userInput.equals("exit")||userInput.equals("quit")){
+			System.exit(0);
+		}		
+	}
+	
+}//end class

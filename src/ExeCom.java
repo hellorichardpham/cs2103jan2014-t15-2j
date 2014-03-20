@@ -62,7 +62,7 @@ public class ExeCom {
 	 */
 	public String executeCommand(String[] userCommandInfo) throws Exception {
 		info = userCommandInfo;
-		String command = info[0];
+		String command = info[0].toLowerCase();
 
 		Storage s = Storage.getInstance();
 		switch (command) {
@@ -216,8 +216,7 @@ public class ExeCom {
 	 * taskIdNumber that he's searching for.
 	 * 
 	 * @author Richard
-	 * @param Task
-	 *            , int
+	 * @param Task, int
 	 * @return boolean
 	 * 
 	 */

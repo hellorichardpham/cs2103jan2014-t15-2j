@@ -77,6 +77,7 @@ public class ExeCom {
 		case DELETE:
 			delete();
 			s.saveStorage();
+			s.loadStorage(); // to update the taskList
 			return " ";
 		case SEARCH:
 			search();
@@ -110,12 +111,11 @@ public class ExeCom {
 		if (!taskList.isEmpty() && isValidUndoRedoDisplayCommand()) {
 			System.out.println("~~~~~ Listing of all tasks ~~~~~");
 			for (Task task : taskList) {
-				String print = task.displayAll();
+				String print = task.display();
 				print = print.replace("null ", "");
 				print = print.replace("null", "");
-				System.out.println(print);
+				System.out.println((taskList.indexOf(task)+1) + ": " + print);
 			}
-
 		} else if (taskList.isEmpty() && isValidUndoRedoDisplayCommand()) {
 			System.out.println(TASKLIST_EMPTY_MESSAGE);
 		} else {
@@ -155,6 +155,7 @@ public class ExeCom {
 			assert(isPositiveInteger());
 			int taskIdNumber = retrieveTaskIdNumber();
 			boolean isFound = false;
+			
 			for (int i = 0; i < taskList.size(); i++) {
 				if (isTaskIDMatch(taskList.get(i), taskIdNumber)) {
 					saveToPrevTaskList();
@@ -538,9 +539,6 @@ public class ExeCom {
 				}
 				saveToRedoTaskList();
 			}
-
 		}
-
 	}
-
 }

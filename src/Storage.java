@@ -30,6 +30,7 @@ public class Storage {
 	 * @return void
 	 */
 	public void loadStorage() throws Exception {
+		ec.getTaskListInstance().clear();
 		FileHandler fh;
 		logger.setUseParentHandlers(false);		// to disable log message on output screen
 		fh = new FileHandler("MyLogFile.txt");	// log message written to MyLogFile.txt
@@ -101,6 +102,7 @@ public class Storage {
 			logger.log(Level.WARNING, "Processing error", ex);
 		}
 		logger.log(Level.INFO, "Retrieve task successful");
+		fh.close();
 	}
 
 	private BufferedReader createFileIfNotExist() throws FileNotFoundException {

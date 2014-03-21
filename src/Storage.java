@@ -10,7 +10,7 @@ public class Storage {
 
 	private static final String FILENAME = "Storage.txt";
 	private static Logger logger = Logger.getLogger("MyLog");
-
+	private ExeCom ec = ExeCom.getInstance();
 	private static Storage theOne;
 
 	public static Storage getInstance() {
@@ -30,9 +30,9 @@ public class Storage {
 	 * @return void
 	 */
 	public void loadStorage() throws Exception {
-	    //FileHandler fh;  
-		//logger.setUseParentHandlers(false);
-        //fh = new FileHandler("MyLogFile.txt");  
+		FileHandler fh;
+		logger.setUseParentHandlers(false);		// to disable log message on output screen
+		fh = new FileHandler("MyLogFile.txt");	// log message written to MyLogFile.txt
 
 		BufferedReader fileReader;
 		fileReader = createFileIfNotExist();
@@ -44,11 +44,11 @@ public class Storage {
 		int counter;
 		String text;
 		try {
-	        //logger.addHandler(fh);
-	        //SimpleFormatter formatter = new SimpleFormatter();  
-	        //fh.setFormatter(formatter); 
+			logger.addHandler(fh);
+			SimpleFormatter formatter = new SimpleFormatter();
+			fh.setFormatter(formatter);
 			logger.log(Level.INFO, "Start of retrieving tasks");
-			
+
 			while ((text = fileReader.readLine()) != null) {
 				Task task = new Task();
 				retrieve = text.split(" ");
@@ -94,7 +94,7 @@ public class Storage {
 					}
 				}
 				task.setDetails(details);
-				ExeCom.getTaskListInstance().add(task);
+				ec.getTaskListInstance().add(task);
 			}
 			fileReader.close();
 		} catch (Exception ex) {
@@ -127,9 +127,8 @@ public class Storage {
 		File currentFile = new File(FILENAME);
 		currentFile.delete();
 		PrintWriter pw = new PrintWriter(new FileOutputStream(FILENAME));
-		for (Task t : ExeCom.getTaskListInstance())
-			pw.println(t.display()
-					+ (ExeCom.getTaskListInstance().indexOf(t) + 1));
+		for (Task t : ec.getTaskListInstance())
+			pw.println(t.display() + (ec.getTaskListInstance().indexOf(t) + 1));
 		pw.close();
 	}
 }

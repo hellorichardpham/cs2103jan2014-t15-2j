@@ -66,6 +66,8 @@ public class ExeCom {
 		String command = info[0].toLowerCase();
 
 		Storage s = Storage.getInstance();
+		s.loadStorage();	
+		
 		switch (command) {
 		case ADD:
 			addToTaskList();
@@ -77,7 +79,7 @@ public class ExeCom {
 		case DELETE:
 			delete();
 			s.saveStorage();
-			s.loadStorage(); // to update the taskList
+			//s.loadStorage(); // to update the taskList
 			return " ";
 		case SEARCH:
 			search();

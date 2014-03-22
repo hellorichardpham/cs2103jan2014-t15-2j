@@ -9,12 +9,12 @@ public class TaskTracker {
 		
 		String userInput;
 		UI ui = null;
-		Storage s = null;
-		
 		ui = UI.getInstance();
-		s = Storage.getInstance();
 		
-		s.loadStorage();
+		//Storage s = null;
+		//s = Storage.getInstance();
+		//s.loadStorage();
+		
 		ui.printWelcomeMessage();
 		
 		while (true) {

@@ -574,8 +574,8 @@ public class ExeCom {
 		
 		e1Input = c.getEndDay() + "/" + c.getEndMonth() + "/" + c.getEndYear() + " " + c.getEndHours() + ":" + c.getEndMins();
 		
-		System.out.println(s1Input);
-		System.out.println(e1Input);
+		//System.out.println(s1Input);
+		//System.out.println(e1Input);
 
 		Date s1DateTime = sdf.parse(s1Input);
 		Date e1DateTime = sdf.parse(e1Input);

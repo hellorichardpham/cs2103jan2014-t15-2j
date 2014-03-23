@@ -3,21 +3,27 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ProcessCommand {
-	/*
-	 * info array of Strings[16] 0.) command 1.) details 2.) startDay 3.)
-	 * startMonth 4.) startYear 5.) endDay 6.) endMonth 7.) endYear 8.)
-	 * startHours 9.) startMins 10.) endHours 11.) endMins 12.) location 13.)
-	 * priority 14.) category 15.) id
-	 */
-	private Command c = new Command();
 	
+	private Command c;
+	
+	/**
+	 * process: Extracts information from the userInput String and stores them to a Command object
+	 * 
+	 * @author Tian Weizhou
+	 * @param String userInput
+	 * @return Command
+	 * 
+	 */
 	public Command process(String userInput) {
+		
+		c = new Command();
 		
 		String[] splitInput = new String[100];
 		splitInput = userInput.split(" ");
 
 		processFirstWordAsCommand(splitInput);
-		processLocationPriorityCategory(splitInput);
+		processPriorityCategory(splitInput);
+		processLocation(splitInput);
 		processDate(splitInput);
 
 		String timeDetails = extractTime(splitInput);
@@ -26,7 +32,14 @@ public class ProcessCommand {
 
 		return c;
 	}
-
+	
+	/**
+	 * processTime: Extracts time from a  
+	 * 
+	 * @author Tian Weizhou
+	 * @param String timeDetails
+	 * 
+	 */
 	public void processTime(String timeDetails){
 		//if user did not provide any time in input
 		if (timeDetails==null){
@@ -55,21 +68,6 @@ public class ProcessCommand {
 			}
 		}	
 	}
-
-	/**
-	 * 
-	 * isRange: checks if the input time is a range or just an end time
-	 * @author yingyun
-	 * @param timeDetails
-	 * @return true if time is in range format, otherwise return false
-	 */
-	private boolean isRange(String timeDetails) {
-		if (timeDetails.length() > 7){
-			return true;
-		}else
-			return false;
-	}
-
 
 	/**
 	 * getCurrentDate: retrieve current date from user's device
@@ -141,12 +139,6 @@ public class ProcessCommand {
 				month = "12";
 				break;
 			}
-			//	2.) startDay
-			//  3.) startMonth 
-			//  4.) startYear 
-			//	5.) endDay 
-			//	6.) endMonth 
-			//	7.) endYear 
 			if (month != null) {
 				if (c.getEndMonth() == null) {
 					c.setEndMonth(month);
@@ -157,12 +149,12 @@ public class ProcessCommand {
 					c.setStartDay(splitInput[i-1]);
 					c.setStartYear(splitInput[i+1]);
 					if (!splitInput[i + 2].equals("")) {
-						splitInput[i + 2] = "";
+						empty(splitInput[i + 2]);
 					}
 				}
-				splitInput[i] = "";
-				splitInput[i - 1] = "";
-				splitInput[i + 1] = "";
+				empty(splitInput[i]);
+				empty(splitInput[i - 1]);
+				empty(splitInput[i + 1]);
 			}
 		}
 		//if user did not enter any date, set date line of task as current date
@@ -174,31 +166,34 @@ public class ProcessCommand {
 		}
 	}
 
-	private void processLocationPriorityCategory(String[] splitInput) {
+	private void processPriorityCategory(String[] splitInput) {
 		for (int i = 0; i < splitInput.length; i++) {
 			if (splitInput[i] != null) {
 				switch (splitInput[i].toLowerCase()) {
-				case "//location":
-				case "//l":
-					c.setLocation(splitInput[i+1]);
-					splitInput[i] = "";
-					splitInput[i + 1] = "";
-					break;
 				case "//priority":
 				case "//p":
 					c.setPriority(splitInput[i + 1]);
-					splitInput[i] = "";
-					splitInput[i + 1] = "";
+					empty(splitInput[i]);
+					empty(splitInput[i + 1]);
 					break;
 				case "//category":
 				case "//c":
 					c.setCategory(splitInput[i + 1]);
-					splitInput[i] = "";
-					splitInput[i + 1] = "";
+					empty(splitInput[i]);
+					empty(splitInput[i + 1]);
 					break;
 				}
 			}
 		}
+	}
+
+	private void processLocation(String[] splitInput) {
+		for(int i = 0; i < splitInput.length; i++) {
+			if(splitInput[i].contains("@")) {
+				c.setLocation(splitInput[i].substring(1));
+			}
+		}
+		
 	}
 
 	private void processDetails(String[] splitInput) {
@@ -221,15 +216,15 @@ public class ProcessCommand {
 		for (int i = 2; i < splitInput.length; i++) {
 			if (splitInput[i].contains("hrs")) {
 				time = time + splitInput[i];
-				splitInput[i] = "";
+				empty(splitInput[i]);
 				if (i + 1 < splitInput.length && splitInput[i + 1].contains("hrs")) {
 					time = time + splitInput[i + 1];
-					splitInput[i + 1] = "";
+					empty(splitInput[i + 1]);
 				} else if (i + 2 < splitInput.length
 						&& splitInput[i + 2].contains("hrs")) {
 					time = time + splitInput[i + 1] + splitInput[i + 2];
-					splitInput[i + 1] = "";
-					splitInput[i + 2] = "";
+					empty(splitInput[i + 1]);
+					empty(splitInput[i + 2]);
 				}
 				return time;
 			}
@@ -241,17 +236,35 @@ public class ProcessCommand {
 
 		String firstWord = splitInput[0];
 		c.setKeyword(firstWord);
-		splitInput[0] = "";
+		empty(splitInput[0]);
 
 		switch (firstWord.toLowerCase()) {
 		case "edit":
 		case "update":
 		case "delete":
 			c.setTaskID(splitInput[1]); //assign user specified TaskID
-			splitInput[1] = "";
+			empty(splitInput[1]);
 			break;
 		default:
 
 		}
+	}
+
+	/**
+	 * 
+	 * isRange: checks if the input time is a range or just an end time
+	 * @author yingyun
+	 * @param timeDetails
+	 * @return true if time is in range format, otherwise return false
+	 */
+	private boolean isRange(String timeDetails) {
+		if (timeDetails.length() > 7){
+			return true;
+		}else
+			return false;
+	}
+	
+	private void empty(String string) {
+		string = "";
 	}
 }

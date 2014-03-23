@@ -64,7 +64,7 @@ public class Storage {
 				setContent++;
 				task.setStartHours(retrieve[setContent]);
 				setContent++;
-				task.setStartMin(retrieve[setContent]);
+				task.setStartMins(retrieve[setContent]);
 				setContent++;
 				task.setEndHours(retrieve[setContent]);
 				setContent++;

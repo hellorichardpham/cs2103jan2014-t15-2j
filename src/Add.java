@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 public class Add {
 	private final static String ADD_SUCCESSFUL_MESSAGE = "That task has successfully been added to the Task List.";
-	private static ArrayList<Task> taskList;
+	private ArrayList<Task> taskList;
 
 	//constructor
 	public Add(ArrayList<Task> taskList){

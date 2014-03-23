@@ -480,7 +480,7 @@ public class ExeCom {
 	 * @return void
 	 */
 	public static void editContent() {
-		int id = Integer.parseInt(c.getTaskID());
+		int id = Integer.parseInt(c.getTaskID());	//user specified task ID
 
 		//loop through taskList to find matching task object
 		for (int i = 0; i< taskList.size(); i++) {

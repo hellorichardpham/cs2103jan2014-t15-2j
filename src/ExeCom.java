@@ -72,19 +72,20 @@ public class ExeCom {
 
 		switch (keyWord) {
 		case ADD:
-			if(checkConflict()==false){
-				Add a = new Add(taskList);
-				a.addToTaskList(command);	
-			}else
-				System.out.println(CONFLICT_FOUND);
+			//if(checkConflict()==false){
+			Add a = new Add(taskList);
+			a.addToTaskList(command);	
+			//	}else
+			//	System.out.println(CONFLICT_FOUND);
 			//	(taskList.indexOf(task)+1)
-
+			break;
 		case DISPLAY:
 			if(isValidUndoRedoDisplayCommand()){
 				Display d = new Display(taskList);
 				d.display();
 			}else
 				System.out.println(TASKLIST_EMPTY_MESSAGE);
+			break;
 
 		case DELETE:
 			Delete del = new Delete(taskList);
@@ -118,7 +119,6 @@ public class ExeCom {
 		saveToRedoTaskList();
 		s.saveStorage();
 		return " ";
-
 	}
 
 
@@ -168,14 +168,14 @@ public class ExeCom {
 		}
 	}
 
-	/**
+	/*	
 	 *
 	 * checkConflict: check conflict of time and date, return true if there are conflict
 	 *
 	 * @author Khaleef
 	 * @param void
 	 * @return boolean
-	 */
+
 	public static boolean checkConflict() throws Exception
 	{
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
@@ -240,7 +240,7 @@ public class ExeCom {
 		return isConflict;
 	}
 
-
+	 */
 
 	public static void transferTasksFromTo(ArrayList<Task> source, ArrayList<Task> target) {
 		for(Task task : source) {
@@ -335,7 +335,7 @@ public class ExeCom {
 	 *            []
 	 * @return boolean
 	 */
-	
+
 	public static boolean isValidSearchCommand(Command c) {
 		return c.getDetails() != null;
 	}

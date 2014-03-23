@@ -1,4 +1,6 @@
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
 
 public class ExeCom {
@@ -134,14 +136,18 @@ public class ExeCom {
 	 * @author Richard
 	 * @param void
 	 * @return void
+	 * @throws Exception 
 	 */
-	public static void addToTaskList() {
-		Task taskToAdd = new Task(c);
-		saveToPrevTaskList();
-		taskToAdd.setTaskID(Integer.toString(taskList.size() + 1));
-		taskList.add(taskToAdd);
-		saveToRedoTaskList();
-		System.out.println(ADD_SUCCESSFUL_MESSAGE);
+	public static void addToTaskList() throws Exception {
+		if(checkConflict()==false)
+		{
+			Task taskToAdd = new Task(c);
+			saveToPrevTaskList();
+			taskToAdd.setTaskID(Integer.toString(taskList.size() + 1));
+			taskList.add(taskToAdd);
+			saveToRedoTaskList();
+			System.out.println(ADD_SUCCESSFUL_MESSAGE);
+		}
 	}
 
 	/**
@@ -530,5 +536,80 @@ public class ExeCom {
 			//update information from command object
 			return fromCommand;
 		}
+	}
+	
+	/**
+	 * 
+	 * checkConflict: check conflict of time and date, return true if there are conflict
+	 * 
+	 * @author Khaleef
+	 * @param void
+	 * @return boolean
+	 */
+	public static boolean checkConflict() throws Exception
+	{
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+
+		String s1Input;
+		String e1Input;
+
+		// copy endDay & endMonth & endYear to startDay & startMonth & startYear 
+		if(c.getStartDay()==null)
+		{
+			s1Input = c.getEndDay() + "/" + c.getEndMonth() + "/" + c.getEndYear() + " " + c.getStartHours() + ":" + c.getStartMins();
+		}
+		// copy endHours & endMins to startHours & startMins 
+		else if(c.getStartHours()==null)
+		{
+			s1Input = c.getStartDay() + "/" + c.getStartMonth() + "/" + c.getStartYear() + " " + c.getEndHours() + ":" + c.getEndMins();
+		}
+		else if(c.getStartHours()==null && c.getStartDay()==null)
+		{
+			s1Input = c.getEndDay() + "/" + c.getEndMonth() + "/" + c.getEndYear() + " " + c.getEndHours() + ":" + c.getEndMins();
+		}
+		else
+		{
+			s1Input = c.getStartDay() + "/" + c.getStartMonth() + "/" + c.getStartYear() + " " + c.getStartHours() + ":" + c.getStartMins();
+		}
+		
+		e1Input = c.getEndDay() + "/" + c.getEndMonth() + "/" + c.getEndYear() + " " + c.getEndHours() + ":" + c.getEndMins();
+		
+		System.out.println(s1Input);
+		System.out.println(e1Input);
+
+		Date s1DateTime = sdf.parse(s1Input);
+		Date e1DateTime = sdf.parse(e1Input);
+		
+		String s2Task;
+		String e2Task;
+		int index;
+		boolean isConflict = false;
+		Date s2DateTime;
+		Date e2Datetime;
+		
+		long s1;
+		long e1;
+		long s2;
+		long e2;
+		
+		for (Task task : taskList) {
+			index = taskList.indexOf(task);
+			s2Task = taskList.get(index).getStartDay() + "/" + taskList.get(index).getStartMonth() + "/" + taskList.get(index).getStartYear() +  " " + taskList.get(index).getStartHours() + ":" +taskList.get(index).getStartMins();
+			e2Task = taskList.get(index).getEndDay() + "/" + taskList.get(index).getEndMonth() + "/" + taskList.get(index).getEndYear() +  " " + taskList.get(index).getEndHours() + ":" +taskList.get(index).getEndMins();
+			
+			s2DateTime = sdf.parse(s2Task);
+			e2Datetime = sdf.parse(e2Task);
+			
+			s1 = s1DateTime.getTime();
+			e1 = e1DateTime.getTime();
+			s2 = s2DateTime.getTime();
+			e2 = e2Datetime.getTime();
+			
+			isConflict = ((s1 >= s2) && (s1 <= e2)) || ((e1 >= s2) && (e2 <= e2)) || ((s1 <= s2) && (e1 >= e2));
+			if (isConflict == true)
+				System.out.println("There is a conflict of schedule with Task ID: " + (taskList.indexOf(task)+1));
+				break;
+		}
+		return isConflict;
 	}
 }

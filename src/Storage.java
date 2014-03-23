@@ -11,14 +11,7 @@ public class Storage {
 	private static final String FILENAME = "Storage.txt";
 	private static Logger logger = Logger.getLogger("MyLog");
 	private ExeCom ec = ExeCom.getInstance();
-	private static Storage theOne;
 
-	public static Storage getInstance() {
-		if (theOne == null) {
-			theOne = new Storage();
-		}
-		return theOne;
-	}
 
 	/**
 	 * 

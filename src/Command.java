@@ -1,4 +1,8 @@
-
+	/**
+	 * Command (class) : This class acts as a blueprint for any task object. It contains
+	 * information regarding a single task.
+	 * @author yingyun
+	 */
 public class Command {
 
 	private String keyword;
@@ -114,5 +118,4 @@ public class Command {
 	public void setTaskID(String taskID) {
 		this.taskID = taskID;
 	}
-	
 }

@@ -3,14 +3,6 @@ import java.util.Scanner;
 
 public class UI {
 	Scanner scanner = new Scanner(System.in);
-	private static UI theOne;
-	
-	public static UI getInstance() {
-		if(theOne==null){
-			theOne = new UI();
-		}
-		return theOne;
-	}
 	
 	public void printWelcomeMessage() {
 		System.out.println("   .    .  .  .. .. ........  ...   ............................................... ........  ..................................................................");

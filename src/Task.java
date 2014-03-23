@@ -1,4 +1,8 @@
-
+	/**
+	 * Command (class) : This class acts as a blueprint for any task object. It contains
+	 * information regarding a single task.
+	 * @author yingyun
+	 */
 public class Task {
 	private String details;
 	private String startDay;
@@ -54,7 +58,6 @@ public class Task {
 	}
 
 	public Task() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public String getDetails() {

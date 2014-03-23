@@ -28,7 +28,7 @@ public class ExeCom {
 	private static ExeCom theOne;
 	Scanner scanner = new Scanner(System.in);
 
-	public ArrayList<Task> getTaskListInstance() {
+	public static ArrayList<Task> getTaskListInstance() {
 		if (taskList == null) {
 			taskList = new ArrayList<Task>();
 		}
@@ -60,7 +60,7 @@ public class ExeCom {
 	 * @return String
 	 * 
 	 */
-	public String executeCommand(String[] userCommandInfo) throws Exception {
+	public String executeCommand(Command c) throws Exception {
 		assert(userCommandInfo.length==16);
 		info = userCommandInfo;
 		String command = info[0].toLowerCase();

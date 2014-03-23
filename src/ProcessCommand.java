@@ -9,9 +9,10 @@ public class ProcessCommand {
 	 * startHours 9.) startMins 10.) endHours 11.) endMins 12.) location 13.)
 	 * priority 14.) category 15.) id
 	 */
-
-	public String[] process(String userInput) {
-		Command c = new Command();
+	private Command c = new Command();
+	
+	public Command process(String userInput) {
+		
 		String[] splitInput = new String[100];
 		splitInput = userInput.split(" ");
 
@@ -23,28 +24,34 @@ public class ProcessCommand {
 		processTime(timeDetails);
 		processDetails(splitInput);
 
-		return info;
+		return c;
 	}
 
 	public void processTime(String timeDetails){
+		//if user did not provide any time in input
 		if (timeDetails==null){
-			info[8] = null;
-			info[9] = null;
-			info[10] = null;
-			info[11] = null;
+			c.setStartHours(null);
+			c.setStartMin(null);
+			c.setEndHours(null);
+			c.setEndMins(null);
 		}else{			
 			//assume 4 characters before "hr" will be the time
 			int index = timeDetails.indexOf("hr");
-			info[8] = timeDetails.substring(index-4, index-2);
-			info[9] = timeDetails.substring(index-2, index);
+			String startHours = timeDetails.substring(index-4, index-2);
+			String startMins = timeDetails.substring(index-2, index);
+			c.setStartHours(startHours);
+			c.setStartMin(startMins);
 
+			//check if user input end time only or both the start and end time
 			if(isRange(timeDetails)){
 				index = timeDetails.indexOf("hr", index+1);
-				info[10] = timeDetails.substring(index-4, index-2);
-				info[11] = timeDetails.substring(index-2, index);
+				String endHours = timeDetails.substring(index-4, index-2);
+				String endMins = timeDetails.substring(index-2, index);
+				c.setEndHours(endHours);
+				c.setEndMins(endMins);
 			}else{
-				info[10] = null;
-				info[11] = null;
+				c.setEndHours(null);
+				c.setEndMins(null);
 			}
 		}	
 	}
@@ -134,16 +141,21 @@ public class ProcessCommand {
 				month = "12";
 				break;
 			}
-
+			//	2.) startDay
+			//  3.) startMonth 
+			//  4.) startYear 
+			//	5.) endDay 
+			//	6.) endMonth 
+			//	7.) endYear 
 			if (month != null) {
-				if (info[6] == null) {
-					info[6] = month;
-					info[5] = splitInput[i - 1];
-					info[7] = splitInput[i + 1];
+				if (c.getEndMonth() == null) {
+					c.setEndMonth(month);
+					c.setEndDay(splitInput[i - 1]);
+					c.setEndYear(splitInput[i + 1]);
 				} else {
-					info[3] = month;
-					info[2] = splitInput[i - 1];
-					info[4] = splitInput[i + 1];
+					c.setStartMonth(month);
+					c.setStartDay(splitInput[i-1]);
+					c.setStartYear(splitInput[i+1]);
 					if (!splitInput[i + 2].equals("")) {
 						splitInput[i + 2] = "";
 					}
@@ -153,11 +165,12 @@ public class ProcessCommand {
 				splitInput[i + 1] = "";
 			}
 		}
-		if (info[6] == null) {
+		//if user did not enter any date, set date line of task as current date
+		if (c.getEndMonth() == null) {
 			String dateDetails = getCurrentDate();
-			info[5] = dateDetails.substring(8, 10);
-			info[6] = dateDetails.substring(5, 7);
-			info[7] = dateDetails.substring(0, 4);
+			c.setEndDay(dateDetails.substring(8, 10));
+			c.setEndMonth(dateDetails.substring(5,7));
+			c.setEndYear(dateDetails.substring(0,4));
 		}
 	}
 
@@ -167,19 +180,19 @@ public class ProcessCommand {
 				switch (splitInput[i].toLowerCase()) {
 				case "//location":
 				case "//l":
-					info[12] = splitInput[i + 1];
+					c.setLocation(splitInput[i+1]);
 					splitInput[i] = "";
 					splitInput[i + 1] = "";
 					break;
 				case "//priority":
 				case "//p":
-					info[13] = splitInput[i + 1];
+					c.setPriority(splitInput[i + 1]);
 					splitInput[i] = "";
 					splitInput[i + 1] = "";
 					break;
 				case "//category":
 				case "//c":
-					info[14] = splitInput[i + 1];
+					c.setCategory(splitInput[i + 1]);
 					splitInput[i] = "";
 					splitInput[i + 1] = "";
 					break;
@@ -197,9 +210,9 @@ public class ProcessCommand {
 		}
 		details = details.trim();
 		if (!details.equals("")) {
-			info[1] = details;
+			c.setDetails(details);
 		} else {
-			info[1] = null;
+			c.setDetails(null);
 		}
 	}
 
@@ -227,27 +240,18 @@ public class ProcessCommand {
 	private void processFirstWordAsCommand(String[] splitInput) {
 
 		String firstWord = splitInput[0];
-		info[0] = firstWord;
+		c.setKeyword(firstWord);
 		splitInput[0] = "";
 
 		switch (firstWord.toLowerCase()) {
 		case "edit":
 		case "update":
 		case "delete":
-			assert(isTaskIDValid(splitInput[1]));
-			info[15] = splitInput[1]; //assign user specified TaskID
+			c.setTaskID(splitInput[1]); //assign user specified TaskID
 			splitInput[1] = "";
 			break;
 		default:
 
 		}
-	}
-
-	private boolean isTaskIDValid(String string) {
-		int taskID = Integer.parseInt(string);
-		if (taskID <= ExeCom.getTaskListInstance().size()) //the taskList size does not necessarily dictate if a taskID is valid in it's current state. 
-			return true;
-		else 
-			return false;
 	}
 }

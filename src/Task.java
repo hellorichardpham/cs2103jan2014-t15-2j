@@ -12,7 +12,7 @@ public class Task {
 	private String endMonth;
 	private String endYear;
 	private String startHours;
-	private String startMin;
+	private String startMins;
 	private String endHours;
 	private String endMins;
 	private String location;
@@ -30,7 +30,7 @@ public class Task {
 		endMonth = c.getEndMonth();
 		endYear = c.getEndYear();
 		startHours = c.getStartHours();
-		startMin = c.getStartMin();
+		startMins = c.getStartMins();
 		endHours = c.getEndHours();
 		endMins = c.getEndMins();
 		location = c.getLocation();
@@ -48,7 +48,7 @@ public class Task {
 		this.endMonth = task.getEndMonth();
 		this.endYear = task.getEndYear();
 		this.startHours = task.getStartHours();
-		this.startMin = task.getStartMin();
+		this.startMins = task.getStartMins();
 		this.endHours = task.getEndHours();
 		this.endMins = task.getEndMins();
 		this.location = task.getLocation();
@@ -124,12 +124,12 @@ public class Task {
 		this.startHours = startHours;
 	}
 
-	public String getStartMin() {
-		return startMin;
+	public String getStartMins() {
+		return startMins;
 	}
 
-	public void setStartMin(String startMin) {
-		this.startMin = startMin;
+	public void setStartMins(String startMins) {
+		this.startMins = startMins;
 	}
 
 	public String getEndHours() {
@@ -181,11 +181,11 @@ public class Task {
 	}
 	
 	public String display() {
-		return details + " " + startDay + " " + startMonth + " " + startYear + " " + endDay + " " + endMonth + " " + endYear + " " + startHours + " " + startMin + " " + endHours + " " + endMins + " " + location + " " + priority + " " + category + " ";
+		return details + " " + startDay + " " + startMonth + " " + startYear + " " + endDay + " " + endMonth + " " + endYear + " " + startHours + " " + startMins + " " + endHours + " " + endMins + " " + location + " " + priority + " " + category + " ";
 	}
 	
 	public String displayAll() {
-		return taskID + ": " + details + " " + startDay + " " + startMonth + " " + startYear + " " + endDay + " " + endMonth + " " + endYear + " " + startHours + " " + startMin + " " + endHours + " " + endMins + " " + location + " " + priority + " " + category;
+		return taskID + ": " + details + " " + startDay + " " + startMonth + " " + startYear + " " + endDay + " " + endMonth + " " + endYear + " " + startHours + " " + startMins + " " + endHours + " " + endMins + " " + location + " " + priority + " " + category;
 	}
 
 }

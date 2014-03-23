@@ -28,7 +28,7 @@ public class ExeCom {
 	Scanner scanner = new Scanner(System.in);
 	private static ExeCom theOne;
 
-	//Allows all part of the program to get the same instance of ExeCom
+	// Allows all part of the program to get the same instance of ExeCom
 	public static ExeCom getInstance() {
 		if (theOne == null) {
 			theOne = new ExeCom();
@@ -43,7 +43,7 @@ public class ExeCom {
 		return taskList;
 	}
 
-	//constructor
+	// constructor
 	ExeCom() {
 		if (taskList == null) {
 			taskList = new ArrayList<Task>();
@@ -67,37 +67,35 @@ public class ExeCom {
 		String keyWord = c.getKeyword().toLowerCase();
 
 		Storage s = new Storage();
-		s.loadStorage();	
+		s.loadStorage();
 		saveToPrevTaskList();
 
 		switch (keyWord) {
 		case ADD:
-			//if(checkConflict()==false){
-			Add a = new Add(taskList);
-			a.addToTaskList(command);	
-			//	}else
-			//	System.out.println(CONFLICT_FOUND);
-			//	(taskList.indexOf(task)+1)
+			if (checkConflict() == false) {
+				Add a = new Add(taskList);
+				a.addToTaskList(command);
+			}
 			break;
 		case DISPLAY:
-			if(isValidUndoRedoDisplayCommand()){
+			if (isValidUndoRedoDisplayCommand()) {
 				Display d = new Display(taskList);
 				d.display();
-			}else
+			} else
 				System.out.println(TASKLIST_EMPTY_MESSAGE);
 			break;
 
 		case DELETE:
 			Delete del = new Delete(taskList);
 			del.delete(c);
-			//s.loadStorage(); // to update the taskList
+			// s.loadStorage(); // to update the taskList
 			break;
 
 		case SEARCH:
-			if (isValidSearchCommand(c)){
+			if (isValidSearchCommand(c)) {
 				Search search = new Search(taskList);
 				search.searchTaskList(c);
-			}else {
+			} else {
 				System.out.println(INVALID_COMMAND_MESSAGE);
 			}
 			break;
@@ -113,14 +111,13 @@ public class ExeCom {
 
 		case REDO:
 			redo();
-			break;	
+			break;
 		}
 
 		saveToRedoTaskList();
 		s.saveStorage();
 		return " ";
 	}
-
 
 	/**
 	 * 
@@ -133,10 +130,10 @@ public class ExeCom {
 	public static void undo() {
 		if (isValidUndoRedoDisplayCommand() && !prevTaskList.isEmpty()) {
 			resetTaskList();
-			transferTasksFromTo(prevTaskList,taskList);
-			/*for (Task task : prevTaskList) {
-				taskList.add(task);
-			}*/
+			transferTasksFromTo(prevTaskList, taskList);
+			/*
+			 * for (Task task : prevTaskList) { taskList.add(task); }
+			 */
 			System.out.println(UNDO_SUCCESS_MESSAGE);
 		} else if (isValidUndoRedoDisplayCommand() && prevTaskList.isEmpty()) {
 			System.out.println(UNDO_UNSUCCESSFUL_MESSAGE);
@@ -156,10 +153,10 @@ public class ExeCom {
 	public static void redo() {
 		if (isValidUndoRedoDisplayCommand() && !redoTaskList.isEmpty()) {
 			resetTaskList();
-			transferTasksFromTo(redoTaskList,taskList);
-			/*for (Task task : redoTaskList) {
-				taskList.add(task);
-			}*/
+			transferTasksFromTo(redoTaskList, taskList);
+			/*
+			 * for (Task task : redoTaskList) { taskList.add(task); }
+			 */
 			System.out.println(REDO_SUCCESS_MESSAGE);
 		} else if (isValidUndoRedoDisplayCommand() && redoTaskList.isEmpty()) {
 			System.out.println(REDO_UNSUCCESSFUL_MESSAGE);
@@ -168,42 +165,65 @@ public class ExeCom {
 		}
 	}
 
-	/*	
-	 *
-	 * checkConflict: check conflict of time and date, return true if there are conflict
-	 *
+	/**
+	 * 
+	 * checkConflict: check conflict of time and date, return true if there are
+	 * conflict
+	 * 
 	 * @author Khaleef
 	 * @param void
-	 * @return boolean
-
-	public static boolean checkConflict() throws Exception
-	{
+	 * @return Boolean
+	 * 
+	 */
+	public static boolean checkConflict() throws Exception {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
 
 		String s1Input;
 		String e1Input;
-
 		// copy endDay & endMonth & endYear to startDay & startMonth & startYear
-		if(c.getStartDay()==null)
-		{
-			s1Input = c.getEndDay() + "/" + c.getEndMonth() + "/" + c.getEndYear() + " " + c.getStartHours() + ":" + c.getStartMins();
+		if (c.getStartDay() == null) {
+			s1Input = c.getEndDay() + "/" + c.getEndMonth() + "/"
+					+ c.getEndYear() + " " + c.getStartHours() + ":"
+					+ c.getStartMins();
 		}
 		// copy endHours & endMins to startHours & startMins
-		else if(c.getStartHours()==null)
-		{
-			s1Input = c.getStartDay() + "/" + c.getStartMonth() + "/" + c.getStartYear() + " " + c.getEndHours() + ":" + c.getEndMins();
+		else if (c.getStartHours() == null) {
+			s1Input = c.getStartDay() + "/" + c.getStartMonth() + "/"
+					+ c.getStartYear() + " " + c.getEndHours() + ":"
+					+ c.getEndMins();
+		} else if (c.getStartHours() == null && c.getStartDay() == null) {
+			s1Input = c.getEndDay() + "/" + c.getEndMonth() + "/"
+					+ c.getEndYear() + " " + c.getEndHours() + ":"
+					+ c.getEndMins();
+		} else {
+			s1Input = c.getStartDay() + "/" + c.getStartMonth() + "/"
+					+ c.getStartYear() + " " + c.getStartHours() + ":"
+					+ c.getStartMins();
 		}
-		else if(c.getStartHours()==null && c.getStartDay()==null)
-		{
-			s1Input = c.getEndDay() + "/" + c.getEndMonth() + "/" + c.getEndYear() + " " + c.getEndHours() + ":" + c.getEndMins();
+		
+		
+		if (c.getEndDay() == null) {
+			e1Input = c.getStartDay() + "/" + c.getStartMonth() + "/"
+					+ c.getStartYear() + " " + c.getEndHours() + ":"
+					+ c.getEndMins();
 		}
-		else
-		{
-			s1Input = c.getStartDay() + "/" + c.getStartMonth() + "/" + c.getStartYear() + " " + c.getStartHours() + ":" + c.getStartMins();
+		// copy endHours & endMins to startHours & startMins
+		else if (c.getEndHours() == null) {
+			e1Input = c.getEndDay() + "/" + c.getEndMonth() + "/"
+					+ c.getEndYear() + " " + c.getStartHours() + ":"
+					+ c.getStartMins();
+		} else if (c.getEndHours() == null && c.getEndDay() == null) {
+			e1Input = c.getStartDay() + "/" + c.getStartMonth() + "/"
+					+ c.getStartYear() + " " + c.getStartHours() + ":"
+					+ c.getStartMins();
+		} else {
+			e1Input = c.getEndDay() + "/" + c.getEndMonth() + "/" + c.getEndYear()
+					+ " " + c.getEndHours() + ":" + c.getEndMins();
 		}
 
-		e1Input = c.getEndDay() + "/" + c.getEndMonth() + "/" + c.getEndYear() + " " + c.getEndHours() + ":" + c.getEndMins();
-
+		//System.out.println(s1Input);
+		//System.out.println(e1Input);
+		
 		Date s1DateTime = sdf.parse(s1Input);
 		Date e1DateTime = sdf.parse(e1Input);
 
@@ -218,12 +238,62 @@ public class ExeCom {
 		long e1;
 		long s2;
 		long e2;
-
+		
 		for (Task task : taskList) {
 			index = taskList.indexOf(task);
-			s2Task = taskList.get(index).getStartDay() + "/" + taskList.get(index).getStartMonth() + "/" + taskList.get(index).getStartYear() +  " " + taskList.get(index).getStartHours() + ":" +taskList.get(index).getStartMins();
-			e2Task = taskList.get(index).getEndDay() + "/" + taskList.get(index).getEndMonth() + "/" + taskList.get(index).getEndYear() +  " " + taskList.get(index).getEndHours() + ":" +taskList.get(index).getEndMins();
-
+			
+			if (taskList.get(index).getStartDay().equals("null")) {
+				s2Task = taskList.get(index).getEndDay() + "/" + taskList.get(index).getEndMonth() + "/"
+						+ taskList.get(index).getEndYear() + " " + taskList.get(index).getStartHours() + ":"
+						+ taskList.get(index).getStartMins();
+			}
+			// taskList.get(index)opy endHours & endMins to startHours & startMins
+			else if (taskList.get(index).getStartHours().equals("null")) {
+				s2Task = taskList.get(index).getStartDay() + "/" + taskList.get(index).getStartMonth() + "/"
+						+ taskList.get(index).getStartYear() + " " + taskList.get(index).getEndHours() + ":"
+						+ taskList.get(index).getEndMins();
+			} else if (taskList.get(index).getStartHours().equals("null") && taskList.get(index).getStartDay().equals("null")) {
+				s2Task = taskList.get(index).getEndDay() + "/" + taskList.get(index).getEndMonth() + "/"
+						+ taskList.get(index).getEndYear() + " " + taskList.get(index).getEndHours() + ":"
+						+ taskList.get(index).getEndMins();
+			} else {
+				s2Task = taskList.get(index).getStartDay() + "/" + taskList.get(index).getStartMonth() + "/"
+						+ taskList.get(index).getStartYear() + " " + taskList.get(index).getStartHours() + ":"
+						+ taskList.get(index).getStartMins();
+			}
+			
+			
+			if (taskList.get(index).getEndDay().equals("null")) {
+				e2Task = taskList.get(index).getStartDay() + "/" + taskList.get(index).getStartMonth() + "/"
+						+ taskList.get(index).getStartYear() + " " + taskList.get(index).getEndHours() + ":"
+						+ taskList.get(index).getEndMins();
+			}
+			// taskList.get(index)opy endHours & endMins to startHours & startMins
+			else if (taskList.get(index).getEndHours().equals("null")) {
+				e2Task = taskList.get(index).getEndDay() + "/" + taskList.get(index).getEndMonth() + "/"
+						+ taskList.get(index).getEndYear() + " " + taskList.get(index).getStartHours() + ":"
+						+ taskList.get(index).getStartMins();
+			} else if (taskList.get(index).getEndHours().equals("null") && taskList.get(index).getEndDay().equals("null")) {
+				e2Task = taskList.get(index).getStartDay() + "/" + taskList.get(index).getStartMonth() + "/"
+						+ taskList.get(index).getStartYear() + " " + taskList.get(index).getStartHours() + ":"
+						+ taskList.get(index).getStartMins();
+			} else {
+				e2Task = taskList.get(index).getEndDay() + "/" + taskList.get(index).getEndMonth() + "/" + taskList.get(index).getEndYear()
+						+ " " + taskList.get(index).getEndHours() + ":" + taskList.get(index).getEndMins();
+			}
+			
+			/*
+			s2Task = taskList.get(index).getStartDay() + "/"
+					+ taskList.get(index).getStartMonth() + "/"
+					+ taskList.get(index).getStartYear() + " "
+					+ taskList.get(index).getStartHours() + ":"
+					+ taskList.get(index).getStartMins();
+			e2Task = taskList.get(index).getEndDay() + "/"
+					+ taskList.get(index).getEndMonth() + "/"
+					+ taskList.get(index).getEndYear() + " "
+					+ taskList.get(index).getEndHours() + ":"
+					+ taskList.get(index).getEndMins();
+			*/
 			s2DateTime = sdf.parse(s2Task);
 			e2Datetime = sdf.parse(e2Task);
 
@@ -232,18 +302,20 @@ public class ExeCom {
 			s2 = s2DateTime.getTime();
 			e2 = e2Datetime.getTime();
 
-			isConflict = ((s1 >= s2) && (s1 <= e2)) || ((e1 >= s2) && (e2 <= e2)) || ((s1 <= s2) && (e1 >= e2));
+			isConflict = ((s1 >= s2) && (s1 <= e2))
+					|| ((e1 >= s2) && (e2 <= e2)) || ((s1 <= s2) && (e1 >= e2));
 			if (isConflict == true)
-				System.out.println("There is a conflict of schedule with Task ID: " + (taskList.indexOf(task)+1));
+				System.out
+						.println("There is a conflict of schedule with Task ID: "
+								+ (taskList.indexOf(task) + 1));
 			break;
 		}
 		return isConflict;
 	}
 
-	 */
-
-	public static void transferTasksFromTo(ArrayList<Task> source, ArrayList<Task> target) {
-		for(Task task : source) {
+	public static void transferTasksFromTo(ArrayList<Task> source,
+			ArrayList<Task> target) {
+		for (Task task : source) {
 			target.add(new Task(task));
 		}
 	}
@@ -260,10 +332,10 @@ public class ExeCom {
 	 */
 	public static void saveToPrevTaskList() {
 		resetPrevTaskList();
-		transferTasksFromTo(taskList,prevTaskList);
-		/*for (Task task : taskList) {
-			prevTaskList.add(new Task(task));
-		}*/
+		transferTasksFromTo(taskList, prevTaskList);
+		/*
+		 * for (Task task : taskList) { prevTaskList.add(new Task(task)); }
+		 */
 	}
 
 	/**
@@ -279,11 +351,11 @@ public class ExeCom {
 
 	public static void saveToRedoTaskList() {
 		resetRedoTaskList();
-		transferTasksFromTo(taskList,redoTaskList);
+		transferTasksFromTo(taskList, redoTaskList);
 
-		/*for (Task task : taskList) {
-			redoTaskList.add(new Task(task));
-		}*/
+		/*
+		 * for (Task task : taskList) { redoTaskList.add(new Task(task)); }
+		 */
 	}
 
 	/**
@@ -342,8 +414,8 @@ public class ExeCom {
 
 	/**
 	 * 
-	 * isValidUndoRedoDisplayCommand: Checks if the user specified an invalid command
-	 * where undo/redo/display is followed by another String.
+	 * isValidUndoRedoDisplayCommand: Checks if the user specified an invalid
+	 * command where undo/redo/display is followed by another String.
 	 * 
 	 * @author Richard
 	 * @param void
@@ -356,6 +428,5 @@ public class ExeCom {
 			return false;
 		}
 	}
-
 
 }

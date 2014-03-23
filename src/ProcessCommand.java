@@ -9,18 +9,9 @@ public class ProcessCommand {
 	 * startHours 9.) startMins 10.) endHours 11.) endMins 12.) location 13.)
 	 * priority 14.) category 15.) id
 	 */
-	private String[] info = new String[16];
-	private static ProcessCommand theOne;
-	
-	public static ProcessCommand getInstance() {
-		if(theOne==null){
-			theOne = new ProcessCommand();
-		}
-		return theOne;
-	}
-	
-	public String[] process(String userInput) {
 
+	public String[] process(String userInput) {
+		Command c = new Command();
 		String[] splitInput = new String[100];
 		splitInput = userInput.split(" ");
 

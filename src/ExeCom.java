@@ -28,7 +28,7 @@ public class ExeCom {
 	private static ExeCom theOne;
 	Scanner scanner = new Scanner(System.in);
 
-	public static ArrayList<Task> getTaskListInstance() {
+	public ArrayList<Task> getTaskListInstance() {
 		if (taskList == null) {
 			taskList = new ArrayList<Task>();
 		}
@@ -65,7 +65,7 @@ public class ExeCom {
 		info = userCommandInfo;
 		String command = info[0].toLowerCase();
 
-		Storage s = Storage.getInstance();
+		Storage s = new Storage();
 		s.loadStorage();	
 		
 		switch (command) {

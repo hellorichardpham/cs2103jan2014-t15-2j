@@ -21,22 +21,22 @@ public class Task {
 	private String taskID;
 	
 	//constructor
-	public Task(String[] info){
-		details = info[1];
-		startDay = info[2];
-		startMonth = info[3];
-		startYear = info[4];
-		endDay = info[5];
-		endMonth = info[6];
-		endYear = info[7];
-		startHours = info[8];
-		startMin = info[9];
-		endHours = info[10];
-		endMins = info[11];
-		location = info[12];
-		priority = info[13];
-		category = info[14];
-		taskID = info[15];
+	public Task(Command c){
+		details = c.getDetails();
+		startDay = c.getStartDay();
+		startMonth = c.getStartMonth();
+		startYear = c.getStartYear();
+		endDay = c.getEndDay();
+		endMonth = c.getEndMonth();
+		endYear = c.getEndYear();
+		startHours = c.getStartHours();
+		startMin = c.getStartMin();
+		endHours = c.getEndHours();
+		endMins = c.getEndMins();
+		location = c.getLocation();
+		priority = c.getPriority();
+		category = c.getCategory();
+		taskID = c.getTaskID();
 	}
 	
 	public Task(Task task) {

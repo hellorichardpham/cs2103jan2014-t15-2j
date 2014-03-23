@@ -14,7 +14,7 @@ public class Command {
 	private String endMonth;
 	private String endYear;
 	private String startHours;
-	private String startMin;
+	private String startMins;
 	private String endHours;
 	private String endMins;
 	private String location;
@@ -76,11 +76,11 @@ public class Command {
 	public void setStartHours(String startHours) {
 		this.startHours = startHours;
 	}
-	public String getStartMin() {
-		return startMin;
+	public String getStartMins() {
+		return startMins;
 	}
-	public void setStartMin(String startMin) {
-		this.startMin = startMin;
+	public void setStartMins(String startMins) {
+		this.startMins = startMins;
 	}
 	public String getEndHours() {
 		return endHours;

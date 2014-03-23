@@ -6,7 +6,7 @@ public class ExeCom {
 	private static ArrayList<Task> prevTaskList;
 	private static ArrayList<Task> redoTaskList;
 	private static ArrayList<Task> searchResults;
-	private static String[] info;
+	private static Command c;
 	private final static String ADD = "add";
 	private final static String DISPLAY = "display";
 	private final static String DELETE = "delete";
@@ -28,13 +28,14 @@ public class ExeCom {
 	private static ExeCom theOne;
 	Scanner scanner = new Scanner(System.in);
 
-	public static ArrayList<Task> getTaskListInstance() {
+	public ArrayList<Task> getTaskListInstance() {
 		if (taskList == null) {
 			taskList = new ArrayList<Task>();
 		}
 		return taskList;
 	}
 
+	//Allows all part of the program to get the same instance of Execom
 	public static ExeCom getInstance() {
 		if (theOne == null) {
 			theOne = new ExeCom();
@@ -42,6 +43,8 @@ public class ExeCom {
 		return theOne;
 	}
 
+	
+	//constructor
 	ExeCom() {
 		if (taskList == null) {
 			taskList = new ArrayList<Task>();
@@ -60,15 +63,14 @@ public class ExeCom {
 	 * @return String
 	 * 
 	 */
-	public String executeCommand(Command c) throws Exception {
-		assert(userCommandInfo.length==16);
-		info = userCommandInfo;
-		String command = info[0].toLowerCase();
+	public String executeCommand(Command command) throws Exception {
+		c = command;
+		String keyWord = c.getKeyword().toLowerCase();
 
 		Storage s = new Storage();
 		s.loadStorage();	
 		
-		switch (command) {
+		switch (keyWord) {
 		case ADD:
 			addToTaskList();
 			s.saveStorage();
@@ -134,7 +136,7 @@ public class ExeCom {
 	 * @return void
 	 */
 	public static void addToTaskList() {
-		Task taskToAdd = new Task(info);
+		Task taskToAdd = new Task(c);
 		saveToPrevTaskList();
 		taskToAdd.setTaskID(Integer.toString(taskList.size() + 1));
 		taskList.add(taskToAdd);
@@ -179,7 +181,7 @@ public class ExeCom {
 
 	/**
 	 * 
-	 * isPositiveInteger: Checks if the delete parameter is a valid taskID
+	 * isPositiveInteger: Checks if the delete/update/edit parameter is a valid taskID
 	 * (positive integer)
 	 * 
 	 * @author Richard
@@ -189,7 +191,7 @@ public class ExeCom {
 	 */
 	public static boolean isPositiveInteger() {
 		try {
-			if (Integer.parseInt(info[15]) > 0) {
+			if (Integer.parseInt(c.getTaskID()) > 0) {
 				return true;
 			} else {
 				return false;
@@ -211,7 +213,7 @@ public class ExeCom {
 	 */
 
 	public static int retrieveTaskIdNumber() {
-		return Integer.parseInt(info[15]);
+		return Integer.parseInt(c.getTaskID());
 	}
 
 	/**
@@ -259,10 +261,10 @@ public class ExeCom {
 	 */
 
 	public static void search() {
-		if (isValidSearchCommand(info)) {
+		if (isValidSearchCommand(c)) {
 			boolean isFound = false;
 			resetSearchResults();
-			String searchKeyword = info[1];
+			String searchKeyword = c.getDetails();
 			for (Task task : taskList) {
 				if (hasMatchingKeyword(task, searchKeyword)) {
 					searchResults.add(task);
@@ -290,8 +292,8 @@ public class ExeCom {
 	 * @return boolean
 	 */
 
-	public static boolean isValidSearchCommand(String[] info) {
-		return info[1] != null;
+	public static boolean isValidSearchCommand(Command c) {
+		return c.getDetails() != null;
 	}
 
 	/**
@@ -461,7 +463,7 @@ public class ExeCom {
 	 * @return boolean
 	 */
 	public static boolean isValidUndoRedoDisplayCommand() {
-		if (info[1] == null) {
+		if (c.getDetails() == null) {
 			return true;
 		} else {
 			return false;
@@ -473,74 +475,60 @@ public class ExeCom {
 	 * editContent: edit content of specific task using the taskID based on
 	 * user's input
 	 * 
-	 * @author Khaleef
+	 * @author yingyun, weizhou
 	 * @param void
 	 * @return void
 	 */
 	public static void editContent() {
-		int id = Integer.parseInt(info[15]);
-		int counter;
-		int i;
+		int id = Integer.parseInt(c.getTaskID());
 
-		for (counter = 0; counter < taskList.size(); counter++) {
-			if (Integer.parseInt(taskList.get(counter).getTaskID()) == id) {
+		//loop through taskList to find matching task object
+		for (int i = 0; i< taskList.size(); i++) {
+			Task currentTask = taskList.get(i);
+			int currentTaskID = Integer.parseInt(currentTask.getTaskID());
+			if (currentTaskID==id) {
 				saveToPrevTaskList();
-				for (i = 1; i < info.length; i++) {
-					if (info[i] != null) {
-
-						switch (i) {
-						case 1:
-							taskList.get(counter).setDetails(info[i]);
-							break;
-						case 2:
-							taskList.get(counter).setStartDay(info[i]);
-							break;
-						case 3:
-							taskList.get(counter).setStartMonth(info[i]);
-							break;
-						case 4:
-							taskList.get(counter).setStartYear(info[i]);
-							break;
-						case 5:
-							taskList.get(counter).setEndDay(info[i]);
-							break;
-						case 6:
-							taskList.get(counter).setEndMonth(info[i]);
-							break;
-						case 7:
-							taskList.get(counter).setEndYear(info[i]);
-							break;
-						case 8:
-							taskList.get(counter).setStartHours(info[i]);
-							break;
-						case 9:
-							taskList.get(counter).setStartMin(info[i]);
-							break;
-						case 10:
-							taskList.get(counter).setEndHours(info[i]);
-							break;
-						case 11:
-							taskList.get(counter).setEndMins(info[i]);
-							break;
-						case 12:
-							taskList.get(counter).setLocation(info[i]);
-							break;
-						case 13:
-							taskList.get(counter).setPriority(info[i]);
-							break;
-						case 14:
-							taskList.get(counter).setCategory(info[i]);
-							break;
-						case 15:
-							// taskList.get(counter).setTaskID(info[i]);
-							break;
-						default:
-							// invalid message
-						}
-					}
-				}
+				
+				//Update specified task object using either information from command/current task object
+				currentTask.setDetails(merge(c.getDetails(),currentTask.getDetails()));
+				
+				currentTask.setStartDay(merge(c.getStartDay(),currentTask.getStartDay()));
+				currentTask.setStartMonth(merge(c.getStartMonth(),currentTask.getStartMonth()));
+				currentTask.setStartYear(merge(c.getStartYear(),currentTask.getStartYear()));
+				
+				currentTask.setEndDay(merge(c.getEndDay(),currentTask.getEndDay()));
+				currentTask.setEndMonth(merge(c.getEndMonth(),currentTask.getEndMonth()));
+				currentTask.setEndYear(merge(c.getEndYear(),currentTask.getEndYear()));
+				
+				currentTask.setStartHours(merge(c.getStartHours(),currentTask.getStartHours()));
+				currentTask.setStartMins(merge(c.getStartMins(),currentTask.getStartMins()));
+				
+				currentTask.setEndHours(merge(c.getEndHours(),currentTask.getEndHours()));
+				currentTask.setEndMins(merge(c.getEndMins(),currentTask.getEndMins()));
+				
+				currentTask.setLocation(merge(c.getLocation(),currentTask.getLocation()));
+				currentTask.setCategory(merge(c.getCategory(),currentTask.getCategory()));
+				currentTask.setDetails(merge(c.getPriority(),currentTask.getPriority()));
+			
 				saveToRedoTaskList();
 			}
+		}
+	}
+
+	/**
+	 * merge: returns selected information from either command object or task object.
+	 * @author yingyun
+	 * @param String, String
+	 * @return String
+	 */
+	private static String merge(String fromCommand, String fromTask) {
+		//user did not specify this attribute to be updated
+		if (fromCommand == null){
+			//use back the same information from task object
+			return fromTask;
+		} else {
+			//update information from command object
+			return fromCommand;
 		}
 	}
 }

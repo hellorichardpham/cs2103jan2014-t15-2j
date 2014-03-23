@@ -31,7 +31,7 @@ public class ProcessCommand {
 		//if user did not provide any time in input
 		if (timeDetails==null){
 			c.setStartHours(null);
-			c.setStartMin(null);
+			c.setStartMins(null);
 			c.setEndHours(null);
 			c.setEndMins(null);
 		}else{			
@@ -40,7 +40,7 @@ public class ProcessCommand {
 			String startHours = timeDetails.substring(index-4, index-2);
 			String startMins = timeDetails.substring(index-2, index);
 			c.setStartHours(startHours);
-			c.setStartMin(startMins);
+			c.setStartMins(startMins);
 
 			//check if user input end time only or both the start and end time
 			if(isRange(timeDetails)){

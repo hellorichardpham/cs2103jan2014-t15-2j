@@ -28,8 +28,8 @@ public class TaskTracker {
 		ProcessCommand pc = new ProcessCommand();
 		ExeCom ec = ExeCom.getInstance();
 		
-		String[] info = pc.process(userInput);
-		ec.executeCommand(info);
+		Command c = pc.process(userInput);
+		ec.executeCommand(c);
 	}
 
 	private static void exitIfUserWants(String userInput) {

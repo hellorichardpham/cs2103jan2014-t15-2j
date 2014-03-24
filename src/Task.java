@@ -1,5 +1,6 @@
+
 	/**
-	 * Command (class) : This class acts as a blueprint for any task object. It contains
+	 * Task (class) : This class acts as a blueprint for any task object. It contains
 	 * information regarding a single task.
 	 * @author yingyun
 	 */
@@ -36,7 +37,6 @@ public class Task {
 		location = c.getLocation();
 		priority = c.getPriority();
 		category = c.getCategory();
-		taskID = c.getTaskID();
 	}
 	
 	public Task(Task task) {

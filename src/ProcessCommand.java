@@ -1,5 +1,6 @@
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class ProcessCommand {
@@ -20,7 +21,7 @@ public class ProcessCommand {
 		
 		String[] splitInput = new String[100];
 		splitInput = userInput.split(" ");
-
+		
 		processFirstWordAsCommand(splitInput);
 		processPriorityCategory(splitInput);
 		processLocation(splitInput);
@@ -29,12 +30,23 @@ public class ProcessCommand {
 		String timeDetails = extractTime(splitInput);
 		processTime(timeDetails);
 		processDetails(splitInput);
+		
+		
+		/*//to check command object
+		System.out.println("command: " + c.getKeyword());
+		System.out.println("details: " + c.getDetails());
+		System.out.println("location: " + c.getLocation());
+		System.out.println("priority: " + c.getPriority());
+		System.out.println("category: " + c.getCategory());
+		System.out.println("end time: " + c.getEndHours() + c.getEndMins());
+		System.out.println("end date: " + c.getEndDay() + c.getEndMonth() +c.getEndYear());
+		System.out.println("id: " + c.getTaskID());*/
 
 		return c;
 	}
 	
 	/**
-	 * processTime: Extracts time from a  
+	 * processTime:
 	 * 
 	 * @author Tian Weizhou
 	 * @param String timeDetails
@@ -149,12 +161,12 @@ public class ProcessCommand {
 					c.setStartDay(splitInput[i-1]);
 					c.setStartYear(splitInput[i+1]);
 					if (!splitInput[i + 2].equals("")) {
-						empty(splitInput[i + 2]);
+						splitInput[i + 2] = empty(splitInput[i + 2]);
 					}
 				}
-				empty(splitInput[i]);
-				empty(splitInput[i - 1]);
-				empty(splitInput[i + 1]);
+				splitInput[i] = empty(splitInput[i]);
+				splitInput[i - 1] = empty(splitInput[i - 1]);
+				splitInput[i + 1] = empty(splitInput[i + 1]);
 			}
 		}
 		//if user did not enter any date, set date line of task as current date
@@ -173,14 +185,14 @@ public class ProcessCommand {
 				case "//priority":
 				case "//p":
 					c.setPriority(splitInput[i + 1]);
-					empty(splitInput[i]);
-					empty(splitInput[i + 1]);
+					splitInput[i] = empty(splitInput[i]);
+					splitInput[i + 1] = empty(splitInput[i + 1]);
 					break;
 				case "//category":
 				case "//c":
 					c.setCategory(splitInput[i + 1]);
-					empty(splitInput[i]);
-					empty(splitInput[i + 1]);
+					splitInput[i] = empty(splitInput[i]);
+					splitInput[i + 1] = empty(splitInput[i + 1]);
 					break;
 				}
 			}
@@ -191,6 +203,7 @@ public class ProcessCommand {
 		for(int i = 0; i < splitInput.length; i++) {
 			if(splitInput[i].contains("@")) {
 				c.setLocation(splitInput[i].substring(1));
+				splitInput[i] = empty(splitInput[i]);
 			}
 		}
 		
@@ -216,15 +229,15 @@ public class ProcessCommand {
 		for (int i = 2; i < splitInput.length; i++) {
 			if (splitInput[i].contains("hrs")) {
 				time = time + splitInput[i];
-				empty(splitInput[i]);
+				splitInput[i] = empty(splitInput[i]);
 				if (i + 1 < splitInput.length && splitInput[i + 1].contains("hrs")) {
 					time = time + splitInput[i + 1];
-					empty(splitInput[i + 1]);
+					splitInput[i + 1] = empty(splitInput[i + 1]);
 				} else if (i + 2 < splitInput.length
 						&& splitInput[i + 2].contains("hrs")) {
 					time = time + splitInput[i + 1] + splitInput[i + 2];
-					empty(splitInput[i + 1]);
-					empty(splitInput[i + 2]);
+					splitInput[i + 1] = empty(splitInput[i + 1]);
+					splitInput[i + 2] = empty(splitInput[i + 2]);
 				}
 				return time;
 			}
@@ -236,15 +249,22 @@ public class ProcessCommand {
 
 		String firstWord = splitInput[0];
 		c.setKeyword(firstWord);
-		empty(splitInput[0]);
+		splitInput[0] = empty(splitInput[0]);
 
 		switch (firstWord.toLowerCase()) {
 		case "edit":
 		case "update":
 		case "delete":
-			c.setTaskID(splitInput[1]); //assign user specified TaskID
-			empty(splitInput[1]);
+			
+			int size=splitInput.length-1;	//number of taskIDs specified by user
+			ArrayList<String> specifiedTasks = new ArrayList<String>(size);
+			for (int i=1; i<size;i++){
+				specifiedTasks.add(splitInput[i]);
+			}
+			c.setTargetedTasks(specifiedTasks); //assign user specified TaskID
+			splitInput[1] = empty(splitInput[1]);
 			break;
+			
 		default:
 
 		}
@@ -254,8 +274,8 @@ public class ProcessCommand {
 	 * 
 	 * isRange: checks if the input time is a range or just an end time
 	 * @author yingyun
-	 * @param timeDetails
-	 * @return true if time is in range format, otherwise return false
+	 * @param String
+	 * @return boolean
 	 */
 	private boolean isRange(String timeDetails) {
 		if (timeDetails.length() > 7){
@@ -264,7 +284,14 @@ public class ProcessCommand {
 			return false;
 	}
 	
-	private void empty(String string) {
-		string = "";
+	/**
+	 * 
+	 * empty: converts identified information from splitInput[] to empty string
+	 * @author Tian Wei Zhou
+	 * @param String
+	 * @return String
+	 */
+	private String empty(String string) {
+		return string = "";
 	}
 }

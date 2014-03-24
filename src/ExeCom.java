@@ -1,6 +1,6 @@
-import java.text.SimpleDateFormat;
+//import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+//import java.util.Date;
 import java.util.Scanner;
 
 public class ExeCom {
@@ -23,7 +23,7 @@ public class ExeCom {
 
 	private final static String INVALID_COMMAND_MESSAGE = "That is an invalid command.";
 	private final static String TASKLIST_EMPTY_MESSAGE = "There are no tasks in the task list.";
-	private static final String CONFLICT_FOUND = "There is a conflict of schedule with Task ID: %1d";
+	//private static final String CONFLICT_FOUND = "There is a conflict of schedule with Task ID: %1d";
 
 	Scanner scanner = new Scanner(System.in);
 	private static ExeCom theOne;
@@ -36,7 +36,7 @@ public class ExeCom {
 		return theOne;
 	}
 
-	public ArrayList<Task> getTaskListInstance() {
+	public static ArrayList<Task> getTaskListInstance() {
 		if (taskList == null) {
 			taskList = new ArrayList<Task>();
 		}
@@ -72,11 +72,10 @@ public class ExeCom {
 
 		switch (keyWord) {
 		case ADD:
-			if (checkConflict() == false) {
-				Add a = new Add(taskList);
-				a.addToTaskList(command);
-			}
+			Add a = new Add(taskList);
+			a.addToTaskList(command);
 			break;
+			
 		case DISPLAY:
 			if (isValidUndoRedoDisplayCommand()) {
 				Display d = new Display(taskList);
@@ -174,7 +173,7 @@ public class ExeCom {
 	 * @param void
 	 * @return Boolean
 	 * 
-	 */
+
 	public static boolean checkConflict() throws Exception {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
 
@@ -200,8 +199,8 @@ public class ExeCom {
 					+ c.getStartYear() + " " + c.getStartHours() + ":"
 					+ c.getStartMins();
 		}
-		
-		
+
+
 		if (c.getEndDay() == null) {
 			e1Input = c.getStartDay() + "/" + c.getStartMonth() + "/"
 					+ c.getStartYear() + " " + c.getEndHours() + ":"
@@ -223,7 +222,7 @@ public class ExeCom {
 
 		//System.out.println(s1Input);
 		//System.out.println(e1Input);
-		
+
 		Date s1DateTime = sdf.parse(s1Input);
 		Date e1DateTime = sdf.parse(e1Input);
 
@@ -238,10 +237,10 @@ public class ExeCom {
 		long e1;
 		long s2;
 		long e2;
-		
+
 		for (Task task : taskList) {
 			index = taskList.indexOf(task);
-			
+
 			if (taskList.get(index).getStartDay().equals("null")) {
 				s2Task = taskList.get(index).getEndDay() + "/" + taskList.get(index).getEndMonth() + "/"
 						+ taskList.get(index).getEndYear() + " " + taskList.get(index).getStartHours() + ":"
@@ -261,8 +260,8 @@ public class ExeCom {
 						+ taskList.get(index).getStartYear() + " " + taskList.get(index).getStartHours() + ":"
 						+ taskList.get(index).getStartMins();
 			}
-			
-			
+
+
 			if (taskList.get(index).getEndDay().equals("null")) {
 				e2Task = taskList.get(index).getStartDay() + "/" + taskList.get(index).getStartMonth() + "/"
 						+ taskList.get(index).getStartYear() + " " + taskList.get(index).getEndHours() + ":"
@@ -281,8 +280,8 @@ public class ExeCom {
 				e2Task = taskList.get(index).getEndDay() + "/" + taskList.get(index).getEndMonth() + "/" + taskList.get(index).getEndYear()
 						+ " " + taskList.get(index).getEndHours() + ":" + taskList.get(index).getEndMins();
 			}
-			
-			/*
+
+
 			s2Task = taskList.get(index).getStartDay() + "/"
 					+ taskList.get(index).getStartMonth() + "/"
 					+ taskList.get(index).getStartYear() + " "
@@ -293,7 +292,7 @@ public class ExeCom {
 					+ taskList.get(index).getEndYear() + " "
 					+ taskList.get(index).getEndHours() + ":"
 					+ taskList.get(index).getEndMins();
-			*/
+
 			s2DateTime = sdf.parse(s2Task);
 			e2Datetime = sdf.parse(e2Task);
 
@@ -305,14 +304,13 @@ public class ExeCom {
 			isConflict = ((s1 >= s2) && (s1 <= e2))
 					|| ((e1 >= s2) && (e2 <= e2)) || ((s1 <= s2) && (e1 >= e2));
 			if (isConflict == true)
-				System.out
-						.println("There is a conflict of schedule with Task ID: "
+				System.out.println("There is a conflict of schedule with Task ID: "
 								+ (taskList.indexOf(task) + 1));
 			break;
 		}
 		return isConflict;
 	}
-
+	 */
 	public static void transferTasksFromTo(ArrayList<Task> source,
 			ArrayList<Task> target) {
 		for (Task task : source) {

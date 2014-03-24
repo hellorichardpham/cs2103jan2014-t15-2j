@@ -24,7 +24,7 @@ public class Add {
 		{
 			Task taskToAdd = new Task(c);
 			
-			taskToAdd.setTaskID(Integer.toString(taskList.size() + 1));
+			taskToAdd.setTaskID(Integer.toString(ExeCom.getTaskListInstance().size() + 1));
 			taskList.add(taskToAdd);
 			
 			System.out.println(ADD_SUCCESSFUL_MESSAGE);

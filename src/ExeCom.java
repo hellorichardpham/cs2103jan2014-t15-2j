@@ -72,20 +72,20 @@ public class ExeCom {
 
 		switch (keyWord) {
 		case ADD:
-			Add a = new Add(taskList);
+			Add a = new Add(getTaskListInstance());
 			a.addToTaskList(command);
 			break;
 			
 		case DISPLAY:
 			if (isValidUndoRedoDisplayCommand()) {
-				Display d = new Display(taskList);
+				Display d = new Display(getTaskListInstance());
 				d.display();
 			} else
 				System.out.println(TASKLIST_EMPTY_MESSAGE);
 			break;
 
 		case DELETE:
-			Delete del = new Delete(taskList);
+			Delete del = new Delete(getTaskListInstance());
 			del.delete(c);
 			// s.loadStorage(); // to update the taskList
 			break;
@@ -100,7 +100,7 @@ public class ExeCom {
 			break;
 
 		case EDIT:
-			Update u = new Update(taskList);
+			Update u = new Update(getTaskListInstance());
 			u.editContent(c);
 			break;
 

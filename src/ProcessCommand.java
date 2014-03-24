@@ -252,19 +252,22 @@ public class ProcessCommand {
 		splitInput[0] = empty(splitInput[0]);
 
 		switch (firstWord.toLowerCase()) {
-		case "edit":
-		case "update":
 		case "delete":
 			
-			int size=splitInput.length-1;	//number of taskIDs specified by user
+			int size=splitInput.length;	//number of taskIDs specified by user
 			ArrayList<String> specifiedTasks = new ArrayList<String>(size);
 			for (int i=1; i<size;i++){
 				specifiedTasks.add(splitInput[i]);
+				splitInput[i] = empty(splitInput[i]);
 			}
 			c.setTargetedTasks(specifiedTasks); //assign user specified TaskID
-			splitInput[1] = empty(splitInput[1]);
+			
 			break;
 			
+		case "edit":
+		case "update":
+			c.setTaskID(splitInput[1]);
+			splitInput[1] = empty(splitInput[1]);
 		default:
 
 		}

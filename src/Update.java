@@ -19,6 +19,7 @@ public class Update {
 	 * @return void
 	 */
 	public void editContent(Command c) {
+		System.out.println(c.getTaskID() + "");
 		int id = Integer.parseInt(c.getTaskID());	//user specified task ID
 
 		//loop through taskList to find matching task object

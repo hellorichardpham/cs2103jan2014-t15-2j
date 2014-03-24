@@ -7,7 +7,7 @@ public class Delete {
 
 	//constructor
 	public Delete(ArrayList<Task> taskList){
-		this.taskList = taskList;	
+		this.taskList = ExeCom.getTaskListInstance();	
 	}
 
 
@@ -15,35 +15,119 @@ public class Delete {
 	 * 
 	 * delete: Go through taskList and remove task with matching taskID
 	 * 
-	 * @author Richard
+	 * @author Richard, Ying Yun
 	 * @param void
 	 * @return void
 	 * 
 	 */
 
 	public void delete(Command c) {
-		//if (isPositiveInteger()) {
 		assert(isPositiveInteger(c));
-		for(String taskID : c.getTargetedTasks()){
-			int taskIdNumber = retrieveTaskIdNumber(taskID);
-			boolean isFound = false;
 
-			for (int i = 0; i < taskList.size(); i++) {
-				if (isTaskIDMatch(taskList.get(i).getTaskID(), taskIdNumber)) {
-					System.out.println("Deleted: "+ taskList.get(i).getDetails());
-					taskList.remove(taskList.get(i));
-					isFound = true;
-				}
+		for(String target : c.getTargetedTasks()){
+			if(isInteger(target)){
+				deleteSpecifiedTask(target);		
+			} else { //element is a string containing location/priority/category
+				deleteSpecifiedLocationPriorityCategory(target);
 			}
-			if (!isFound) {
-				System.out.println(TASKID_NOT_FOUND_MESSAGE);
+		}//end delete
+	}
+
+	/**
+	 * 
+	 * deleteSpecifiedLocationPriorityCategory: Determine target string belongs to location, priority or category
+	 * and delete all related tasks from taskList
+	 * 
+	 * @author Ying Yun
+	 * @param String
+	 * @return void
+	 * 
+	 */
+	private void deleteSpecifiedLocationPriorityCategory(String target) {
+		target = target.toLowerCase();
+		switch(target){
+		//priority
+		case "low":
+		case "medium":
+		case "high":
+			for (int i = 0; i < taskList.size(); i++) {
+				Task currentTask = taskList.get(i);
+				if (currentTask.getPriority().equals(target))
+					taskList.remove(i);
+			}
+			break;
+			
+		//category
+		case "family":
+		case "work":
+		case "friends:":
+		case "personal":
+			for (int i = 0; i < taskList.size(); i++) {
+				Task currentTask = taskList.get(i);
+				if (currentTask.getCategory().equals(target))
+					taskList.remove(i);
+			}
+			break;
+			
+		//location
+		default:
+			for (int i = 0; i < taskList.size(); i++) {
+				Task currentTask = taskList.get(i);
+				if (currentTask.getLocation().equals(target))
+					taskList.remove(i);
+			}
+			break;
+		}
+	}
+
+	/**
+	 * 
+	 * deleteSpecifiedTask: Deletes one Task from TaskList
+	 * 
+	 * @author Ying Yun
+	 * @param String
+	 * @return void
+	 * 
+	 */
+	private void deleteSpecifiedTask(String target) {
+		int taskIdNumber = retrieveTaskIdNumber(target);
+		boolean isFound = false;
+		//loop thru whole taskList to find for the user specified task
+		for (int i = 0; i < taskList.size(); i++) {
+			System.out.println("specified task id: " + taskIdNumber);
+			System.out.println("current task id: " + taskList.get(i).getTaskID());
+			if (isTaskIDMatch(taskList.get(i).getTaskID(), taskIdNumber)) {
+				System.out.println("match found");
+				taskList.remove(taskList.get(i));
+				System.out.println("Succesfully Deleted: "+ taskList.get(i).getDetails());					
+				isFound = true;
 			}
 		}
-		/*} else {
-			// User input was "delete (String)" or "delete (negative #)"
-			System.out.println(NOT_INTEGER_MESSAGE);
-		}*/
+		if (!isFound) {
+			System.out.println(TASKID_NOT_FOUND_MESSAGE);
+		}
 	}
+
+
+	/**
+	 * 
+	 * isInteger: Checks whether the string in TargetTask[] is an integer or not
+	 * 
+	 * @author Ying Yun
+	 * @param String
+	 * @return boolean
+	 * 
+	 */
+	public static boolean isInteger(String s) {
+		try { 
+			Integer.parseInt(s); 
+		} catch(NumberFormatException e) { 
+			return false; 
+		}
+		// only gets here if it successfully parsed the string, implying that particular string is an integer
+		return true;
+	}
+
 
 	/**
 	 * 

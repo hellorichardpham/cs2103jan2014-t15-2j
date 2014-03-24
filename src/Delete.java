@@ -3,6 +3,7 @@ import java.util.ArrayList;
 
 public class Delete {
 	private final static String TASKID_NOT_FOUND_MESSAGE = "That Task ID Number was not found";
+	private static final String DELETE_CATEGORYPRIORITYLOCATION_SUCCESSFUL = "Deleted all related tasks!";
 	private ArrayList<Task> taskList;
 
 	//constructor
@@ -29,6 +30,7 @@ public class Delete {
 				deleteSpecifiedTask(target);		
 			} else { //element is a string containing location/priority/category
 				deleteSpecifiedLocationPriorityCategory(target);
+				System.out.println(DELETE_CATEGORYPRIORITYLOCATION_SUCCESSFUL);
 			}
 		}//end delete
 	}
@@ -60,7 +62,7 @@ public class Delete {
 		//category
 		case "family":
 		case "work":
-		case "friends:":
+		case "friends":
 		case "personal":
 			for (int i = 0; i < taskList.size(); i++) {
 				Task currentTask = taskList.get(i);
@@ -98,8 +100,9 @@ public class Delete {
 			System.out.println("current task id: " + taskList.get(i).getTaskID());
 			if (isTaskIDMatch(taskList.get(i).getTaskID(), taskIdNumber)) {
 				System.out.println("match found");
+				System.out.println("Succesfully Deleted: "+ taskList.get(i).getDetails());
 				taskList.remove(taskList.get(i));
-				System.out.println("Succesfully Deleted: "+ taskList.get(i).getDetails());					
+									
 				isFound = true;
 			}
 		}

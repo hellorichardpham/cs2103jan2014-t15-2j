@@ -21,7 +21,7 @@ public class Update {
 	public void editContent(Command c) {
 		System.out.println(c.getTaskID() + "");
 		int id = Integer.parseInt(c.getTaskID());	//user specified task ID
-
+		
 		//loop through taskList to find matching task object
 		for (int i = 0; i< taskList.size(); i++) {
 			Task currentTask = taskList.get(i);
@@ -47,7 +47,7 @@ public class Update {
 				
 				currentTask.setLocation(merge(c.getLocation(),currentTask.getLocation()));
 				currentTask.setCategory(merge(c.getCategory(),currentTask.getCategory()));
-				currentTask.setDetails(merge(c.getPriority(),currentTask.getPriority()));
+				
 			}
 		}
 	}

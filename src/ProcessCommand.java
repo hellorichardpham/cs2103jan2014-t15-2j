@@ -253,7 +253,7 @@ public class ProcessCommand {
 		switch (firstWord.toLowerCase()) {
 		case "delete":
 			
-			int size=splitInput.length;	//number of taskIDs specified by user
+			int size=splitInput.length;	//number of task specified by user
 			ArrayList<String> specifiedTasks = new ArrayList<String>(size);
 			for (int i=1; i<size;i++){
 				specifiedTasks.add(splitInput[i]);

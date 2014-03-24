@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 	/**
 	 * Command (class) : This class acts as a blueprint for any task object. It contains
 	 * information regarding a single task.
@@ -20,7 +22,7 @@ public class Command {
 	private String location;
 	private String priority;
 	private String category;
-	private String taskID;
+	private ArrayList<String> specifiedTaskID;
 	
 	public String getKeyword() {
 		return keyword;
@@ -112,10 +114,10 @@ public class Command {
 	public void setCategory(String category) {
 		this.category = category;
 	}
-	public String getTaskID() {
-		return taskID;
+	public ArrayList<String> getTaskID() {
+		return specifiedTaskID;
 	}
-	public void setTaskID(String taskID) {
-		this.taskID = taskID;
+	public void setTaskID(ArrayList<String> taskID) {
+		this.specifiedTaskID = taskID;
 	}
 }

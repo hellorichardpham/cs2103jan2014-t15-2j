@@ -11,7 +11,6 @@ public class Storage {
 	private static final String FILENAME = "Storage.txt";
 	private static Logger logger = Logger.getLogger("MyLog");
 
-
 	/**
 	 * 
 	 * loadStorage: retrieve tasks found in the external file called Storage.txt

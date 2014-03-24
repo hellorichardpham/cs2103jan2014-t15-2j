@@ -18,7 +18,6 @@ public class ProcessCommand {
 	public Command process(String userInput) {
 		
 		c = new Command();
-		
 		String[] splitInput = new String[100];
 		splitInput = userInput.split(" ");
 		
@@ -26,7 +25,7 @@ public class ProcessCommand {
 		processPriorityCategory(splitInput);
 		processLocation(splitInput);
 		processDate(splitInput);
-
+		
 		String timeDetails = extractTime(splitInput);
 		processTime(timeDetails);
 		processDetails(splitInput);
@@ -245,7 +244,7 @@ public class ProcessCommand {
 		return null;
 	}
 
-	private void processFirstWordAsCommand(String[] splitInput) {
+	private String processFirstWordAsCommand(String[] splitInput) {
 
 		String firstWord = splitInput[0];
 		c.setKeyword(firstWord);
@@ -268,9 +267,12 @@ public class ProcessCommand {
 		case "update":
 			c.setTaskID(splitInput[1]);
 			splitInput[1] = empty(splitInput[1]);
+			System.out.println("reached process command update/delete");
+			break;
 		default:
 
 		}
+		return firstWord;
 	}
 
 	/**

@@ -37,5 +37,4 @@ public class TaskTracker {
 			System.exit(0);
 		}		
 	}
-	
 }//end class

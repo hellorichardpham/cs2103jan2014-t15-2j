@@ -10,7 +10,6 @@ public class Storage {
 
 	private static final String FILENAME = "Storage.txt";
 	private static Logger logger = Logger.getLogger("MyLog");
-	private ExeCom ec = ExeCom.getInstance();
 
 
 	/**
@@ -23,7 +22,7 @@ public class Storage {
 	 * @return void
 	 */
 	public void loadStorage() throws Exception {
-		ec.getTaskListInstance().clear();
+		ExeCom.getTaskListInstance().clear();
 		FileHandler fh;
 		logger.setUseParentHandlers(false);		// to disable log message on output screen
 		fh = new FileHandler("MyLogFile.txt");	// log message written to MyLogFile.txt
@@ -88,7 +87,7 @@ public class Storage {
 					}
 				}
 				task.setDetails(details);
-				ec.getTaskListInstance().add(task);
+				ExeCom.getTaskListInstance().add(task);
 			}
 			fileReader.close();
 		} catch (Exception ex) {
@@ -122,8 +121,8 @@ public class Storage {
 		File currentFile = new File(FILENAME);
 		currentFile.delete();
 		PrintWriter pw = new PrintWriter(new FileOutputStream(FILENAME));
-		for (Task t : ec.getTaskListInstance())
-			pw.println(t.display() + (ec.getTaskListInstance().indexOf(t) + 1));
+		for (Task t : ExeCom.getTaskListInstance())
+			pw.println(t.display() + (ExeCom.getTaskListInstance().indexOf(t) + 1));
 		pw.close();
 	}
 }

@@ -100,7 +100,7 @@ public class ExeCom {
 			break;
 
 		case EDIT:
-			Update u = new Update(getTaskListInstance());
+			Update u = new Update();
 			u.editContent(c);
 			break;
 

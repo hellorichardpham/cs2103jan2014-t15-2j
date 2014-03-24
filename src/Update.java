@@ -1,13 +1,5 @@
-import java.util.ArrayList;
-
 
 public class Update {
-	private ArrayList<Task> taskList;
-
-	//constructor
-	public Update(ArrayList<Task> taskList){
-		this.taskList = taskList;	
-	}
 
 	/**
 	 * 
@@ -19,16 +11,15 @@ public class Update {
 	 * @return void
 	 */
 	public void editContent(Command c) {
-		System.out.println(c.getTaskID() + "");
 		int id = Integer.parseInt(c.getTaskID());	//user specified task ID
-		
+
 		//loop through taskList to find matching task object
-		for (int i = 0; i< taskList.size(); i++) {
-			Task currentTask = taskList.get(i);
+		int size = ExeCom.getTaskListInstance().size();
+		for (int i = 0; i< size; i++) {
+			Task currentTask = ExeCom.getTaskListInstance().get(i);
 			int currentTaskID = Integer.parseInt(currentTask.getTaskID());
 			if (currentTaskID==id) {
-				
-				//Update specified task object using either information from command/current task object
+
 				currentTask.setDetails(merge(c.getDetails(),currentTask.getDetails()));
 				
 				currentTask.setStartDay(merge(c.getStartDay(),currentTask.getStartDay()));
@@ -47,7 +38,11 @@ public class Update {
 				
 				currentTask.setLocation(merge(c.getLocation(),currentTask.getLocation()));
 				currentTask.setCategory(merge(c.getCategory(),currentTask.getCategory()));
+				currentTask.setPriority(merge(c.getPriority(),currentTask.getPriority()));
 				
+				int index = currentTaskID - 1;
+				ExeCom.getTaskListInstance().set(index, currentTask);			
+				break;
 			}
 		}
 	}
@@ -61,10 +56,12 @@ public class Update {
 	private static String merge(String fromCommand, String fromTask) {
 		//user did not specify this attribute to be updated
 		if (fromCommand == null){
+			System.out.println("take from task");
 			//use back the same information from task object
 			return fromTask;
 		} else {
 			//update information from command object
+			System.out.println("take from command");
 			return fromCommand;
 		}
 	}

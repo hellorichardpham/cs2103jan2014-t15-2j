@@ -5,6 +5,7 @@ import java.util.Date;
 
 public class ProcessCommand {
 	
+	private static final String EMPTY_STRING = ""; 
 	private Command c;
 	
 	/**
@@ -22,7 +23,7 @@ public class ProcessCommand {
 		splitInput = userInput.split(" ");
 		
 		processFirstWordAsCommand(splitInput);
-		processPriorityCategory(splitInput);
+		processPriorityCategoryLocation(splitInput);
 		processLocation(splitInput);
 		processDate(splitInput);
 		
@@ -45,7 +46,7 @@ public class ProcessCommand {
 	}
 	
 	/**
-	 * processTime:
+	 * processTime: process the timeDetails String to extract out the time in the correct format String and store in into the command object 
 	 * 
 	 * @author Tian Weizhou
 	 * @param String timeDetails
@@ -94,7 +95,14 @@ public class ProcessCommand {
 		String formattedDate = dateFormat.format(currentDate);
 		return formattedDate;
 	}
-
+	
+	/**
+	 * processDate: process the splitInput array to Identify month signatures and store them into the command object in the correct format
+	 * 
+	 * @author Tian Weizhou
+	 * @param String[] splitInput
+	 * 
+	 */
 	private void processDate(String[] splitInput) {
 		for (int i = splitInput.length - 2; i > 0; i--) {
 
@@ -160,12 +168,12 @@ public class ProcessCommand {
 					c.setStartDay(splitInput[i-1]);
 					c.setStartYear(splitInput[i+1]);
 					if (!splitInput[i + 2].equals("")) {
-						splitInput[i + 2] = empty(splitInput[i + 2]);
+						splitInput[i + 2] = EMPTY_STRING;
 					}
 				}
-				splitInput[i] = empty(splitInput[i]);
-				splitInput[i - 1] = empty(splitInput[i - 1]);
-				splitInput[i + 1] = empty(splitInput[i + 1]);
+				splitInput[i] = EMPTY_STRING;
+				splitInput[i - 1] = EMPTY_STRING;
+				splitInput[i + 1] = EMPTY_STRING;
 			}
 		}
 		//if user did not enter any date, set date line of task as current date
@@ -176,38 +184,65 @@ public class ProcessCommand {
 			c.setEndYear(dateDetails.substring(0,4));
 		}
 	}
-
-	private void processPriorityCategory(String[] splitInput) {
+	
+	/**
+	 * processProrityCategoryLocation: Extracts Location, Priority and Category information by looking for keywords in the splitInput 
+	 * array and stores them into the command object  
+	 * 
+	 * @author Tian Weizhou
+	 * @param String[] splitInput
+	 * 
+	 */
+	private void processPriorityCategoryLocation(String[] splitInput) {
 		for (int i = 0; i < splitInput.length; i++) {
 			if (splitInput[i] != null) {
 				switch (splitInput[i].toLowerCase()) {
+				case "//location":
+				case "l":
+					c.setLocation(splitInput[i+1]);
+					splitInput[i] = EMPTY_STRING;
+					splitInput[i + 1] = EMPTY_STRING;
+					break;
 				case "//priority":
 				case "//p":
 					c.setPriority(splitInput[i + 1]);
-					splitInput[i] = empty(splitInput[i]);
-					splitInput[i + 1] = empty(splitInput[i + 1]);
+					splitInput[i] = EMPTY_STRING;
+					splitInput[i + 1] = EMPTY_STRING;
 					break;
 				case "//category":
 				case "//c":
 					c.setCategory(splitInput[i + 1]);
-					splitInput[i] = empty(splitInput[i]);
-					splitInput[i + 1] = empty(splitInput[i + 1]);
+					splitInput[i] = EMPTY_STRING;
+					splitInput[i + 1] = EMPTY_STRING;
 					break;
 				}
 			}
 		}
 	}
-
+	
+	/**
+	 * processLocation: Extracts Location by alternative indentifier (@)  
+	 * 
+	 * @author Tian Weizhou
+	 * @param String[] splitInput
+	 * 
+	 */
 	private void processLocation(String[] splitInput) {
 		for(int i = 0; i < splitInput.length; i++) {
 			if(splitInput[i].contains("@")) {
 				c.setLocation(splitInput[i].substring(1));
-				splitInput[i] = empty(splitInput[i]);
+				splitInput[i] = EMPTY_STRING;
 			}
 		}
 		
 	}
-
+	
+	/**
+	 * processDetails: Extracts Task details and stores them into Command object
+	 * @author Tian Weizhou
+	 * @param String[] splitInput
+	 * 
+	 */
 	private void processDetails(String[] splitInput) {
 		String details = "";
 		for (int i = 0; i < splitInput.length; i++) {
@@ -222,33 +257,48 @@ public class ProcessCommand {
 			c.setDetails(null);
 		}
 	}
-
+	
+	/**
+	 * extractTime: Extracts initial time data from the userInput String and includes cases for flexible input. 
+	 * Reformats data and returns as standard String.
+	 * 
+	 * @author Tian Weizhou
+	 * @param String[] splitInput
+	 * 
+	 */
 	private String extractTime(String[] splitInput) {
-		String time = "";
+		String time = EMPTY_STRING;
 		for (int i = 2; i < splitInput.length; i++) {
 			if (splitInput[i].contains("hrs")) {
 				time = time + splitInput[i];
-				splitInput[i] = empty(splitInput[i]);
+				splitInput[i] = EMPTY_STRING;
 				if (i + 1 < splitInput.length && splitInput[i + 1].contains("hrs")) {
 					time = time + splitInput[i + 1];
-					splitInput[i + 1] = empty(splitInput[i + 1]);
+					splitInput[i + 1] = EMPTY_STRING;
 				} else if (i + 2 < splitInput.length
 						&& splitInput[i + 2].contains("hrs")) {
 					time = time + splitInput[i + 1] + splitInput[i + 2];
-					splitInput[i + 1] = empty(splitInput[i + 1]);
-					splitInput[i + 2] = empty(splitInput[i + 2]);
+					splitInput[i + 1] = EMPTY_STRING;
+					splitInput[i + 2] = EMPTY_STRING;
 				}
 				return time;
 			}
 		}
 		return null;
 	}
-
+	
+	/**
+	 * processFirstWordAsCommand: Extracts the first word in the userInput String as the Command keyword  
+	 * 
+	 * @author Tian Weizhou
+	 * @param String[] splitInput
+	 * 
+	 */
 	private String processFirstWordAsCommand(String[] splitInput) {
 
 		String firstWord = splitInput[0];
 		c.setKeyword(firstWord);
-		splitInput[0] = empty(splitInput[0]);
+		splitInput[0] = EMPTY_STRING;
 
 		switch (firstWord.toLowerCase()) {
 		case "delete":
@@ -257,7 +307,7 @@ public class ProcessCommand {
 			ArrayList<String> specifiedTasks = new ArrayList<String>(size);
 			for (int i=1; i<size;i++){
 				specifiedTasks.add(splitInput[i]);
-				splitInput[i] = empty(splitInput[i]);
+				splitInput[i] = EMPTY_STRING;
 			}
 			c.setTargetedTasks(specifiedTasks); //assign user specified TaskID
 			
@@ -266,7 +316,7 @@ public class ProcessCommand {
 		case "edit":
 		case "update":
 			c.setTaskID(splitInput[1]);
-			splitInput[1] = empty(splitInput[1]);
+			splitInput[1] = EMPTY_STRING;
 			System.out.println("reached process command update/delete");
 			break;
 		default:
@@ -287,16 +337,5 @@ public class ProcessCommand {
 			return true;
 		}else
 			return false;
-	}
-	
-	/**
-	 * 
-	 * empty: converts identified information from splitInput[] to empty string
-	 * @author Tian Wei Zhou
-	 * @param String
-	 * @return String
-	 */
-	private String empty(String string) {
-		return string = "";
 	}
 }

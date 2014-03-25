@@ -199,25 +199,43 @@ public class ProcessCommand {
 				switch (splitInput[i].toLowerCase()) {
 				case "//location":
 				case "l":
-					c.setLocation(splitInput[i+1]);
+					String locationDetails = extractDetails(splitInput, i);
+					c.setLocation(locationDetails);
 					splitInput[i] = EMPTY_STRING;
 					splitInput[i + 1] = EMPTY_STRING;
 					break;
 				case "//priority":
 				case "//p":
-					c.setPriority(splitInput[i + 1]);
+					String priorityDetails = extractDetails(splitInput, i);
+					c.setPriority(priorityDetails);
 					splitInput[i] = EMPTY_STRING;
 					splitInput[i + 1] = EMPTY_STRING;
 					break;
 				case "//category":
 				case "//c":
-					c.setCategory(splitInput[i + 1]);
+					String categoryDetails = extractDetails(splitInput, i);
+					c.setCategory(categoryDetails);
 					splitInput[i] = EMPTY_STRING;
 					splitInput[i + 1] = EMPTY_STRING;
 					break;
 				}
 			}
 		}
+	}
+	
+	/**
+	 * extractDetails: Extracts Location/Priority/Category details by concatenating Strings in between // identifier  
+	 * 
+	 * @author Tian Weizhou
+	 * @param String[] splitInput, int index of first // 
+	 */
+	private String extractDetails(String[] splitInput, int i) {
+		String details = EMPTY_STRING;
+		for(int j = i+1; j<splitInput.length && !splitInput[j].contains("//"); j++) {
+			details = details + splitInput[j] + " "; 
+			splitInput[j] = EMPTY_STRING;
+		}
+		return details.trim();
 	}
 	
 	/**

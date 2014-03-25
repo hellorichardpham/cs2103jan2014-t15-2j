@@ -106,6 +106,7 @@ public class ExeCom {
 			saveToPrevTaskList();
 			Update u = new Update();
 			u.editContent(c);
+			saveToRedoTaskList();
 			break;
 
 		case UNDO:

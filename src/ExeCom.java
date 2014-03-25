@@ -68,10 +68,10 @@ public class ExeCom {
 
 		Storage s = new Storage();
 		s.loadStorage();
-		saveToPrevTaskList();
-
+		
 		switch (keyWord) {
 		case ADD:
+			saveToPrevTaskList();
 			Add a = new Add(getTaskListInstance());
 			a.addToTaskList(command);
 			break;
@@ -85,6 +85,7 @@ public class ExeCom {
 			break;
 
 		case DELETE:
+			saveToPrevTaskList();
 			Delete del = new Delete(getTaskListInstance());
 			del.delete(c);
 			// s.loadStorage(); // to update the taskList
@@ -100,6 +101,7 @@ public class ExeCom {
 			break;
 
 		case EDIT:
+			saveToPrevTaskList();
 			Update u = new Update();
 			u.editContent(c);
 			break;
@@ -115,9 +117,21 @@ public class ExeCom {
 
 		saveToRedoTaskList();
 		s.saveStorage();
+		printPrev();
+		printTaskList();
 		return " ";
 	}
 
+	public static void printPrev() {
+		System.out.println("prevTaskList: ");
+		for(Task task : prevTaskList)
+			System.out.println(task.displayAll());
+	}
+	public static void printTaskList() {
+		System.out.println("TaskList: ");
+		for(Task task : taskList)
+			System.out.println(task.displayAll());
+	}
 	/**
 	 * 
 	 * undo: Reset taskList then add contents of pTL to tL.
@@ -130,9 +144,7 @@ public class ExeCom {
 		if (isValidUndoRedoDisplayCommand() && !prevTaskList.isEmpty()) {
 			resetTaskList();
 			transferTasksFromTo(prevTaskList, taskList);
-			/*
-			 * for (Task task : prevTaskList) { taskList.add(task); }
-			 */
+
 			System.out.println(UNDO_SUCCESS_MESSAGE);
 		} else if (isValidUndoRedoDisplayCommand() && prevTaskList.isEmpty()) {
 			System.out.println(UNDO_UNSUCCESSFUL_MESSAGE);

@@ -119,21 +119,9 @@ public class ExeCom {
 		}
 
 		s.saveStorage();
-		//printPrev();
-		//printTaskList();
 		return " ";
 	}
 
-	public static void printRedo() {
-		System.out.println("redoTaskList: ");
-		for(Task task : redoTaskList)
-			System.out.println(task.displayAll());
-	}
-	public static void printTaskList() {
-		System.out.println("TaskList: ");
-		for(Task task : taskList)
-			System.out.println(task.displayAll());
-	}
 	/**
 	 * 
 	 * undo: Reset taskList then add contents of pTL to tL.

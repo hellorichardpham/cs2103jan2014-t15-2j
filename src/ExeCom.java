@@ -74,6 +74,7 @@ public class ExeCom {
 			saveToPrevTaskList();
 			Add a = new Add(getTaskListInstance());
 			a.addToTaskList(command);
+			saveToRedoTaskList();
 			break;
 			
 		case DISPLAY:
@@ -88,6 +89,7 @@ public class ExeCom {
 			saveToPrevTaskList();
 			Delete del = new Delete(getTaskListInstance());
 			del.delete(c);
+			saveToRedoTaskList();
 			// s.loadStorage(); // to update the taskList
 			break;
 
@@ -115,16 +117,15 @@ public class ExeCom {
 			break;
 		}
 
-		saveToRedoTaskList();
 		s.saveStorage();
-		printPrev();
-		printTaskList();
+		//printPrev();
+		//printTaskList();
 		return " ";
 	}
 
-	public static void printPrev() {
-		System.out.println("prevTaskList: ");
-		for(Task task : prevTaskList)
+	public static void printRedo() {
+		System.out.println("redoTaskList: ");
+		for(Task task : redoTaskList)
 			System.out.println(task.displayAll());
 	}
 	public static void printTaskList() {
@@ -162,7 +163,7 @@ public class ExeCom {
 	 * @return void
 	 */
 	public static void redo() {
-		if (isValidUndoRedoDisplayCommand() && !redoTaskList.isEmpty()) {
+		if (isValidUndoRedoDisplayCommand() && (!redoTaskList.isEmpty() || !prevTaskList.isEmpty())) {
 			resetTaskList();
 			transferTasksFromTo(redoTaskList, taskList);
 			/*

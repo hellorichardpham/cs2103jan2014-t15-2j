@@ -23,12 +23,17 @@ private ArrayList<Task> taskList;
 			System.out.println("~~~~~ Listing of all tasks ~~~~~");
 			for (Task task : taskList) {
 				String print = task.display();
-				print = print.replace("null ", "");
-				print = print.replace("null", "");
+				print = replaceNull(print);
 				System.out.println((taskList.indexOf(task)+1) + ": " + print);
 			}
 		} else if (taskList.isEmpty()) {
 			System.out.println(TASKLIST_EMPTY_MESSAGE);
 		} 
+	}
+	
+	public String replaceNull(String print) {
+		print = print.replace("null ", "");
+		print = print.replace("null", "");
+		return print;
 	}
 }//end class

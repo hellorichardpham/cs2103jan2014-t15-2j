@@ -3,6 +3,7 @@ import java.util.ArrayList;
 public class Display {
 	
 private final static String TASKLIST_EMPTY_MESSAGE = "There are no tasks in the task list.";
+private static final CharSequence EMPTY_STRING = "";
 private ArrayList<Task> taskList;
 	
 	//constructor
@@ -32,8 +33,8 @@ private ArrayList<Task> taskList;
 	}
 	
 	public String replaceNull(String print) {
-		print = print.replace("null ", "");
-		print = print.replace("null", "");
+		print = print.replace("null ", EMPTY_STRING);
+		print = print.replace("null", EMPTY_STRING);
 		return print;
 	}
 }//end class

@@ -56,12 +56,12 @@ public class Update {
 	private static String merge(String fromCommand, String fromTask) {
 		//user did not specify this attribute to be updated
 		if (fromCommand == null){
-			System.out.println("take from task");
+			//System.out.println("take from task");
 			//use back the same information from task object
 			return fromTask;
 		} else {
 			//update information from command object
-			System.out.println("take from command");
+			//System.out.println("take from command");
 			return fromCommand;
 		}
 	}

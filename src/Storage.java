@@ -47,7 +47,7 @@ public class Storage {
 				arraySize = retrieve.length;
 				content = arraySize - 14;
 				setContent = content;
-
+				
 				task.setStartDay(retrieve[setContent]);
 				setContent++;
 				task.setStartMonth(retrieve[setContent]);
@@ -70,9 +70,9 @@ public class Storage {
 				setContent++;
 				task.setLocation(retrieve[setContent]);
 				setContent++;
-				task.setPriority(retrieve[setContent]);
-				setContent++;
 				task.setCategory(retrieve[setContent]);
+				setContent++;
+				task.setPriority(retrieve[setContent]);
 				setContent++;
 				task.setTaskID(retrieve[setContent]);
 
@@ -96,6 +96,14 @@ public class Storage {
 		fh.close();
 	}
 
+	/**
+	 * 
+	 * createFileIfNotExist: automatically creates an external .txt file for user if storage.txt is not found
+	 * 
+	 * @author Wei Zhou
+	 * @param void
+	 * @return Buffered Reader
+	 */
 	private BufferedReader createFileIfNotExist() throws FileNotFoundException {
 		BufferedReader input;
 		try {
@@ -121,7 +129,7 @@ public class Storage {
 		currentFile.delete();
 		PrintWriter pw = new PrintWriter(new FileOutputStream(FILENAME));
 		for (Task t : ExeCom.getTaskListInstance())
-			pw.println(t.display() + (ExeCom.getTaskListInstance().indexOf(t) + 1));
+			pw.println(t.displayToStorage() + (ExeCom.getTaskListInstance().indexOf(t) + 1));
 		pw.close();
 	}
 }

@@ -80,7 +80,7 @@ public class ExeCom {
 		case DISPLAY:
 			if (isValidUndoRedoDisplayCommand()) {
 				Display d = new Display(getTaskListInstance());
-				d.display();
+				d.displayTaskList();
 			} else
 				System.out.println(TASKLIST_EMPTY_MESSAGE);
 			break;

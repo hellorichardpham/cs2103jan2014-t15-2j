@@ -201,19 +201,18 @@ public class ExeCom {
 
 		String s1Input;
 		String e1Input;
-		
-//		System.out.println(s1InputDay);
-//		System.out.println(s1InputMonth);
-//		System.out.println(s1InputYear);
-//		System.out.println(s1InputHours);
-//		System.out.println(s1InputMins);
-//		
-//		System.out.println(e1InputDay);
-//		System.out.println(e1InputMonth);
-//		System.out.println(e1InputYear);
-//		System.out.println(e1InputHours);
-//		System.out.println(e1InputMins);
-		
+
+		// System.out.println(s1InputDay);
+		// System.out.println(s1InputMonth);
+		// System.out.println(s1InputYear);
+		// System.out.println(s1InputHours);
+		// System.out.println(s1InputMins);
+		//
+		// System.out.println(e1InputDay);
+		// System.out.println(e1InputMonth);
+		// System.out.println(e1InputYear);
+		// System.out.println(e1InputHours);
+		// System.out.println(e1InputMins);
 
 		if (taskList.isEmpty()) {
 			return isConflict;
@@ -236,7 +235,7 @@ public class ExeCom {
 
 		s1Input = s1InputDay + "/" + s1InputMonth + "/" + s1InputYear + " "
 				+ s1InputHours + ":" + s1InputMins;
-		
+
 		if (e1InputDay == null) {
 			e1InputDay = c.getStartDay();
 			e1InputMonth = c.getStartMonth();
@@ -250,16 +249,14 @@ public class ExeCom {
 		e1Input = e1InputDay + "/" + e1InputMonth + "/" + e1InputYear + " "
 				+ e1InputHours + ":" + e1InputMins;
 
-		System.out.println(s1Input);
-		System.out.println(e1Input);
-		
+		//System.out.println(s1Input);
+		//System.out.println(e1Input);
+
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
 
 		Date s1DateTime = sdf.parse(s1Input);
 		Date e1DateTime = sdf.parse(e1Input);
 
-
-		
 		String s2TaskDay;
 		String s2TaskMonth;
 		String s2TaskYear;
@@ -274,7 +271,7 @@ public class ExeCom {
 
 		String s2Task;
 		String e2Task;
-		
+
 		int index;
 		Date s2DateTime;
 		Date e2Datetime;
@@ -286,33 +283,30 @@ public class ExeCom {
 
 		for (Task task : taskList) {
 			index = taskList.indexOf(task);
-			
-			 s2TaskDay=taskList.get(index).getStartDay();
-			 s2TaskMonth=taskList.get(index).getStartMonth();
-			 s2TaskYear=taskList.get(index).getStartYear();
-			 s2TaskHours=taskList.get(index).getStartHours();
-			 s2TaskMins=taskList.get(index).getStartMins();
 
-			 e2TaskDay=taskList.get(index).getEndDay();
-			 e2TaskMonth=taskList.get(index).getEndMonth();
-			 e2TaskYear=taskList.get(index).getEndYear();
-			 e2TaskHours=taskList.get(index).getEndHours();
-			 e2TaskMins=taskList.get(index).getEndMins();
-			
-			if (s2TaskHours.equals("null")
-					& s2TaskMins.equals("null")
-					& e2TaskHours.equals("null")
-					& e2TaskMins.equals("null")) {
+			s2TaskDay = taskList.get(index).getStartDay();
+			s2TaskMonth = taskList.get(index).getStartMonth();
+			s2TaskYear = taskList.get(index).getStartYear();
+			s2TaskHours = taskList.get(index).getStartHours();
+			s2TaskMins = taskList.get(index).getStartMins();
+
+			e2TaskDay = taskList.get(index).getEndDay();
+			e2TaskMonth = taskList.get(index).getEndMonth();
+			e2TaskYear = taskList.get(index).getEndYear();
+			e2TaskHours = taskList.get(index).getEndHours();
+			e2TaskMins = taskList.get(index).getEndMins();
+
+			if (s2TaskHours.equals("null") & s2TaskMins.equals("null")
+					& e2TaskHours.equals("null") & e2TaskMins.equals("null")) {
 				continue;
 			}
-			
-			if (s2TaskDay.equals("null"))
-			{
+
+			if (s2TaskDay.equals("null")) {
 				s2TaskDay = taskList.get(index).getEndDay();
 				s2TaskMonth = taskList.get(index).getEndMonth();
 				s2TaskYear = taskList.get(index).getEndYear();
 			}
-			
+
 			if (s2TaskHours.equals("null")) {
 				s2TaskHours = taskList.get(index).getEndHours();
 				s2TaskMins = taskList.get(index).getEndMins();
@@ -320,14 +314,13 @@ public class ExeCom {
 
 			s2Task = s2TaskDay + "/" + s2TaskMonth + "/" + s2TaskYear + " "
 					+ s2TaskHours + ":" + s2TaskMins;
-			
-			if (e2TaskDay.equals("null"))
-			{
+
+			if (e2TaskDay.equals("null")) {
 				e2TaskDay = taskList.get(index).getStartDay();
 				e2TaskMonth = taskList.get(index).getStartMonth();
 				e2TaskYear = taskList.get(index).getStartYear();
 			}
-			
+
 			if (e2TaskHours.equals("null")) {
 				e2TaskHours = taskList.get(index).getStartHours();
 				e2TaskMins = taskList.get(index).getStartMins();
@@ -346,11 +339,12 @@ public class ExeCom {
 
 			isConflict = ((s1 >= s2) && (s1 <= e2))
 					|| ((e1 >= s2) && (e2 <= e2)) || ((s1 <= s2) && (e1 >= e2));
-			if (isConflict == true)
+			if (isConflict == true) {
 				System.out
 						.println("There is a conflict of schedule with Task ID: "
 								+ (taskList.indexOf(task) + 1));
-			break;
+				break;
+			}
 		}
 		return isConflict;
 	}

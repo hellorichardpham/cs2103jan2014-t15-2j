@@ -13,7 +13,7 @@ private ArrayList<Task> taskList;
  	
 	/**
 	 * 
-	 * display: display all task found in the taskList
+	 * display: display all tasks found in the taskList
 	 * 
 	 * @author Khaleef
 	 * @param void
@@ -21,17 +21,49 @@ private ArrayList<Task> taskList;
 	 */
 	public void display() {
 		if (!taskList.isEmpty()) {
-			System.out.println("~~~~~ Listing of all tasks ~~~~~");
+			printListingHeader();
 			for (Task task : taskList) {
 				String print = task.display();
 				print = replaceNull(print);
-				System.out.println((taskList.indexOf(task)+1) + ": " + print);
+				printTaskIndex(task, print);
 			}
 		} else if (taskList.isEmpty()) {
 			System.out.println(TASKLIST_EMPTY_MESSAGE);
 		} 
 	}
 	
+	/**
+	 * 
+	 * printListingHeader: print header for listing
+	 * 
+	 * @author Ying Yun
+	 * @param void
+	 * @return void
+	 */
+	private void printListingHeader() {
+		System.out.println("~~~~~ Listing of all tasks ~~~~~");
+	}
+	
+	/**
+	 * 
+	 * printTaskIndex: print index number of current task
+	 * 
+	 * @author Ying Yun
+	 * @param Task, String
+	 * @return void
+	 */
+	private void printTaskIndex(Task task, String print) {
+		System.out.println((taskList.indexOf(task)+1) + ": " + print);
+	}
+	
+	/**
+	 * 
+	 * printTaskIndex: print index number of current task
+	 * 
+	 * @author Richard
+	 * @param String
+	 * @return String
+	 */
 	public String replaceNull(String print) {
 		print = print.replace("null ", EMPTY_STRING);
 		print = print.replace("null", EMPTY_STRING);

@@ -17,8 +17,7 @@ public class ProcessCommand {
 	 * to a Command object
 	 * 
 	 * @author Tian Weizhou
-	 * @param String
-	 *            userInput
+	 * @param String userInput
 	 * @return Command
 	 * 
 	 */
@@ -334,7 +333,7 @@ public class ProcessCommand {
 					splitInput[i + 1] = EMPTY_STRING;
 				} else if (i + 2 < splitInput.length
 						&& splitInput[i + 2].contains("hrs")) {
-					time = time + splitInput[i + 1] + splitInput[i + 2];
+					time = time + splitInput[i + 2];
 					splitInput[i + 1] = EMPTY_STRING;
 					splitInput[i + 2] = EMPTY_STRING;
 				}

@@ -19,11 +19,11 @@ private ArrayList<Task> taskList;
 	 * @param void
 	 * @return void
 	 */
-	public void display() {
+	public void displayTaskList() {
 		if (!taskList.isEmpty()) {
 			printListingHeader();
 			for (Task task : taskList) {
-				String print = task.display();
+				String print = task.displayTask();
 				print = replaceNull(print);
 				printTaskIndex(task, print);
 			}
@@ -44,6 +44,7 @@ private ArrayList<Task> taskList;
 		System.out.println("~~~~~ Listing of all tasks ~~~~~");
 	}
 	
+	
 	/**
 	 * 
 	 * printTaskIndex: print index number of current task
@@ -55,6 +56,7 @@ private ArrayList<Task> taskList;
 	private void printTaskIndex(Task task, String print) {
 		System.out.println((taskList.indexOf(task)+1) + ": " + print);
 	}
+	
 	
 	/**
 	 * 

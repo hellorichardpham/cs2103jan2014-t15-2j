@@ -1,9 +1,9 @@
 
-	/**
-	 * Task (class) : This class acts as a blueprint for any task object. It contains
-	 * information regarding a single task.
-	 * @author yingyun
-	 */
+/**
+ * Task (class) : This class acts as a blueprint for any task object. It contains
+ * information regarding a single task.
+ * @author yingyun
+ */
 public class Task {
 	private String details;
 	private String startDay;
@@ -20,7 +20,7 @@ public class Task {
 	private String priority;
 	private String category;
 	private String taskID;
-	
+
 	//constructor
 	public Task(Command c){
 		details = c.getDetails();
@@ -38,7 +38,7 @@ public class Task {
 		priority = c.getPriority();
 		category = c.getCategory();
 	}
-	
+
 	public Task(Task task) {
 		this.details = task.getDetails();
 		this.startDay = task.getStartDay();
@@ -179,9 +179,46 @@ public class Task {
 	public void setTaskID(String taskID) {
 		this.taskID = taskID;
 	}
-	
-	public String display() {
-		return details + " " + startDay + " " + startMonth + " " + startYear + " " + endDay + " " + endMonth + " " + endYear + " " + startHours + " " + startMins + " " + endHours + " " + endMins + " " + location + " " + priority + " " + category + " ";
+
+	public String displayTask() {
+		String info = null;
+
+		if (!details.equals("null")){
+			info = "Details: " + details;
+		}
+		
+		if (!startDay.equals("null") && !startDay.equals("null") && startDay.equals("null")){
+			info = info.concat(" Start Date: " + startDay + "/" + startMonth + "/" + startYear);
+		}
+		assert(startDay.equals(null));
+
+		if (!endDay.equals("null") && !endDay.equals("null") && !endDay.equals("null")){
+			info = info.concat(" End Date: " + endDay + "/" + endMonth + "/" + endYear);
+		}
+
+		if (!startHours.equals("null") && !startMins.equals("null")){
+			info = info.concat(" Start Time: " + startHours + ":" + startMins);
+		}
+		if (!endHours.equals("null") && !endMins.equals("null")){
+			info = info.concat(" End Time: " + endHours + ":" + endMins);
+		}
+
+		if (!location.equals("null")){
+			info = info.concat(" Location: " + location);
+		}
+
+		if (!category.equals("null")){
+			info = info.concat(" Category: " + category);
+		}
+		if (!priority.equals("null")){
+			info = info.concat(" Priority: " + priority);
+		}
+
+		return info;
+	}
+
+	public String displayToStorage(){
+		return details + " " + startDay + " " + startMonth + " " + startYear + " " + endDay  + " " + endMonth + " " + endYear + " " + startHours + " " + startMins + " " + endHours + " " + endMins + " " + location + " " + category + " " + priority + " ";
 	}
 	
 	public String displayAll() {

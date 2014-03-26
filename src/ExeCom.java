@@ -1,8 +1,6 @@
-//import java.text.SimpleDateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-//import java.util.Date;
 import java.util.Scanner;
 
 public class ExeCom {
@@ -18,6 +16,7 @@ public class ExeCom {
 	private final static String UNDO = "undo";
 	private final static String EDIT = "edit";
 	private final static String REDO = "redo";
+	private final static String EMAIL = "email";
 	private final static String UNDO_SUCCESS_MESSAGE = "Action has successfully been undone.";
 	private static final String REDO_SUCCESS_MESSAGE = "Action has successfully been redone";
 	private final static String UNDO_UNSUCCESSFUL_MESSAGE = "There are no actions that can be undone.";
@@ -120,6 +119,11 @@ public class ExeCom {
 
 		case REDO:
 			redo();
+			break;
+			
+		case EMAIL:
+			Email email = new Email(getTaskListInstance());
+			email.emailUser();
 			break;
 		}
 

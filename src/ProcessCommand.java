@@ -35,7 +35,7 @@ public class ProcessCommand {
 		processDetails(splitInput);
 
 		
-		 //to check command object 
+		 /*//to check command object 
 		 System.out.println("command: " + c.getKeyword());
 		 System.out.println("details: " + c.getDetails());
 		 System.out.println("Start time: " + c.getStartHours() + c.getStartMins());
@@ -46,6 +46,7 @@ public class ProcessCommand {
 		 System.out.println("priority: " + c.getPriority());
 		 System.out.println("category: " + c.getCategory());
 		 System.out.println("id: " + c.getTaskID());
+		 */
 	
 
 		return c;

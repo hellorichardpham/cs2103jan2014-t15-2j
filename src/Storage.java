@@ -129,7 +129,17 @@ public class Storage {
 		currentFile.delete();
 		PrintWriter pw = new PrintWriter(new FileOutputStream(FILENAME));
 		for (Task t : ExeCom.getTaskListInstance())
-			pw.println(t.displayToStorage() + (ExeCom.getTaskListInstance().indexOf(t) + 1));
+			pw.println(t.displayToStorage() +  retrieveCurrentTaskID(t));
 		pw.close();
+	}
+
+	/**
+	 * printTaskIdToStorage: return task ID of current Task
+	 * @author Ying Yun
+	 * @param Task
+	 * @return int
+	 */
+	private int retrieveCurrentTaskID(Task t) {
+		return ExeCom.getTaskListInstance().indexOf(t) + 1;
 	}
 }

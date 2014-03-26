@@ -9,15 +9,17 @@ public class ProcessCommand {
 	private static final String INVALID_PRIORITY_MESSAGE = "Priority could not be set. Valid priorities: low, medium, high.";
 	private Command c = new Command();
 
-	public Command getCommand(){
+	public Command getCommand() {
 		return c;
 	}
+
 	/**
 	 * process: Extracts information from the userInput String and stores them
 	 * to a Command object
 	 * 
 	 * @author Tian Weizhou
-	 * @param String userInput
+	 * @param String
+	 *            userInput
 	 * @return Command
 	 * 
 	 */
@@ -30,26 +32,25 @@ public class ProcessCommand {
 		processFirstWordAsCommand(splitInput);
 		processPriorityCategoryLocation(splitInput);
 		processLocation(splitInput);
-		processDate(splitInput);
+		processDate(splitInput, userInput);
 
 		String timeDetails = extractTime(splitInput);
 		processTime(timeDetails);
 		processDetails(splitInput);
 
-
-		/*//to check command object 
-		 System.out.println("command: " + c.getKeyword());
-		 System.out.println("details: " + c.getDetails());
-		 System.out.println("Start time: " + c.getStartHours() + c.getStartMins());
-		 System.out.println("end time: " + c.getEndHours() + c.getEndMins());
-		 System.out.println("Start date: " + c.getStartDay() + c.getStartMonth() +c.getStartYear());
-		 System.out.println("end date: " + c.getEndDay() + c.getEndMonth() +c.getEndYear());
-		 System.out.println("location: " + c.getLocation());
-		 System.out.println("priority: " + c.getPriority());
-		 System.out.println("category: " + c.getCategory());
-		 System.out.println("id: " + c.getTaskID());
+		/*
+		 * //to check command object System.out.println("command: " +
+		 * c.getKeyword()); System.out.println("details: " + c.getDetails());
+		 * System.out.println("Start time: " + c.getStartHours() +
+		 * c.getStartMins()); System.out.println("end time: " + c.getEndHours()
+		 * + c.getEndMins()); System.out.println("Start date: " +
+		 * c.getStartDay() + c.getStartMonth() +c.getStartYear());
+		 * System.out.println("end date: " + c.getEndDay() + c.getEndMonth()
+		 * +c.getEndYear()); System.out.println("location: " + c.getLocation());
+		 * System.out.println("priority: " + c.getPriority());
+		 * System.out.println("category: " + c.getCategory());
+		 * System.out.println("id: " + c.getTaskID());
 		 */
-
 
 		return c;
 	}
@@ -73,21 +74,21 @@ public class ProcessCommand {
 		} else {
 			// check if user input end time only or both the start and end time
 			if (isRange(timeDetails)) {
-				//extract and set start time
+				// extract and set start time
 				int index = timeDetails.indexOf("hr");
 				String startHours = timeDetails.substring(index - 4, index - 2);
 				String startMins = timeDetails.substring(index - 2, index);
 				c.setStartHours(startHours);
 				c.setStartMins(startMins);
-				
-				//extract and set end time
+
+				// extract and set end time
 				index = timeDetails.indexOf("hr", index + 1);
 				String endHours = timeDetails.substring(index - 4, index - 2);
 				String endMins = timeDetails.substring(index - 2, index);
 				c.setEndHours(endHours);
 				c.setEndMins(endMins);
-			
-			} else {	//user only enter end time
+
+			} else { // user only enter end time
 				// assume 4 characters before "hr" will be the time
 				int index = timeDetails.indexOf("hr");
 				String endHours = timeDetails.substring(index - 4, index - 2);
@@ -124,7 +125,11 @@ public class ProcessCommand {
 	 *            [] splitInput
 	 * 
 	 */
-	private void processDate(String[] splitInput) {
+	private void processDate(String[] splitInput, String userInput) {
+		
+		String[] splitCommand = userInput.split(" ");
+		String command = splitCommand[0];
+		
 		for (int i = splitInput.length - 2; i > 0; i--) {
 
 			String month = null;
@@ -197,8 +202,9 @@ public class ProcessCommand {
 				splitInput[i + 1] = EMPTY_STRING;
 			}
 		}
+		
 		// if user did not enter any date, set date line of task as current date
-		if (c.getEndMonth() == null) {
+		if (c.getEndMonth() == null && !(command.equals("edit")||command.equals("update"))) {
 			String dateDetails = getCurrentDate();
 			c.setEndDay(dateDetails.substring(8, 10));
 			c.setEndMonth(dateDetails.substring(5, 7));
@@ -230,7 +236,7 @@ public class ProcessCommand {
 				case "//priority":
 				case "//p":
 					String priorityDetails = extractDetails(splitInput, i);
-					if(isValidPriority(priorityDetails)) {
+					if (isValidPriority(priorityDetails)) {
 						c.setPriority(priorityDetails);
 						splitInput[i] = EMPTY_STRING;
 						splitInput[i + 1] = EMPTY_STRING;
@@ -398,10 +404,9 @@ public class ProcessCommand {
 			return false;
 	}
 
-
 	private static boolean isValidPriority(String categoryDetails) {
 		return (categoryDetails.equalsIgnoreCase("low")
 				|| categoryDetails.equalsIgnoreCase("medium") || categoryDetails
-				.equalsIgnoreCase("high"));
+					.equalsIgnoreCase("high"));
 	}
 }

@@ -249,8 +249,8 @@ public class ExeCom {
 		e1Input = e1InputDay + "/" + e1InputMonth + "/" + e1InputYear + " "
 				+ e1InputHours + ":" + e1InputMins;
 
-		//System.out.println(s1Input);
-		//System.out.println(e1Input);
+		// System.out.println(s1Input);
+		// System.out.println(e1Input);
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
 
@@ -280,6 +280,9 @@ public class ExeCom {
 		long e1;
 		long s2;
 		long e2;
+
+		// System.out.println(s1Input);
+		// System.out.println(e1Input);
 
 		for (Task task : taskList) {
 			index = taskList.indexOf(task);
@@ -337,8 +340,22 @@ public class ExeCom {
 			s2 = s2DateTime.getTime();
 			e2 = e2Datetime.getTime();
 
-			isConflict = ((s1 >= s2) && (s1 <= e2))
-					|| ((e1 >= s2) && (e2 <= e2)) || ((s1 <= s2) && (e1 >= e2));
+			// System.out.println(s2Task);
+			// System.out.println(e2Task);
+
+			// isConflict = ((s1 >= s2) && (s1 <= e2))
+			// || ((e1 >= s2) && (e2 <= e2)) || ((s1 <= s2) && (e1 >= e2));
+
+			if (s1 < s2) {
+				if (e1 > s2) {
+					isConflict = true; // overlap
+				}
+			} else {
+				if (e2 > s1) {
+					isConflict = true; // overlap
+				}
+			}
+
 			if (isConflict == true) {
 				System.out
 						.println("There is a conflict of schedule with Task ID: "

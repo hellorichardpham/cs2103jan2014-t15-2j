@@ -7,8 +7,11 @@ public class ProcessCommand {
 
 	private static final String EMPTY_STRING = "";
 	private static final String INVALID_PRIORITY_MESSAGE = "Priority could not be set. Valid priorities: low, medium, high.";
-	private Command c;
+	private Command c = new Command();
 
+	public Command getCommand(){
+		return c;
+	}
 	/**
 	 * process: Extracts information from the userInput String and stores them
 	 * to a Command object
@@ -34,8 +37,8 @@ public class ProcessCommand {
 		processTime(timeDetails);
 		processDetails(splitInput);
 
-		
-		 /*//to check command object 
+
+		/*//to check command object 
 		 System.out.println("command: " + c.getKeyword());
 		 System.out.println("details: " + c.getDetails());
 		 System.out.println("Start time: " + c.getStartHours() + c.getStartMins());
@@ -47,7 +50,7 @@ public class ProcessCommand {
 		 System.out.println("category: " + c.getCategory());
 		 System.out.println("id: " + c.getTaskID());
 		 */
-	
+
 
 		return c;
 	}
@@ -69,23 +72,31 @@ public class ProcessCommand {
 			c.setEndHours(null);
 			c.setEndMins(null);
 		} else {
-			// assume 4 characters before "hr" will be the time
-			int index = timeDetails.indexOf("hr");
-			String startHours = timeDetails.substring(index - 4, index - 2);
-			String startMins = timeDetails.substring(index - 2, index);
-			c.setStartHours(startHours);
-			c.setStartMins(startMins);
-
 			// check if user input end time only or both the start and end time
 			if (isRange(timeDetails)) {
+				//extract and set start time
+				int index = timeDetails.indexOf("hr");
+				String startHours = timeDetails.substring(index - 4, index - 2);
+				String startMins = timeDetails.substring(index - 2, index);
+				c.setStartHours(startHours);
+				c.setStartMins(startMins);
+				
+				//extract and set end time
 				index = timeDetails.indexOf("hr", index + 1);
 				String endHours = timeDetails.substring(index - 4, index - 2);
 				String endMins = timeDetails.substring(index - 2, index);
 				c.setEndHours(endHours);
 				c.setEndMins(endMins);
-			} else {
-				c.setEndHours(null);
-				c.setEndMins(null);
+			
+			} else {	//user only enter end time
+				// assume 4 characters before "hr" will be the time
+				int index = timeDetails.indexOf("hr");
+				String endHours = timeDetails.substring(index - 4, index - 2);
+				String endMins = timeDetails.substring(index - 2, index);
+				c.setEndHours(endHours);
+				c.setEndMins(endMins);
+				c.setStartHours(null);
+				c.setStartMins(null);
 			}
 		}
 	}
@@ -221,9 +232,9 @@ public class ProcessCommand {
 				case "//p":
 					String priorityDetails = extractDetails(splitInput, i);
 					if(isValidPriority(priorityDetails)) {
-					c.setPriority(priorityDetails);
-					splitInput[i] = EMPTY_STRING;
-					splitInput[i + 1] = EMPTY_STRING;
+						c.setPriority(priorityDetails);
+						splitInput[i] = EMPTY_STRING;
+						splitInput[i + 1] = EMPTY_STRING;
 					} else {
 						System.out.println(INVALID_PRIORITY_MESSAGE);
 						splitInput[i] = EMPTY_STRING;
@@ -311,7 +322,7 @@ public class ProcessCommand {
 	 *            [] splitInput
 	 * 
 	 */
-	private String extractTime(String[] splitInput) {
+	String extractTime(String[] splitInput) {
 		String time = EMPTY_STRING;
 		for (int i = 2; i < splitInput.length; i++) {
 			if (splitInput[i].contains("hrs")) {
@@ -387,11 +398,11 @@ public class ProcessCommand {
 		} else
 			return false;
 	}
-	
+
 
 	private static boolean isValidPriority(String categoryDetails) {
 		return (categoryDetails.equalsIgnoreCase("low")
 				|| categoryDetails.equalsIgnoreCase("medium") || categoryDetails
-					.equalsIgnoreCase("high"));
+				.equalsIgnoreCase("high"));
 	}
 }

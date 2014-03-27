@@ -134,7 +134,7 @@ public class Command {
 	}
 	
 	public void setPriority(String priority) {
-		this.priority = priority;
+		this.priority = priority.toLowerCase();
 	}
 	
 	public String getCategory() {

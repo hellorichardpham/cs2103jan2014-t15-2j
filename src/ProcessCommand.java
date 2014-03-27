@@ -1,7 +1,6 @@
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 public class ProcessCommand {
@@ -34,8 +33,8 @@ public class ProcessCommand {
 		processFirstWordAsCommand(splitInput);
 		processPriorityCategoryLocation(splitInput);
 		processLocation(splitInput);
-		processDayofWeek(splitInput);
 		processDate(splitInput, commandType);
+		processDayofWeek(splitInput);
 
 		String timeDetails = extractTime(splitInput);
 		processTime(timeDetails);
@@ -59,53 +58,9 @@ public class ProcessCommand {
 	}
 
 	private void processDayofWeek(String[] splitInput) {
-		for(int i = splitInput.length-1 ; i > 0 ; i--)
+		for(int i = splitInput.length ; i > 0 ; i++)
 		{
-			int inputDay = findDaysofWeek(splitInput[i]);
-			
-			if(inputDay!=-1)
-			{
-				int isNextWeek = 0;
-				
-				switch(splitInput[i-1])
-				{
-				case "next":
-					isNextWeek = 7;
-				case "this":
-				case "on":
-				case "to":
-				case "from":
-					splitInput[i-1] = EMPTY_STRING;
-				}
-				
-				if(i-2 > 0) 
-				{
-					if(splitInput[i-2].equals("to")||splitInput[i-2].equals("from"))
-					{
-						splitInput[i-2] = EMPTY_STRING;
-					}
-				}
-				
-				splitInput[i]=EMPTY_STRING;
-				
-				Calendar cal = Calendar.getInstance();
-				int currentDayOfMonth = cal.get(Calendar.DAY_OF_WEEK);
-				
-				cal.add(Calendar.DAY_OF_MONTH, inputDay - currentDayOfMonth + isNextWeek);
-				if(c.getEndYear()==null) 
-				{
-					c.setEndYear(cal.get(Calendar.YEAR) + "");
-					c.setEndMonth(cal.get(Calendar.MONTH) + "");
-					c.setEndDay(cal.get(Calendar.DAY_OF_MONTH) + "");
-				}
-				else
-				{
-					c.setStartYear(cal.get(Calendar.YEAR) + "");
-					c.setStartMonth(cal.get(Calendar.MONTH) + "");
-					c.setStartDay(cal.get(Calendar.DAY_OF_MONTH) + "");
-				}
-				
-			}
+			int days = findDaysofWeek(splitInput[i]);
 		}
 		
 	}
@@ -116,34 +71,27 @@ public class ProcessCommand {
 		case "sunday":
 		case "sun":
 			days = 1;
-			break;
 		case "monday":
 		case "mon":
 			days = 2;
-			break;
 		case "tues":
 		case "tuesday":
 		case "tue":
 			days = 3;
-			break;
 		case "wednesday":
 		case "wed":
 		case "weds":
 			days = 4;
-			break;
 		case "thurs":
 		case "thur":
 		case "thursday":
 			days = 5;
-			break;
 		case "friday":
 		case "fri":
 			days = 6;
-			break;
 		case "saturday":
 		case "sat":
 			days = 7;
-			break;
 		}
 		
 		

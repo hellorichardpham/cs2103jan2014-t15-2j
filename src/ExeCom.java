@@ -15,17 +15,18 @@ public class ExeCom {
 	private final static String SEARCH = "search";
 	private final static String UNDO = "undo";
 	private final static String EDIT = "edit";
+	private static final String UPDATE = "update";
 	private final static String REDO = "redo";
 	private final static String EMAIL = "email";
 	private final static String UNDO_SUCCESS_MESSAGE = "Action has successfully been undone.";
 	private static final String REDO_SUCCESS_MESSAGE = "Action has successfully been redone";
 	private final static String UNDO_UNSUCCESSFUL_MESSAGE = "There are no actions that can be undone.";
 	private static final String REDO_UNSUCCESSFUL_MESSAGE = "There are no actions that can be redone.";
-
 	private final static String INVALID_COMMAND_MESSAGE = "That is an invalid command.";
 	private final static String TASKLIST_EMPTY_MESSAGE = "There are no tasks in the task list.";
 	// private static final String CONFLICT_FOUND =
 	// "There is a conflict of schedule with Task ID: %1d";
+	
 
 	Scanner scanner = new Scanner(System.in);
 	private static ExeCom theOne;
@@ -107,6 +108,7 @@ public class ExeCom {
 			break;
 
 		case EDIT:
+		case UPDATE: 
 			saveToPrevTaskList();
 			Update u = new Update();
 			u.editContent(c);

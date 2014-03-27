@@ -33,7 +33,7 @@ public class Search {
 	/**
 	 * 
 	 * search: Cycle through entire taskList looking for User-specified keyword.
-	 * Add all tasks that contain keyword ino the searchResults ArrayList.
+	 * Add all tasks that contain keyword into the searchResults ArrayList.
 	 * 
 	 * @author Richard
 	 * @param void

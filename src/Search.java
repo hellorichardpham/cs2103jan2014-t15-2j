@@ -16,7 +16,7 @@ public class Search {
 	 * 
 	 * printSearch: Display task details of all tasks in Search Results
 	 * 
-	 * @author Richard
+	 * @author Richard, Ying Yun
 	 * @param void
 	 * @return void
 	 */
@@ -24,6 +24,7 @@ public class Search {
 	public static void printSearch() {
 		if (!searchResults.isEmpty()) {
 			for (Task task : searchResults) {
+				System.out.println("Task ID: " + task.getTaskID());
 				String taskToPrint = task.displayTask();
 				System.out.println(taskToPrint);
 			}

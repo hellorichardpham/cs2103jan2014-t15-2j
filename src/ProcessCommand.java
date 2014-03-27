@@ -58,8 +58,44 @@ public class ProcessCommand {
 	}
 
 	private void processDayofWeek(String[] splitInput) {
-		// TODO Auto-generated method stub
+		for(int i = splitInput.length ; i > 0 ; i++)
+		{
+			int days = findDaysofWeek(splitInput[i]);
+		}
 		
+	}
+
+	private int findDaysofWeek(String ithInput) {
+		int days = -1;
+		switch(ithInput.toLowerCase()) {
+		case "sunday":
+		case "sun":
+			days = 1;
+		case "monday":
+		case "mon":
+			days = 2;
+		case "tues":
+		case "tuesday":
+		case "tue":
+			days = 3;
+		case "wednesday":
+		case "wed":
+		case "weds":
+			days = 4;
+		case "thurs":
+		case "thur":
+		case "thursday":
+			days = 5;
+		case "friday":
+		case "fri":
+			days = 6;
+		case "saturday":
+		case "sat":
+			days = 7;
+		}
+		
+		
+		return days;
 	}
 
 	/**

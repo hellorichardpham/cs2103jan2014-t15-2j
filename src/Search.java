@@ -3,6 +3,7 @@ import java.util.ArrayList;
 
 public class Search {
 	private final static String TASK_NOT_FOUND_MESSAGE = "That task could not be found.";
+	private static final String EMPTY_STRING = "";
 	private static ArrayList<Task> searchResults;
 	private ArrayList<Task> taskList;
 	
@@ -23,7 +24,8 @@ public class Search {
 	public static void printSearch() {
 		if (!searchResults.isEmpty()) {
 			for (Task task : searchResults) {
-				System.out.println(task.displayAll());
+				String taskToPrint = task.displayTask();
+				System.out.println(taskToPrint);
 			}
 		} else {
 			System.out.println(TASK_NOT_FOUND_MESSAGE);
@@ -56,6 +58,23 @@ public class Search {
 				System.out.println(TASK_NOT_FOUND_MESSAGE);
 			}
 	}
+	
+	public void TESTsearchTaskList(Command c) {
+		boolean isFound = false;
+		resetSearchResults();
+		String searchKeyword = c.getDetails();
+		for (Task task : taskList) {
+			if (hasMatchingKeyword(task, searchKeyword)) {
+				searchResults.add(task);
+				isFound = true;
+			}
+		}
+		if (isFound) {
+			// Commented out for test purposes printSearch();
+		} else {
+			System.out.println(TASK_NOT_FOUND_MESSAGE);
+		}
+}
 
 	/**
 	 * 
@@ -84,5 +103,15 @@ public class Search {
 
 	public static void resetSearchResults() {
 		searchResults = new ArrayList<Task>();
+	}
+	
+	public static ArrayList<Task> getSearchResults() {
+		return searchResults;
+	}
+	
+	public static String replaceNull(String print) {
+		print = print.replace("null ", EMPTY_STRING);
+		print = print.replace("null", EMPTY_STRING);
+		return print;
 	}
 }

@@ -28,11 +28,13 @@ public class ProcessCommand {
 		c = new Command();
 		String[] splitInput = new String[100];
 		splitInput = userInput.split(" ");
+		String commandType = splitInput[0];
 
 		processFirstWordAsCommand(splitInput);
 		processPriorityCategoryLocation(splitInput);
 		processLocation(splitInput);
-		processDate(splitInput, userInput);
+		processDate(splitInput, commandType);
+		processDayofWeek(splitInput);
 
 		String timeDetails = extractTime(splitInput);
 		processTime(timeDetails);
@@ -53,6 +55,11 @@ public class ProcessCommand {
 		 */
 
 		return c;
+	}
+
+	private void processDayofWeek(String[] splitInput) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	/**
@@ -125,10 +132,7 @@ public class ProcessCommand {
 	 *            [] splitInput
 	 * 
 	 */
-	private void processDate(String[] splitInput, String userInput) {
-		
-		String[] splitCommand = userInput.split(" ");
-		String command = splitCommand[0];
+	private void processDate(String[] splitInput, String commandType) {
 		
 		for (int i = splitInput.length - 2; i > 0; i--) {
 
@@ -204,7 +208,7 @@ public class ProcessCommand {
 		}
 		
 		// if user did not enter any date, set date line of task as current date
-		if (c.getEndMonth() == null && !(command.equals("edit")||command.equals("update"))) {
+		if (c.getEndMonth() == null && !(commandType.equals("edit")||commandType.equals("update"))) {
 			String dateDetails = getCurrentDate();
 			c.setEndDay(dateDetails.substring(8, 10));
 			c.setEndMonth(dateDetails.substring(5, 7));

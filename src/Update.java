@@ -42,6 +42,11 @@ public class Update {
 				
 				int index = currentTaskID - 1;
 				ExeCom.getTaskListInstance().set(index, currentTask);	
+				
+				if(c.getPriority() != null) {
+				System.out.println("Succesfully Updated: "+ ExeCom.getTaskListInstance().get(i).getDetails());
+				}
+				
 				break;
 			}
 		}

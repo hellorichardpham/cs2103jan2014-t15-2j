@@ -24,7 +24,6 @@ private ArrayList<Task> taskList;
 			printListingHeader();
 			for (Task task : taskList) {
 				String print = task.displayTask();
-				print = replaceNull(print);
 				printTaskIndex(task, print);
 			}
 		} else if (taskList.isEmpty()) {

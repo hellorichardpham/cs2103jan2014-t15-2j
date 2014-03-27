@@ -24,6 +24,7 @@ public class Search {
 	public static void printSearch() {
 		if (!searchResults.isEmpty()) {
 			for (Task task : searchResults) {
+				System.out.println("Task ID: " + task.getTaskID());
 				String taskToPrint = task.displayTask();
 				System.out.println(taskToPrint);
 			}

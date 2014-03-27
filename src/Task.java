@@ -190,7 +190,7 @@ public class Task {
 		if (!startDay.equals("null") && !startDay.equals("null") && startDay.equals("null")){
 			info = info.concat(" Start Date: " + startDay + "/" + startMonth + "/" + startYear);
 		}
-		assert(startDay.equals(null));
+		//assert(startDay.equals("null"));
 
 		if (!endDay.equals("null") && !endDay.equals("null") && !endDay.equals("null")){
 			info = info.concat(" End Date: " + endDay + "/" + endMonth + "/" + endYear);

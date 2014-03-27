@@ -227,7 +227,7 @@ public class ProcessCommand {
 			if (splitInput[i] != null) {
 				switch (splitInput[i].toLowerCase()) {
 				case "//location":
-				case "l":
+				case "//l":
 					String locationDetails = extractDetails(splitInput, i);
 					c.setLocation(locationDetails);
 					splitInput[i] = EMPTY_STRING;

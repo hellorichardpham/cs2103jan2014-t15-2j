@@ -95,13 +95,13 @@ public class ProcessCommand {
 				if(c.getEndYear()==null) 
 				{
 					c.setEndYear(cal.get(Calendar.YEAR) + "");
-					c.setEndMonth(cal.get(Calendar.MONTH) + "");
+					c.setEndMonth(cal.get(Calendar.MONTH) + 1 + "");
 					c.setEndDay(cal.get(Calendar.DAY_OF_MONTH) + "");
 				}
 				else
 				{
 					c.setStartYear(cal.get(Calendar.YEAR) + "");
-					c.setStartMonth(cal.get(Calendar.MONTH) + "");
+					c.setStartMonth(cal.get(Calendar.MONTH) + 1 + "");
 					c.setStartDay(cal.get(Calendar.DAY_OF_MONTH) + "");
 				}
 				

@@ -238,7 +238,7 @@ public class ProcessCommand {
 					String priorityDetails = extractDetails(splitInput, i);
 					if (isValidPriority(priorityDetails)) {
 						c.setPriority(priorityDetails);
-						System.out.println("Succesfully Updated: "+ ExeCom.getTaskListInstance().get(i).getDetails());
+						
 						splitInput[i] = EMPTY_STRING;
 						splitInput[i + 1] = EMPTY_STRING;
 					} else {

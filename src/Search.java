@@ -16,7 +16,7 @@ public class Search {
 	 * 
 	 * printSearch: Display task details of all tasks in Search Results
 	 * 
-	 * @author Richard
+	 * @author Richard, Ying Yun
 	 * @param void
 	 * @return void
 	 */

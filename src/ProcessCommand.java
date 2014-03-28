@@ -64,7 +64,13 @@ public class ProcessCommand {
 
 		return c;
 	}
-
+	
+	/**
+	 * switchIfDateAreReversed: Handles case where user inputs weekday followed by month as date input.
+	 * Swtiches mixed up sttributes
+	 * 
+	 * @author Tian Weizhou
+	 */
 	private void switchIfDatesAreReversed() {
 		if(indexOfMonth > indexOfDayOfWeek) {
 			String tempDay = c.getStartDay();
@@ -80,7 +86,14 @@ public class ProcessCommand {
 			c.setEndYear(tempYear);
 		}
 	}
-
+	
+	/**
+	 * processDayOfWeek: Extracts date given the day of the week of user enters
+	 * 
+	 * @author Tian Weizhou
+	 * @param String[] splitInput
+	 * 
+	 */
 	private void processDayofWeek(String[] splitInput) {
 		for(int i = splitInput.length-1 ; i > 0 ; i--)
 		{
@@ -134,6 +147,14 @@ public class ProcessCommand {
 		
 	}
 
+	/**
+	 * findDaysOfWeek: Identifies if a String contains a weekday and returns the day of the week as a integer
+	 * 
+	 * @author Tian Weizhou
+	 * @param String ithInput
+	 * @return int day of week
+	 * 
+	 */
 	private int findDaysofWeek(String ithInput) {
 		int days = -1;
 		switch(ithInput.toLowerCase()) {
@@ -232,6 +253,7 @@ public class ProcessCommand {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		Date currentDate = new Date();
 		String formattedDate = dateFormat.format(currentDate);
+		System.out.println(formattedDate);
 		return formattedDate;
 	}
 

@@ -8,6 +8,10 @@ public class ProcessCommand {
 
 	private static final String EMPTY_STRING = "";
 	private static final String INVALID_PRIORITY_MESSAGE = "Priority could not be set. Valid priorities: low, medium, high.";
+	
+	int indexOfDayOfWeek;
+	int indexOfMonth;
+	
 	private Command c = new Command();
 
 	public Command getCommand() {
@@ -27,6 +31,7 @@ public class ProcessCommand {
 	public Command process(String userInput) {
 
 		c = new Command();
+		
 		String[] splitInput = new String[100];
 		splitInput = userInput.split(" ");
 		String commandType = splitInput[0];
@@ -34,8 +39,10 @@ public class ProcessCommand {
 		processFirstWordAsCommand(splitInput);
 		processPriorityCategoryLocation(splitInput);
 		processLocation(splitInput);
+		
 		processDayofWeek(splitInput);
 		processDate(splitInput, commandType);
+		switchIfDatesAreReversed();
 
 		String timeDetails = extractTime(splitInput);
 		processTime(timeDetails);
@@ -58,6 +65,22 @@ public class ProcessCommand {
 		return c;
 	}
 
+	private void switchIfDatesAreReversed() {
+		if(indexOfMonth > indexOfDayOfWeek) {
+			String tempDay = c.getStartDay();
+			String tempMonth = c.getStartMonth();
+			String tempYear = c.getStartYear();
+			
+			c.setStartDay(c.getEndDay());
+			c.setStartMonth(c.getEndMonth());
+			c.setStartYear(c.getEndYear());
+			
+			c.setEndDay(tempDay);
+			c.setEndMonth(tempMonth);
+			c.setEndYear(tempYear);
+		}
+	}
+
 	private void processDayofWeek(String[] splitInput) {
 		for(int i = splitInput.length-1 ; i > 0 ; i--)
 		{
@@ -65,6 +88,7 @@ public class ProcessCommand {
 			
 			if(inputDay!=-1)
 			{
+				indexOfDayOfWeek = i;
 				int isNextWeek = 0;
 				
 				switch(splitInput[i-1])
@@ -277,6 +301,7 @@ public class ProcessCommand {
 				break;
 			}
 			if (month != null) {
+				indexOfMonth = i;
 				if (c.getEndMonth() == null) {
 					c.setEndMonth(month);
 					c.setEndDay(splitInput[i - 1]);
@@ -285,12 +310,14 @@ public class ProcessCommand {
 					c.setStartMonth(month);
 					c.setStartDay(splitInput[i - 1]);
 					c.setStartYear(splitInput[i + 1]);
-					if(i+2<splitInput.length && splitInput[i+2].equals("to")) 
-					{ splitInput[i+2]=EMPTY_STRING;}
 				}
 				splitInput[i] = EMPTY_STRING;
 				splitInput[i - 1] = EMPTY_STRING;
 				splitInput[i + 1] = EMPTY_STRING;
+				if(i - 2 > 0 && splitInput[i-2].equals("to")) 
+				{ 	
+					splitInput[i-2]=EMPTY_STRING;
+				}
 			}
 		}
 		

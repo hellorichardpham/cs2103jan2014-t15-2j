@@ -285,9 +285,8 @@ public class ProcessCommand {
 					c.setStartMonth(month);
 					c.setStartDay(splitInput[i - 1]);
 					c.setStartYear(splitInput[i + 1]);
-					if (!splitInput[i + 2].equals("")) {
-						splitInput[i + 2] = EMPTY_STRING;
-					}
+					if(i+2<splitInput.length && splitInput[i+2].equals("to")) 
+					{ splitInput[i+2]=EMPTY_STRING;}
 				}
 				splitInput[i] = EMPTY_STRING;
 				splitInput[i - 1] = EMPTY_STRING;

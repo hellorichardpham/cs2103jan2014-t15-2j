@@ -310,8 +310,7 @@ public class ProcessCommand {
 	 * them into the command object
 	 * 
 	 * @author Tian Weizhou
-	 * @param String
-	 *            [] splitInput
+	 * @param String[] splitInput
 	 * 
 	 */
 	private void processPriorityCategoryLocation(String[] splitInput) {
@@ -356,8 +355,7 @@ public class ProcessCommand {
 	 * concatenating Strings in between // identifier
 	 * 
 	 * @author Tian Weizhou
-	 * @param String
-	 *            [] splitInput, int index of first //
+	 * @param String[] splitInput, int index of first //
 	 */
 	private String extractDetails(String[] splitInput, int i) {
 		String details = EMPTY_STRING;

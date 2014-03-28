@@ -58,15 +58,14 @@ private ArrayList<Task> taskList;
 	
 	
 	/**
-	 * 
-	 * printTaskIndex: print index number of current task
+	 * replaceNull: replaces "null" String with empty String
 	 * 
 	 * @author Richard
 	 * @param String
 	 * @return String
 	 */
 	public String replaceNull(String print) {
-		print = print.replace("null ", EMPTY_STRING);
+		print = print.replace("null", EMPTY_STRING);
 		print = print.replace("null", EMPTY_STRING);
 		return print;
 	}

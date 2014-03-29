@@ -23,16 +23,18 @@ public class Storage {
 	public void loadStorage() throws Exception {
 		ExeCom.getTaskListInstance().clear();
 		FileHandler fh;
-		logger.setUseParentHandlers(false);		// to disable log message on output screen
-		fh = new FileHandler("MyLogFile.txt");	// log message written to MyLogFile.txt
+		// to disable log message on output console
+		logger.setUseParentHandlers(false);
+		// log message written to MyLogFile.txt
+		fh = new FileHandler("MyLogFile.txt");
 
 		BufferedReader fileReader;
 		fileReader = createFileIfNotExist();
 
 		String[] retrieve;
 		int arraySize;
-		int content;
-		int setContent;
+		// int content;
+		// int setContent;
 		int counter;
 		String text;
 		try {
@@ -43,43 +45,80 @@ public class Storage {
 
 			while ((text = fileReader.readLine()) != null) {
 				Task task = new Task();
+
+				String location = "";
+				String category = "";
+				String priority = "";
+				int i;
+				int endPosition = 0;
+				int startPosition = 0;
+
 				retrieve = text.split(" ");
 				arraySize = retrieve.length;
-				content = arraySize - 14;
-				setContent = content;
-				
-				task.setStartDay(retrieve[setContent]);
-				setContent++;
-				task.setStartMonth(retrieve[setContent]);
-				setContent++;
-				task.setStartYear(retrieve[setContent]);
-				setContent++;
-				task.setEndDay(retrieve[setContent]);
-				setContent++;
-				task.setEndMonth(retrieve[setContent]);
-				setContent++;
-				task.setEndYear(retrieve[setContent]);
-				setContent++;
-				task.setStartHours(retrieve[setContent]);
-				setContent++;
-				task.setStartMins(retrieve[setContent]);
-				setContent++;
-				task.setEndHours(retrieve[setContent]);
-				setContent++;
-				task.setEndMins(retrieve[setContent]);
-				setContent++;
-				task.setLocation(retrieve[setContent]);
-				setContent++;
-				task.setCategory(retrieve[setContent]);
-				setContent++;
-				task.setPriority(retrieve[setContent]);
-				setContent++;
-				task.setTaskID(retrieve[setContent]);
+
+				for (i = 0; i < arraySize; i++) {
+					if (retrieve[i].equals("//location")) {
+						endPosition = i;
+						for (int j = 1; j < arraySize; j++) {
+							if (retrieve[j + i].equals("//category"))
+								break;
+							location += retrieve[j + i] + " ";
+						}
+					}
+					if (retrieve[i].equals("//category")) {
+						for (int j = 1; j < arraySize; j++) {
+							if (retrieve[j + i].equals("//priority"))
+								break;
+							category += retrieve[j + i] + " ";
+						}
+					}
+					if (retrieve[i].equals("//priority")) {
+						for (int j = 1; j < arraySize; j++) {
+							if (retrieve[j + i].equals("//taskid"))
+								break;
+							priority += retrieve[j + i] + " ";
+						}
+					}
+				}
+				if (location.endsWith(" "))
+					location = location.substring(0, location.length() - 1);
+				if (category.endsWith(" "))
+					category = category.substring(0, category.length() - 1);
+				if (priority.endsWith(" "))
+					priority = priority.substring(0, priority.length() - 1);
+
+				task.setLocation(location);
+				task.setCategory(category);
+				task.setPriority(priority);
+				task.setTaskID(retrieve[arraySize - 1]);
+
+				startPosition = endPosition - 10;
+				endPosition = startPosition;
+
+				task.setStartDay(retrieve[startPosition]);
+				startPosition++;
+				task.setStartMonth(retrieve[startPosition]);
+				startPosition++;
+				task.setStartYear(retrieve[startPosition]);
+				startPosition++;
+				task.setEndDay(retrieve[startPosition]);
+				startPosition++;
+				task.setEndMonth(retrieve[startPosition]);
+				startPosition++;
+				task.setEndYear(retrieve[startPosition]);
+				startPosition++;
+				task.setStartHours(retrieve[startPosition]);
+				startPosition++;
+				task.setStartMins(retrieve[startPosition]);
+				startPosition++;
+				task.setEndHours(retrieve[startPosition]);
+				startPosition++;
+				task.setEndMins(retrieve[startPosition]);
 
 				String details = "";
 
-				for (counter = 0; counter < content; counter++) {
-					if (counter == content - 1) {
+				for (counter = 0; counter < endPosition; counter++) {
+					if (counter == endPosition - 1) {
 						details += retrieve[counter];
 					} else {
 						details += retrieve[counter] + " ";
@@ -98,7 +137,8 @@ public class Storage {
 
 	/**
 	 * 
-	 * createFileIfNotExist: automatically creates an external .txt file for user if storage.txt is not found
+	 * createFileIfNotExist: automatically creates an external .txt file for
+	 * user if storage.txt is not found
 	 * 
 	 * @author Wei Zhou
 	 * @param void
@@ -128,13 +168,17 @@ public class Storage {
 		File currentFile = new File(FILENAME);
 		currentFile.delete();
 		PrintWriter pw = new PrintWriter(new FileOutputStream(FILENAME));
-		for (Task t : ExeCom.getTaskListInstance())
-			pw.println(t.displayToStorage() +  retrieveCurrentTaskID(t));
+		for (Task t : ExeCom.getTaskListInstance()) {
+			pw.println(t.displayToStorage() + "//taskid "
+					+ retrieveCurrentTaskID(t));
+
+		}
 		pw.close();
 	}
 
 	/**
 	 * printTaskIdToStorage: return task ID of current Task
+	 * 
 	 * @author Ying Yun
 	 * @param Task
 	 * @return int

@@ -219,7 +219,7 @@ public class Task {
 	}
 
 	public String displayToStorage(){
-		return details + " " + startDay + " " + startMonth + " " + startYear + " " + endDay  + " " + endMonth + " " + endYear + " " + startHours + " " + startMins + " " + endHours + " " + endMins + " " + location + " " + category + " " + priority + " ";
+		return details + " " + startDay + " " + startMonth + " " + startYear + " " + endDay  + " " + endMonth + " " + endYear + " " + startHours + " " + startMins + " " + endHours + " " + endMins + " " + "//location " + location + " " + "//category " + category + " " + "//priority " + priority + " ";
 	}
 	
 	public String displayAll() {

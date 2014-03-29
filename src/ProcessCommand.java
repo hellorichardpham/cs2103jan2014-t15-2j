@@ -282,7 +282,6 @@ public class ProcessCommand {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		Date currentDate = new Date();
 		String formattedDate = dateFormat.format(currentDate);
-		System.out.println(formattedDate);
 		return formattedDate;
 	}
 

@@ -95,10 +95,7 @@ public class Delete {
 		boolean isFound = false;
 		//loop thru whole taskList to find for the user specified task
 		for (int i = 0; i < taskList.size(); i++) {
-			//System.out.println("specified task id: " + taskIdNumber);
-			//System.out.println("current task id: " + taskList.get(i).getTaskID());
 			if (isTaskIDMatch(taskList.get(i).getTaskID(), taskIdNumber)) {
-				System.out.println("match found");
 				System.out.println("Succesfully Deleted: "+ taskList.get(i).getDetails());
 				taskList.remove(taskList.get(i));
 									

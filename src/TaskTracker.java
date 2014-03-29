@@ -10,10 +10,6 @@ public class TaskTracker {
 		String userInput;
 		UI ui = new UI();
 		
-		//Storage s = null;
-		//s = new Storage();
-		//s.loadStorage();
-		
 		ui.printWelcomeMessage();
 		
 		while (true) {

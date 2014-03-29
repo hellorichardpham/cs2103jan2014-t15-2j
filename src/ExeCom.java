@@ -212,20 +212,20 @@ public class ExeCom {
 					}
 				}
 				if(taskStart != -1 && commandStart != -1) {
-					if(commandStart >= taskStart && commandStart <= taskEnd) {
+					if(commandStart >= taskStart && commandStart < taskEnd) {
 						conflicts.add(i);
 					}
-					else if(commandEnd >= taskStart && commandEnd <= taskEnd) {
+					else if(commandEnd > taskStart && commandEnd <= taskEnd) {
 						conflicts.add(i);
 					}
 				}
 				if(taskStart != -1 && commandStart == -1) {
-					if(commandEnd >= taskStart && commandEnd <= taskEnd) {
+					if(commandEnd > taskStart && commandEnd < taskEnd) {
 						conflicts.add(i);
 					}
 				}
 				if(taskStart == -1 && commandStart != -1) {
-					if(taskEnd >= commandStart && taskEnd <= commandEnd) {
+					if(taskEnd > commandStart && taskEnd < commandEnd) {
 						conflicts.add(i);
 					}
 				}

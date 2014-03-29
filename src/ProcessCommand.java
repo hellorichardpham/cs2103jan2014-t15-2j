@@ -4,8 +4,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * ProcessCommand (class) : This class acts as the language processing unit, converting what the user inputs as a
+ * String to various attributes in the Command Class
+ * @author Tian Weizhou
+ */
 public class ProcessCommand {
-	
+
 	private static final String EMPTY_STRING = "";
 	private static final String INVALID_PRIORITY_MESSAGE = "Priority could not be set. Valid priorities: low, medium, high.";
 
@@ -23,8 +28,7 @@ public class ProcessCommand {
 	 * to a Command object
 	 * 
 	 * @author Tian Weizhou
-	 * @param String
-	 *            userInput
+	 * @param String userInput
 	 * @return Command
 	 * 
 	 */
@@ -67,12 +71,12 @@ public class ProcessCommand {
 
 	/**
 	 * switchIfDateAreReversed: Handles case where user inputs weekday followed by month as date input.
-	 * Swtiches mixed up sttributes
+	 * Or when end date is earlier than start date. Switches mixed up attributes
 	 * 
 	 * @author Tian Weizhou
 	 */
 	private void switchIfDatesAreReversed() {
-		if(indexOfMonth > indexOfDayOfWeek) {
+		if(indexOfMonth > indexOfDayOfWeek || ifEndDateEarlierThanStart()) {
 			String tempDay = c.getStartDay();
 			String tempMonth = c.getStartMonth();
 			String tempYear = c.getStartYear();
@@ -85,6 +89,28 @@ public class ProcessCommand {
 			c.setEndMonth(tempMonth);
 			c.setEndYear(tempYear);
 		}
+	}
+	
+	/**
+	 * ifEndDateEarlierThanStart: Checks if the user input end date is earlier than the start date
+	 * 
+	 * @author Tian Weizhou
+	 * @return boolean
+	 * 
+	 */
+	private boolean ifEndDateEarlierThanStart() {
+		if(c.getStartYear()!=null) {
+			if(Integer.parseInt(c.getEndYear()) < Integer.parseInt(c.getStartYear())) {
+				return true;
+			}
+			if(Integer.parseInt(c.getEndMonth()) < Integer.parseInt(c.getStartMonth())) {
+				return true;
+			}
+			if(Integer.parseInt(c.getEndDay()) < Integer.parseInt(c.getStartDay())) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -127,8 +153,12 @@ public class ProcessCommand {
 
 				Calendar cal = Calendar.getInstance();
 				int currentDayOfMonth = cal.get(Calendar.DAY_OF_WEEK);
+				int daysToAdd = inputDay - currentDayOfMonth;
+				if(daysToAdd<0) {
+					isNextWeek = 7;
+				}
 
-				cal.add(Calendar.DAY_OF_MONTH, inputDay - currentDayOfMonth + isNextWeek);
+				cal.add(Calendar.DAY_OF_MONTH, daysToAdd + isNextWeek);
 				if(c.getEndYear()==null) 
 				{
 					c.setEndYear(cal.get(Calendar.YEAR) + "");
@@ -200,8 +230,7 @@ public class ProcessCommand {
 	 * the correct format String and store in into the command object
 	 * 
 	 * @author Tian Weizhou
-	 * @param String
-	 *            timeDetails
+	 * @param String timeDetails
 	 * 
 	 */
 	public void processTime(String timeDetails) {
@@ -270,7 +299,7 @@ public class ProcessCommand {
 
 		for (int i = splitInput.length - 1; i > 0; i--) {
 
-			String month = findMonth(splitInput, i);
+			String month = findMonth(splitInput[i]);
 
 			if (!month.equals(EMPTY_STRING)) {
 				indexOfMonth = i;
@@ -302,7 +331,12 @@ public class ProcessCommand {
 			c.setEndYear(dateDetails.substring(0, 4));
 		}
 	}
-
+	
+	/**
+	 * setEndYearIfNoInput: Sets the end year as current year if the user did not input a year
+	 * @author Tian Weizhou
+	 * @param String[], int
+	 */
 	private void setEndYearIfUserNoInput(String[] splitInput, int i) {
 		if(i + 1 < splitInput.length) {
 			try{
@@ -319,7 +353,12 @@ public class ProcessCommand {
 			setEndAsCurrentYear();
 		}
 	}
-
+	
+	/**
+	 * setStartYearIfNoInput: Sets the Start year as current year if the user did not input a year
+	 * @author Tian Weizhou
+	 * @param String[], int
+	 */
 	private void setStartYearIfUserNoInput(String[] splitInput, int i) {
 		if(i + 1 < splitInput.length) {
 			try{
@@ -336,20 +375,32 @@ public class ProcessCommand {
 			setStartAsCurrentYear();
 		}
 	}
-
+	
+	/**
+	 * setEndAsCurrentYEar: Sets the end year as current year
+	 */
 	private void setEndAsCurrentYear() {
 		Calendar cal = Calendar.getInstance();
 		c.setEndYear(cal.get(Calendar.YEAR)+"");
 	}
 	
+	/**
+	 * setStartAsCurrentYEar: Sets the start year as current year
+	 */
 	private void setStartAsCurrentYear() {
 		Calendar cal = Calendar.getInstance();
 		c.setStartYear(cal.get(Calendar.YEAR)+"");
 	}
-
-	private String findMonth(String[] splitInput, int i) {
+	
+	/**
+	 * findMonth: identifies if input String is a month and returns integer value of month
+	 * @author Tian Weizhou
+	 * @param String
+	 * @return String
+	 */
+	private String findMonth(String ithSplitInput) {
 		String month = EMPTY_STRING;
-		switch (splitInput[i].toLowerCase()) {
+		switch (ithSplitInput.toLowerCase()) {
 		case "jan":
 		case "january":
 			month = "01";
@@ -406,10 +457,8 @@ public class ProcessCommand {
 	 * processProrityCategoryLocation: Extracts Location, Priority and Category
 	 * information by looking for keywords in the splitInput array and stores
 	 * them into the command object
-	 * 
 	 * @author Tian Weizhou
 	 * @param String[] splitInput
-	 * 
 	 */
 	private void processPriorityCategoryLocation(String[] splitInput) {
 		for (int i = 0; i < splitInput.length; i++) {
@@ -451,9 +500,8 @@ public class ProcessCommand {
 	/**
 	 * extractDetails: Extracts Location/Priority/Category details by
 	 * concatenating Strings in between // identifier
-	 * 
 	 * @author Tian Weizhou
-	 * @param String[] splitInput, int index of first //
+	 * @param String[], int
 	 */
 	private String extractDetails(String[] splitInput, int i) {
 		String details = EMPTY_STRING;
@@ -467,11 +515,8 @@ public class ProcessCommand {
 
 	/**
 	 * processLocation: Extracts Location by alternative indentifier (@)
-	 * 
 	 * @author Tian Weizhou
-	 * @param String
-	 *            [] splitInput
-	 * 
+	 * @param String[] 
 	 */
 	private void processLocation(String[] splitInput) {
 		for (int i = 0; i < splitInput.length; i++) {
@@ -485,11 +530,8 @@ public class ProcessCommand {
 
 	/**
 	 * processDetails: Extracts Task details and stores them into Command object
-	 * 
 	 * @author Tian Weizhou
-	 * @param String
-	 *            [] splitInput
-	 * 
+	 * @param String[]
 	 */
 	private void processDetails(String[] splitInput) {
 		String details = "";
@@ -510,11 +552,8 @@ public class ProcessCommand {
 	 * extractTime: Extracts initial time data from the userInput String and
 	 * includes cases for flexible input. Reformats data and returns as standard
 	 * String.
-	 * 
 	 * @author Tian Weizhou
-	 * @param String
-	 *            [] splitInput
-	 * 
+	 * @param String[] 
 	 */
 	String extractTime(String[] splitInput) {
 		String time = EMPTY_STRING;
@@ -541,11 +580,8 @@ public class ProcessCommand {
 	/**
 	 * processFirstWordAsCommand: Extracts the first word in the userInput
 	 * String as the Command keyword
-	 * 
 	 * @author Tian Weizhou
-	 * @param String
-	 *            [] splitInput
-	 * 
+	 * @param String[] 
 	 */
 	private String processFirstWordAsCommand(String[] splitInput) {
 
@@ -579,9 +615,7 @@ public class ProcessCommand {
 	}
 
 	/**
-	 * 
 	 * isRange: checks if the input time is a range or just an end time
-	 * 
 	 * @author yingyun
 	 * @param String
 	 * @return boolean

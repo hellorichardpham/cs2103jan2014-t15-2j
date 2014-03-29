@@ -83,7 +83,24 @@ public class ExeCom {
 				saveToRedoTaskList();
 			}
 			else {
-				System.out.println("There is a conflict.");
+				System.out.println("There is a conflict with these tasks: ");
+				for(int i=0 ; i<conflicts.size(); i++) {
+					System.out.print(conflicts.get(i)+": ");
+					System.out.println(taskList.get(conflicts.get(i)).displayTask());
+				}
+				System.out.println("Add Task anyway? Enter(Yes/No) :");
+				Scanner sc = new Scanner(System.in);
+				switch(sc.nextLine().toLowerCase()) {
+				case "yes":
+				case "y":
+				case "yeah":
+				case "ya":
+					saveToPrevTaskList();
+					Add a = new Add(getTaskListInstance());
+					a.addToTaskList(command);
+					saveToRedoTaskList();
+					break;
+				}
 			}
 			break;
 
@@ -184,16 +201,12 @@ public class ExeCom {
 	}
 
 	/**
-	 * 
-	 * checkConflict: check conflict of time and date, return true if there are
-	 * conflict
-	 * 
-	 * @author Khaleef
+	 * checkConflict: check conflict of time and date, return ArrayList<Integer> with the elements
+	 * being the indexes of conflicting tasks in tasklist
+	 * @author Tian Weizhou
 	 * @param void
-	 * @return Boolean
-	 * 
+	 * @return ArrayList<Integer>
 	 */
-
 	public static ArrayList<Integer> checkConflict() {
 		
 		ArrayList<Integer> conflicts = new ArrayList<Integer>();

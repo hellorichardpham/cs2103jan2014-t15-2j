@@ -74,11 +74,16 @@ public class ExeCom {
 
 		switch (keyWord) {
 		case ADD:
-			if (checkConflict() == false) {
+			ArrayList<Integer> conflicts = new ArrayList<Integer>();
+			conflicts = checkConflict();
+			if (conflicts.size() <= 0) {
 				saveToPrevTaskList();
 				Add a = new Add(getTaskListInstance());
 				a.addToTaskList(command);
 				saveToRedoTaskList();
+			}
+			else {
+				System.out.println("There is a conflict.");
 			}
 			break;
 
@@ -189,187 +194,131 @@ public class ExeCom {
 	 * 
 	 */
 
-	public static boolean checkConflict() throws Exception {
-
-		boolean isConflict = false;
-
-		String s1InputDay = c.getStartDay();
-		String s1InputMonth = c.getStartMonth();
-		String s1InputYear = c.getStartYear();
-		String s1InputHours = c.getStartHours();
-		String s1InputMins = c.getStartMins();
-
-		String e1InputDay = c.getEndDay();
-		String e1InputMonth = c.getEndMonth();
-		String e1InputYear = c.getEndYear();
-		String e1InputHours = c.getEndHours();
-		String e1InputMins = c.getEndMins();
-
-		String s1Input;
-		String e1Input;
-
-		// System.out.println(s1InputDay);
-		// System.out.println(s1InputMonth);
-		// System.out.println(s1InputYear);
-		// System.out.println(s1InputHours);
-		// System.out.println(s1InputMins);
-		//
-		// System.out.println(e1InputDay);
-		// System.out.println(e1InputMonth);
-		// System.out.println(e1InputYear);
-		// System.out.println(e1InputHours);
-		// System.out.println(e1InputMins);
-
-		if (taskList.isEmpty()) {
-			return isConflict;
-		}
-
-		if (s1InputHours == null && s1InputMins == null && e1InputHours == null
-				&& e1InputMins == null) {
-			return isConflict;
-		}
-
-		if (s1InputDay == null) {
-			s1InputDay = c.getEndDay();
-			s1InputMonth = c.getEndMonth();
-			s1InputYear = c.getEndYear();
-		}
-		if (s1InputHours == null) {
-			s1InputHours = c.getEndHours();
-			s1InputMins = c.getEndMins();
-		}
-
-		s1Input = s1InputDay + "/" + s1InputMonth + "/" + s1InputYear + " "
-				+ s1InputHours + ":" + s1InputMins;
-
-		if (e1InputDay == null) {
-			e1InputDay = c.getStartDay();
-			e1InputMonth = c.getStartMonth();
-			e1InputYear = c.getStartYear();
-		}
-		if (e1InputHours == null) {
-			e1InputHours = c.getStartHours();
-			e1InputMins = c.getStartDay();
-		}
-
-		e1Input = e1InputDay + "/" + e1InputMonth + "/" + e1InputYear + " "
-				+ e1InputHours + ":" + e1InputMins;
-
-		// System.out.println(s1Input);
-		// System.out.println(e1Input);
-
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
-
-		Date s1DateTime = sdf.parse(s1Input);
-		Date e1DateTime = sdf.parse(e1Input);
-
-		String s2TaskDay;
-		String s2TaskMonth;
-		String s2TaskYear;
-		String s2TaskHours;
-		String s2TaskMins;
-
-		String e2TaskDay;
-		String e2TaskMonth;
-		String e2TaskYear;
-		String e2TaskHours;
-		String e2TaskMins;
-
-		String s2Task;
-		String e2Task;
-
-		int index;
-		Date s2DateTime;
-		Date e2Datetime;
-
-		long s1;
-		long e1;
-		long s2;
-		long e2;
-
-		// System.out.println(s1Input);
-		// System.out.println(e1Input);
-
-		for (Task task : taskList) {
-			index = taskList.indexOf(task);
-
-			s2TaskDay = taskList.get(index).getStartDay();
-			s2TaskMonth = taskList.get(index).getStartMonth();
-			s2TaskYear = taskList.get(index).getStartYear();
-			s2TaskHours = taskList.get(index).getStartHours();
-			s2TaskMins = taskList.get(index).getStartMins();
-
-			e2TaskDay = taskList.get(index).getEndDay();
-			e2TaskMonth = taskList.get(index).getEndMonth();
-			e2TaskYear = taskList.get(index).getEndYear();
-			e2TaskHours = taskList.get(index).getEndHours();
-			e2TaskMins = taskList.get(index).getEndMins();
-
-			if (s2TaskHours.equals("null") & s2TaskMins.equals("null")
-					& e2TaskHours.equals("null") & e2TaskMins.equals("null")) {
-				continue;
-			}
-
-			if (s2TaskDay.equals("null")) {
-				s2TaskDay = taskList.get(index).getEndDay();
-				s2TaskMonth = taskList.get(index).getEndMonth();
-				s2TaskYear = taskList.get(index).getEndYear();
-			}
-
-			if (s2TaskHours.equals("null")) {
-				s2TaskHours = taskList.get(index).getEndHours();
-				s2TaskMins = taskList.get(index).getEndMins();
-			}
-
-			s2Task = s2TaskDay + "/" + s2TaskMonth + "/" + s2TaskYear + " "
-					+ s2TaskHours + ":" + s2TaskMins;
-
-			if (e2TaskDay.equals("null")) {
-				e2TaskDay = taskList.get(index).getStartDay();
-				e2TaskMonth = taskList.get(index).getStartMonth();
-				e2TaskYear = taskList.get(index).getStartYear();
-			}
-
-			if (e2TaskHours.equals("null")) {
-				e2TaskHours = taskList.get(index).getStartHours();
-				e2TaskMins = taskList.get(index).getStartMins();
-			}
-
-			e2Task = e2TaskDay + "/" + e2TaskMonth + "/" + e2TaskYear + " "
-					+ e2TaskHours + ":" + e2TaskMins;
-
-			s2DateTime = sdf.parse(s2Task);
-			e2Datetime = sdf.parse(e2Task);
-
-			s1 = s1DateTime.getTime();
-			e1 = e1DateTime.getTime();
-			s2 = s2DateTime.getTime();
-			e2 = e2Datetime.getTime();
-
-			// System.out.println(s2Task);
-			// System.out.println(e2Task);
-
-			// isConflict = ((s1 >= s2) && (s1 <= e2))
-			// || ((e1 >= s2) && (e2 <= e2)) || ((s1 <= s2) && (e1 >= e2));
-
-			if (s1 < s2) {
-				if (e1 > s2) {
-					isConflict = true; // overlap
+	public static ArrayList<Integer> checkConflict() {
+		
+		ArrayList<Integer> conflicts = new ArrayList<Integer>();
+			
+		for(int i=0; i<taskList.size(); i++) {
+			
+				Task current = taskList.get(i);
+				int taskStart = setStartSignature(current);
+				int taskEnd = setEndSignature(current);
+				int commandStart = setStartSignature(c);
+				int commandEnd = setEndSignature(c);
+				
+				if(taskStart == -1 && commandStart == -1) {
+					if(taskEnd==commandEnd) {
+						conflicts.add(i);
+					}
 				}
-			} else {
-				if (e2 > s1) {
-					isConflict = true; // overlap
+				if(taskStart != -1 && commandStart != -1) {
+					if(commandStart >= taskStart && commandStart <= taskEnd) {
+						conflicts.add(i);
+					}
+					else if(commandEnd >= taskStart && commandEnd <= taskEnd) {
+						conflicts.add(i);
+					}
+				}
+				if(taskStart != -1 && commandStart == -1) {
+					if(commandEnd >= taskStart && commandEnd <= taskEnd) {
+						conflicts.add(i);
+					}
+				}
+				if(taskStart == -1 && commandStart != -1) {
+					if(taskEnd >= commandStart && taskEnd <= commandEnd) {
+						conflicts.add(i);
+					}
 				}
 			}
+		return conflicts;
+	}
 
-			if (isConflict == true) {
-				System.out
-						.println("There is a conflict of schedule with Task ID: "
-								+ (taskList.indexOf(task) + 1));
-				break;
-			}
+	private static int setEndSignature(Command comm) {
+		int end = 0;
+		
+		end += 100000000*Integer.parseInt(comm.getEndYear());
+		end += 1000000*Integer.parseInt(comm.getEndMonth());
+		end += 10000*Integer.parseInt(comm.getEndDay());
+		
+		if(comm.getEndHours().equals("null")) {
+			end += 2359;
 		}
-		return isConflict;
+		else {
+			end += 100*Integer.parseInt(comm.getEndHours());
+			end += Integer.parseInt(comm.getEndMins());
+		}
+		
+ 		return end;
+	}
+
+	private static int setStartSignature(Command comm) {
+		
+		int start = -1;
+		
+		if(comm.getStartYear()!=null) {
+			start += 100000000*Integer.parseInt(comm.getStartYear());
+			start += 1000000*Integer.parseInt(comm.getStartMonth());
+			start += 10000*Integer.parseInt(comm.getStartDay());
+		}
+		else if(comm.getStartMins()!=null) {
+			start += 100000000*Integer.parseInt(comm.getEndYear());
+			start += 1000000*Integer.parseInt(comm.getEndMonth());
+			start += 10000*Integer.parseInt(comm.getEndDay());
+		}
+		else {
+			return start;
+		}
+		
+		if(comm.getStartMins()!=null) {
+			start += 100*Integer.parseInt(comm.getStartHours());
+			start += Integer.parseInt(comm.getStartMins());
+		}
+		return start;
+		
+	}
+
+	private static int setEndSignature(Task task) {
+		
+		int end = 0;
+		
+		end += 100000000*Integer.parseInt(task.getEndYear());
+		end += 1000000*Integer.parseInt(task.getEndMonth());
+		end += 10000*Integer.parseInt(task.getEndDay());
+		
+		if(task.getEndHours().equals("null")) {
+			end += 2359;
+		}
+		else {
+			end += 100*Integer.parseInt(task.getEndHours());
+			end += Integer.parseInt(task.getEndMins());
+		}
+		
+ 		return end;
+	}
+
+	private static int setStartSignature(Task task) {
+int start = -1;
+		
+		if(!task.getStartYear().equals("null")) {
+			start += 100000000*Integer.parseInt(task.getStartYear());
+			start += 1000000*Integer.parseInt(task.getStartMonth());
+			start += 10000*Integer.parseInt(task.getStartDay());
+		}
+		else if(!task.getStartMins().equals("null")) {
+			start += 100000000*Integer.parseInt(task.getEndYear());
+			start += 1000000*Integer.parseInt(task.getEndMonth());
+			start += 10000*Integer.parseInt(task.getEndDay());
+		}
+		else {
+			return start;
+		}
+		
+		if(!task.getStartMins().equals("null")) {
+			start += 100*Integer.parseInt(task.getStartHours());
+			start += Integer.parseInt(task.getStartMins());
+		}
+		return start;
+		
 	}
 
 	public static void transferTasksFromTo(ArrayList<Task> source,

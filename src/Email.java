@@ -6,6 +6,7 @@ import java.util.Scanner;
 public class Email {
 
 	private Scanner input;
+	@SuppressWarnings("unused")
 	private ArrayList<Task> taskList;
 
 	public Email(ArrayList<Task> taskList) {
@@ -14,19 +15,15 @@ public class Email {
 
 	public void emailUser() throws Exception {
 
-		String name;
-		String email;
-		String password;
+		String name = "TaskTracker";
+		String email = "tasktrackernus@gmail.com ";
+		String password = "112233445566778899NUS";
 		String recipient;
+
+		// default host
 		String host = "smtp.gmail.com";
 
 		input = new Scanner(System.in);
-		System.out.println("Please enter your name:");
-		name = input.nextLine();
-		System.out.println("Please enter your email: ");
-		email = input.nextLine();
-		System.out.println("Please enter your password: ");
-		password = input.nextLine();
 		System.out.println("Please enter recipient email: ");
 		recipient = input.nextLine();
 
@@ -53,11 +50,15 @@ public class Email {
 
 		messageBody = sb.toString();
 		br.close();
+		
+		try {
+			System.out.println("Sending email. Please wait.");
+			if (new MailUtil().sendMail(recipients, subject, messageBody, name,
+					email, password, host))
+				System.out.println("Email sent. Thank you for waiting.");
+		} catch (Exception e) {
 
-		System.out.println("Sending email. Please wait.");
+		}
 
-		new MailUtil().sendMail(recipients, subject, messageBody, name, email,
-				password, host);
-		System.out.println("Email sent. Thank you for waiting.");
 	}
 }

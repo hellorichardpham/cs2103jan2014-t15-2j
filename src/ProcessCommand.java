@@ -5,13 +5,13 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class ProcessCommand {
-
+	
 	private static final String EMPTY_STRING = "";
 	private static final String INVALID_PRIORITY_MESSAGE = "Priority could not be set. Valid priorities: low, medium, high.";
-	
-	int indexOfDayOfWeek;
-	int indexOfMonth;
-	
+
+	int indexOfDayOfWeek = Integer.MAX_VALUE;
+	int indexOfMonth = Integer.MIN_VALUE;
+
 	private Command c = new Command();
 
 	public Command getCommand() {
@@ -31,7 +31,7 @@ public class ProcessCommand {
 	public Command process(String userInput) {
 
 		c = new Command();
-		
+
 		String[] splitInput = new String[100];
 		splitInput = userInput.split(" ");
 		String commandType = splitInput[0];
@@ -39,7 +39,7 @@ public class ProcessCommand {
 		processFirstWordAsCommand(splitInput);
 		processPriorityCategoryLocation(splitInput);
 		processLocation(splitInput);
-		
+
 		processDayofWeek(splitInput);
 		processDate(splitInput, commandType);
 		switchIfDatesAreReversed();
@@ -64,7 +64,7 @@ public class ProcessCommand {
 
 		return c;
 	}
-	
+
 	/**
 	 * switchIfDateAreReversed: Handles case where user inputs weekday followed by month as date input.
 	 * Swtiches mixed up sttributes
@@ -76,17 +76,17 @@ public class ProcessCommand {
 			String tempDay = c.getStartDay();
 			String tempMonth = c.getStartMonth();
 			String tempYear = c.getStartYear();
-			
+
 			c.setStartDay(c.getEndDay());
 			c.setStartMonth(c.getEndMonth());
 			c.setStartYear(c.getEndYear());
-			
+
 			c.setEndDay(tempDay);
 			c.setEndMonth(tempMonth);
 			c.setEndYear(tempYear);
 		}
 	}
-	
+
 	/**
 	 * processDayOfWeek: Extracts date given the day of the week of user enters
 	 * 
@@ -98,12 +98,12 @@ public class ProcessCommand {
 		for(int i = splitInput.length-1 ; i > 0 ; i--)
 		{
 			int inputDay = findDaysofWeek(splitInput[i]);
-			
+
 			if(inputDay!=-1)
 			{
 				indexOfDayOfWeek = i;
 				int isNextWeek = 0;
-				
+
 				switch(splitInput[i-1])
 				{
 				case "next":
@@ -114,7 +114,7 @@ public class ProcessCommand {
 				case "from":
 					splitInput[i-1] = EMPTY_STRING;
 				}
-				
+
 				if(i-2 > 0) 
 				{
 					if(splitInput[i-2].equals("to")||splitInput[i-2].equals("from"))
@@ -122,12 +122,12 @@ public class ProcessCommand {
 						splitInput[i-2] = EMPTY_STRING;
 					}
 				}
-				
+
 				splitInput[i]=EMPTY_STRING;
-				
+
 				Calendar cal = Calendar.getInstance();
 				int currentDayOfMonth = cal.get(Calendar.DAY_OF_WEEK);
-				
+
 				cal.add(Calendar.DAY_OF_MONTH, inputDay - currentDayOfMonth + isNextWeek);
 				if(c.getEndYear()==null) 
 				{
@@ -141,10 +141,10 @@ public class ProcessCommand {
 					c.setStartMonth(cal.get(Calendar.MONTH) + 1 + "");
 					c.setStartDay(cal.get(Calendar.DAY_OF_MONTH) + "");
 				}
-				
+
 			}
 		}
-		
+
 	}
 
 	/**
@@ -190,8 +190,8 @@ public class ProcessCommand {
 			days = 7;
 			break;
 		}
-		
-		
+
+
 		return days;
 	}
 
@@ -267,82 +267,33 @@ public class ProcessCommand {
 	 * 
 	 */
 	private void processDate(String[] splitInput, String commandType) {
-		
-		for (int i = splitInput.length - 2; i > 0; i--) {
 
-			String month = null;
+		for (int i = splitInput.length - 1; i > 0; i--) {
 
-			switch (splitInput[i].toLowerCase()) {
-			case "jan":
-			case "january":
-				month = "01";
-				break;
-			case "feb":
-			case "february":
-				month = "02";
-				break;
-			case "mar":
-			case "march":
-				month = "03";
-				break;
-			case "apr":
-			case "april":
-				month = "04";
-				break;
-			case "may":
-				month = "05";
-				break;
-			case "jun":
-			case "june":
-				month = "06";
-				break;
-			case "july":
-			case "jul":
-				month = "07";
-				break;
-			case "august":
-			case "aug":
-				month = "08";
-				break;
-			case "september":
-			case "sep":
-			case "sept":
-				month = "09";
-				break;
-			case "october":
-			case "oct":
-				month = "10";
-				break;
-			case "november":
-			case "nov":
-				month = "11";
-				break;
-			case "december":
-			case "dec":
-				month = "12";
-				break;
-			}
-			if (month != null) {
+			String month = findMonth(splitInput, i);
+
+			if (!month.equals(EMPTY_STRING)) {
 				indexOfMonth = i;
 				if (c.getEndMonth() == null) {
 					c.setEndMonth(month);
 					c.setEndDay(splitInput[i - 1]);
-					c.setEndYear(splitInput[i + 1]);
+					setEndYearIfUserNoInput(splitInput, i);
 				} else {
 					c.setStartMonth(month);
 					c.setStartDay(splitInput[i - 1]);
-					c.setStartYear(splitInput[i + 1]);
+					setStartYearIfUserNoInput(splitInput, i);
 				}
+
 				splitInput[i] = EMPTY_STRING;
 				splitInput[i - 1] = EMPTY_STRING;
-				splitInput[i + 1] = EMPTY_STRING;
-				if(i - 2 > 0 && splitInput[i-2].equals("to")) 
+
+				if(i - 2 > 0 && (splitInput[i-2].equals("to") || splitInput[i-2].equals("from"))) 
 				{ 	
 					splitInput[i-2]=EMPTY_STRING;
 				}
 			}
 		}
-		
+
 		// if user did not enter any date, set date line of task as current date
 		if (c.getEndMonth() == null && !(commandType.equals("edit")||commandType.equals("update"))) {
 			String dateDetails = getCurrentDate();
@@ -350,6 +301,105 @@ public class ProcessCommand {
 			c.setEndMonth(dateDetails.substring(5, 7));
 			c.setEndYear(dateDetails.substring(0, 4));
 		}
+	}
+
+	private void setEndYearIfUserNoInput(String[] splitInput, int i) {
+		if(i + 1 < splitInput.length) {
+			try{
+				int year = Integer.parseInt(splitInput[i+1]);
+				c.setEndYear(year+"");
+				splitInput[i+1] = EMPTY_STRING;
+			}
+			catch (NumberFormatException e)
+			{
+				setEndAsCurrentYear();
+			}
+		}
+		else {
+			setEndAsCurrentYear();
+		}
+	}
+
+	private void setStartYearIfUserNoInput(String[] splitInput, int i) {
+		if(i + 1 < splitInput.length) {
+			try{
+				int year = Integer.parseInt(splitInput[i+1]);
+				c.setStartYear(year+"");
+				splitInput[i+1] = EMPTY_STRING;
+			}
+			catch (NumberFormatException e)
+			{
+				setStartAsCurrentYear();
+			}
+		}
+		else {
+			setStartAsCurrentYear();
+		}
+	}
+
+	private void setEndAsCurrentYear() {
+		Calendar cal = Calendar.getInstance();
+		c.setEndYear(cal.get(Calendar.YEAR)+"");
+	}
+	
+	private void setStartAsCurrentYear() {
+		Calendar cal = Calendar.getInstance();
+		c.setStartYear(cal.get(Calendar.YEAR)+"");
+	}
+
+	private String findMonth(String[] splitInput, int i) {
+		String month = EMPTY_STRING;
+		switch (splitInput[i].toLowerCase()) {
+		case "jan":
+		case "january":
+			month = "01";
+			break;
+		case "feb":
+		case "february":
+			month = "02";
+			break;
+		case "mar":
+		case "march":
+			month = "03";
+			break;
+		case "apr":
+		case "april":
+			month = "04";
+			break;
+		case "may":
+			month = "05";
+			break;
+		case "jun":
+		case "june":
+			month = "06";
+			break;
+		case "july":
+		case "jul":
+			month = "07";
+			break;
+		case "august":
+		case "aug":
+			month = "08";
+			break;
+		case "september":
+		case "sep":
+		case "sept":
+			month = "09";
+			break;
+		case "october":
+		case "oct":
+			month = "10";
+			break;
+		case "november":
+		case "nov":
+			month = "11";
+			break;
+		case "december":
+		case "dec":
+			month = "12";
+			break;
+		}
+		return month;
 	}
 
 	/**
@@ -377,7 +427,7 @@ public class ProcessCommand {
 					String priorityDetails = extractDetails(splitInput, i);
 					if (isValidPriority(priorityDetails)) {
 						c.setPriority(priorityDetails);
-						
+
 						splitInput[i] = EMPTY_STRING;
 						splitInput[i + 1] = EMPTY_STRING;
 					} else {
@@ -546,6 +596,6 @@ public class ProcessCommand {
 	private static boolean isValidPriority(String categoryDetails) {
 		return (categoryDetails.equalsIgnoreCase("low")
 				|| categoryDetails.equalsIgnoreCase("medium") || categoryDetails
-					.equalsIgnoreCase("high"));
+				.equalsIgnoreCase("high"));
 	}
 }

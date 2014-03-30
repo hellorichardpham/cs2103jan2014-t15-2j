@@ -154,7 +154,7 @@ public class Storage {
 		task.setLocation(location);
 		task.setCategory(category);
 		task.setPriority(priority);
-		task.setTaskID(retrieve[arraySize - 1]);
+		task.setTaskID(retrieve[arraySize - ONE_CONST]);
 	}
 
 	/**
@@ -235,11 +235,11 @@ public class Storage {
 	/**
 	 * printTaskIdToStorage: return task ID of current Task
 	 * 
-	 * @author Ying Yun
+	 * @author Ying Yun, Khaleef
 	 * @param Task
 	 * @return int
 	 */
 	private int retrieveCurrentTaskID(Task t) {
-		return ExeCom.getTaskListInstance().indexOf(t) + 1;
+		return ExeCom.getTaskListInstance().indexOf(t) + ONE_CONST;
 	}
 }

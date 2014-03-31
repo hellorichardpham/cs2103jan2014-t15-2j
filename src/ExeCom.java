@@ -1,6 +1,4 @@
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Scanner;
 
 public class ExeCom {
@@ -18,15 +16,16 @@ public class ExeCom {
 	private static final String UPDATE = "update";
 	private final static String REDO = "redo";
 	private final static String EMAIL = "email";
+	private static final String COMPLETED = "completed";
 	private final static String UNDO_SUCCESS_MESSAGE = "Action has successfully been undone.";
 	private static final String REDO_SUCCESS_MESSAGE = "Action has successfully been redone";
 	private final static String UNDO_UNSUCCESSFUL_MESSAGE = "There are no actions that can be undone.";
 	private static final String REDO_UNSUCCESSFUL_MESSAGE = "There are no actions that can be redone.";
 	private final static String INVALID_COMMAND_MESSAGE = "That is an invalid command.";
-	private final static String TASKLIST_EMPTY_MESSAGE = "There are no tasks in the task list.";
+	
 	// private static final String CONFLICT_FOUND =
 	// "There is a conflict of schedule with Task ID: %1d";
-	
+
 
 	Scanner scanner = new Scanner(System.in);
 	private static ExeCom theOne;
@@ -60,7 +59,7 @@ public class ExeCom {
 	 * executeCommand: determines which action to perform based on the
 	 * userCommand then calls the appropriate method.
 	 * 
-	 * @author Richard
+	 * @author Richard, Joey, Ying Yun
 	 * @param Command
 	 * @return String
 	 * 
@@ -78,8 +77,8 @@ public class ExeCom {
 			conflicts = checkConflict();
 			if (conflicts.size() <= 0) {
 				saveToPrevTaskList();
-				Add a = new Add(getTaskListInstance());
-				a.addToTaskList(command);
+				Add add = new Add(getTaskListInstance());
+				add.addToTaskList(command);
 				saveToRedoTaskList();
 			}
 			else {
@@ -88,9 +87,10 @@ public class ExeCom {
 					System.out.print(conflicts.get(i)+": ");
 					System.out.println(taskList.get(conflicts.get(i)).displayTask());
 				}
-				System.out.println("Add Task anyway? Enter(Yes/No) :");
-				Scanner sc = new Scanner(System.in);
-				switch(sc.nextLine().toLowerCase()) {
+				System.out.println("Add Task anyway? Enter(Y/N) :");
+				UI ui = new UI();
+				String input = ui.askForUserResponse();
+				switch(input.toLowerCase()) {
 				case "yes":
 				case "y":
 				case "yeah":
@@ -105,19 +105,31 @@ public class ExeCom {
 			break;
 
 		case DISPLAY:
-			if (isValidUndoRedoDisplayCommand()) {
-				Display d = new Display(getTaskListInstance());
+			Display d = new Display(getTaskListInstance());
+			
+			if(isDisplayCompleted()){
+				d.displayCompleted();
+			}else if(isValidUndoRedoDisplayCommand()){
 				d.displayTaskList();
-			} else
-				System.out.println(TASKLIST_EMPTY_MESSAGE);
+			}else{
+				System.out.println(INVALID_COMMAND_MESSAGE);
+			}
+				
 			break;
 
 		case DELETE:
 			saveToPrevTaskList();
-			Delete del = new Delete(getTaskListInstance());
+			Delete del = new Delete();
 			del.delete(c);
 			saveToRedoTaskList();
 			// s.loadStorage(); // to update the taskList
+			break;
+
+		case COMPLETED:
+			saveToPrevTaskList();
+			Completed completed = new Completed();
+			completed.markCompleted(c);
+			saveToRedoTaskList();
 			break;
 
 		case SEARCH:
@@ -137,6 +149,11 @@ public class ExeCom {
 			saveToRedoTaskList();
 			break;
 
+		case EMAIL:
+			Email email = new Email(getTaskListInstance());
+			email.emailUser();
+			break;
+
 		case UNDO:
 			undo();
 			break;
@@ -144,15 +161,57 @@ public class ExeCom {
 		case REDO:
 			redo();
 			break;
-			
-		case EMAIL:
-			Email email = new Email(getTaskListInstance());
-			email.emailUser();
-			break;
+
+
 		}
 
 		s.saveStorage();
 		return " ";
+	}
+	
+	/**
+	 * 
+	 * isDisplayCompleted: Check if user wants to display list of completed tasks
+	 * 
+	 * @author yingyun
+	 * @param void
+	 * @return boolean
+	 * 
+	 */
+	private boolean isDisplayCompleted() {
+		if (c.getDetails().equals("completed") || c.getDetails().equals("completed tasks")){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	/**
+	 * 
+	 * isTaskIDMatch: Checks if a task's taskID is equal to the userSpecified
+	 * taskIdNumber that he's searching for.
+	 * 
+	 * @author Richard, yingyun
+	 * @param String, int
+	 * @return boolean
+	 * 
+	 */
+
+	public boolean isTaskIDMatch(String specifiedTaskID, int taskIdNumber) {
+		return Integer.parseInt(specifiedTaskID) == taskIdNumber;
+	}
+
+	/**
+	 * retrieveTaskIdNumber: retrieves user-specified taskID. 
+	 * 
+	 * @author Richard, yingyun
+	 * @param String
+	 * @return int
+	 * 
+	 */
+
+	public int retrieveTaskIdNumber(String taskID) {
+		return Integer.parseInt(taskID);
 	}
 
 	/**
@@ -177,7 +236,6 @@ public class ExeCom {
 	}
 
 	/**
-	 * 
 	 * redo: Reperforms any task that was done before undo() was called.
 	 * 
 	 * @author Richard
@@ -203,56 +261,57 @@ public class ExeCom {
 	/**
 	 * checkConflict: check conflict of time and date, return ArrayList<Integer> with the elements
 	 * being the indexes of conflicting tasks in tasklist
+	 * 
 	 * @author Tian Weizhou
 	 * @param void
 	 * @return ArrayList<Integer>
 	 */
 	public static ArrayList<Integer> checkConflict() {
-		
+
 		ArrayList<Integer> conflicts = new ArrayList<Integer>();
-			
+
 		for(int i=0; i<taskList.size(); i++) {
-			
-				Task current = taskList.get(i);
-				int taskStart = setStartSignature(current);
-				int taskEnd = setEndSignature(current);
-				int commandStart = setStartSignature(c);
-				int commandEnd = setEndSignature(c);
-				
-				if(taskStart == -1 && commandStart == -1) {
-					if(taskEnd==commandEnd) {
-						conflicts.add(i);
-					}
-				}
-				if(taskStart != -1 && commandStart != -1) {
-					if(commandStart >= taskStart && commandStart < taskEnd) {
-						conflicts.add(i);
-					}
-					else if(commandEnd > taskStart && commandEnd <= taskEnd) {
-						conflicts.add(i);
-					}
-				}
-				if(taskStart != -1 && commandStart == -1) {
-					if(commandEnd > taskStart && commandEnd < taskEnd) {
-						conflicts.add(i);
-					}
-				}
-				if(taskStart == -1 && commandStart != -1) {
-					if(taskEnd > commandStart && taskEnd < commandEnd) {
-						conflicts.add(i);
-					}
+
+			Task current = taskList.get(i);
+			int taskStart = setStartSignature(current);
+			int taskEnd = setEndSignature(current);
+			int commandStart = setStartSignature(c);
+			int commandEnd = setEndSignature(c);
+
+			if(taskStart == -1 && commandStart == -1) {
+				if(taskEnd==commandEnd) {
+					conflicts.add(i);
 				}
 			}
+			if(taskStart != -1 && commandStart != -1) {
+				if(commandStart >= taskStart && commandStart < taskEnd) {
+					conflicts.add(i);
+				}
+				else if(commandEnd > taskStart && commandEnd <= taskEnd) {
+					conflicts.add(i);
+				}
+			}
+			if(taskStart != -1 && commandStart == -1) {
+				if(commandEnd > taskStart && commandEnd < taskEnd) {
+					conflicts.add(i);
+				}
+			}
+			if(taskStart == -1 && commandStart != -1) {
+				if(taskEnd > commandStart && taskEnd < commandEnd) {
+					conflicts.add(i);
+				}
+			}
+		}
 		return conflicts;
 	}
 
 	private static int setEndSignature(Command comm) {
 		int end = 0;
-		
+
 		end += 100000000*Integer.parseInt(comm.getEndYear());
 		end += 1000000*Integer.parseInt(comm.getEndMonth());
 		end += 10000*Integer.parseInt(comm.getEndDay());
-		
+
 		if(comm.getEndHours().equals("null")) {
 			end += 2359;
 		}
@@ -260,14 +319,14 @@ public class ExeCom {
 			end += 100*Integer.parseInt(comm.getEndHours());
 			end += Integer.parseInt(comm.getEndMins());
 		}
-		
- 		return end;
+
+		return end;
 	}
 
 	private static int setStartSignature(Command comm) {
-		
+
 		int start = -1;
-		
+
 		if(comm.getStartYear()!=null) {
 			start += 100000000*Integer.parseInt(comm.getStartYear());
 			start += 1000000*Integer.parseInt(comm.getStartMonth());
@@ -281,23 +340,23 @@ public class ExeCom {
 		else {
 			return start;
 		}
-		
+
 		if(comm.getStartMins()!=null) {
 			start += 100*Integer.parseInt(comm.getStartHours());
 			start += Integer.parseInt(comm.getStartMins());
 		}
 		return start;
-		
+
 	}
 
 	private static int setEndSignature(Task task) {
-		
+
 		int end = 0;
-		
+
 		end += 100000000*Integer.parseInt(task.getEndYear());
 		end += 1000000*Integer.parseInt(task.getEndMonth());
 		end += 10000*Integer.parseInt(task.getEndDay());
-		
+
 		if(task.getEndHours().equals("null")) {
 			end += 2359;
 		}
@@ -305,13 +364,13 @@ public class ExeCom {
 			end += 100*Integer.parseInt(task.getEndHours());
 			end += Integer.parseInt(task.getEndMins());
 		}
-		
- 		return end;
+
+		return end;
 	}
 
 	private static int setStartSignature(Task task) {
-int start = -1;
-		
+		int start = -1;
+
 		if(!task.getStartYear().equals("null")) {
 			start += 100000000*Integer.parseInt(task.getStartYear());
 			start += 1000000*Integer.parseInt(task.getStartMonth());
@@ -325,13 +384,13 @@ int start = -1;
 		else {
 			return start;
 		}
-		
+
 		if(!task.getStartMins().equals("null")) {
 			start += 100*Integer.parseInt(task.getStartHours());
 			start += Integer.parseInt(task.getStartMins());
 		}
 		return start;
-		
+
 	}
 
 	public static void transferTasksFromTo(ArrayList<Task> source,

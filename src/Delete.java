@@ -7,7 +7,7 @@ public class Delete {
 	private ArrayList<Task> taskList;
 
 	//constructor
-	public Delete(ArrayList<Task> taskList){
+	public Delete(){
 		this.taskList = ExeCom.getTaskListInstance();	
 	}
 
@@ -91,11 +91,12 @@ public class Delete {
 	 * 
 	 */
 	private void deleteSpecifiedTask(String target) {
-		int taskIdNumber = retrieveTaskIdNumber(target);
+		ExeCom ec = new ExeCom();
+		int taskIdNumber = ec.retrieveTaskIdNumber(target);
 		boolean isFound = false;
 		//loop thru whole taskList to find for the user specified task
 		for (int i = 0; i < taskList.size(); i++) {
-			if (isTaskIDMatch(taskList.get(i).getTaskID(), taskIdNumber)) {
+			if (ec.isTaskIDMatch(taskList.get(i).getTaskID(), taskIdNumber)) {
 				System.out.println("Succesfully Deleted: "+ taskList.get(i).getDetails());
 				taskList.remove(taskList.get(i));
 									
@@ -110,7 +111,7 @@ public class Delete {
 
 	/**
 	 * 
-	 * isInteger: Checks whether the string in TargetTask[] is an integer or not
+	 * isInteger: Checks whether the string in TargetedTask[] is an integer or not
 	 * 
 	 * @author Ying Yun
 	 * @param String
@@ -130,7 +131,7 @@ public class Delete {
 
 	/**
 	 * 
-	 * isPositiveInteger: Checks if the delete/update/edit parameter is a valid taskID
+	 * isPositiveInteger: Checks if the delete/update/edit/completed parameter is a valid taskID
 	 * (positive integer)
 	 * CURRENTLY NOT IN USE AS PARAMETER CAN BE LOCATION/PRIORITY/CATEGORY
 	 * @author Richard, yingyun
@@ -152,35 +153,8 @@ public class Delete {
 		}
 	}
 
-	/**
-	 * 
-	 * isTaskIDMatch: Checks if a task's taskID is equal to the userSpecified
-	 * taskIdNumber that he's searching for.
-	 * 
-	 * @author Richard, yingyun
-	 * @param String, int
-	 * @return boolean
-	 * 
-	 */
 
-	public static boolean isTaskIDMatch(String specifiedTaskID, int taskIdNumber) {
-		return Integer.parseInt(specifiedTaskID) == taskIdNumber;
 
-	}
 
-	/**
-	 * 
-	 * retrieveTaskIdNumber: retrieves user-specified taskID. We know it's valid
-	 * because it passed the isPositiveInteger() test
-	 * 
-	 * @author Richard, yingyun
-	 * @param String
-	 * @return int
-	 * 
-	 */
-
-	public static int retrieveTaskIdNumber(String taskID) {
-		return Integer.parseInt(taskID);
-	}
 }
 

@@ -8,13 +8,8 @@ public class TaskTracker {
 	public static void main(String[] args) throws Exception {
 		
 		String userInput;
-		UI ui = null;
-		Storage s = null;
+		UI ui = new UI();
 		
-		ui = UI.getInstance();
-		s = Storage.getInstance();
-		
-		s.loadStorage();
 		ui.printWelcomeMessage();
 		
 		while (true) {
@@ -26,11 +21,11 @@ public class TaskTracker {
 	}//end main
 
 	private static void elseProcessInput(String userInput) throws Exception {
-		ProcessCommand pc = ProcessCommand.getInstance();
+		ProcessCommand pc = new ProcessCommand();
 		ExeCom ec = ExeCom.getInstance();
 		
-		String[] info = pc.process(userInput);
-		ec.executeCommand(info);
+		Command c = pc.process(userInput);
+		ec.executeCommand(c);
 	}
 
 	private static void exitIfUserWants(String userInput) {
@@ -38,5 +33,4 @@ public class TaskTracker {
 			System.exit(0);
 		}		
 	}
-	
 }//end class

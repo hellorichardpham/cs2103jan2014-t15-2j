@@ -20,7 +20,7 @@ public class Task {
 	protected String priority;
 	protected String category;
 	protected String taskID;
-	protected boolean completed;
+	protected String completed;
 
 	//constructor
 	public Task(Command c){
@@ -182,10 +182,14 @@ public class Task {
 	}
 
 	public boolean isCompleted() {
-		return completed;
+		if (completed.equals("true")){
+			return true;
+		}else{
+			return false;
+		}
 	}
 
-	public void setCompleted(boolean completed) {
+	public void setCompleted(String completed) {
 		this.completed = completed;
 	}
 	

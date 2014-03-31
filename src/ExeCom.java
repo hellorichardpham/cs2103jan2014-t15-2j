@@ -22,7 +22,8 @@ public class ExeCom {
 	private final static String UNDO_UNSUCCESSFUL_MESSAGE = "There are no actions that can be undone.";
 	private static final String REDO_UNSUCCESSFUL_MESSAGE = "There are no actions that can be redone.";
 	private final static String INVALID_COMMAND_MESSAGE = "That is an invalid command.";
-	
+	private static final String NO_DETAILS_MESSAGE = "No details detected! This task is not added to the task list";
+
 	// private static final String CONFLICT_FOUND =
 	// "There is a conflict of schedule with Task ID: %1d";
 
@@ -73,40 +74,24 @@ public class ExeCom {
 
 		switch (keyWord) {
 		case ADD:
-			ArrayList<Integer> conflicts = new ArrayList<Integer>();
-			conflicts = checkConflict();
-			if (conflicts.size() <= 0) {
-				saveToPrevTaskList();
-				Add add = new Add(getTaskListInstance());
-				add.addToTaskList(command);
-				saveToRedoTaskList();
-			}
-			else {
-				System.out.println("There is a conflict with these tasks: ");
-				for(int i=0 ; i<conflicts.size(); i++) {
-					System.out.print(conflicts.get(i)+": ");
-					System.out.println(taskList.get(conflicts.get(i)).displayTask());
+			Add add = new Add(getTaskListInstance());
+			if (isValidAddCommand()){
+				ArrayList<Integer> conflicts = new ArrayList<Integer>();
+				conflicts = checkConflict();
+				if (conflicts.size() <= 0) {
+					add.processAdd(command);
 				}
-				System.out.println("Add Task anyway? Enter(Y/N) :");
-				UI ui = new UI();
-				String input = ui.askForUserResponse();
-				switch(input.toLowerCase()) {
-				case "yes":
-				case "y":
-				case "yeah":
-				case "ya":
-					saveToPrevTaskList();
-					Add a = new Add(getTaskListInstance());
-					a.addToTaskList(command);
-					saveToRedoTaskList();
-					break;
+				else {
+					add.handleConflict(command, conflicts);
 				}
+			}else{
+				System.out.println(NO_DETAILS_MESSAGE);
 			}
 			break;
 
 		case DISPLAY:
 			Display d = new Display(getTaskListInstance());
-			
+
 			if(isDisplayCompleted()){
 				d.displayCompleted();
 			}else if(isValidUndoRedoDisplayCommand()){
@@ -114,7 +99,7 @@ public class ExeCom {
 			}else{
 				System.out.println(INVALID_COMMAND_MESSAGE);
 			}
-				
+
 			break;
 
 		case DELETE:
@@ -168,7 +153,25 @@ public class ExeCom {
 		s.saveStorage();
 		return " ";
 	}
-	
+
+
+	/**
+	 * 
+	 * isValidAddCommand: Check if user keyed in details (mandatory)
+	 * 
+	 * @author yingyun
+	 * @param void
+	 * @return boolean
+	 * 
+	 */
+	private boolean isValidAddCommand() {
+		if(c.getDetails()!=null){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
 	/**
 	 * 
 	 * isDisplayCompleted: Check if user wants to display list of completed tasks
@@ -410,7 +413,7 @@ public class ExeCom {
 	 * @return void
 	 * 
 	 */
-	public static void saveToPrevTaskList() {
+	public void saveToPrevTaskList() {
 		resetPrevTaskList();
 		transferTasksFromTo(taskList, prevTaskList);
 		/*
@@ -429,7 +432,7 @@ public class ExeCom {
 	 * 
 	 */
 
-	public static void saveToRedoTaskList() {
+	public void saveToRedoTaskList() {
 		resetRedoTaskList();
 		transferTasksFromTo(taskList, redoTaskList);
 

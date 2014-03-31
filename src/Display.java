@@ -22,10 +22,19 @@ public class Display extends Task {
 	public void displayTaskList() {
 		if (!taskList.isEmpty()) {
 			printListingHeader();
-			for (Task task : taskList) {
-				String print = displayTask();
-				printTaskIndex(task, print);
-			}
+//			for (Task task : taskList) {
+//				String print = displayTask();
+//				printTaskIndex(task, print);
+//				
+//			}
+ 			for (int i = 0; i < taskList.size(); i++) {
+ 				String print = taskList.get(i).displayTask();
+// 				print = print.replace("null", "");
+//				print = print.replace("null ", "");
+// 				print = print.replace("null", "");
+ 				System.out.println(print);
+ 			}
+
 		}
 		else if (taskList.isEmpty()) {
 			System.out.println(TASKLIST_EMPTY_MESSAGE);

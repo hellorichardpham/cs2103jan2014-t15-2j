@@ -3,14 +3,6 @@ import java.util.Scanner;
 
 public class UI {
 	Scanner scanner = new Scanner(System.in);
-	private static UI theOne;
-	
-	public static UI getInstance() {
-		if(theOne==null){
-			theOne = new UI();
-		}
-		return theOne;
-	}
 	
 	public void printWelcomeMessage() {
 		System.out.println("   .    .  .  .. .. ........  ...   ............................................... ........  ..................................................................");
@@ -24,9 +16,28 @@ public class UI {
 		System.out.println("  .....  .....    ............ .............. ................ ... ..............................................................................................");
 	}
 
+	/**
+	 * promptUser: get user's command input
+	 * 
+	 * @author Ying Yun
+	 * @param void
+	 * @return String
+	 */
 	public String promptUser() {
 		System.out.println("Enter Command: ");
 		String userInput = scanner.nextLine();
 		return userInput;
+	}
+	
+	/**
+	 * askForUserResponse: get user input
+	 * 
+	 * @author Ying Yun
+	 * @param void
+	 * @return String
+	 */
+	public String askForUserResponse(){
+		String input = scanner.nextLine();
+		return input;
 	}
 }

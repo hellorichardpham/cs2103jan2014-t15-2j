@@ -2,48 +2,54 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ExeCom {
+	private static Command c;
 	private static ArrayList<Task> taskList;
 	private static ArrayList<Task> prevTaskList;
 	private static ArrayList<Task> redoTaskList;
-	private static ArrayList<Task> searchResults;
-	private static String[] info;
+
 	private final static String ADD = "add";
 	private final static String DISPLAY = "display";
 	private final static String DELETE = "delete";
 	private final static String SEARCH = "search";
 	private final static String UNDO = "undo";
 	private final static String EDIT = "edit";
+	private static final String UPDATE = "update";
 	private final static String REDO = "redo";
+	private final static String EMAIL = "email";
+	private static final String COMPLETED = "completed";
 	private final static String UNDO_SUCCESS_MESSAGE = "Action has successfully been undone.";
 	private static final String REDO_SUCCESS_MESSAGE = "Action has successfully been redone";
 	private final static String UNDO_UNSUCCESSFUL_MESSAGE = "There are no actions that can be undone.";
 	private static final String REDO_UNSUCCESSFUL_MESSAGE = "There are no actions that can be redone.";
-	private final static String TASK_NOT_FOUND_MESSAGE = "That task could not be found.";
-	private final static String TASKID_NOT_FOUND_MESSAGE = "That Task ID Number was not found";
-	private final static String TASKLIST_EMPTY_MESSAGE = "There are no tasks in the task list.";
-	private final static String ADD_SUCCESSFUL_MESSAGE = "That task has successfully been added to the Task List.";
 	private final static String INVALID_COMMAND_MESSAGE = "That is an invalid command.";
-	private final static String NOT_INTEGER_MESSAGE = "ERROR: This is not a positive integer.";
-	
-	private static ExeCom theOne;
+	private static final String NO_DETAILS_MESSAGE = "No details detected! This task is not added to the task list";
+	private static final String INVALID_TIME_MESSAGE = "Time entered is invalid! This task is not added to the task list";
+
+	// private static final String CONFLICT_FOUND =
+	// "There is a conflict of schedule with Task ID: %1d";
+
+
 	Scanner scanner = new Scanner(System.in);
-	
-	public static ArrayList<Task> getTaskListInstance() {
-		if(taskList==null) {
-			taskList = new ArrayList<Task>();
-		}
-		return taskList;
-	}
-	
+	private static ExeCom theOne;
+
+	// Allows all part of the program to get the same instance of ExeCom
 	public static ExeCom getInstance() {
-		if(theOne==null){
+		if (theOne == null) {
 			theOne = new ExeCom();
 		}
 		return theOne;
 	}
-	
+
+	public static ArrayList<Task> getTaskListInstance() {
+		if (taskList == null) {
+			taskList = new ArrayList<Task>();
+		}
+		return taskList;
+	}
+
+	// constructor
 	ExeCom() {
-		if(taskList==null) {
+		if (taskList == null) {
 			taskList = new ArrayList<Task>();
 		}
 		prevTaskList = new ArrayList<Task>();
@@ -55,272 +61,414 @@ public class ExeCom {
 	 * executeCommand: determines which action to perform based on the
 	 * userCommand then calls the appropriate method.
 	 * 
-	 * @author Richard
-	 * @param userCommandInfo
+	 * @author Richard, Joey, Ying Yun
+	 * @param Command
 	 * @return String
 	 * 
 	 */
-	public String executeCommand(String[] userCommandInfo)
-			throws Exception {
-		info = userCommandInfo;
-		String command = info[0];
+	public String executeCommand(Command command) throws Exception {
+		c = command;
+		String keyWord = c.getKeyword().toLowerCase();
 
-		Storage s = Storage.getInstance();
-		switch (command) {
+		Storage s = new Storage();
+		s.loadStorage();
+
+		switch (keyWord) {
 		case ADD:
-			addToTaskList();
-			s.saveStorage();
-			return " ";
+			Add add = new Add(getTaskListInstance());
+			if (isValidAddCommand()){
+				if(isValidTime()){
+					ArrayList<Integer> conflicts = new ArrayList<Integer>();
+					conflicts = checkConflict();
+					if (conflicts.size() <= 0) {
+						add.processAdd(command);
+					}
+					else {
+						add.handleConflict(command, conflicts);
+					}
+				}else{
+					System.out.println(INVALID_TIME_MESSAGE);
+				}
+			}else{
+				System.out.println(NO_DETAILS_MESSAGE);
+			}
+			break;
+
 		case DISPLAY:
-			display();
-			return " ";
+			Display d = new Display(getTaskListInstance());
+
+			if(isDisplayCompleted()){
+				d.displayCompleted();
+			}else if(isValidUndoRedoDisplayCommand()){
+				d.displayTaskList();
+			}else{
+				System.out.println(INVALID_COMMAND_MESSAGE);
+			}
+
+			break;
+
 		case DELETE:
-			delete();
-			s.saveStorage();
-			return " ";
+			saveToPrevTaskList();
+			Delete del = new Delete();
+			del.delete(c);
+			saveToRedoTaskList();
+			// s.loadStorage(); // to update the taskList
+			break;
+
+		case COMPLETED:
+			saveToPrevTaskList();
+			Completed completed = new Completed();
+			completed.markCompleted(c);
+			saveToRedoTaskList();
+			break;
+
 		case SEARCH:
-			search();
-			s.saveStorage();
-			return " ";
+			if (isValidSearchCommand(c)) {
+				Search search = new Search(taskList);
+				search.searchTaskList(c);
+			} else {
+				System.out.println(INVALID_COMMAND_MESSAGE);
+			}
+			break;
+
+		case EDIT:
+		case UPDATE: 
+			Add a = new Add(getTaskListInstance());
+			ArrayList<Integer> conflicts = new ArrayList<Integer>();
+			conflicts = checkConflict();
+			if (conflicts.size() <= 0) {
+				saveToPrevTaskList();
+				Update u = new Update();
+				u.editContent(c);
+				saveToRedoTaskList();
+				break;
+			}else{
+				a.handleConflict(command, conflicts);
+			}
+
+
+
+
+		case EMAIL:
+			Email email = new Email(getTaskListInstance());
+			email.emailUser();
+			break;
+
 		case UNDO:
 			undo();
-			s.saveStorage();
-			return " ";
-		case EDIT:
-			editContent();
-			s.saveStorage();
-			return " ";
+			break;
+
 		case REDO:
 			redo();
-			s.saveStorage();
-			return " ";
+			break;
 		}
+
+		s.saveStorage();
 		return " ";
 	}
 
 	/**
+	 * isValidTime: check if user entered valid time which is from 0000 t0 2359
 	 * 
-	 * display: display all task found in the taskList
-	 * 
-	 * @author Khaleef
-	 * @param void
-	 * @return void
-	 */
-	private static void display() {
-		if (!taskList.isEmpty() && isValidDisplayCommand()) {
-			System.out.println("~~~~~ Listing of all tasks ~~~~~");
-			for (Task task : taskList) {
-				String print = task.displayAll();
-				print = print.replace("null ", "");
-				print = print.replace("null", "");
-				System.out.println(print);
-			}
-
-		} else if (taskList.isEmpty() && isValidDisplayCommand()) {
-			System.out.println(TASKLIST_EMPTY_MESSAGE);
-		} else {
-			System.out.println(INVALID_COMMAND_MESSAGE);
-		}
-	}
-
-	public static boolean isValidDisplayCommand() {
-		if (info[1] == null) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	/**
-	 * 
-	 * addToTaskList: Add tasks to arraylist and set taskID.
-	 * 
-	 * @author Richard
-	 * @param void
-	 * @return void
-	 */
-	public static void addToTaskList() {
-		Task taskToAdd = new Task(info);
-		saveToPrevTaskList();
-		taskToAdd.setTaskID(Integer.toString(taskList.size() + 1));
-		taskList.add(taskToAdd);
-		saveToRedoTaskList();
-		System.out.println(ADD_SUCCESSFUL_MESSAGE);
-	}
-
-	/**
-	 * 
-	 * delete: Go through taskList and remove task with matching taskID
-	 * 
-	 * @author Richard
-	 * @param void
-	 * @return void
-	 * 
-	 */
-
-	public static void delete() {
-		if (isPositiveInteger()) {
-			int taskIdNumber = retrieveTaskIdNumber();
-			boolean isFound = false;
-			for (int i = 0; i < taskList.size(); i++) {
-				if (isTaskIDMatch(taskList.get(i), taskIdNumber)) {
-					saveToPrevTaskList();
-					System.out.println("Deleted: "
-							+ taskList.get(i).getDetails());
-					taskList.remove(taskList.get(i));
-					saveToRedoTaskList();
-					isFound = true;
-				}
-			}
-			if (!isFound) {
-				System.out.println(TASKID_NOT_FOUND_MESSAGE);
-			}
-		} else {
-			// User input was "delete (String)" or "delete (negative #)"
-			System.out.println(NOT_INTEGER_MESSAGE);
-		}
-	}
-
-	/**
-	 * 
-	 * isPositiveInteger: Checks if the delete parameter is a valid taskID (positive integer)
-	 * 
-	 * @author Richard
+	 * @author yingyun
 	 * @param void
 	 * @return boolean
 	 * 
 	 */
-	public static boolean isPositiveInteger() {
-		try {
-			if (Integer.parseInt(info[15]) > 0) {
-				return true;
-			} else {
-				return false;
-			}
-		} catch (NumberFormatException e) {
+	private boolean isValidTime() {
+		if(isValidHours() && isValidMins()){
+			return true;
+		}else{
 			return false;
 		}
 	}
-	
+
+	/**
+	 * isValidhours: check if user entered between 0 to 23 hours
+	 * 
+	 * @author yingyun
+	 * @param void
+	 * @return boolean
+	 * 
+	 */
+	private boolean isValidHours() {
+
+		int startHours = Integer.parseInt(c.getStartHours());
+		int endHours = Integer.parseInt(c.getEndHours());
+
+		if( 0<=startHours && startHours<24 && 0<=endHours && endHours<24){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	/**
+	 * isValidMins: check if user entered between 0 to 59 minutes
+	 * 
+	 * @author yingyun
+	 * @param void
+	 * @return boolean
+	 * 
+	 */
+	private boolean isValidMins() {
+
+		int startMins = Integer.parseInt(c.getStartMins());
+		int endMins = Integer.parseInt(c.getEndMins());
+
+		if( 0<=startMins && startMins<60 && 0<=endMins && endMins<60){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
 	/**
 	 * 
-	 * retrieveTaskIdNumber: retrieves user-specified taskID. We know it's valid because it passed
-	 * the isPositiveInteger() test
+	 * isValidAddCommand: Check if user keyed in details (mandatory)
 	 * 
-	 * @author Richard
+	 * @author yingyun
 	 * @param void
+	 * @return boolean
+	 * 
+	 */
+	private boolean isValidAddCommand() {
+		if(c.getDetails()!=null){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	/**
+	 * 
+	 * isDisplayCompleted: Check if user wants to display list of completed tasks
+	 * 
+	 * @author yingyun
+	 * @param void
+	 * @return boolean
+	 * 
+	 */
+	private boolean isDisplayCompleted() {
+		if (c.getDetails().equals("completed") || c.getDetails().equals("completed tasks")){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	/**
+	 * 
+	 * isTaskIDMatch: Checks if a task's taskID is equal to the userSpecified
+	 * taskIdNumber that he's searching for.
+	 * 
+	 * @author Richard, yingyun
+	 * @param String, int
+	 * @return boolean
+	 * 
+	 */
+
+	public boolean isTaskIDMatch(String specifiedTaskID, int taskIdNumber) {
+		return Integer.parseInt(specifiedTaskID) == taskIdNumber;
+	}
+
+	/**
+	 * retrieveTaskIdNumber: retrieves user-specified taskID. 
+	 * 
+	 * @author Richard, yingyun
+	 * @param String
 	 * @return int
 	 * 
 	 */
-	
-	public static int retrieveTaskIdNumber() {
-		return Integer.parseInt(info[15]);
-	}
-	
-	/**
-	 * 
-	 * isTaskIDMatch: Checks if a task's taskID is equal to the userSpecified taskIdNumber that he's
-	 * searching for.
-	 * 
-	 * @author Richard
-	 * @param Task, int
-	 * @return boolean
-	 * 
-	 */
-	
-	public static boolean isTaskIDMatch(Task task, int taskIdNumber) {
-		return Integer.parseInt(task.getTaskID()) == taskIdNumber;
+
+	public int retrieveTaskIdNumber(String taskID) {
+		return Integer.parseInt(taskID);
 	}
 
 	/**
 	 * 
-	 * printSearch: Display task details of all tasks in Search Results
+	 * undo: Reset taskList then add contents of pTL to tL.
 	 * 
 	 * @author Richard
 	 * @param void
 	 * @return void
 	 */
+	public static void undo() {
+		if (isValidUndoRedoDisplayCommand() && !prevTaskList.isEmpty()) {
+			resetTaskList();
+			transferTasksFromTo(prevTaskList, taskList);
 
-	public static void printSearch() {
-		if (!searchResults.isEmpty()) {
-			for (Task task : searchResults) {
-				System.out.println(task.displayAll());
-			}
-		} else {
-			System.out.println(TASK_NOT_FOUND_MESSAGE);
-		}
-	}
-
-	/**
-	 * 
-	 * search: Cycle through entire taskList looking for User-specified keyword.
-	 * Add all tasks that contain keyword ino the searchResults ArrayList.
-	 * 
-	 * @author Richard
-	 * @param void
-	 * @return void
-	 */
-
-	public static void search() {
-		if (isValidSearchCommand(info)) {
-			boolean isFound = false;
-			resetSearchResults();
-			String searchKeyword = info[1];
-			for (Task task : taskList) {
-				if (hasMatchingKeyword(task, searchKeyword)) {
-					searchResults.add(task);
-					isFound = true;
-				}
-			}
-			if (isFound) {
-				printSearch();
-			} else {
-				System.out.println(TASK_NOT_FOUND_MESSAGE);
-			}
+			System.out.println(UNDO_SUCCESS_MESSAGE);
+		} else if (isValidUndoRedoDisplayCommand() && prevTaskList.isEmpty()) {
+			System.out.println(UNDO_UNSUCCESSFUL_MESSAGE);
 		} else {
 			System.out.println(INVALID_COMMAND_MESSAGE);
 		}
 	}
-	
-	/**
-	 * 
-	 * isValidSearchCommand: Makes sure there is a keyword that the user is
-	 * searching for instead of an invalid command like "search"
-	 * 
-	 * @author Richard
-	 * @param String[]
-	 * @return boolean
-	 */
 
-	public static boolean isValidSearchCommand(String[] info) {
-		return info[1] != null;
-	}
-	
 	/**
-	 * 
-	 * hasMatchingKeyword: checks if a task contains the keyword that a user 
-	 * specified in the search command
-	 * 
-	 * @author Richard
-	 * @param String[], String
-	 * @return boolean
-	 */
-	
-	public static boolean hasMatchingKeyword(Task task, String searchKeyword) {
-		return task.getDetails().contains(searchKeyword);
-	}
-	
-	/**
-	 * 
-	 * resetSearchResults: Reinitializes searchResults so it will be empty when we search.
+	 * redo: Reperforms any task that was done before undo() was called.
 	 * 
 	 * @author Richard
 	 * @param void
 	 * @return void
 	 */
-	
-	public static void resetSearchResults() {
-		searchResults = new ArrayList<Task>();
+	public static void redo() {
+		if (isValidUndoRedoDisplayCommand()
+				&& (!redoTaskList.isEmpty() || !prevTaskList.isEmpty())) {
+			resetTaskList();
+			transferTasksFromTo(redoTaskList, taskList);
+			/*
+			 * for (Task task : redoTaskList) { taskList.add(task); }
+			 */
+			System.out.println(REDO_SUCCESS_MESSAGE);
+		} else if (isValidUndoRedoDisplayCommand() && redoTaskList.isEmpty()) {
+			System.out.println(REDO_UNSUCCESSFUL_MESSAGE);
+		} else {
+			System.out.println(INVALID_COMMAND_MESSAGE);
+		}
+	}
+
+	/**
+	 * checkConflict: check conflict of time and date, return ArrayList<Integer> with the elements
+	 * being the indexes of conflicting tasks in tasklist
+	 * 
+	 * @author Tian Weizhou
+	 * @param void
+	 * @return ArrayList<Integer>
+	 */
+	public static ArrayList<Integer> checkConflict() {
+
+		ArrayList<Integer> conflicts = new ArrayList<Integer>();
+
+		for(int i=0; i<taskList.size(); i++) {
+
+			Task current = taskList.get(i);
+			int taskStart = setStartSignature(current);
+			int taskEnd = setEndSignature(current);
+			int commandStart = setStartSignature(c);
+			int commandEnd = setEndSignature(c);
+
+			if(taskStart == -1 && commandStart == -1) {
+				if(taskEnd==commandEnd) {
+					conflicts.add(i);
+				}
+			}
+			if(taskStart != -1 && commandStart != -1) {
+				if(commandStart >= taskStart && commandStart < taskEnd) {
+					conflicts.add(i);
+				}
+				else if(commandEnd > taskStart && commandEnd <= taskEnd) {
+					conflicts.add(i);
+				}
+			}
+			if(taskStart != -1 && commandStart == -1) {
+				if(commandEnd > taskStart && commandEnd < taskEnd) {
+					conflicts.add(i);
+				}
+			}
+			if(taskStart == -1 && commandStart != -1) {
+				if(taskEnd > commandStart && taskEnd < commandEnd) {
+					conflicts.add(i);
+				}
+			}
+		}
+		return conflicts;
+	}
+
+	private static int setEndSignature(Command comm) {
+		int end = 0;
+
+		end += 100000000*Integer.parseInt(comm.getEndYear());
+		end += 1000000*Integer.parseInt(comm.getEndMonth());
+		end += 10000*Integer.parseInt(comm.getEndDay());
+
+		if(comm.getEndHours().equals("null")) {
+			end += 2359;
+		}
+		else {
+			end += 100*Integer.parseInt(comm.getEndHours());
+			end += Integer.parseInt(comm.getEndMins());
+		}
+
+		return end;
+	}
+
+	private static int setStartSignature(Command comm) {
+
+		int start = -1;
+
+		if(comm.getStartYear()!=null) {
+			start += 100000000*Integer.parseInt(comm.getStartYear());
+			start += 1000000*Integer.parseInt(comm.getStartMonth());
+			start += 10000*Integer.parseInt(comm.getStartDay());
+		}
+		else if(comm.getStartMins()!=null) {
+			start += 100000000*Integer.parseInt(comm.getEndYear());
+			start += 1000000*Integer.parseInt(comm.getEndMonth());
+			start += 10000*Integer.parseInt(comm.getEndDay());
+		}
+		else {
+			return start;
+		}
+
+		if(comm.getStartMins()!=null) {
+			start += 100*Integer.parseInt(comm.getStartHours());
+			start += Integer.parseInt(comm.getStartMins());
+		}
+		return start;
+
+	}
+
+	private static int setEndSignature(Task task) {
+
+		int end = 0;
+
+		end += 100000000*Integer.parseInt(task.getEndYear());
+		end += 1000000*Integer.parseInt(task.getEndMonth());
+		end += 10000*Integer.parseInt(task.getEndDay());
+
+		if(task.getEndHours().equals("null")) {
+			end += 2359;
+		}
+		else {
+			end += 100*Integer.parseInt(task.getEndHours());
+			end += Integer.parseInt(task.getEndMins());
+		}
+
+		return end;
+	}
+
+	private static int setStartSignature(Task task) {
+		int start = -1;
+
+		if(!task.getStartYear().equals("null")) {
+			start += 100000000*Integer.parseInt(task.getStartYear());
+			start += 1000000*Integer.parseInt(task.getStartMonth());
+			start += 10000*Integer.parseInt(task.getStartDay());
+		}
+		else if(!task.getStartMins().equals("null")) {
+			start += 100000000*Integer.parseInt(task.getEndYear());
+			start += 1000000*Integer.parseInt(task.getEndMonth());
+			start += 10000*Integer.parseInt(task.getEndDay());
+		}
+		else {
+			return start;
+		}
+
+		if(!task.getStartMins().equals("null")) {
+			start += 100*Integer.parseInt(task.getStartHours());
+			start += Integer.parseInt(task.getStartMins());
+		}
+		return start;
+
+	}
+
+	public static void transferTasksFromTo(ArrayList<Task> source,
+			ArrayList<Task> target) {
+		for (Task task : source) {
+			target.add(new Task(task));
+		}
 	}
 
 	/**
@@ -333,11 +481,12 @@ public class ExeCom {
 	 * @return void
 	 * 
 	 */
-	public static void saveToPrevTaskList() {
+	public void saveToPrevTaskList() {
 		resetPrevTaskList();
-		for (Task task : taskList) {
-			prevTaskList.add(new Task(task));
-		}
+		transferTasksFromTo(taskList, prevTaskList);
+		/*
+		 * for (Task task : taskList) { prevTaskList.add(new Task(task)); }
+		 */
 	}
 
 	/**
@@ -350,17 +499,20 @@ public class ExeCom {
 	 * @return void
 	 * 
 	 */
-	
-	public static void saveToRedoTaskList() {
+
+	public void saveToRedoTaskList() {
 		resetRedoTaskList();
-		for (Task task : taskList) {
-			redoTaskList.add(new Task(task));
-		}
+		transferTasksFromTo(taskList, redoTaskList);
+
+		/*
+		 * for (Task task : taskList) { redoTaskList.add(new Task(task)); }
+		 */
 	}
-	
+
 	/**
 	 * 
-	 * resetRedoTaskList: Reinitializes redoTaskList so it will be empty when we redo a command.
+	 * resetRedoTaskList: Reinitializes redoTaskList so it will be empty when we
+	 * redo a command.
 	 * 
 	 * @author Richard
 	 * @param void
@@ -372,7 +524,8 @@ public class ExeCom {
 
 	/**
 	 * 
-	 * resetPrevTaskList: Reinitializes prevTaskList so it will be empty when we undo a command.
+	 * resetPrevTaskList: Reinitializes prevTaskList so it will be empty when we
+	 * undo a command.
 	 * 
 	 * @author Richard
 	 * @param void
@@ -381,10 +534,11 @@ public class ExeCom {
 	public static void resetPrevTaskList() {
 		prevTaskList = new ArrayList<Task>();
 	}
-	
+
 	/**
 	 * 
-	 * resetTaskList: Reinitializes taskList so it will be empty when we perform undo or redo.
+	 * resetTaskList: Reinitializes taskList so it will be empty when we perform
+	 * undo or redo.
 	 * 
 	 * @author Richard
 	 * @param void
@@ -396,140 +550,34 @@ public class ExeCom {
 
 	/**
 	 * 
-	 * undo: Reset taskList then add contents of pTL to tL.
+	 * isValidSearchCommand: Makes sure there is a keyword that the user is
+	 * searching for instead of an invalid command like "search"
 	 * 
 	 * @author Richard
-	 * @param void
-	 * @return void
+	 * @param String
+	 *            []
+	 * @return boolean
 	 */
-	public static void undo() {
-		if (isValidUndoRedoCommand() && !prevTaskList.isEmpty()) {
-			resetTaskList();
-			for (Task task : prevTaskList) {
-				taskList.add(task);
-			}
-			System.out.println(UNDO_SUCCESS_MESSAGE);
-		} else if (isValidUndoRedoCommand() && prevTaskList.isEmpty()) {
-			System.out.println(UNDO_UNSUCCESSFUL_MESSAGE);
-		} else {
-			System.out.println(INVALID_COMMAND_MESSAGE);
-		}
+
+	public static boolean isValidSearchCommand(Command c) {
+		return c.getDetails() != null;
 	}
+
 	/**
 	 * 
-	 * redo: Reperforms any task that was done before undo() was called.
-	 * 
-	 * @author Richard
-	 * @param void
-	 * @return void
-	 */
-	public static void redo() {
-		if (isValidUndoRedoCommand() && !redoTaskList.isEmpty()) {
-			resetTaskList();
-			for (Task task : redoTaskList) {
-				taskList.add(task);
-			}
-			System.out.println(REDO_SUCCESS_MESSAGE);
-		} else if (isValidUndoRedoCommand() && redoTaskList.isEmpty()) {
-			System.out.println(REDO_UNSUCCESSFUL_MESSAGE);
-		} else {
-			System.out.println(INVALID_COMMAND_MESSAGE);
-		}
-	}
-	
-	/**
-	 * 
-	 * isValidUndoRedoCommand: Checks if the user specified an invalid command where undo/redo
-	 * is followed by another String.
+	 * isValidUndoRedoDisplayCommand: Checks if the user specified an invalid
+	 * command where undo/redo/display is followed by another String.
 	 * 
 	 * @author Richard
 	 * @param void
 	 * @return boolean
 	 */
-	public static boolean isValidUndoRedoCommand() {
-		if (info[1] == null) {
+	public static boolean isValidUndoRedoDisplayCommand() {
+		if (c.getDetails() == null) {
 			return true;
 		} else {
 			return false;
 		}
-	}
-
-	/**
-	 * 
-	 * editContent: edit content of specific task using the taskID based on
-	 * user's input
-	 * 
-	 * @author Khaleef
-	 * @param void
-	 * @return void
-	 */
-	public static void editContent() {
-		int id = Integer.parseInt(info[15]);
-		int counter;
-		int i;
-
-		for (counter = 0; counter < taskList.size(); counter++) {
-			if (Integer.parseInt(taskList.get(counter).getTaskID()) == id) {
-				saveToPrevTaskList();
-				for (i = 1; i < info.length; i++) {
-					if (info[i] != null) {
-
-						switch (i) {
-						case 1:
-							taskList.get(counter).setDetails(info[i]);
-							break;
-						case 2:
-							taskList.get(counter).setStartDay(info[i]);
-							break;
-						case 3:
-							taskList.get(counter).setStartMonth(info[i]);
-							break;
-						case 4:
-							taskList.get(counter).setStartYear(info[i]);
-							break;
-						case 5:
-							taskList.get(counter).setEndDay(info[i]);
-							break;
-						case 6:
-							taskList.get(counter).setEndMonth(info[i]);
-							break;
-						case 7:
-							taskList.get(counter).setEndYear(info[i]);
-							break;
-						case 8:
-							taskList.get(counter).setStartHours(info[i]);
-							break;
-						case 9:
-							taskList.get(counter).setStartMin(info[i]);
-							break;
-						case 10:
-							taskList.get(counter).setEndHours(info[i]);
-							break;
-						case 11:
-							taskList.get(counter).setEndMins(info[i]);
-							break;
-						case 12:
-							taskList.get(counter).setLocation(info[i]);
-							break;
-						case 13:
-							taskList.get(counter).setPriority(info[i]);
-							break;
-						case 14:
-							taskList.get(counter).setCategory(info[i]);
-							break;
-						case 15:
-							// taskList.get(counter).setTaskID(info[i]);
-							break;
-						default:
-							// invalid message
-						}
-					}
-				}
-				saveToRedoTaskList(); 
-			}
-
-		}
-
 	}
 
 }

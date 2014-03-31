@@ -1,40 +1,45 @@
 
+/**
+ * Task (class) : This class acts as a blueprint for any task object. It contains
+ * information regarding a single task.
+ * @author yingyun
+ */
 public class Task {
-	private String details;
-	private String startDay;
-	private String startMonth;
-	private String startYear;
-	private String endDay;
-	private String endMonth;
-	private String endYear;
-	private String startHours;
-	private String startMin;
-	private String endHours;
-	private String endMins;
-	private String location;
-	private String priority;
-	private String category;
-	private String taskID;
-	
+	protected String details;
+	protected String startDay;
+	protected String startMonth;
+	protected String startYear;
+	protected String endDay;
+	protected String endMonth;
+	protected String endYear;
+	protected String startHours;
+	protected String startMins;
+	protected String endHours;
+	protected String endMins;
+	protected String location;
+	protected String priority;
+	protected String category;
+	protected String taskID;
+	protected String completed;
+
 	//constructor
-	public Task(String[] info){
-		details = info[1];
-		startDay = info[2];
-		startMonth = info[3];
-		startYear = info[4];
-		endDay = info[5];
-		endMonth = info[6];
-		endYear = info[7];
-		startHours = info[8];
-		startMin = info[9];
-		endHours = info[10];
-		endMins = info[11];
-		location = info[12];
-		priority = info[13];
-		category = info[14];
-		taskID = info[15];
+	public Task(Command c){
+		details = c.getDetails();
+		startDay = c.getStartDay();
+		startMonth = c.getStartMonth();
+		startYear = c.getStartYear();
+		endDay = c.getEndDay();
+		endMonth = c.getEndMonth();
+		endYear = c.getEndYear();
+		startHours = c.getStartHours();
+		startMins = c.getStartMins();
+		endHours = c.getEndHours();
+		endMins = c.getEndMins();
+		location = c.getLocation();
+		priority = c.getPriority();
+		category = c.getCategory();
 	}
-	
+
 	public Task(Task task) {
 		this.details = task.getDetails();
 		this.startDay = task.getStartDay();
@@ -44,7 +49,7 @@ public class Task {
 		this.endMonth = task.getEndMonth();
 		this.endYear = task.getEndYear();
 		this.startHours = task.getStartHours();
-		this.startMin = task.getStartMin();
+		this.startMins = task.getStartMins();
 		this.endHours = task.getEndHours();
 		this.endMins = task.getEndMins();
 		this.location = task.getLocation();
@@ -54,7 +59,6 @@ public class Task {
 	}
 
 	public Task() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public String getDetails() {
@@ -121,12 +125,12 @@ public class Task {
 		this.startHours = startHours;
 	}
 
-	public String getStartMin() {
-		return startMin;
+	public String getStartMins() {
+		return startMins;
 	}
 
-	public void setStartMin(String startMin) {
-		this.startMin = startMin;
+	public void setStartMins(String startMins) {
+		this.startMins = startMins;
 	}
 
 	public String getEndHours() {
@@ -176,13 +180,72 @@ public class Task {
 	public void setTaskID(String taskID) {
 		this.taskID = taskID;
 	}
-	
-	public String display() {
-		return details + " " + startDay + " " + startMonth + " " + startYear + " " + endDay + " " + endMonth + " " + endYear + " " + startHours + " " + startMin + " " + endHours + " " + endMins + " " + location + " " + priority + " " + category + " ";
-	}
-	
-	public String displayAll() {
-		return taskID + ": " + details + " " + startDay + " " + startMonth + " " + startYear + " " + endDay + " " + endMonth + " " + endYear + " " + startHours + " " + startMin + " " + endHours + " " + endMins + " " + location + " " + priority + " " + category;
+
+	public boolean isCompleted() {
+		if (completed.equals("true")){
+			return true;
+		}else{
+			return false;
+		}
 	}
 
+	public void setCompleted(String completed) {
+		this.completed = completed;
+	}
+	
+	/**
+	 * displayTask: display non-empty task attributes and their headers
+	 * 
+	 * @author Ying Yun
+	 * @param void
+	 * @return String
+	 */
+	public String displayTask() {
+		String info = null;
+
+		if (!details.equals("null")){
+			info = "Details: " + details;
+		}
+		
+		if (!startDay.equals("null") && !startDay.equals("null") && !startDay.equals("null")){
+			info = info.concat(" Start Date: " + startDay + "/" + startMonth + "/" + startYear);
+		}
+
+		if (!endDay.equals("null") && !endDay.equals("null") && !endDay.equals("null")){
+			info = info.concat(" End Date: " + endDay + "/" + endMonth + "/" + endYear);
+		}
+
+		if (!startHours.equals("null") && !startMins.equals("null")){
+			info = info.concat(" Start Time: " + startHours + ":" + startMins);
+		}
+		if (!endHours.equals("null") && !endMins.equals("null")){
+			info = info.concat(" End Time: " + endHours + ":" + endMins);
+		}
+
+		if (!location.equals("null")){
+			info = info.concat(" Location: " + location);
+		}
+
+		if (!category.equals("null")){
+			info = info.concat(" Category: " + category);
+		}
+		if (!priority.equals("null")){
+			info = info.concat(" Priority: " + priority);
+		}
+
+		return info;
+	}
+
+	/**
+	 * displayToStorage: display non-empty task attributes in the correct order to external .txt file
+	 * 
+	 * @author Ying Yun
+	 * @param void
+	 * @return String
+	 */
+	public String displayToStorage(){
+		return details + " " + startDay + " " + startMonth + " " + startYear + " " + endDay  + " " + endMonth + " " + endYear + " " + startHours + " " + startMins + " " + endHours + " " + endMins + " " + "//location " + location + " " + "//category " + category + " " + "//priority " + priority + " ";
+	}
+	
+	
 }

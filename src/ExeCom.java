@@ -23,6 +23,7 @@ public class ExeCom {
 	private static final String REDO_UNSUCCESSFUL_MESSAGE = "There are no actions that can be redone.";
 	private final static String INVALID_COMMAND_MESSAGE = "That is an invalid command.";
 	private static final String NO_DETAILS_MESSAGE = "No details detected! This task is not added to the task list";
+	private static final String INVALID_TIME_MESSAGE = "Time entered is invalid! This task is not added to the task list";
 
 	// private static final String CONFLICT_FOUND =
 	// "There is a conflict of schedule with Task ID: %1d";
@@ -76,13 +77,17 @@ public class ExeCom {
 		case ADD:
 			Add add = new Add(getTaskListInstance());
 			if (isValidAddCommand()){
-				ArrayList<Integer> conflicts = new ArrayList<Integer>();
-				conflicts = checkConflict();
-				if (conflicts.size() <= 0) {
-					add.processAdd(command);
-				}
-				else {
-					add.handleConflict(command, conflicts);
+				if(isValidTime()){
+					ArrayList<Integer> conflicts = new ArrayList<Integer>();
+					conflicts = checkConflict();
+					if (conflicts.size() <= 0) {
+						add.processAdd(command);
+					}
+					else {
+						add.handleConflict(command, conflicts);
+					}
+				}else{
+					System.out.println(INVALID_TIME_MESSAGE);
 				}
 			}else{
 				System.out.println(NO_DETAILS_MESSAGE);
@@ -146,14 +151,67 @@ public class ExeCom {
 		case REDO:
 			redo();
 			break;
-
-
 		}
 
 		s.saveStorage();
 		return " ";
 	}
 
+	/**
+	 * isValidTime: check if user entered valid time which is from 0000 t0 2359
+	 * 
+	 * @author yingyun
+	 * @param void
+	 * @return boolean
+	 * 
+	 */
+	private boolean isValidTime() {
+		if(isValidHours() && isValidMins()){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	/**
+	 * isValidhours: check if user entered between 0 to 23 hours
+	 * 
+	 * @author yingyun
+	 * @param void
+	 * @return boolean
+	 * 
+	 */
+	private boolean isValidHours() {
+
+		int startHours = Integer.parseInt(c.getStartHours());
+		int endHours = Integer.parseInt(c.getEndHours());
+
+		if( 0<=startHours && startHours<24 && 0<=endHours && endHours<24){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	/**
+	 * isValidMins: check if user entered between 0 to 59 minutes
+	 * 
+	 * @author yingyun
+	 * @param void
+	 * @return boolean
+	 * 
+	 */
+	private boolean isValidMins() {
+
+		int startMins = Integer.parseInt(c.getStartMins());
+		int endMins = Integer.parseInt(c.getEndMins());
+
+		if( 0<=startMins && startMins<60 && 0<=endMins && endMins<60){
+			return true;
+		}else{
+			return false;
+		}
+	}
 
 	/**
 	 * 

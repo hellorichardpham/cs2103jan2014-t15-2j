@@ -61,7 +61,7 @@ public class ExeCom {
 	 * executeCommand: determines which action to perform based on the
 	 * userCommand then calls the appropriate method.
 	 * 
-	 * @author Richard, Joey, Ying Yun
+	 * @author Richard, Joey, Ying Yun, Khaleef
 	 * @param Command
 	 * @return String
 	 * 

@@ -67,7 +67,6 @@ public class Display extends Task {
 		System.out.println("~~~~~ Listing of all tasks ~~~~~");
 	}
 
-
 	/**
 	 * 
 	 * printTaskIndex: print index number of current task
@@ -79,8 +78,6 @@ public class Display extends Task {
 	private void printTaskIndex(Task task, String print) {
 		System.out.println((taskList.indexOf(task)+1) + ": " + print);
 	}
-
-
 
 	/**
 	 * replaceNull: replaces "null" String with empty String

@@ -20,6 +20,7 @@ public class Storage {
 	private static final String EQUAL_TASKID = "//taskid";
 	private static final String EQUAL_BLANK_SPACE = " ";
 	private static final String EQUAL_EMPTY_STRING = "";
+	
 	private static final int ZERO_CONST = 0;
 	private static final int ONE_CONST = 1;
 	private static final int TEN_CONST = 10;

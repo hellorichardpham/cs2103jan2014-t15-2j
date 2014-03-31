@@ -16,6 +16,7 @@ public class Storage {
 	private static final String EQUAL_LOCATION = "//location";
 	private static final String EQUAL_CATEGORY = "//category";
 	private static final String EQUAL_PRIORITY = "//priority";
+	private static final String EQUAL_COMPLETE = "//complete";
 	private static final String EQUAL_TASKID = "//taskid";
 	private static final String EQUAL_BLANK_SPACE = " ";
 	private static final String EQUAL_EMPTY_STRING = "";
@@ -62,6 +63,8 @@ public class Storage {
 				String category = EQUAL_EMPTY_STRING;
 				String priority = EQUAL_EMPTY_STRING;
 				String details = EQUAL_EMPTY_STRING;
+				String complete = EQUAL_EMPTY_STRING;
+				
 				int i;
 				int endPosition = ZERO_CONST;
 				int startPosition = ZERO_CONST;
@@ -87,9 +90,16 @@ public class Storage {
 					}
 					if (retrieve[i].equals(EQUAL_PRIORITY)) {
 						for (int j = ONE_CONST; j < arraySize; j++) {
-							if (retrieve[j + i].equals(EQUAL_TASKID))
+							if (retrieve[j + i].equals(EQUAL_COMPLETE))
 								break;
 							priority += retrieve[j + i] + " ";
+						}
+					}
+					if (retrieve[i].equals(EQUAL_COMPLETE)) {
+						for (int j = ONE_CONST; j < arraySize; j++) {
+							if (retrieve[j + i].equals(EQUAL_TASKID))
+								break;
+							complete += retrieve[j + i] + " ";
 						}
 					}
 				}
@@ -99,9 +109,11 @@ public class Storage {
 					category = category.substring(ZERO_CONST, category.length() - ONE_CONST);
 				if (priority.endsWith(EQUAL_BLANK_SPACE))
 					priority = priority.substring(ZERO_CONST, priority.length() - ONE_CONST);
+				if (complete.endsWith(EQUAL_BLANK_SPACE))
+					complete = complete.substring(ZERO_CONST, complete.length() - ONE_CONST);
 
 				setLocationToTaskIDAttribute(retrieve, arraySize, task,
-						location, category, priority);
+						location, category, priority, complete);
 
 				startPosition = endPosition - TEN_CONST;
 				endPosition = startPosition;
@@ -149,10 +161,11 @@ public class Storage {
 	 * @return void
 	 */
 	private void setLocationToTaskIDAttribute(String[] retrieve, int arraySize,
-			Task task, String location, String category, String priority) {
+			Task task, String location, String category, String priority, String complete) {
 		task.setLocation(location);
 		task.setCategory(category);
 		task.setPriority(priority);
+		task.setCompleted(complete);
 		task.setTaskID(retrieve[arraySize - ONE_CONST]);
 	}
 

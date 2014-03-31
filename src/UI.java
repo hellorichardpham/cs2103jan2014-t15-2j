@@ -16,9 +16,28 @@ public class UI {
 		System.out.println("  .....  .....    ............ .............. ................ ... ..............................................................................................");
 	}
 
+	/**
+	 * promptUser: get user's command input
+	 * 
+	 * @author Ying Yun
+	 * @param void
+	 * @return String
+	 */
 	public String promptUser() {
 		System.out.println("Enter Command: ");
 		String userInput = scanner.nextLine();
 		return userInput;
+	}
+	
+	/**
+	 * askForUserResponse: get user input
+	 * 
+	 * @author Ying Yun
+	 * @param void
+	 * @return String
+	 */
+	public String askForUserResponse(){
+		String input = scanner.nextLine();
+		return input;
 	}
 }

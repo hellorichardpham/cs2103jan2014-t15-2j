@@ -17,11 +17,7 @@ public class ProcessCommand {
 	int indexOfDayOfWeek = Integer.MAX_VALUE;
 	int indexOfMonth = Integer.MIN_VALUE;
 
-	private Command c = new Command();
-
-	public Command getCommand() {
-		return c;
-	}
+	private Command c;
 
 	/**
 	 * process: Extracts information from the userInput String and stores them
@@ -90,7 +86,7 @@ public class ProcessCommand {
 			c.setEndYear(tempYear);
 		}
 	}
-	
+
 	/**
 	 * ifEndDateEarlierThanStart: Checks if the user input end date is earlier than the start date
 	 * 
@@ -330,7 +326,7 @@ public class ProcessCommand {
 			c.setEndYear(dateDetails.substring(0, 4));
 		}
 	}
-	
+
 	/**
 	 * setEndYearIfNoInput: Sets the end year as current year if the user did not input a year
 	 * @author Tian Weizhou
@@ -352,7 +348,7 @@ public class ProcessCommand {
 			setEndAsCurrentYear();
 		}
 	}
-	
+
 	/**
 	 * setStartYearIfNoInput: Sets the Start year as current year if the user did not input a year
 	 * @author Tian Weizhou
@@ -374,7 +370,7 @@ public class ProcessCommand {
 			setStartAsCurrentYear();
 		}
 	}
-	
+
 	/**
 	 * setEndAsCurrentYEar: Sets the end year as current year
 	 */
@@ -382,7 +378,7 @@ public class ProcessCommand {
 		Calendar cal = Calendar.getInstance();
 		c.setEndYear(cal.get(Calendar.YEAR)+"");
 	}
-	
+
 	/**
 	 * setStartAsCurrentYEar: Sets the start year as current year
 	 */
@@ -390,7 +386,7 @@ public class ProcessCommand {
 		Calendar cal = Calendar.getInstance();
 		c.setStartYear(cal.get(Calendar.YEAR)+"");
 	}
-	
+
 	/**
 	 * findMonth: identifies if input String is a month and returns integer value of month
 	 * @author Tian Weizhou
@@ -590,7 +586,7 @@ public class ProcessCommand {
 
 		switch (firstWord.toLowerCase()) {
 		case "delete":
-
+		case "completed":
 			int size = splitInput.length; // number of task specified by user
 			ArrayList<String> specifiedTasks = new ArrayList<String>(size);
 			for (int i = 1; i < size; i++) {
@@ -598,17 +594,13 @@ public class ProcessCommand {
 				splitInput[i] = EMPTY_STRING;
 			}
 			c.setTargetedTasks(specifiedTasks); // assign user specified TaskID
-
 			break;
 
 		case "edit":
 		case "update":
 			c.setTaskID(splitInput[1]);
 			splitInput[1] = EMPTY_STRING;
-			// System.out.println("reached process command update/delete");
 			break;
-		default:
-
 		}
 		return firstWord;
 	}

@@ -24,7 +24,7 @@ public class Display extends Task {
 			printListingHeader();
 			for (Task task : taskList) {
 				String print = task.displayTask();
-				printTaskIndex(task, print);
+				printTaskWithIndex(task, print);
 				
 			}
 		}
@@ -45,7 +45,9 @@ public class Display extends Task {
 			System.out.println("The following tasks are completed: ");
 			for (Task task : taskList){
 				if (task.isCompleted()){
-					task.displayTask();
+					
+					String info = task.displayTask();
+					printTaskWithIndex(task, info);
 				}
 			}
 		}
@@ -75,7 +77,7 @@ public class Display extends Task {
 	 * @param Task, String
 	 * @return void
 	 */
-	private void printTaskIndex(Task task, String print) {
+	private void printTaskWithIndex(Task task, String print) {
 		System.out.println((taskList.indexOf(task)+1) + ": " + print);
 	}
 

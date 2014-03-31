@@ -16,7 +16,7 @@ public class Storage {
 	private static final String EQUAL_LOCATION = "//location";
 	private static final String EQUAL_CATEGORY = "//category";
 	private static final String EQUAL_PRIORITY = "//priority";
-	private static final String EQUAL_COMPLETE = "//complete";
+	private static final String EQUAL_COMPLETE = "//completed";
 	private static final String EQUAL_TASKID = "//taskid";
 	private static final String EQUAL_BLANK_SPACE = " ";
 	private static final String EQUAL_EMPTY_STRING = "";

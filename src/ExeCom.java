@@ -133,11 +133,21 @@ public class ExeCom {
 
 		case EDIT:
 		case UPDATE: 
-			saveToPrevTaskList();
-			Update u = new Update();
-			u.editContent(c);
-			saveToRedoTaskList();
-			break;
+			Add a = new Add(getTaskListInstance());
+			ArrayList<Integer> conflicts = new ArrayList<Integer>();
+			conflicts = checkConflict();
+			if (conflicts.size() <= 0) {
+				saveToPrevTaskList();
+				Update u = new Update();
+				u.editContent(c);
+				saveToRedoTaskList();
+				break;
+			}else{
+				a.handleConflict(command, conflicts);
+			}
+
+
+
 
 		case EMAIL:
 			Email email = new Email(getTaskListInstance());
@@ -172,7 +182,7 @@ public class ExeCom {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * isValidhours: check if user entered between 0 to 23 hours
 	 * 
@@ -192,7 +202,7 @@ public class ExeCom {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * isValidMins: check if user entered between 0 to 59 minutes
 	 * 

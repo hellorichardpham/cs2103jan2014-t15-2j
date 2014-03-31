@@ -5,21 +5,22 @@
  * @author yingyun
  */
 public class Task {
-	private String details;
-	private String startDay;
-	private String startMonth;
-	private String startYear;
-	private String endDay;
-	private String endMonth;
-	private String endYear;
-	private String startHours;
-	private String startMins;
-	private String endHours;
-	private String endMins;
-	private String location;
-	private String priority;
-	private String category;
-	private String taskID;
+	protected String details;
+	protected String startDay;
+	protected String startMonth;
+	protected String startYear;
+	protected String endDay;
+	protected String endMonth;
+	protected String endYear;
+	protected String startHours;
+	protected String startMins;
+	protected String endHours;
+	protected String endMins;
+	protected String location;
+	protected String priority;
+	protected String category;
+	protected String taskID;
+	protected boolean completed;
 
 	//constructor
 	public Task(Command c){
@@ -180,6 +181,21 @@ public class Task {
 		this.taskID = taskID;
 	}
 
+	public boolean isCompleted() {
+		return completed;
+	}
+
+	public void setCompleted(boolean completed) {
+		this.completed = completed;
+	}
+	
+	/**
+	 * displayTask: display non-empty task attributes and their headers
+	 * 
+	 * @author Ying Yun
+	 * @param void
+	 * @return String
+	 */
 	public String displayTask() {
 		String info = null;
 
@@ -190,8 +206,6 @@ public class Task {
 		if (!startDay.equals("null") && !startDay.equals("null") && !startDay.equals("null")){
 			info = info.concat(" Start Date: " + startDay + "/" + startMonth + "/" + startYear);
 		}
-		
-		//assert(startDay.equals(null));
 
 		if (!endDay.equals("null") && !endDay.equals("null") && !endDay.equals("null")){
 			info = info.concat(" End Date: " + endDay + "/" + endMonth + "/" + endYear);
@@ -218,12 +232,16 @@ public class Task {
 		return info;
 	}
 
+	/**
+	 * displayToStorage: display non-empty task attributes in the correct order to external .txt file
+	 * 
+	 * @author Ying Yun
+	 * @param void
+	 * @return String
+	 */
 	public String displayToStorage(){
-		return details + " " + startDay + " " + startMonth + " " + startYear + " " + endDay  + " " + endMonth + " " + endYear + " " + startHours + " " + startMins + " " + endHours + " " + endMins + " " + location + " " + category + " " + priority + " ";
+		return details + " " + startDay + " " + startMonth + " " + startYear + " " + endDay  + " " + endMonth + " " + endYear + " " + startHours + " " + startMins + " " + endHours + " " + endMins + " " + "//location " + location + " " + "//category " + category + " " + "//priority " + priority + " ";
 	}
 	
-	public String displayAll() {
-		return taskID + ": " + details + " " + startDay + " " + startMonth + " " + startYear + " " + endDay + " " + endMonth + " " + endYear + " " + startHours + " " + startMins + " " + endHours + " " + endMins + " " + location + " " + priority + " " + category;
-	}
-
+	
 }

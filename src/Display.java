@@ -1,16 +1,16 @@
 import java.util.ArrayList;
 
-public class Display {
-	
-private final static String TASKLIST_EMPTY_MESSAGE = "There are no tasks in the task list.";
-private static final CharSequence EMPTY_STRING = "";
-private ArrayList<Task> taskList;
-	
+public class Display extends Task {
+
+	private final static String TASKLIST_EMPTY_MESSAGE = "There are no tasks in the task list.";
+	private static final CharSequence EMPTY_STRING = "";
+	private ArrayList<Task> taskList;
+
 	//constructor
- 	public Display(ArrayList<Task> taskList){
+	public Display(ArrayList<Task> taskList){
 		this.taskList = taskList;
 	}
- 	
+
 	/**
 	 * 
 	 * display: display all tasks found in the taskList
@@ -23,14 +23,37 @@ private ArrayList<Task> taskList;
 		if (!taskList.isEmpty()) {
 			printListingHeader();
 			for (Task task : taskList) {
-				String print = task.displayTask();
+				String print = displayTask();
 				printTaskIndex(task, print);
 			}
-		} else if (taskList.isEmpty()) {
+		}
+		else if (taskList.isEmpty()) {
 			System.out.println(TASKLIST_EMPTY_MESSAGE);
 		} 
 	}
+
+	/**
+	 * displayCompleted: prints out all completed tasks in taskList
+	 * 
+	 * @author Ying Yun
+	 * @param void
+	 * @return void
+	 */
+	public void displayCompleted() {
+		if (!taskList.isEmpty()){
+			System.out.println("The following tasks are completed: ");
+			for (Task task : taskList){
+				if (task.isCompleted()){
+					task.displayTask();
+				}
+			}
+		}
+		else{
+			System.out.println(TASKLIST_EMPTY_MESSAGE);
+		}
 	
+	}
+
 	/**
 	 * 
 	 * printListingHeader: print header for listing
@@ -42,8 +65,8 @@ private ArrayList<Task> taskList;
 	private void printListingHeader() {
 		System.out.println("~~~~~ Listing of all tasks ~~~~~");
 	}
-	
-	
+
+
 	/**
 	 * 
 	 * printTaskIndex: print index number of current task
@@ -55,18 +78,17 @@ private ArrayList<Task> taskList;
 	private void printTaskIndex(Task task, String print) {
 		System.out.println((taskList.indexOf(task)+1) + ": " + print);
 	}
-	
-	
+
+
+
 	/**
-	 * 
-	 * printTaskIndex: print index number of current task
+	 * replaceNull: replaces "null" String with empty String
 	 * 
 	 * @author Richard
 	 * @param String
 	 * @return String
 	 */
 	public String replaceNull(String print) {
-		print = print.replace("null ", EMPTY_STRING);
 		print = print.replace("null", EMPTY_STRING);
 		return print;
 	}

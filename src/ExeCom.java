@@ -1,6 +1,4 @@
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Scanner;
 
 public class ExeCom {
@@ -18,15 +16,16 @@ public class ExeCom {
 	private static final String UPDATE = "update";
 	private final static String REDO = "redo";
 	private final static String EMAIL = "email";
+	private static final String COMPLETED = "completed";
 	private final static String UNDO_SUCCESS_MESSAGE = "Action has successfully been undone.";
 	private static final String REDO_SUCCESS_MESSAGE = "Action has successfully been redone";
 	private final static String UNDO_UNSUCCESSFUL_MESSAGE = "There are no actions that can be undone.";
 	private static final String REDO_UNSUCCESSFUL_MESSAGE = "There are no actions that can be redone.";
 	private final static String INVALID_COMMAND_MESSAGE = "That is an invalid command.";
-	private final static String TASKLIST_EMPTY_MESSAGE = "There are no tasks in the task list.";
+	
 	// private static final String CONFLICT_FOUND =
 	// "There is a conflict of schedule with Task ID: %1d";
-	
+
 
 	Scanner scanner = new Scanner(System.in);
 	private static ExeCom theOne;
@@ -60,7 +59,7 @@ public class ExeCom {
 	 * executeCommand: determines which action to perform based on the
 	 * userCommand then calls the appropriate method.
 	 * 
-	 * @author Richard
+	 * @author Richard, Joey, Ying Yun
 	 * @param Command
 	 * @return String
 	 * 
@@ -74,28 +73,63 @@ public class ExeCom {
 
 		switch (keyWord) {
 		case ADD:
-			if (checkConflict() == false) {
+			ArrayList<Integer> conflicts = new ArrayList<Integer>();
+			conflicts = checkConflict();
+			if (conflicts.size() <= 0) {
 				saveToPrevTaskList();
-				Add a = new Add(getTaskListInstance());
-				a.addToTaskList(command);
+				Add add = new Add(getTaskListInstance());
+				add.addToTaskList(command);
 				saveToRedoTaskList();
+			}
+			else {
+				System.out.println("There is a conflict with these tasks: ");
+				for(int i=0 ; i<conflicts.size(); i++) {
+					System.out.print(conflicts.get(i)+": ");
+					System.out.println(taskList.get(conflicts.get(i)).displayTask());
+				}
+				System.out.println("Add Task anyway? Enter(Y/N) :");
+				UI ui = new UI();
+				String input = ui.askForUserResponse();
+				switch(input.toLowerCase()) {
+				case "yes":
+				case "y":
+				case "yeah":
+				case "ya":
+					saveToPrevTaskList();
+					Add a = new Add(getTaskListInstance());
+					a.addToTaskList(command);
+					saveToRedoTaskList();
+					break;
+				}
 			}
 			break;
 
 		case DISPLAY:
-			if (isValidUndoRedoDisplayCommand()) {
-				Display d = new Display(getTaskListInstance());
+			Display d = new Display(getTaskListInstance());
+			
+			if(isDisplayCompleted()){
+				d.displayCompleted();
+			}else if(isValidUndoRedoDisplayCommand()){
 				d.displayTaskList();
-			} else
-				System.out.println(TASKLIST_EMPTY_MESSAGE);
+			}else{
+				System.out.println(INVALID_COMMAND_MESSAGE);
+			}
+				
 			break;
 
 		case DELETE:
 			saveToPrevTaskList();
-			Delete del = new Delete(getTaskListInstance());
+			Delete del = new Delete();
 			del.delete(c);
 			saveToRedoTaskList();
 			// s.loadStorage(); // to update the taskList
+			break;
+
+		case COMPLETED:
+			saveToPrevTaskList();
+			Completed completed = new Completed();
+			completed.markCompleted(c);
+			saveToRedoTaskList();
 			break;
 
 		case SEARCH:
@@ -115,6 +149,11 @@ public class ExeCom {
 			saveToRedoTaskList();
 			break;
 
+		case EMAIL:
+			Email email = new Email(getTaskListInstance());
+			email.emailUser();
+			break;
+
 		case UNDO:
 			undo();
 			break;
@@ -122,15 +161,57 @@ public class ExeCom {
 		case REDO:
 			redo();
 			break;
-			
-		case EMAIL:
-			Email email = new Email(getTaskListInstance());
-			email.emailUser();
-			break;
+
+
 		}
 
 		s.saveStorage();
 		return " ";
+	}
+	
+	/**
+	 * 
+	 * isDisplayCompleted: Check if user wants to display list of completed tasks
+	 * 
+	 * @author yingyun
+	 * @param void
+	 * @return boolean
+	 * 
+	 */
+	private boolean isDisplayCompleted() {
+		if (c.getDetails().equals("completed") || c.getDetails().equals("completed tasks")){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	/**
+	 * 
+	 * isTaskIDMatch: Checks if a task's taskID is equal to the userSpecified
+	 * taskIdNumber that he's searching for.
+	 * 
+	 * @author Richard, yingyun
+	 * @param String, int
+	 * @return boolean
+	 * 
+	 */
+
+	public boolean isTaskIDMatch(String specifiedTaskID, int taskIdNumber) {
+		return Integer.parseInt(specifiedTaskID) == taskIdNumber;
+	}
+
+	/**
+	 * retrieveTaskIdNumber: retrieves user-specified taskID. 
+	 * 
+	 * @author Richard, yingyun
+	 * @param String
+	 * @return int
+	 * 
+	 */
+
+	public int retrieveTaskIdNumber(String taskID) {
+		return Integer.parseInt(taskID);
 	}
 
 	/**
@@ -155,7 +236,6 @@ public class ExeCom {
 	}
 
 	/**
-	 * 
 	 * redo: Reperforms any task that was done before undo() was called.
 	 * 
 	 * @author Richard
@@ -179,197 +259,138 @@ public class ExeCom {
 	}
 
 	/**
+	 * checkConflict: check conflict of time and date, return ArrayList<Integer> with the elements
+	 * being the indexes of conflicting tasks in tasklist
 	 * 
-	 * checkConflict: check conflict of time and date, return true if there are
-	 * conflict
-	 * 
-	 * @author Khaleef
+	 * @author Tian Weizhou
 	 * @param void
-	 * @return Boolean
-	 * 
+	 * @return ArrayList<Integer>
 	 */
+	public static ArrayList<Integer> checkConflict() {
 
-	public static boolean checkConflict() throws Exception {
+		ArrayList<Integer> conflicts = new ArrayList<Integer>();
 
-		boolean isConflict = false;
+		for(int i=0; i<taskList.size(); i++) {
 
-		String s1InputDay = c.getStartDay();
-		String s1InputMonth = c.getStartMonth();
-		String s1InputYear = c.getStartYear();
-		String s1InputHours = c.getStartHours();
-		String s1InputMins = c.getStartMins();
+			Task current = taskList.get(i);
+			int taskStart = setStartSignature(current);
+			int taskEnd = setEndSignature(current);
+			int commandStart = setStartSignature(c);
+			int commandEnd = setEndSignature(c);
 
-		String e1InputDay = c.getEndDay();
-		String e1InputMonth = c.getEndMonth();
-		String e1InputYear = c.getEndYear();
-		String e1InputHours = c.getEndHours();
-		String e1InputMins = c.getEndMins();
-
-		String s1Input;
-		String e1Input;
-
-		// System.out.println(s1InputDay);
-		// System.out.println(s1InputMonth);
-		// System.out.println(s1InputYear);
-		// System.out.println(s1InputHours);
-		// System.out.println(s1InputMins);
-		//
-		// System.out.println(e1InputDay);
-		// System.out.println(e1InputMonth);
-		// System.out.println(e1InputYear);
-		// System.out.println(e1InputHours);
-		// System.out.println(e1InputMins);
-
-		if (taskList.isEmpty()) {
-			return isConflict;
-		}
-
-		if (s1InputHours == null && s1InputMins == null && e1InputHours == null
-				&& e1InputMins == null) {
-			return isConflict;
-		}
-
-		if (s1InputDay == null) {
-			s1InputDay = c.getEndDay();
-			s1InputMonth = c.getEndMonth();
-			s1InputYear = c.getEndYear();
-		}
-		if (s1InputHours == null) {
-			s1InputHours = c.getEndHours();
-			s1InputMins = c.getEndMins();
-		}
-
-		s1Input = s1InputDay + "/" + s1InputMonth + "/" + s1InputYear + " "
-				+ s1InputHours + ":" + s1InputMins;
-
-		if (e1InputDay == null) {
-			e1InputDay = c.getStartDay();
-			e1InputMonth = c.getStartMonth();
-			e1InputYear = c.getStartYear();
-		}
-		if (e1InputHours == null) {
-			e1InputHours = c.getStartHours();
-			e1InputMins = c.getStartDay();
-		}
-
-		e1Input = e1InputDay + "/" + e1InputMonth + "/" + e1InputYear + " "
-				+ e1InputHours + ":" + e1InputMins;
-
-		// System.out.println(s1Input);
-		// System.out.println(e1Input);
-
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
-
-		Date s1DateTime = sdf.parse(s1Input);
-		Date e1DateTime = sdf.parse(e1Input);
-
-		String s2TaskDay;
-		String s2TaskMonth;
-		String s2TaskYear;
-		String s2TaskHours;
-		String s2TaskMins;
-
-		String e2TaskDay;
-		String e2TaskMonth;
-		String e2TaskYear;
-		String e2TaskHours;
-		String e2TaskMins;
-
-		String s2Task;
-		String e2Task;
-
-		int index;
-		Date s2DateTime;
-		Date e2Datetime;
-
-		long s1;
-		long e1;
-		long s2;
-		long e2;
-
-		// System.out.println(s1Input);
-		// System.out.println(e1Input);
-
-		for (Task task : taskList) {
-			index = taskList.indexOf(task);
-
-			s2TaskDay = taskList.get(index).getStartDay();
-			s2TaskMonth = taskList.get(index).getStartMonth();
-			s2TaskYear = taskList.get(index).getStartYear();
-			s2TaskHours = taskList.get(index).getStartHours();
-			s2TaskMins = taskList.get(index).getStartMins();
-
-			e2TaskDay = taskList.get(index).getEndDay();
-			e2TaskMonth = taskList.get(index).getEndMonth();
-			e2TaskYear = taskList.get(index).getEndYear();
-			e2TaskHours = taskList.get(index).getEndHours();
-			e2TaskMins = taskList.get(index).getEndMins();
-
-			if (s2TaskHours.equals("null") & s2TaskMins.equals("null")
-					& e2TaskHours.equals("null") & e2TaskMins.equals("null")) {
-				continue;
-			}
-
-			if (s2TaskDay.equals("null")) {
-				s2TaskDay = taskList.get(index).getEndDay();
-				s2TaskMonth = taskList.get(index).getEndMonth();
-				s2TaskYear = taskList.get(index).getEndYear();
-			}
-
-			if (s2TaskHours.equals("null")) {
-				s2TaskHours = taskList.get(index).getEndHours();
-				s2TaskMins = taskList.get(index).getEndMins();
-			}
-
-			s2Task = s2TaskDay + "/" + s2TaskMonth + "/" + s2TaskYear + " "
-					+ s2TaskHours + ":" + s2TaskMins;
-
-			if (e2TaskDay.equals("null")) {
-				e2TaskDay = taskList.get(index).getStartDay();
-				e2TaskMonth = taskList.get(index).getStartMonth();
-				e2TaskYear = taskList.get(index).getStartYear();
-			}
-
-			if (e2TaskHours.equals("null")) {
-				e2TaskHours = taskList.get(index).getStartHours();
-				e2TaskMins = taskList.get(index).getStartMins();
-			}
-
-			e2Task = e2TaskDay + "/" + e2TaskMonth + "/" + e2TaskYear + " "
-					+ e2TaskHours + ":" + e2TaskMins;
-
-			s2DateTime = sdf.parse(s2Task);
-			e2Datetime = sdf.parse(e2Task);
-
-			s1 = s1DateTime.getTime();
-			e1 = e1DateTime.getTime();
-			s2 = s2DateTime.getTime();
-			e2 = e2Datetime.getTime();
-
-			// System.out.println(s2Task);
-			// System.out.println(e2Task);
-
-			// isConflict = ((s1 >= s2) && (s1 <= e2))
-			// || ((e1 >= s2) && (e2 <= e2)) || ((s1 <= s2) && (e1 >= e2));
-
-			if (s1 < s2) {
-				if (e1 > s2) {
-					isConflict = true; // overlap
-				}
-			} else {
-				if (e2 > s1) {
-					isConflict = true; // overlap
+			if(taskStart == -1 && commandStart == -1) {
+				if(taskEnd==commandEnd) {
+					conflicts.add(i);
 				}
 			}
-
-			if (isConflict == true) {
-				System.out
-						.println("There is a conflict of schedule with Task ID: "
-								+ (taskList.indexOf(task) + 1));
-				break;
+			if(taskStart != -1 && commandStart != -1) {
+				if(commandStart >= taskStart && commandStart < taskEnd) {
+					conflicts.add(i);
+				}
+				else if(commandEnd > taskStart && commandEnd <= taskEnd) {
+					conflicts.add(i);
+				}
+			}
+			if(taskStart != -1 && commandStart == -1) {
+				if(commandEnd > taskStart && commandEnd < taskEnd) {
+					conflicts.add(i);
+				}
+			}
+			if(taskStart == -1 && commandStart != -1) {
+				if(taskEnd > commandStart && taskEnd < commandEnd) {
+					conflicts.add(i);
+				}
 			}
 		}
-		return isConflict;
+		return conflicts;
+	}
+
+	private static int setEndSignature(Command comm) {
+		int end = 0;
+
+		end += 100000000*Integer.parseInt(comm.getEndYear());
+		end += 1000000*Integer.parseInt(comm.getEndMonth());
+		end += 10000*Integer.parseInt(comm.getEndDay());
+
+		if(comm.getEndHours().equals("null")) {
+			end += 2359;
+		}
+		else {
+			end += 100*Integer.parseInt(comm.getEndHours());
+			end += Integer.parseInt(comm.getEndMins());
+		}
+
+		return end;
+	}
+
+	private static int setStartSignature(Command comm) {
+
+		int start = -1;
+
+		if(comm.getStartYear()!=null) {
+			start += 100000000*Integer.parseInt(comm.getStartYear());
+			start += 1000000*Integer.parseInt(comm.getStartMonth());
+			start += 10000*Integer.parseInt(comm.getStartDay());
+		}
+		else if(comm.getStartMins()!=null) {
+			start += 100000000*Integer.parseInt(comm.getEndYear());
+			start += 1000000*Integer.parseInt(comm.getEndMonth());
+			start += 10000*Integer.parseInt(comm.getEndDay());
+		}
+		else {
+			return start;
+		}
+
+		if(comm.getStartMins()!=null) {
+			start += 100*Integer.parseInt(comm.getStartHours());
+			start += Integer.parseInt(comm.getStartMins());
+		}
+		return start;
+
+	}
+
+	private static int setEndSignature(Task task) {
+
+		int end = 0;
+
+		end += 100000000*Integer.parseInt(task.getEndYear());
+		end += 1000000*Integer.parseInt(task.getEndMonth());
+		end += 10000*Integer.parseInt(task.getEndDay());
+
+		if(task.getEndHours().equals("null")) {
+			end += 2359;
+		}
+		else {
+			end += 100*Integer.parseInt(task.getEndHours());
+			end += Integer.parseInt(task.getEndMins());
+		}
+
+		return end;
+	}
+
+	private static int setStartSignature(Task task) {
+		int start = -1;
+
+		if(!task.getStartYear().equals("null")) {
+			start += 100000000*Integer.parseInt(task.getStartYear());
+			start += 1000000*Integer.parseInt(task.getStartMonth());
+			start += 10000*Integer.parseInt(task.getStartDay());
+		}
+		else if(!task.getStartMins().equals("null")) {
+			start += 100000000*Integer.parseInt(task.getEndYear());
+			start += 1000000*Integer.parseInt(task.getEndMonth());
+			start += 10000*Integer.parseInt(task.getEndDay());
+		}
+		else {
+			return start;
+		}
+
+		if(!task.getStartMins().equals("null")) {
+			start += 100*Integer.parseInt(task.getStartHours());
+			start += Integer.parseInt(task.getStartMins());
+		}
+		return start;
+
 	}
 
 	public static void transferTasksFromTo(ArrayList<Task> source,

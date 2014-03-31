@@ -4,7 +4,7 @@ import java.util.Scanner;
 public class ExeCom {
 	private static Command c;
 	private static ArrayList<Task> taskList;
-	private static ArrayList<Task> prevTaskList;
+	private  static ArrayList<Task> prevTaskList;
 	private static ArrayList<Task> redoTaskList;
 
 	private final static String ADD = "add";
@@ -81,10 +81,17 @@ public class ExeCom {
 					ArrayList<Integer> conflicts = new ArrayList<Integer>();
 					conflicts = checkConflict();
 					if (conflicts.size() <= 0) {
-						add.processAdd(command);
+						saveToPrevTaskList();
+						add.addToTaskList(command);
+						saveToRedoTaskList();
 					}
 					else {
-						add.handleConflict(command, conflicts);
+						String input = add.handleConflict(command, conflicts);
+						if (add.isWantToAdd(input)){
+							saveToPrevTaskList();
+							add.addToTaskList(command);
+							saveToRedoTaskList();
+						}
 					}
 				}else{
 					System.out.println(INVALID_TIME_MESSAGE);
@@ -187,16 +194,22 @@ public class ExeCom {
 	 * @return boolean
 	 * 
 	 */
-	private boolean isValidHours() {
-
-		int startHours = Integer.parseInt(c.getStartHours());
-		int endHours = Integer.parseInt(c.getEndHours());
-
-		if( 0<=startHours && startHours<24 && 0<=endHours && endHours<24){
-			return true;
-		}else{
-			return false;
+	private boolean isValidHours() {	
+		if (c.getStartHours()!=null){
+			int startHours = Integer.parseInt(c.getStartHours());
+			if (0>startHours && startHours>=24){
+				return false;
+			}
 		}
+
+		if (c.getEndHours()!=null){
+			int endHours = Integer.parseInt(c.getEndHours());
+			if (0>endHours && endHours>=24){
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	/**
@@ -208,15 +221,21 @@ public class ExeCom {
 	 * 
 	 */
 	private boolean isValidMins() {
-
-		int startMins = Integer.parseInt(c.getStartMins());
-		int endMins = Integer.parseInt(c.getEndMins());
-
-		if( 0<=startMins && startMins<60 && 0<=endMins && endMins<60){
-			return true;
-		}else{
-			return false;
+		if (c.getStartMins()!=null){
+			int startMins = Integer.parseInt(c.getStartMins());
+			if (0>startMins && startMins>=24){
+				return false;
+			}
 		}
+
+		if (c.getEndMins()!=null){
+			int endMins = Integer.parseInt(c.getEndMins());
+			if (0>endMins && endMins>=24){
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	/**

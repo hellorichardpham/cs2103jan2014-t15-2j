@@ -192,7 +192,7 @@ public class Task {
 	public void setCompleted(String completed) {
 		this.completed = completed;
 	}
-	
+
 	/**
 	 * displayTask: display non-empty task attributes and their headers
 	 * 
@@ -203,33 +203,35 @@ public class Task {
 	public String displayTask() {
 		String info = null;
 
-		if (!details.equals("null")){
+		if (details!=null || !details.equals("null") ){
 			info = "Details: " + details;
 		}
-		
-		if (!startDay.equals("null") && !startDay.equals("null") && !startDay.equals("null")){
+
+		if ((!startDay.equals("null") && !startMonth.equals("null") && !startYear.equals("null")) ||
+				(startDay!=null && startMonth!=null && startYear!=null)){
 			info = info.concat(" Start Date: " + startDay + "/" + startMonth + "/" + startYear);
 		}
 
-		if (!endDay.equals("null") && !endDay.equals("null") && !endDay.equals("null")){
+		if ((!endDay.equals("null") && !endMonth.equals("null") && !endYear.equals("null")) ||
+				(endDay!=null && endMonth!=null && endYear!=null)){
 			info = info.concat(" End Date: " + endDay + "/" + endMonth + "/" + endYear);
 		}
 
-		if (!startHours.equals("null") && !startMins.equals("null")){
+		if (!startHours.equals("null") && !startMins.equals("null") || (startHours!=null && startMins!=null)){
 			info = info.concat(" Start Time: " + startHours + ":" + startMins);
 		}
-		if (!endHours.equals("null") && !endMins.equals("null")){
+		if ((!endHours.equals("null") && !endMins.equals("null")) || (endHours!=null && endMins!=null)){
 			info = info.concat(" End Time: " + endHours + ":" + endMins);
 		}
 
-		if (!location.equals("null")){
+		if (!location.equals("null") || location!=null){
 			info = info.concat(" Location: " + location);
 		}
 
-		if (!category.equals("null")){
+		if (!category.equals("null") || category!=null){
 			info = info.concat(" Category: " + category);
 		}
-		if (!priority.equals("null")){
+		if (!priority.equals("null") || priority!=null){
 			info = info.concat(" Priority: " + priority);
 		}
 
@@ -246,6 +248,6 @@ public class Task {
 	public String displayToStorage(){
 		return details + " " + startDay + " " + startMonth + " " + startYear + " " + endDay  + " " + endMonth + " " + endYear + " " + startHours + " " + startMins + " " + endHours + " " + endMins + " " + "//location " + location + " " + "//category " + category + " " + "//priority " + priority + " ";
 	}
-	
-	
+
+
 }

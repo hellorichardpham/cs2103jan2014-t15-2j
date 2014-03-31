@@ -8,9 +8,9 @@ public class Add {
 	//constructor
 	public Add(ArrayList<Task> taskList){
 		this.taskList = taskList;
-		
+
 	}
-	
+
 	/**
 	 * 
 	 * addToTaskList: Add tasks to arrayList and set taskID.
@@ -20,17 +20,17 @@ public class Add {
 	 * @return void
 	 */
 	public void addToTaskList(Command c) throws Exception {
-		
+
 		{
 			Task taskToAdd = new Task(c);
-			
+
 			taskToAdd.setTaskID(Integer.toString(ExeCom.getTaskListInstance().size() + 1));
 			taskList.add(taskToAdd);
-			
+
 			System.out.println(ADD_SUCCESSFUL_MESSAGE);
 		}
 	}
-	
+
 
 	/**
 	 * handleConflict: print conflicted tasks and ask if user wants to add anyway
@@ -38,11 +38,13 @@ public class Add {
 	 * @author Wei Zhou
 	 * @param Command, ArrayList<Integer>
 	 * @param void
+	 * @return 
 	 * @throws Exception
 	 */
-	public void handleConflict(Command command, ArrayList<Integer> conflicts){
+	public String handleConflict(Command command, ArrayList<Integer> conflicts){
 		printConflictedTasks(conflicts);
-		askIfUserWantToAdd(command);
+		String input = askIfUserWantToAdd(command);
+		return input;
 	}
 
 	/**
@@ -52,31 +54,11 @@ public class Add {
 	 * @param command
 	 * @return void
 	 */
-	private void askIfUserWantToAdd(Command command){
+	private String askIfUserWantToAdd(Command command){
 		UI ui = new UI();
 		System.out.println("Add Task anyway? Enter(Y/N) :");	
 		String input = ui.askForUserResponse();
-		if (isWantToAdd(input)){
-			processAdd(command);
-		}
-	}
-
-	/**
-	 * processAdd: do necessary backups for undo and redo and add to taskList
-	 * 
-	 * @author Wei Zhou
-	 * @param command
-	 * @return void
-	 */
-	public void processAdd(Command command){
-		ExeCom ec = new ExeCom();
-		ec.saveToPrevTaskList();
-		try {
-			addToTaskList(command);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		ec.saveToRedoTaskList();
+		return input;
 	}
 
 	/**
@@ -86,14 +68,14 @@ public class Add {
 	 * @param String
 	 * @return boolean
 	 */
-	private boolean isWantToAdd(String input) {
+	boolean isWantToAdd(String input) {
 		if(input=="yes" || input=="y" || input=="yeah" || input=="ya"){
 			return true;
 		}else{
 			return false;
 		}
 	}
-	
+
 	/**
 	 * printConflictedTask: print all tasks that conflicts with current task
 	 * 

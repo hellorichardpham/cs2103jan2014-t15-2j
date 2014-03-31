@@ -241,7 +241,7 @@ public class Task {
 	/**
 	 * displayToStorage: display non-empty task attributes in the correct order to external .txt file
 	 * 
-	 * @author Ying Yun
+	 * @author Ying Yun, Khaleef
 	 * @param void
 	 * @return String
 	 */

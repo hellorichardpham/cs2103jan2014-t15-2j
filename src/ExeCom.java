@@ -96,11 +96,10 @@ public class ExeCom {
 
 		case DISPLAY:
 			Display d = new Display(getTaskListInstance());
-
-			if(isDisplayCompleted()){
-				d.displayCompleted();
-			}else if(isValidUndoRedoDisplayCommand()){
+			if(isValidUndoRedoDisplayCommand()){
 				d.displayTaskList();
+			}else if(isDisplayCompleted()){
+				d.displayCompleted();
 			}else{
 				System.out.println(INVALID_COMMAND_MESSAGE);
 			}
@@ -145,9 +144,6 @@ public class ExeCom {
 			}else{
 				a.handleConflict(command, conflicts);
 			}
-
-
-
 
 		case EMAIL:
 			Email email = new Email(getTaskListInstance());

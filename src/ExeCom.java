@@ -6,6 +6,7 @@ public class ExeCom {
 	private static ArrayList<Task> taskList;
 	private  static ArrayList<Task> prevTaskList;
 	private static ArrayList<Task> redoTaskList;
+        private static String feedback;
 
 	private final static String ADD = "add";
 	private final static String DISPLAY = "display";
@@ -17,21 +18,20 @@ public class ExeCom {
 	private final static String REDO = "redo";
 	private final static String EMAIL = "email";
 	private static final String COMPLETED = "completed";
-        private final static String ADD_SUCCESSFUL_MESSAGE = "That task has successfully been added to the Task List.";
-	private final static String UNDO_SUCCESS_MESSAGE = "Action has successfully been undone.";
-	private static final String REDO_SUCCESS_MESSAGE = "Action has successfully been redone";
-	private final static String UNDO_UNSUCCESSFUL_MESSAGE = "There are no actions that can be undone.";
-	private static final String REDO_UNSUCCESSFUL_MESSAGE = "There are no actions that can be redone.";
-	private final static String INVALID_COMMAND_MESSAGE = "That is an invalid command.";
-	private static final String NO_DETAILS_MESSAGE = "No details detected! This task is not added to the task list";
-	private static final String INVALID_TIME_MESSAGE = "Time entered is invalid! This task is not added to the task list";
+        private final static String ADD_SUCCESSFUL_MESSAGE = "That task has successfully been added to the Task List.\n";
+	private final static String UNDO_SUCCESS_MESSAGE = "Action has successfully been undone.\n";
+	private static final String REDO_SUCCESS_MESSAGE = "Action has successfully been redone.\n";
+	private final static String UNDO_UNSUCCESSFUL_MESSAGE = "There are no actions that can be undone.\n";
+	private static final String REDO_UNSUCCESSFUL_MESSAGE = "There are no actions that can be redone.\n";
+	private final static String INVALID_COMMAND_MESSAGE = "That is an invalid command.\n";
+	private static final String NO_DETAILS_MESSAGE = "No details detected! This task is not added to the task list\n";
+	private static final String INVALID_TIME_MESSAGE = "Time entered is invalid! This task is not added to the task list.\n";
 
-	// private static final String CONFLICT_FOUND =
-	// "There is a conflict of schedule with Task ID: %1d";
-
-
-	Scanner scanner = new Scanner(System.in);
 	private static ExeCom theOne;
+        
+        public static String getFeedback() {
+            return feedback;
+        }
 
 	// Allows all part of the program to get the same instance of ExeCom
 	public static ExeCom getInstance() {
@@ -68,6 +68,7 @@ public class ExeCom {
 	 * 
 	 */
 	public String executeCommand(Command command) throws Exception {
+                feedback = "";
 		c = command;
 		String keyWord = c.getKeyword().toLowerCase();
 
@@ -84,7 +85,7 @@ public class ExeCom {
 					if (conflicts.size() <= 0) {
 						saveToPrevTaskList();
 						add.addToTaskList(command);
-                                                System.out.println(ADD_SUCCESSFUL_MESSAGE);
+                                                feedback = feedback + ADD_SUCCESSFUL_MESSAGE;
 						saveToRedoTaskList();
 					}
 					else {
@@ -96,29 +97,28 @@ public class ExeCom {
 						}
 					}
 				}else{
-					System.out.println(INVALID_TIME_MESSAGE);
+					feedback = feedback + INVALID_TIME_MESSAGE;
 				}
 			}else{
-				System.out.println(NO_DETAILS_MESSAGE);
+				feedback = feedback + NO_DETAILS_MESSAGE;
 			}
 			break;
 
 		case DISPLAY:
 			Display d = new Display(getTaskListInstance());
 			if(isValidUndoRedoDisplayCommand()){
-				System.out.print(d.displayTaskList());
+				feedback = feedback + d.displayTaskList();
 			}else if(isDisplayCompleted()){
-				System.out.print(d.displayCompleted());
+				feedback = feedback + d.displayCompleted();
 			}else{
-				System.out.println(INVALID_COMMAND_MESSAGE);
+				feedback = feedback + INVALID_COMMAND_MESSAGE;
 			}
-
 			break;
 
 		case DELETE:
 			saveToPrevTaskList();
 			Delete del = new Delete();
-			System.out.print(del.delete(c));
+			feedback = feedback + del.delete(c);
 			saveToRedoTaskList();
 			// s.loadStorage(); // to update the taskList
 			break;
@@ -126,16 +126,16 @@ public class ExeCom {
 		case COMPLETED:
 			saveToPrevTaskList();
 			Completed completed = new Completed();
-			System.out.print(completed.markCompleted(c));
+			feedback = feedback + completed.markCompleted(c);
 			saveToRedoTaskList();
 			break;
 
 		case SEARCH:
 			if (isValidSearchCommand(c)) {
 				Search search = new Search(taskList);
-				search.searchTaskList(c);
+				feedback = feedback + search.searchTaskList(c);
 			} else {
-				System.out.println(INVALID_COMMAND_MESSAGE);
+				feedback = feedback + INVALID_COMMAND_MESSAGE;
 			}
 			break;
 
@@ -147,7 +147,7 @@ public class ExeCom {
 			if (conflicts.size() <= 0) {
 				saveToPrevTaskList();
 				Update u = new Update();
-				u.editContent(c);
+				feedback = feedback + u.editContent(c);
 				saveToRedoTaskList();
 				break;
 			}else{
@@ -169,7 +169,7 @@ public class ExeCom {
 		}
 
 		s.saveStorage();
-		return " ";
+		return feedback;
 	}
 
 	/**
@@ -315,11 +315,11 @@ public class ExeCom {
 			resetTaskList();
 			transferTasksFromTo(prevTaskList, taskList);
 
-			System.out.println(UNDO_SUCCESS_MESSAGE);
+			feedback = feedback + UNDO_SUCCESS_MESSAGE;
 		} else if (isValidUndoRedoDisplayCommand() && prevTaskList.isEmpty()) {
-			System.out.println(UNDO_UNSUCCESSFUL_MESSAGE);
+			feedback = feedback + UNDO_UNSUCCESSFUL_MESSAGE;
 		} else {
-			System.out.println(INVALID_COMMAND_MESSAGE);
+			feedback = feedback + INVALID_COMMAND_MESSAGE;
 		}
 	}
 
@@ -338,11 +338,11 @@ public class ExeCom {
 			/*
 			 * for (Task task : redoTaskList) { taskList.add(task); }
 			 */
-			System.out.println(REDO_SUCCESS_MESSAGE);
+			feedback = feedback + REDO_SUCCESS_MESSAGE;
 		} else if (isValidUndoRedoDisplayCommand() && redoTaskList.isEmpty()) {
-			System.out.println(REDO_UNSUCCESSFUL_MESSAGE);
+			feedback = feedback + REDO_UNSUCCESSFUL_MESSAGE;
 		} else {
-			System.out.println(INVALID_COMMAND_MESSAGE);
+			feedback = feedback + INVALID_COMMAND_MESSAGE;
 		}
 	}
 

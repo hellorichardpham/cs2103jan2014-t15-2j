@@ -2,7 +2,6 @@ import java.util.ArrayList;
 
 
 public class Add {
-	private final static String ADD_SUCCESSFUL_MESSAGE = "That task has successfully been added to the Task List.";
 	private ArrayList<Task> taskList;
 
 	//constructor
@@ -26,8 +25,6 @@ public class Add {
 
 			taskToAdd.setTaskID(Integer.toString(ExeCom.getTaskListInstance().size() + 1));
 			taskList.add(taskToAdd);
-
-			System.out.println(ADD_SUCCESSFUL_MESSAGE);
 		}
 	}
 

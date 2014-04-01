@@ -311,7 +311,7 @@ public class ExeCom {
 	 * @return void
 	 */
 	public static void undo() {
-		if (isValidUndoRedoDisplayCommand() && !prevTaskList.isEmpty()) {
+		if (!prevTaskList.isEmpty() && isValidUndoRedoDisplayCommand()) {
 			resetTaskList();
 			transferTasksFromTo(prevTaskList, taskList);
 
@@ -331,8 +331,8 @@ public class ExeCom {
 	 * @return void
 	 */
 	public static void redo() {
-		if (isValidUndoRedoDisplayCommand()
-				&& (!redoTaskList.isEmpty() || !prevTaskList.isEmpty())) {
+		if ((!redoTaskList.isEmpty() && isValidUndoRedoDisplayCommand())
+				|| !prevTaskList.isEmpty()) {
 			resetTaskList();
 			transferTasksFromTo(redoTaskList, taskList);
 			/*

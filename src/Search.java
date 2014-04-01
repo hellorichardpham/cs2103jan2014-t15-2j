@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 
 public class Search {
-	private final static String TASK_NOT_FOUND_MESSAGE = "That task could not be found.";
+	private final static String TASK_NOT_FOUND_MESSAGE = "That task could not be found.\n";
 	private static final String EMPTY_STRING = "";
 	private static ArrayList<Task> searchResults;
 	private ArrayList<Task> taskList;
@@ -21,16 +21,18 @@ public class Search {
 	 * @return void
 	 */
 
-	public static void printSearch() {
+	public static String printSearch() {
+            String details = "";
 		if (!searchResults.isEmpty()) {
 			for (Task task : searchResults) {
-				System.out.println("Task ID: " + task.getTaskID());
+				details = details + "Task ID: " + task.getTaskID() + "\n";
 				String taskToPrint = task.displayTask();
-				System.out.println(taskToPrint);
+				details = details + taskToPrint + "\n";
 			}
 		} else {
-			System.out.println(TASK_NOT_FOUND_MESSAGE);
+			details = TASK_NOT_FOUND_MESSAGE;
 		}
+                return details;
 	}
 
 	/**
@@ -43,8 +45,8 @@ public class Search {
 	 * @return void
 	 */
 
-	public void searchTaskList(Command c) {
-			boolean isFound = false;
+	public String searchTaskList(Command c) {
+            boolean isFound = false;
 			resetSearchResults();
 			String searchKeyword = c.getDetails();
 			for (Task task : taskList) {
@@ -54,9 +56,9 @@ public class Search {
 				}
 			}
 			if (isFound) {
-				printSearch();
+				 return printSearch();
 			} else {
-				System.out.println(TASK_NOT_FOUND_MESSAGE);
+				return TASK_NOT_FOUND_MESSAGE;
 			}
 	}
 	

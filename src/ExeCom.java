@@ -17,6 +17,7 @@ public class ExeCom {
 	private final static String REDO = "redo";
 	private final static String EMAIL = "email";
 	private static final String COMPLETED = "completed";
+        private final static String ADD_SUCCESSFUL_MESSAGE = "That task has successfully been added to the Task List.";
 	private final static String UNDO_SUCCESS_MESSAGE = "Action has successfully been undone.";
 	private static final String REDO_SUCCESS_MESSAGE = "Action has successfully been redone";
 	private final static String UNDO_UNSUCCESSFUL_MESSAGE = "There are no actions that can be undone.";
@@ -83,6 +84,7 @@ public class ExeCom {
 					if (conflicts.size() <= 0) {
 						saveToPrevTaskList();
 						add.addToTaskList(command);
+                                                System.out.println(ADD_SUCCESSFUL_MESSAGE);
 						saveToRedoTaskList();
 					}
 					else {
@@ -104,9 +106,9 @@ public class ExeCom {
 		case DISPLAY:
 			Display d = new Display(getTaskListInstance());
 			if(isValidUndoRedoDisplayCommand()){
-				d.displayTaskList();
+				System.out.print(d.displayTaskList());
 			}else if(isDisplayCompleted()){
-				d.displayCompleted();
+				System.out.print(d.displayCompleted());
 			}else{
 				System.out.println(INVALID_COMMAND_MESSAGE);
 			}
@@ -116,7 +118,7 @@ public class ExeCom {
 		case DELETE:
 			saveToPrevTaskList();
 			Delete del = new Delete();
-			del.delete(c);
+			System.out.print(del.delete(c));
 			saveToRedoTaskList();
 			// s.loadStorage(); // to update the taskList
 			break;
@@ -124,7 +126,7 @@ public class ExeCom {
 		case COMPLETED:
 			saveToPrevTaskList();
 			Completed completed = new Completed();
-			completed.markCompleted(c);
+			System.out.print(completed.markCompleted(c));
 			saveToRedoTaskList();
 			break;
 
@@ -398,7 +400,7 @@ public class ExeCom {
 		end += 1000000*Integer.parseInt(comm.getEndMonth());
 		end += 10000*Integer.parseInt(comm.getEndDay());
 
-		if(comm.getEndHours().equals("null")) {
+		if(comm.getEndHours()==null) {
 			end += 2359;
 		}
 		else {

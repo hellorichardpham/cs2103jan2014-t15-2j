@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class Display extends Task {
 
-	private final static String TASKLIST_EMPTY_MESSAGE = "There are no tasks in the task list.";
+	private final static String TASKLIST_EMPTY_MESSAGE = "There are no tasks in the task list.\n";
 	private static final CharSequence EMPTY_STRING = "";
 	private ArrayList<Task> taskList;
 
@@ -19,18 +19,19 @@ public class Display extends Task {
 	 * @param void
 	 * @return void
 	 */
-	public void displayTaskList() {
+	public String displayTaskList() {
+                String dispOut = "";
 		if (!taskList.isEmpty()) {
-			printListingHeader();
+			dispOut = dispOut + printListingHeader();
 			for (Task task : taskList) {
 				String print = task.displayTask();
-				printTaskWithIndex(task, print);
-				
+				dispOut = dispOut + printTaskWithIndex(task, print);
 			}
 		}
 		else if (taskList.isEmpty()) {
-			System.out.println(TASKLIST_EMPTY_MESSAGE);
+			dispOut = TASKLIST_EMPTY_MESSAGE;
 		} 
+                return dispOut;
 	}
 
 	/**
@@ -40,21 +41,22 @@ public class Display extends Task {
 	 * @param void
 	 * @return void
 	 */
-	public void displayCompleted() {
+	public String displayCompleted() {
+                String dispOut = "";
 		if (!taskList.isEmpty()){
-			System.out.println("The following tasks are completed: ");
+			dispOut = dispOut + "The following tasks are completed: \n";
 			for (Task task : taskList){
 				if (task.isCompleted()){
 					
 					String info = task.displayTask();
-					printTaskWithIndex(task, info);
+					dispOut = dispOut + printTaskWithIndex(task, info);
 				}
 			}
 		}
 		else{
-			System.out.println(TASKLIST_EMPTY_MESSAGE);
+			dispOut = TASKLIST_EMPTY_MESSAGE;
 		}
-	
+                return dispOut;
 	}
 
 	/**
@@ -65,8 +67,8 @@ public class Display extends Task {
 	 * @param void
 	 * @return void
 	 */
-	private void printListingHeader() {
-		System.out.println("~~~~~ Listing of all tasks ~~~~~");
+	private String printListingHeader() {
+		return "~~~~~ Listing of all tasks ~~~~~\n";
 	}
 
 	/**
@@ -77,8 +79,8 @@ public class Display extends Task {
 	 * @param Task, String
 	 * @return void
 	 */
-	private void printTaskWithIndex(Task task, String print) {
-		System.out.println((taskList.indexOf(task)+1) + ": " + print);
+	private String printTaskWithIndex(Task task, String print) {
+		return (taskList.indexOf(task)+1) + ": " + print + "\n";
 	}
 
 	/**

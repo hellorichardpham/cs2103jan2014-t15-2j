@@ -10,9 +10,9 @@ public class Update {
 	 * @param void
 	 * @return void
 	 */
-	public void editContent(Command c) {
+	public String editContent(Command c) {
 		int id = Integer.parseInt(c.getTaskID());	//user specified task ID
-
+                String feedback = "";
 		//loop through taskList to find matching task object
 		int size = ExeCom.getTaskListInstance().size();
 		for (int i = 0; i< size; i++) {
@@ -44,12 +44,13 @@ public class Update {
 				ExeCom.getTaskListInstance().set(index, currentTask);	
 				
 				if(c.getPriority() != null) {
-				System.out.println("Succesfully Updated: "+ ExeCom.getTaskListInstance().get(i).getDetails());
+				feedback = "Succesfully Updated: "+ ExeCom.getTaskListInstance().get(i).getDetails() + "\n";
 				}
-				
-				break;
+                                
+                                return feedback;
 			}
 		}
+                return feedback;
 	}
 
 	/**

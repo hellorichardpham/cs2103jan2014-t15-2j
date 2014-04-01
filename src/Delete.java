@@ -22,16 +22,17 @@ public class Delete {
 	 * 
 	 */
 
-	public void delete(Command c) {
-
+	public String delete(Command c) {
+                String feedback = "";
 		for(String target : c.getTargetedTasks()){
 			if(isInteger(target)){
-				deleteSpecifiedTask(target);		
+				feedback = deleteSpecifiedTask(target);		
 			} else { //element is a string containing location/priority/category
 				deleteSpecifiedLocationPriorityCategory(target);
-				System.out.println(DELETE_CATEGORYPRIORITYLOCATION_SUCCESSFUL);
+				feedback = DELETE_CATEGORYPRIORITYLOCATION_SUCCESSFUL;
 			}
 		}//end delete
+                return feedback;
 	}
 
 	/**
@@ -90,22 +91,24 @@ public class Delete {
 	 * @return void
 	 * 
 	 */
-	private void deleteSpecifiedTask(String target) {
+	private String deleteSpecifiedTask(String target) {
 		ExeCom ec = new ExeCom();
 		int taskIdNumber = ec.retrieveTaskIdNumber(target);
 		boolean isFound = false;
+                String output = "";
 		//loop thru whole taskList to find for the user specified task
 		for (int i = 0; i < taskList.size(); i++) {
 			if (ec.isTaskIDMatch(taskList.get(i).getTaskID(), taskIdNumber)) {
-				System.out.println("Succesfully Deleted: "+ taskList.get(i).getDetails());
+				output = output + "Succesfully Deleted: "+ taskList.get(i).getDetails() + "\n";
 				taskList.remove(taskList.get(i));
 									
 				isFound = true;
 			}
 		}
 		if (!isFound) {
-			System.out.println(TASKID_NOT_FOUND_MESSAGE);
+			output = TASKID_NOT_FOUND_MESSAGE;
 		}
+                return output;
 	}
 
 

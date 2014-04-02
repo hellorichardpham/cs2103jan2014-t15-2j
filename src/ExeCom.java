@@ -1,12 +1,12 @@
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class ExeCom {
 	private static Command c;
 	private static ArrayList<Task> taskList;
-	private static ArrayList<Task> prevTaskList;
+	private  static ArrayList<Task> prevTaskList;
 	private static ArrayList<Task> redoTaskList;
-	private static String feedback;
-	private static boolean conflict_controller;
+        private static String feedback;
 
 	private final static String ADD = "add";
 	private final static String DISPLAY = "display";
@@ -18,7 +18,7 @@ public class ExeCom {
 	private final static String REDO = "redo";
 	private final static String EMAIL = "email";
 	private static final String COMPLETED = "completed";
-	private final static String ADD_SUCCESSFUL_MESSAGE = "That task has successfully been added to the Task List.\n";
+        private final static String ADD_SUCCESSFUL_MESSAGE = "That task has successfully been added to the Task List.\n";
 	private final static String UNDO_SUCCESS_MESSAGE = "Action has successfully been undone.\n";
 	private static final String REDO_SUCCESS_MESSAGE = "Action has successfully been redone.\n";
 	private final static String UNDO_UNSUCCESSFUL_MESSAGE = "There are no actions that can be undone.\n";
@@ -28,22 +28,10 @@ public class ExeCom {
 	private static final String INVALID_TIME_MESSAGE = "Time entered is invalid! This task is not added to the task list.\n";
 
 	private static ExeCom theOne;
-
-	public static String getFeedback() {
-		return feedback;
-	}
-
-	public static void setFeedback(String feedback) {
-		ExeCom.feedback = feedback;
-	}
-
-	public static boolean getConflict() {
-		return conflict_controller;
-	}
-
-	public static void setConflict(boolean conflict_controller) {
-		ExeCom.conflict_controller = conflict_controller;
-	}
+        
+        public static String getFeedback() {
+            return feedback;
+        }
 
 	// Allows all part of the program to get the same instance of ExeCom
 	public static ExeCom getInstance() {
@@ -80,7 +68,7 @@ public class ExeCom {
 	 * 
 	 */
 	public String executeCommand(Command command) throws Exception {
-		feedback = "";
+                feedback = "";
 		c = command;
 		String keyWord = c.getKeyword().toLowerCase();
 
@@ -90,36 +78,39 @@ public class ExeCom {
 		switch (keyWord) {
 		case ADD:
 			Add add = new Add(getTaskListInstance());
-			if (isValidAddCommand()) {
-				if (isValidTime()) {
+			if (isValidAddCommand()){
+				if(isValidTime()){
 					ArrayList<Integer> conflicts = new ArrayList<Integer>();
 					conflicts = checkConflict();
 					if (conflicts.size() <= 0) {
-						addTask(command);
-					} else {
-						conflict_controller = true;
-						//add.handleConflict(command, conflicts);
-						// if (add.isWantToAdd(input)){
-						// saveToPrevTaskList();
-						// add.addToTaskList(command);
-						// saveToRedoTaskList();
-						// }
+						saveToPrevTaskList();
+						add.addToTaskList(command);
+                                                feedback = feedback + ADD_SUCCESSFUL_MESSAGE;
+						saveToRedoTaskList();
 					}
-				} else {
+					else {
+						String input = add.handleConflict(command, conflicts);
+						if (add.isWantToAdd(input)){
+							saveToPrevTaskList();
+							add.addToTaskList(command);
+							saveToRedoTaskList();
+						}
+					}
+				}else{
 					feedback = feedback + INVALID_TIME_MESSAGE;
 				}
-			} else {
+			}else{
 				feedback = feedback + NO_DETAILS_MESSAGE;
 			}
 			break;
 
 		case DISPLAY:
 			Display d = new Display(getTaskListInstance());
-			if (isValidUndoRedoDisplayCommand()) {
+			if(isValidUndoRedoDisplayCommand()){
 				feedback = feedback + d.displayTaskList();
-			} else if (isDisplayCompleted()) {
+			}else if(isDisplayCompleted()){
 				feedback = feedback + d.displayCompleted();
-			} else {
+			}else{
 				feedback = feedback + INVALID_COMMAND_MESSAGE;
 			}
 			break;
@@ -149,19 +140,21 @@ public class ExeCom {
 			break;
 
 		case EDIT:
-		case UPDATE:
+		case UPDATE: 
 			Add a = new Add(getTaskListInstance());
 			ArrayList<Integer> conflicts = new ArrayList<Integer>();
 			conflicts = checkConflict();
-			if (conflicts.size() <= 0) {
+                        int taskID = Integer.parseInt(c.getTaskID());
+			if (conflicts.size() <= 0 ||( conflicts.size()==1 && conflicts.contains(taskID-1))) {
 				saveToPrevTaskList();
 				Update u = new Update();
 				feedback = feedback + u.editContent(c);
 				saveToRedoTaskList();
-				break;
-			} else {
-				a.handleConflict(command, conflicts);
+			}else{  
+                                feedback = "whats going on"; 
+				//a.handleConflict(command, conflicts);
 			}
+                        break;
 
 		case EMAIL:
 			Email email = new Email(getTaskListInstance());
@@ -181,16 +174,6 @@ public class ExeCom {
 		return feedback;
 	}
 
-	void addTask(Command command) throws Exception {
-		//System.out.println(command.getDetails());
-		Add add = new Add(getTaskListInstance());
-		saveToPrevTaskList();
-		add.addToTaskList(command);
-		saveToRedoTaskList();
-		feedback = feedback + ADD_SUCCESSFUL_MESSAGE;
-		conflict_controller = false;
-	}
-
 	/**
 	 * isValidTime: check if user entered valid time which is from 0000 t0 2359
 	 * 
@@ -200,9 +183,9 @@ public class ExeCom {
 	 * 
 	 */
 	private boolean isValidTime() {
-		if (isValidHours() && isValidMins()) {
+		if(isValidHours() && isValidMins()){
 			return true;
-		} else {
+		}else{
 			return false;
 		}
 	}
@@ -215,17 +198,17 @@ public class ExeCom {
 	 * @return boolean
 	 * 
 	 */
-	private boolean isValidHours() {
-		if (c.getStartHours() != null) {
+	private boolean isValidHours() {	
+		if (c.getStartHours()!=null){
 			int startHours = Integer.parseInt(c.getStartHours());
-			if (0 > startHours && startHours >= 24) {
+			if (0>startHours && startHours>=24){
 				return false;
 			}
 		}
 
-		if (c.getEndHours() != null) {
+		if (c.getEndHours()!=null){
 			int endHours = Integer.parseInt(c.getEndHours());
-			if (0 > endHours && endHours >= 24) {
+			if (0>endHours && endHours>=24){
 				return false;
 			}
 		}
@@ -242,16 +225,16 @@ public class ExeCom {
 	 * 
 	 */
 	private boolean isValidMins() {
-		if (c.getStartMins() != null) {
+		if (c.getStartMins()!=null){
 			int startMins = Integer.parseInt(c.getStartMins());
-			if (0 > startMins && startMins >= 24) {
+			if (0>startMins && startMins>=24){
 				return false;
 			}
 		}
 
-		if (c.getEndMins() != null) {
+		if (c.getEndMins()!=null){
 			int endMins = Integer.parseInt(c.getEndMins());
-			if (0 > endMins && endMins >= 24) {
+			if (0>endMins && endMins>=24){
 				return false;
 			}
 		}
@@ -269,17 +252,16 @@ public class ExeCom {
 	 * 
 	 */
 	private boolean isValidAddCommand() {
-		if (c.getDetails() != null) {
+		if(c.getDetails()!=null){
 			return true;
-		} else {
+		}else{
 			return false;
 		}
 	}
 
 	/**
 	 * 
-	 * isDisplayCompleted: Check if user wants to display list of completed
-	 * tasks
+	 * isDisplayCompleted: Check if user wants to display list of completed tasks
 	 * 
 	 * @author yingyun
 	 * @param void
@@ -287,10 +269,9 @@ public class ExeCom {
 	 * 
 	 */
 	private boolean isDisplayCompleted() {
-		if (c.getDetails().equals("completed")
-				|| c.getDetails().equals("completed tasks")) {
+		if (c.getDetails().equals("completed") || c.getDetails().equals("completed tasks")){
 			return true;
-		} else {
+		}else{
 			return false;
 		}
 	}
@@ -301,8 +282,7 @@ public class ExeCom {
 	 * taskIdNumber that he's searching for.
 	 * 
 	 * @author Richard, yingyun
-	 * @param String
-	 *            , int
+	 * @param String, int
 	 * @return boolean
 	 * 
 	 */
@@ -312,7 +292,7 @@ public class ExeCom {
 	}
 
 	/**
-	 * retrieveTaskIdNumber: retrieves user-specified taskID.
+	 * retrieveTaskIdNumber: retrieves user-specified taskID. 
 	 * 
 	 * @author Richard, yingyun
 	 * @param String
@@ -333,15 +313,15 @@ public class ExeCom {
 	 * @return void
 	 */
 	public static void undo() {
-		if (!prevTaskList.isEmpty() && isValidUndoRedoDisplayCommand()) {
+		if (isValidUndoRedoDisplayCommand() && !prevTaskList.isEmpty()) {
 			resetTaskList();
 			transferTasksFromTo(prevTaskList, taskList);
 
-			feedback = UNDO_SUCCESS_MESSAGE;
+			feedback = feedback + UNDO_SUCCESS_MESSAGE;
 		} else if (isValidUndoRedoDisplayCommand() && prevTaskList.isEmpty()) {
-			feedback = UNDO_UNSUCCESSFUL_MESSAGE;
+			feedback = feedback + UNDO_UNSUCCESSFUL_MESSAGE;
 		} else {
-			feedback = INVALID_COMMAND_MESSAGE;
+			feedback = feedback + INVALID_COMMAND_MESSAGE;
 		}
 	}
 
@@ -353,24 +333,24 @@ public class ExeCom {
 	 * @return void
 	 */
 	public static void redo() {
-		if ((!redoTaskList.isEmpty() && isValidUndoRedoDisplayCommand())
-				|| !prevTaskList.isEmpty()) {
+		if (isValidUndoRedoDisplayCommand()
+				&& (!redoTaskList.isEmpty() || !prevTaskList.isEmpty())) {
 			resetTaskList();
 			transferTasksFromTo(redoTaskList, taskList);
 			/*
 			 * for (Task task : redoTaskList) { taskList.add(task); }
 			 */
-			feedback = REDO_SUCCESS_MESSAGE;
+			feedback = feedback + REDO_SUCCESS_MESSAGE;
 		} else if (isValidUndoRedoDisplayCommand() && redoTaskList.isEmpty()) {
-			feedback = REDO_UNSUCCESSFUL_MESSAGE;
+			feedback = feedback + REDO_UNSUCCESSFUL_MESSAGE;
 		} else {
-			feedback = INVALID_COMMAND_MESSAGE;
+			feedback = feedback + INVALID_COMMAND_MESSAGE;
 		}
 	}
 
 	/**
-	 * checkConflict: check conflict of time and date, return ArrayList<Integer>
-	 * with the elements being the indexes of conflicting tasks in tasklist
+	 * checkConflict: check conflict of time and date, return ArrayList<Integer> with the elements
+	 * being the indexes of conflicting tasks in tasklist
 	 * 
 	 * @author Tian Weizhou
 	 * @param void
@@ -380,7 +360,7 @@ public class ExeCom {
 
 		ArrayList<Integer> conflicts = new ArrayList<Integer>();
 
-		for (int i = 0; i < taskList.size(); i++) {
+		for(int i=0; i<taskList.size(); i++) {
 
 			Task current = taskList.get(i);
 			int taskStart = setStartSignature(current);
@@ -388,25 +368,26 @@ public class ExeCom {
 			int commandStart = setStartSignature(c);
 			int commandEnd = setEndSignature(c);
 
-			if (taskStart == -1 && commandStart == -1) {
-				if (taskEnd == commandEnd) {
+			if(taskStart == -1 && commandStart == -1) {
+				if(taskEnd==commandEnd) {
 					conflicts.add(i);
 				}
 			}
-			if (taskStart != -1 && commandStart != -1) {
-				if (commandStart >= taskStart && commandStart < taskEnd) {
+			if(taskStart != -1 && commandStart != -1) {
+				if(commandStart >= taskStart && commandStart < taskEnd) {
 					conflicts.add(i);
-				} else if (commandEnd > taskStart && commandEnd <= taskEnd) {
+				}
+				else if(commandEnd > taskStart && commandEnd <= taskEnd) {
 					conflicts.add(i);
 				}
 			}
-			if (taskStart != -1 && commandStart == -1) {
-				if (commandEnd > taskStart && commandEnd < taskEnd) {
+			if(taskStart != -1 && commandStart == -1) {
+				if(commandEnd > taskStart && commandEnd < taskEnd) {
 					conflicts.add(i);
 				}
 			}
-			if (taskStart == -1 && commandStart != -1) {
-				if (taskEnd > commandStart && taskEnd < commandEnd) {
+			if(taskStart == -1 && commandStart != -1) {
+				if(taskEnd > commandStart && taskEnd < commandEnd) {
 					conflicts.add(i);
 				}
 			}
@@ -416,15 +397,20 @@ public class ExeCom {
 
 	private static int setEndSignature(Command comm) {
 		int end = 0;
+                
+                if(comm.getEndHours()==null) {
+                    return end;
+                }
+                
+		end += 100000000*Integer.parseInt(comm.getEndYear());
+		end += 1000000*Integer.parseInt(comm.getEndMonth());
+		end += 10000*Integer.parseInt(comm.getEndDay());
 
-		end += 100000000 * Integer.parseInt(comm.getEndYear());
-		end += 1000000 * Integer.parseInt(comm.getEndMonth());
-		end += 10000 * Integer.parseInt(comm.getEndDay());
-
-		if (comm.getEndHours() == null) {
+		if(comm.getEndHours()==null) {
 			end += 2359;
-		} else {
-			end += 100 * Integer.parseInt(comm.getEndHours());
+		}
+		else {
+			end += 100*Integer.parseInt(comm.getEndHours());
 			end += Integer.parseInt(comm.getEndMins());
 		}
 
@@ -435,20 +421,22 @@ public class ExeCom {
 
 		int start = -1;
 
-		if (comm.getStartYear() != null) {
-			start += 100000000 * Integer.parseInt(comm.getStartYear());
-			start += 1000000 * Integer.parseInt(comm.getStartMonth());
-			start += 10000 * Integer.parseInt(comm.getStartDay());
-		} else if (comm.getStartMins() != null) {
-			start += 100000000 * Integer.parseInt(comm.getEndYear());
-			start += 1000000 * Integer.parseInt(comm.getEndMonth());
-			start += 10000 * Integer.parseInt(comm.getEndDay());
-		} else {
+		if(comm.getStartYear()!=null) {
+			start += 100000000*Integer.parseInt(comm.getStartYear());
+			start += 1000000*Integer.parseInt(comm.getStartMonth());
+			start += 10000*Integer.parseInt(comm.getStartDay());
+		}
+		else if(comm.getStartMins()!=null) {
+			start += 100000000*Integer.parseInt(comm.getEndYear());
+			start += 1000000*Integer.parseInt(comm.getEndMonth());
+			start += 10000*Integer.parseInt(comm.getEndDay());
+		}
+		else {
 			return start;
 		}
 
-		if (comm.getStartMins() != null) {
-			start += 100 * Integer.parseInt(comm.getStartHours());
+		if(comm.getStartMins()!=null) {
+			start += 100*Integer.parseInt(comm.getStartHours());
 			start += Integer.parseInt(comm.getStartMins());
 		}
 		return start;
@@ -459,14 +447,15 @@ public class ExeCom {
 
 		int end = 0;
 
-		end += 100000000 * Integer.parseInt(task.getEndYear());
-		end += 1000000 * Integer.parseInt(task.getEndMonth());
-		end += 10000 * Integer.parseInt(task.getEndDay());
+		end += 100000000*Integer.parseInt(task.getEndYear());
+		end += 1000000*Integer.parseInt(task.getEndMonth());
+		end += 10000*Integer.parseInt(task.getEndDay());
 
-		if (task.getEndHours().equals("null")) {
+		if(task.getEndHours().equals("null")) {
 			end += 2359;
-		} else {
-			end += 100 * Integer.parseInt(task.getEndHours());
+		}
+		else {
+			end += 100*Integer.parseInt(task.getEndHours());
 			end += Integer.parseInt(task.getEndMins());
 		}
 
@@ -476,20 +465,22 @@ public class ExeCom {
 	private static int setStartSignature(Task task) {
 		int start = -1;
 
-		if (!task.getStartYear().equals("null")) {
-			start += 100000000 * Integer.parseInt(task.getStartYear());
-			start += 1000000 * Integer.parseInt(task.getStartMonth());
-			start += 10000 * Integer.parseInt(task.getStartDay());
-		} else if (!task.getStartMins().equals("null")) {
-			start += 100000000 * Integer.parseInt(task.getEndYear());
-			start += 1000000 * Integer.parseInt(task.getEndMonth());
-			start += 10000 * Integer.parseInt(task.getEndDay());
-		} else {
+		if(!task.getStartYear().equals("null")) {
+			start += 100000000*Integer.parseInt(task.getStartYear());
+			start += 1000000*Integer.parseInt(task.getStartMonth());
+			start += 10000*Integer.parseInt(task.getStartDay());
+		}
+		else if(!task.getStartMins().equals("null")) {
+			start += 100000000*Integer.parseInt(task.getEndYear());
+			start += 1000000*Integer.parseInt(task.getEndMonth());
+			start += 10000*Integer.parseInt(task.getEndDay());
+		}
+		else {
 			return start;
 		}
 
-		if (!task.getStartMins().equals("null")) {
-			start += 100 * Integer.parseInt(task.getStartHours());
+		if(!task.getStartMins().equals("null")) {
+			start += 100*Integer.parseInt(task.getStartHours());
 			start += Integer.parseInt(task.getStartMins());
 		}
 		return start;

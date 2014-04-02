@@ -6,7 +6,7 @@ public class ExeCom {
 	private static ArrayList<Task> taskList;
 	private  static ArrayList<Task> prevTaskList;
 	private static ArrayList<Task> redoTaskList;
-        private static String feedback;
+	private static String feedback;
 
 	private final static String ADD = "add";
 	private final static String DISPLAY = "display";
@@ -18,7 +18,7 @@ public class ExeCom {
 	private final static String REDO = "redo";
 	private final static String EMAIL = "email";
 	private static final String COMPLETED = "completed";
-        private final static String ADD_SUCCESSFUL_MESSAGE = "That task has successfully been added to the Task List.\n";
+	private final static String ADD_SUCCESSFUL_MESSAGE = "That task has successfully been added to the Task List.\n";
 	private final static String UNDO_SUCCESS_MESSAGE = "Action has successfully been undone.\n";
 	private static final String REDO_SUCCESS_MESSAGE = "Action has successfully been redone.\n";
 	private final static String UNDO_UNSUCCESSFUL_MESSAGE = "There are no actions that can be undone.\n";
@@ -28,10 +28,10 @@ public class ExeCom {
 	private static final String INVALID_TIME_MESSAGE = "Time entered is invalid! This task is not added to the task list.\n";
 
 	private static ExeCom theOne;
-        
-        public static String getFeedback() {
-            return feedback;
-        }
+
+	public static String getFeedback() {
+		return feedback;
+	}
 
 	// Allows all part of the program to get the same instance of ExeCom
 	public static ExeCom getInstance() {
@@ -68,7 +68,7 @@ public class ExeCom {
 	 * 
 	 */
 	public String executeCommand(Command command) throws Exception {
-                feedback = "";
+		feedback = "";
 		c = command;
 		String keyWord = c.getKeyword().toLowerCase();
 
@@ -85,7 +85,7 @@ public class ExeCom {
 					if (conflicts.size() <= 0) {
 						saveToPrevTaskList();
 						add.addToTaskList(command);
-                                                feedback = feedback + ADD_SUCCESSFUL_MESSAGE;
+						feedback = feedback + ADD_SUCCESSFUL_MESSAGE;
 						saveToRedoTaskList();
 					}
 					else {
@@ -315,11 +315,11 @@ public class ExeCom {
 			resetTaskList();
 			transferTasksFromTo(prevTaskList, taskList);
 
-			feedback = feedback + UNDO_SUCCESS_MESSAGE;
+			feedback = UNDO_SUCCESS_MESSAGE;
 		} else if (isValidUndoRedoDisplayCommand() && prevTaskList.isEmpty()) {
-			feedback = feedback + UNDO_UNSUCCESSFUL_MESSAGE;
+			feedback = UNDO_UNSUCCESSFUL_MESSAGE;
 		} else {
-			feedback = feedback + INVALID_COMMAND_MESSAGE;
+			feedback = INVALID_COMMAND_MESSAGE;
 		}
 	}
 
@@ -338,11 +338,11 @@ public class ExeCom {
 			/*
 			 * for (Task task : redoTaskList) { taskList.add(task); }
 			 */
-			feedback = feedback + REDO_SUCCESS_MESSAGE;
+			feedback = REDO_SUCCESS_MESSAGE;
 		} else if (isValidUndoRedoDisplayCommand() && redoTaskList.isEmpty()) {
-			feedback = feedback + REDO_UNSUCCESSFUL_MESSAGE;
+			feedback = REDO_UNSUCCESSFUL_MESSAGE;
 		} else {
-			feedback = feedback + INVALID_COMMAND_MESSAGE;
+			feedback = INVALID_COMMAND_MESSAGE;
 		}
 	}
 

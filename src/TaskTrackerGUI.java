@@ -1,12 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
+ *Class TaskTrackerGUI 
+ *This class acts as the GUI class to handle user events
  *
- * @author Acer
+ * @author Tian Weizhou
  */
 public class TaskTrackerGUI extends javax.swing.JFrame {
 
@@ -130,16 +126,14 @@ public class TaskTrackerGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_commandLineActionPerformed
 
     private void undoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoButtonActionPerformed
-        ExeCom ec = ExeCom.getInstance();
         ExeCom.undo();
-        String feedback = ec.getFeedback();
+        String feedback = ExeCom.getFeedback();
         displayTextBox.append(feedback);
     }//GEN-LAST:event_undoButtonActionPerformed
 
     private void redoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_redoButtonActionPerformed
-        ExeCom ec = ExeCom.getInstance();
         ExeCom.redo();
-        String feedback = ec.getFeedback();
+        String feedback = ExeCom.getFeedback();
         displayTextBox.append(feedback);
     }//GEN-LAST:event_redoButtonActionPerformed
 

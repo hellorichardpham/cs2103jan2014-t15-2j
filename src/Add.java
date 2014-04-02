@@ -21,6 +21,7 @@ public class Add {
 	public void addToTaskList(Command c) throws Exception {
 
 		{
+			//System.out.println("adding " + c.getDetails());
 			Task taskToAdd = new Task(c);
 
 			taskToAdd.setTaskID(Integer.toString(ExeCom.getTaskListInstance().size() + 1));
@@ -40,7 +41,6 @@ public class Add {
 	 */
 	public void handleConflict(Command command, ArrayList<Integer> conflicts){
 		printConflictedTasks(conflicts);
-		ExeCom.setConflict(true);
 		//String input = askIfUserWantToAdd(command);
 		//return input;
 	}

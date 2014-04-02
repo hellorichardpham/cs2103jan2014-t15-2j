@@ -156,12 +156,13 @@ public class TaskTrackerGUI extends javax.swing.JFrame {
 			String feedback;
 			feedback = ec.getFeedback();
 
-			if (ExeCom.getConflict()==true) {
+			if (ExeCom.getFeedback().equals("conflict")) {
 				int n = JOptionPane.showConfirmDialog(null, "Add Task anyway?",
 						"There is a conflict!", JOptionPane.YES_NO_OPTION);
 
 				if (n == JOptionPane.YES_OPTION) {
-					ec.addTask(com);	
+					ec.addTask(com);
+					feedback = ec.getFeedback();
 					//System.out.println("ADDED");
 				} else {
 					//do nothing

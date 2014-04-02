@@ -6,7 +6,9 @@ public class ExeCom {
 	private static ArrayList<Task> prevTaskList;
 	private static ArrayList<Task> redoTaskList;
 	private static String feedback;
-	private static boolean conflict_controller;
+
+	//code placed at front of feedback for GUI to recognize there is a conflict
+	private final static String CONFLICTED_CODE = "-cs2103--conflicted "; 
 
 	private final static String ADD = "add";
 	private final static String DISPLAY = "display";
@@ -17,7 +19,11 @@ public class ExeCom {
 	private static final String UPDATE = "update";
 	private final static String REDO = "redo";
 	private final static String EMAIL = "email";
+	private final static String JUSTADD = "justadd";
+	private final static String JUSTEDIT = "justedit";
+	private final static String JUSTUPDATE = "justupdate";
 	private static final String COMPLETED = "completed";
+	private static final String CANCELLED = "cancel";
 	private final static String ADD_SUCCESSFUL_MESSAGE = "That task has successfully been added to the Task List.\n";
 	private final static String UNDO_SUCCESS_MESSAGE = "Action has successfully been undone.\n";
 	private static final String REDO_SUCCESS_MESSAGE = "Action has successfully been redone.\n";
@@ -26,23 +32,15 @@ public class ExeCom {
 	private final static String INVALID_COMMAND_MESSAGE = "That is an invalid command.\n";
 	private static final String NO_DETAILS_MESSAGE = "No details detected! This task is not added to the task list\n";
 	private static final String INVALID_TIME_MESSAGE = "Time entered is invalid! This task is not added to the task list.\n";
-
+	private static final String CANCELLED_ACTION_MESSAGE = "The action has been cancelled.\n";
 	private static ExeCom theOne;
-
+	
 	public static String getFeedback() {
 		return feedback;
 	}
 
 	public static void setFeedback(String feedback) {
 		ExeCom.feedback = feedback;
-	}
-
-	public static boolean getConflict() {
-		return conflict_controller;
-	}
-
-	public static void setConflict(boolean conflict_controller) {
-		ExeCom.conflict_controller = conflict_controller;
 	}
 
 	// Allows all part of the program to get the same instance of ExeCom
@@ -52,7 +50,7 @@ public class ExeCom {
 		}
 		return theOne;
 	}
-
+    
 	public static ArrayList<Task> getTaskListInstance() {
 		if (taskList == null) {
 			taskList = new ArrayList<Task>();
@@ -88,8 +86,12 @@ public class ExeCom {
 		s.loadStorage();
 
 		switch (keyWord) {
+
+		case JUSTADD:
+			addTask(command);
+			break;
+
 		case ADD:
-			Add add = new Add(getTaskListInstance());
 			if (isValidAddCommand()) {
 				if (isValidTime()) {
 					ArrayList<Integer> conflicts = new ArrayList<Integer>();
@@ -97,13 +99,8 @@ public class ExeCom {
 					if (conflicts.size() <= 0) {
 						addTask(command);
 					} else {
-						conflict_controller = true;
-						//add.handleConflict(command, conflicts);
-						// if (add.isWantToAdd(input)){
-						// saveToPrevTaskList();
-						// add.addToTaskList(command);
-						// saveToRedoTaskList();
-						// }
+						feedback = CONFLICTED_CODE + printConflictedTasks(conflicts);
+						feedback = feedback + "Add task anyway? (Yes/No): \n\n";
 					}
 				} else {
 					feedback = feedback + INVALID_TIME_MESSAGE;
@@ -158,11 +155,20 @@ public class ExeCom {
 				Update u = new Update();
 				feedback = feedback + u.editContent(c);
 				saveToRedoTaskList();
-				break;
 			} else {
-				a.handleConflict(command, conflicts);
+				feedback = CONFLICTED_CODE + printConflictedTasks(conflicts);
+				feedback = feedback + "Edit task anyway? (Yes/No): \n";
 			}
-
+			break;
+			
+		case JUSTUPDATE:
+		case JUSTEDIT:
+			saveToPrevTaskList();
+			Update u = new Update();
+			feedback = feedback + u.editContent(c);
+			saveToRedoTaskList();
+			break;
+			
 		case EMAIL:
 			Email email = new Email(getTaskListInstance());
 			email.emailUser();
@@ -175,20 +181,34 @@ public class ExeCom {
 		case REDO:
 			redo();
 			break;
+		
+		case CANCELLED:
+			feedback = CANCELLED_ACTION_MESSAGE;
+			break;
+		
+		default:
+			feedback = INVALID_COMMAND_MESSAGE;
+			
 		}
 
 		s.saveStorage();
 		return feedback;
 	}
-
-	void addTask(Command command) throws Exception {
+	
+	/**
+	 * addTask: Adds Task to Tasklist and updates the undo and redo tasklists
+	 * 
+	 * @author Tian Weizhou
+	 * @param Command
+	 * @return void
+	 */
+	private void addTask(Command command) throws Exception {
 		//System.out.println(command.getDetails());
 		Add add = new Add(getTaskListInstance());
 		saveToPrevTaskList();
 		add.addToTaskList(command);
 		saveToRedoTaskList();
 		feedback = feedback + ADD_SUCCESSFUL_MESSAGE;
-		conflict_controller = false;
 	}
 
 	/**
@@ -369,6 +389,23 @@ public class ExeCom {
 	}
 
 	/**
+	 * printConflictedTask: print all tasks that conflicts with current task
+	 * 
+	 * @author Wei Zhou
+	 * @param ArrayList<Integer>
+	 * @return void
+	 */
+	private static String printConflictedTasks(ArrayList<Integer> conflicts) {
+		String conflictList = "";
+		conflictList = conflictList + "There is a conflict with these tasks: \n";
+		for(int i=0 ; i<conflicts.size(); i++) {
+			conflictList = conflictList + (conflicts.get(i)+1) + ": ";
+			conflictList = conflictList + taskList.get(conflicts.get(i)).displayTask() + "\n" ;
+		}
+		return conflictList;
+	}
+
+	/**
 	 * checkConflict: check conflict of time and date, return ArrayList<Integer>
 	 * with the elements being the indexes of conflicting tasks in tasklist
 	 * 
@@ -413,7 +450,14 @@ public class ExeCom {
 		}
 		return conflicts;
 	}
-
+	
+	/**
+	 * setStartSignature: returns an integer value which contains all the end date and 
+	 * end time info in a single number used for efficient comparison
+	 * @author Tian Weizhou
+	 * @param Command
+	 * @return int
+	 */
 	private static int setEndSignature(Command comm) {
 		int end = 0;
 		if(comm.getEndYear() == null) {
@@ -432,10 +476,21 @@ public class ExeCom {
 
 		return end;
 	}
-
+	
+	/**
+	 * setStartSignature: returns an integer value which contains all the start date and 
+	 * start time info in a single number used for efficient comparison
+	 * @author Tian Weizhou
+	 * @param Command
+	 * @return int
+	 */
 	private static int setStartSignature(Command comm) {
 
 		int start = -1;
+		
+		if(comm.getEndYear()==null) {
+			return Integer.MAX_VALUE;
+		}
 
 		if (comm.getStartYear() != null) {
 			start += 100000000 * Integer.parseInt(comm.getStartYear());
@@ -456,7 +511,14 @@ public class ExeCom {
 		return start;
 
 	}
-
+	
+	/**
+	 * setEndSignature: returns an integer value which contains all the End date and 
+	 * End time details in a single number used for efficient comparison
+	 * @author Tian Weizhou
+	 * @param Task
+	 * @return int
+	 */
 	private static int setEndSignature(Task task) {
 
 		int end = 0;
@@ -474,7 +536,14 @@ public class ExeCom {
 
 		return end;
 	}
-
+	
+	/**
+	 * setStartSignature: returns an integer value which contains all the start date and 
+	 * start time details in a single number used for efficient comparison
+	 * @author Tian Weizhou
+	 * @param Task
+	 * @return int
+	 */
 	private static int setStartSignature(Task task) {
 		int start = -1;
 
@@ -497,7 +566,7 @@ public class ExeCom {
 		return start;
 
 	}
-
+	
 	public static void transferTasksFromTo(ArrayList<Task> source,
 			ArrayList<Task> target) {
 		for (Task task : source) {

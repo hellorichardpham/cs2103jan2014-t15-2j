@@ -38,10 +38,11 @@ public class Add {
 	 * @return 
 	 * @throws Exception
 	 */
-	public String handleConflict(Command command, ArrayList<Integer> conflicts){
+	public void handleConflict(Command command, ArrayList<Integer> conflicts){
 		printConflictedTasks(conflicts);
-		String input = askIfUserWantToAdd(command);
-		return input;
+		ExeCom.setConflict(true);
+		//String input = askIfUserWantToAdd(command);
+		//return input;
 	}
 
 	/**
@@ -51,12 +52,12 @@ public class Add {
 	 * @param command
 	 * @return void
 	 */
-	private String askIfUserWantToAdd(Command command){
-		UI ui = new UI();
-		System.out.println("Add Task anyway? Enter(Y/N) :");	
-		String input = ui.askForUserResponse();
-		return input;
-	}
+//	private String askIfUserWantToAdd(Command command){
+//		UI ui = new UI();
+//		System.out.println("Add Task anyway? Enter(Y/N) :");	
+//		String input = ui.askForUserResponse();
+//		return input;
+//	}
 
 	/**
 	 * isWantToAdd: check if user replied yes to adding task
@@ -65,13 +66,13 @@ public class Add {
 	 * @param String
 	 * @return boolean
 	 */
-	boolean isWantToAdd(String input) {
-		if(input=="yes" || input=="y" || input=="yeah" || input=="ya"){
-			return true;
-		}else{
-			return false;
-		}
-	}
+//	boolean isWantToAdd(String input) {
+//		if(input=="yes" || input=="y" || input=="yeah" || input=="ya"){
+//			return true;
+//		}else{
+//			return false;
+//		}
+//	}
 
 	/**
 	 * printConflictedTask: print all tasks that conflicts with current task
@@ -82,9 +83,12 @@ public class Add {
 	 */
 	private void printConflictedTasks(ArrayList<Integer> conflicts) {
 		System.out.println("There is a conflict with these tasks: ");
+		//ExeCom.setFeedback("There is a conflict with these tasks: ");
 		for(int i=0 ; i<conflicts.size(); i++) {
-			System.out.print(conflicts.get(i)+": ");
+			System.out.print((conflicts.get(i)+1) + ": ");
+			//ExeCom.setFeedback((conflicts.get(i)+1) + ": ");
 			System.out.println(taskList.get(conflicts.get(i)).displayTask());
+			//ExeCom.setFeedback(taskList.get(conflicts.get(i)).displayTask());
 		}
 	}
 

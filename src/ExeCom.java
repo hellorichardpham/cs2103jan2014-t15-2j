@@ -153,7 +153,7 @@ public class ExeCom {
 			Add a = new Add(getTaskListInstance());
 			ArrayList<Integer> conflicts = new ArrayList<Integer>();
 			conflicts = checkConflict();
-			if (conflicts.size() <= 0) {
+			if (conflicts.size() <= 0 ) {
 				saveToPrevTaskList();
 				Update u = new Update();
 				feedback = feedback + u.editContent(c);
@@ -416,7 +416,9 @@ public class ExeCom {
 
 	private static int setEndSignature(Command comm) {
 		int end = 0;
-
+		if(comm.getEndYear() == null) {
+			return end;
+		}
 		end += 100000000 * Integer.parseInt(comm.getEndYear());
 		end += 1000000 * Integer.parseInt(comm.getEndMonth());
 		end += 10000 * Integer.parseInt(comm.getEndDay());

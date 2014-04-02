@@ -6,7 +6,6 @@ public class ExeCom {
 	private static ArrayList<Task> prevTaskList;
 	private static ArrayList<Task> redoTaskList;
 	private static String feedback;
-	private static boolean conflict_controller;
 
 	private final static String ADD = "add";
 	private final static String DISPLAY = "display";
@@ -35,14 +34,6 @@ public class ExeCom {
 
 	public static void setFeedback(String feedback) {
 		ExeCom.feedback = feedback;
-	}
-
-	public static boolean getConflict() {
-		return conflict_controller;
-	}
-
-	public static void setConflict(boolean conflict_controller) {
-		ExeCom.conflict_controller = conflict_controller;
 	}
 
 	// Allows all part of the program to get the same instance of ExeCom
@@ -89,7 +80,6 @@ public class ExeCom {
 
 		switch (keyWord) {
 		case ADD:
-			Add add = new Add(getTaskListInstance());
 			if (isValidAddCommand()) {
 				if (isValidTime()) {
 					ArrayList<Integer> conflicts = new ArrayList<Integer>();
@@ -97,7 +87,7 @@ public class ExeCom {
 					if (conflicts.size() <= 0) {
 						addTask(command);
 					} else {
-						conflict_controller = true;
+						feedback="conflict";
 						//add.handleConflict(command, conflicts);
 						// if (add.isWantToAdd(input)){
 						// saveToPrevTaskList();
@@ -188,7 +178,6 @@ public class ExeCom {
 		add.addToTaskList(command);
 		saveToRedoTaskList();
 		feedback = feedback + ADD_SUCCESSFUL_MESSAGE;
-		conflict_controller = false;
 	}
 
 	/**

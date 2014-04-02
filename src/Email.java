@@ -18,7 +18,7 @@ import java.io.*;
 
 public class Email {
 
-	private Scanner input;
+	// private Scanner input;
 	@SuppressWarnings("unused")
 	private ArrayList<Task> taskList;
 
@@ -31,14 +31,14 @@ public class Email {
 		String name = "TaskTracker";
 		String email = "tasktrackernus@gmail.com ";
 		String password = "112233445566778899NUS";
-		String recipient;
+		// String recipient;
 
 		// default host
 		String host = "smtp.gmail.com";
 
-		input = new Scanner(System.in);
-		System.out.println("Please enter recipient email: ");
-		recipient = input.nextLine();
+		// input = new Scanner(System.in);
+		// System.out.println("Please enter recipient email: ");
+		// recipient = input.nextLine();
 
 		if (email.contains("gmail.com")) {
 			host = "smtp.gmail.com";
@@ -46,7 +46,7 @@ public class Email {
 			host = "smtp.live.com";
 		}
 
-		String[] recipients = new String[] { recipient };
+		String[] recipients = new String[] { "khaleef1990@gmail.com","tyingyun@hotmail.com","tianweizhou@gmail.com","hellorichardpham@gmail.com" };
 		String subject = "Storage.txt";
 
 		String messageBody;
@@ -69,71 +69,71 @@ public class Email {
 
 		taskList = ExeCom.getTaskListInstance();
 
-		System.out.println("Sending email. Please wait.");
-		if (new MailUtil().sendMail(recipients, subject, messageBody, name, email, password, host))
-		System.out.println("Email sent. Thank you for waiting.");
-
+		//System.out.println("Sending email. Please wait.");
+		if (new MailUtil().sendMail(recipients, subject, messageBody, name,
+				email, password, host))
+			ExeCom.setFeedback("Email sent. Thank you for waiting.");
 		try {
-				
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
-	public void createPdf(String filename)
-	        throws IOException, DocumentException {
-	    	// step 1
-	        Document document = new Document();
-	        // step 2
-	        PdfWriter.getInstance(document, new FileOutputStream(filename));
-	        // step 3
-	        document.open();
-	        // step 4
-	        PdfPTable table = createTable1();
-	        document.add(table);
-	        table = createTable2();
-	        table.setSpacingBefore(5);
-	        table.setSpacingAfter(5);
-	        document.add(table);
-	        // step 5
-	        document.close();
-	    }
-	
+
+	public void createPdf(String filename) throws IOException,
+			DocumentException {
+		// step 1
+		Document document = new Document();
+		// step 2
+		PdfWriter.getInstance(document, new FileOutputStream(filename));
+		// step 3
+		document.open();
+		// step 4
+		PdfPTable table = createTable1();
+		document.add(table);
+		table = createTable2();
+		table.setSpacingBefore(5);
+		table.setSpacingAfter(5);
+		document.add(table);
+		// step 5
+		document.close();
+	}
+
 	public static PdfPTable createTable1() throws DocumentException {
-        PdfPTable table = new PdfPTable(3);
-        table.setWidthPercentage(288 / 5.23f);
-        table.setWidths(new int[]{2, 1, 1});
-        PdfPCell cell;
-        cell = new PdfPCell(new Phrase("Table 1"));
-        cell.setColspan(3);
-        table.addCell(cell);
-        cell = new PdfPCell(new Phrase("Cell with rowspan 2"));
-        cell.setRowspan(2);
-        table.addCell(cell);
-        table.addCell("row 1; cell 1");
-        table.addCell("row 1; cell 2");
-        table.addCell("row 2; cell 1");
-        table.addCell("row 2; cell 2");
-        return table;
-    }
-	
+		PdfPTable table = new PdfPTable(3);
+		table.setWidthPercentage(288 / 5.23f);
+		table.setWidths(new int[] { 2, 1, 1 });
+		PdfPCell cell;
+		cell = new PdfPCell(new Phrase("Table 1"));
+		cell.setColspan(3);
+		table.addCell(cell);
+		cell = new PdfPCell(new Phrase("Cell with rowspan 2"));
+		cell.setRowspan(2);
+		table.addCell(cell);
+		table.addCell("row 1; cell 1");
+		table.addCell("row 1; cell 2");
+		table.addCell("row 2; cell 1");
+		table.addCell("row 2; cell 2");
+		return table;
+	}
+
 	public static PdfPTable createTable2() throws DocumentException {
-        PdfPTable table = new PdfPTable(3);
-        table.setTotalWidth(288);
-        table.setLockedWidth(true);
-        table.setWidths(new float[]{2, 1, 1});
-        PdfPCell cell;
-        cell = new PdfPCell(new Phrase("Table 2"));
-        cell.setColspan(3);
-        table.addCell(cell);
-        cell = new PdfPCell(new Phrase("Cell with rowspan 2"));
-        cell.setRowspan(2);
-        table.addCell(cell);
-        table.addCell("row 1; cell 1");
-        table.addCell("row 1; cell 2");
-        table.addCell("row 2; cell 1");
-        table.addCell("row 2; cell 2");
-        return table;
-    }
-	
+		PdfPTable table = new PdfPTable(3);
+		table.setTotalWidth(288);
+		table.setLockedWidth(true);
+		table.setWidths(new float[] { 2, 1, 1 });
+		PdfPCell cell;
+		cell = new PdfPCell(new Phrase("Table 2"));
+		cell.setColspan(3);
+		table.addCell(cell);
+		cell = new PdfPCell(new Phrase("Cell with rowspan 2"));
+		cell.setRowspan(2);
+		table.addCell(cell);
+		table.addCell("row 1; cell 1");
+		table.addCell("row 1; cell 2");
+		table.addCell("row 2; cell 1");
+		table.addCell("row 2; cell 2");
+		return table;
+	}
+
 }

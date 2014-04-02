@@ -70,9 +70,8 @@ public class Email {
 		taskList = ExeCom.getTaskListInstance();
 
 		System.out.println("Sending email. Please wait.");
-		// if (new MailUtil().sendMail(recipients, subject, messageBody, name,
-		// email, password, host))
-		// System.out.println("Email sent. Thank you for waiting.");
+		if (new MailUtil().sendMail(recipients, subject, messageBody, name, email, password, host))
+		System.out.println("Email sent. Thank you for waiting.");
 
 		try {
 				

@@ -237,14 +237,14 @@ public class ExeCom {
 	private boolean isValidHours() {
 		if (c.getStartHours() != null) {
 			int startHours = Integer.parseInt(c.getStartHours());
-			if (0 > startHours && startHours >= 24) {
+			if (0 > startHours || startHours >= 24) {
 				return false;
 			}
 		}
 
 		if (c.getEndHours() != null) {
 			int endHours = Integer.parseInt(c.getEndHours());
-			if (0 > endHours && endHours >= 24) {
+			if (0 > endHours || endHours >= 24) {
 				return false;
 			}
 		}
@@ -263,14 +263,14 @@ public class ExeCom {
 	private boolean isValidMins() {
 		if (c.getStartMins() != null) {
 			int startMins = Integer.parseInt(c.getStartMins());
-			if (0 > startMins && startMins >= 24) {
+			if (0 > startMins || startMins >= 24) {
 				return false;
 			}
 		}
 
 		if (c.getEndMins() != null) {
 			int endMins = Integer.parseInt(c.getEndMins());
-			if (0 > endMins && endMins >= 24) {
+			if (0 > endMins || endMins >= 24) {
 				return false;
 			}
 		}

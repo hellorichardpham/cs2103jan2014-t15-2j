@@ -171,6 +171,7 @@ public class TaskTrackerGUI extends javax.swing.JFrame {
 		case "no":
 		case "n":
 			com.setKeyword(CANCELLED);
+			
 		}
 		}
 

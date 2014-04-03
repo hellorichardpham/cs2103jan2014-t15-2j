@@ -10,7 +10,7 @@ public class Update {
 	 * @return void
 	 */
 	public String editContent(Command c) {
-		ExeCom ec = new ExeCom();
+		ExeCom ec = ExeCom.getInstance();
 		int id = Integer.parseInt(c.getTaskID()); // user specified task ID
 		String feedback = "";
 		// loop through taskList to find matching task object
@@ -19,7 +19,8 @@ public class Update {
 			Task currentTask = ExeCom.getTaskListInstance().get(i);
 			int currentTaskID = Integer.parseInt(currentTask.getTaskID());
 			if (currentTaskID == id) {
-				ec.saveToPrevTaskList();
+				ec.setUndoableTrue();
+				ec.setRedoableFalse();
 				currentTask.setDetails(merge(c.getDetails(),
 						currentTask.getDetails()));
 
@@ -60,7 +61,7 @@ public class Update {
 				feedback = "Succesfully Updated: "
 						+ ExeCom.getTaskListInstance().get(i).getDetails()
 						+ "\n";
-				
+
 				return feedback;
 			}
 		}

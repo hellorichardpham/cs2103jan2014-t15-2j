@@ -19,13 +19,12 @@ public class Add {
 	 * @return void
 	 */
 	public void addToTaskList(Command c) throws Exception {
-		ExeCom ec = new ExeCom();
 		{
-			//System.out.println("adding " + c.getDetails());
+			ExeCom ec = ExeCom.getInstance();
+			ec.setUndoableTrue();
+			ec.setRedoableFalse();
 			Task taskToAdd = new Task(c);
-
 			taskToAdd.setTaskID(Integer.toString(ExeCom.getTaskListInstance().size() + 1));
-			ec.saveToPrevTaskList();
 			taskList.add(taskToAdd);
 		}
 	}

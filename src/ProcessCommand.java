@@ -162,6 +162,7 @@ public class ProcessCommand {
 
 				cal.add(Calendar.DAY_OF_MONTH, daysToAdd + isNextWeek);
 				if (c.getEndYear() == null) {
+
 					c.setEndYear(cal.get(Calendar.YEAR) + "");
 					c.setEndMonth(cal.get(Calendar.MONTH) + 1 + "");
 					c.setEndDay(cal.get(Calendar.DAY_OF_MONTH) + "");
@@ -305,7 +306,7 @@ public class ProcessCommand {
 		}
 
 		// if user did not enter any date, set date line of task as current date
-		if (c.getEndMonth() == null && !(commandType.equals("edit") || commandType.equals("update"))) {
+		if (c.getEndMonth() == null && !(commandType.equals("edit") || commandType.equals("update") || commandType.equals("display"))) {
 			Calendar cal = Calendar.getInstance();
 			if(c.getEndHours()!=null) {
 				if(Integer.parseInt(c.getEndHours()) < cal.get(Calendar.HOUR_OF_DAY)) {
@@ -520,6 +521,7 @@ public class ProcessCommand {
 	 * @param String[]
 	 */
 	private void processDetails(String[] splitInput) {
+
 		String details = "";
 		for (int i = 0; i < splitInput.length; i++) {
 			if (!splitInput[i].equals("")) {
@@ -527,6 +529,7 @@ public class ProcessCommand {
 			}
 		}
 		details = details.trim();
+		
 		if (!details.equals("")) {
 			c.setDetails(details);
 		} else {

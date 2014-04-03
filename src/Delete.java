@@ -1,16 +1,14 @@
 import java.util.ArrayList;
 
-
 public class Delete {
 	private final static String TASKID_NOT_FOUND_MESSAGE = "That Task ID Number was not found";
 	private static final String DELETE_CATEGORYPRIORITYLOCATION_SUCCESSFUL = "Deleted all related tasks!";
 	private ArrayList<Task> taskList;
 
-	//constructor
-	public Delete(){
-		this.taskList = ExeCom.getTaskListInstance();	
+	// constructor
+	public Delete() {
+		this.taskList = ExeCom.getTaskListInstance();
 	}
-
 
 	/**
 	 * 
@@ -23,22 +21,24 @@ public class Delete {
 	 */
 
 	public String delete(Command c) {
-                String feedback = "";
-		for(String target : c.getTargetedTasks()){
-			if(isInteger(target)){
-				feedback = deleteSpecifiedTask(target);		
-			} else { //element is a string containing location/priority/category
+		String feedback = "";
+		for (String target : c.getTargetedTasks()) {
+			if (isInteger(target)) {
+				feedback = deleteSpecifiedTask(target);
+			} else { // element is a string containing
+						// location/priority/category
 				deleteSpecifiedLocationPriorityCategory(target);
 				feedback = DELETE_CATEGORYPRIORITYLOCATION_SUCCESSFUL;
 			}
-		}//end delete
-                return feedback;
+		}// end delete
+		return feedback;
 	}
 
 	/**
 	 * 
-	 * deleteSpecifiedLocationPriorityCategory: Determine target string belongs to location, priority or category
-	 * and delete all related tasks from taskList
+	 * deleteSpecifiedLocationPriorityCategory: Determine target string belongs
+	 * to location, priority or category and delete all related tasks from
+	 * taskList
 	 * 
 	 * @author Ying Yun
 	 * @param String
@@ -47,8 +47,8 @@ public class Delete {
 	 */
 	private void deleteSpecifiedLocationPriorityCategory(String target) {
 		target = target.toLowerCase();
-		switch(target){
-		//priority
+		switch (target) {
+		// priority
 		case "low":
 		case "medium":
 		case "high":
@@ -58,8 +58,8 @@ public class Delete {
 					taskList.remove(i);
 			}
 			break;
-			
-		//category
+
+		// category
 		case "family":
 		case "work":
 		case "friends":
@@ -70,8 +70,8 @@ public class Delete {
 					taskList.remove(i);
 			}
 			break;
-			
-		//location
+
+		// location
 		default:
 			for (int i = 0; i < taskList.size(); i++) {
 				Task currentTask = taskList.get(i);
@@ -92,30 +92,31 @@ public class Delete {
 	 * 
 	 */
 	private String deleteSpecifiedTask(String target) {
-		ExeCom ec = new ExeCom();
+		ExeCom ec = ExeCom.getInstance();
 		int taskIdNumber = ec.retrieveTaskIdNumber(target);
 		boolean isFound = false;
-                String output = "";
-		//loop thru whole taskList to find for the user specified task
+		String output = "";
+		// loop thru whole taskList to find for the user specified task
 		for (int i = 0; i < taskList.size(); i++) {
 			if (ec.isTaskIDMatch(taskList.get(i).getTaskID(), taskIdNumber)) {
-				output = output + "Succesfully Deleted: "+ taskList.get(i).getDetails() + "\n";
-				ec.saveToPrevTaskList();
+				ec.setUndoableTrue();
+				ec.setRedoableFalse();
+				output = output + "Succesfully Deleted: "
+						+ taskList.get(i).getDetails() + "\n";
 				taskList.remove(taskList.get(i));
-									
 				isFound = true;
 			}
 		}
 		if (!isFound) {
 			output = TASKID_NOT_FOUND_MESSAGE;
 		}
-                return output;
+		return output;
 	}
-
 
 	/**
 	 * 
-	 * isInteger: Checks whether the string in TargetedTask[] is an integer or not
+	 * isInteger: Checks whether the string in TargetedTask[] is an integer or
+	 * not
 	 * 
 	 * @author Ying Yun
 	 * @param String
@@ -123,21 +124,22 @@ public class Delete {
 	 * 
 	 */
 	public static boolean isInteger(String s) {
-		try { 
-			Integer.parseInt(s); 
-		} catch(NumberFormatException e) { 
-			return false; 
+		try {
+			Integer.parseInt(s);
+		} catch (NumberFormatException e) {
+			return false;
 		}
-		// only gets here if it successfully parsed the string, implying that particular string is an integer
+		// only gets here if it successfully parsed the string, implying that
+		// particular string is an integer
 		return true;
 	}
 
-
 	/**
 	 * 
-	 * isPositiveInteger: Checks if the delete/update/edit/completed parameter is a valid taskID
-	 * (positive integer)
-	 * CURRENTLY NOT IN USE AS PARAMETER CAN BE LOCATION/PRIORITY/CATEGORY
+	 * isPositiveInteger: Checks if the delete/update/edit/completed parameter
+	 * is a valid taskID (positive integer) CURRENTLY NOT IN USE AS PARAMETER
+	 * CAN BE LOCATION/PRIORITY/CATEGORY
+	 * 
 	 * @author Richard, yingyun
 	 * @param void
 	 * @return boolean
@@ -146,9 +148,9 @@ public class Delete {
 	public static boolean isPositiveInteger(Command c) {
 		try {
 			boolean flag = false;
-			for(int i=0; i<c.getTargetedTasks().size(); i++){
+			for (int i = 0; i < c.getTargetedTasks().size(); i++) {
 				if (Integer.parseInt(c.getTargetedTasks().get(i)) > 0) {
-					flag= true;
+					flag = true;
 				}
 			}
 			return flag;
@@ -157,8 +159,4 @@ public class Delete {
 		}
 	}
 
-
-
-
 }
-

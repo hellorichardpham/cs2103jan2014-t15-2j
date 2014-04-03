@@ -147,7 +147,6 @@ public class ExeCom {
 
 		case EDIT:
 		case UPDATE:
-			Add a = new Add(getTaskListInstance());
 			ArrayList<Integer> conflicts = new ArrayList<Integer>();
 			conflicts = checkConflict();
 			if (conflicts.size() <= 0 ) {

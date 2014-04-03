@@ -1,7 +1,7 @@
-
 /**
- * Task (class) : This class acts as a blueprint for any task object. It contains
- * information regarding a single task.
+ * Task (class) : This class acts as a blueprint for any task object. It
+ * contains information regarding a single task.
+ * 
  * @author yingyun
  */
 public class Task {
@@ -22,8 +22,8 @@ public class Task {
 	protected String taskID;
 	protected String completed;
 
-	//constructor
-	public Task(Command c){
+	// constructor
+	public Task(Command c) {
 		details = c.getDetails();
 		startDay = c.getStartDay();
 		startMonth = c.getStartMonth();
@@ -182,9 +182,9 @@ public class Task {
 	}
 
 	public boolean isCompleted() {
-		if (completed.equals("true")){
+		if (completed.equals("true")) {
 			return true;
-		}else{
+		} else {
 			return false;
 		}
 	}
@@ -202,36 +202,38 @@ public class Task {
 	 */
 	public String displayTask() {
 		String info = null;
-
-		if (details!=null || !details.equals("null") ){
+		if (!details.equals("null")) {
 			info = "Details: " + details;
 		}
 
-		if ((!startDay.equals("null") && !startMonth.equals("null") && !startYear.equals("null")) ||
-				(startDay!=null && startMonth!=null && startYear!=null)){
-			info = info.concat(" Start Date: " + startDay + "/" + startMonth + "/" + startYear);
+		if ((!startDay.equals("null") && !startMonth.equals("null") && !startYear
+				.equals("null"))) {
+			info = info.concat(" Start Date: " + startDay + "/" + startMonth
+					+ "/" + startYear);
 		}
 
-		if ((!endDay.equals("null") && !endMonth.equals("null") && !endYear.equals("null")) ||
-				(endDay!=null && endMonth!=null && endYear!=null)){
-			info = info.concat(" End Date: " + endDay + "/" + endMonth + "/" + endYear);
+		if ((!endDay.equals("null") && !endMonth.equals("null") && !endYear
+				.equals("null"))
+				|| (endDay != null && endMonth != null && endYear != null)) {
+			info = info.concat(" End Date: " + endDay + "/" + endMonth + "/"
+					+ endYear);
 		}
 
-		if (!startHours.equals("null") && !startMins.equals("null") || (startHours!=null && startMins!=null)){
+		if (!startHours.equals("null") && !startMins.equals("null")) {
 			info = info.concat(" Start Time: " + startHours + ":" + startMins);
 		}
-		if ((!endHours.equals("null") && !endMins.equals("null")) || (endHours!=null && endMins!=null)){
+		if ((!endHours.equals("null") && !endMins.equals("null"))) {
 			info = info.concat(" End Time: " + endHours + ":" + endMins);
 		}
 
-		if (!location.equals("null") || location!=null){
+		if (!location.equals("null")) {
 			info = info.concat(" Location: " + location);
 		}
 
-		if (!category.equals("null") || category!=null){
+		if (!category.equals("null")) {
 			info = info.concat(" Category: " + category);
 		}
-		if (!priority.equals("null") || priority!=null){
+		if (!priority.equals("null")) {
 			info = info.concat(" Priority: " + priority);
 		}
 
@@ -239,14 +241,20 @@ public class Task {
 	}
 
 	/**
-	 * displayToStorage: display non-empty task attributes in the correct order to external .txt file
+	 * displayToStorage: display non-empty task attributes in the correct order
+	 * to external .txt file
 	 * 
 	 * @author Ying Yun, Khaleef
 	 * @param void
 	 * @return String
 	 */
-	public String displayToStorage(){
-		return details + " " + startDay + " " + startMonth + " " + startYear + " " + endDay  + " " + endMonth + " " + endYear + " " + startHours + " " + startMins + " " + endHours + " " + endMins + " " + "//location " + location + " " + "//category " + category + " " + "//priority " + priority + " " + "//completed " + completed + " ";
+	public String displayToStorage() {
+		return details + " " + startDay + " " + startMonth + " " + startYear
+				+ " " + endDay + " " + endMonth + " " + endYear + " "
+				+ startHours + " " + startMins + " " + endHours + " " + endMins
+				+ " " + "//location " + location + " " + "//category "
+				+ category + " " + "//priority " + priority + " "
+				+ "//completed " + completed + " ";
 	}
 
 

@@ -42,12 +42,13 @@ public class ProcessCommand {
         processPriorityCategoryLocation(splitInput);
         processLocation(splitInput);
 
+        String timeDetails = extractTime(splitInput);
+        processTime(timeDetails);
+        
         processDayofWeek(splitInput);
         processDate(splitInput, commandType);
         switchIfDatesAreReversed();
-
-        String timeDetails = extractTime(splitInput);
-        processTime(timeDetails);
+        
         processDetails(splitInput);
 
         /*
@@ -150,6 +151,17 @@ public class ProcessCommand {
                 int daysToAdd = inputDay - currentDayOfMonth;
                 if (daysToAdd < 0) {
                     isNextWeek = 7;
+                }
+                if (daysToAdd==0 && c.getEndHours() != null) {
+                	int currentHour = cal.get(Calendar.HOUR_OF_DAY);
+                	int currentMin = cal.get(Calendar.MINUTE);
+                	
+                	if(currentHour > Integer.parseInt(c.getEndHours())) {
+                		isNextWeek = 7;
+                	}
+                	else if(currentHour == Integer.parseInt(c.getEndHours()) && currentMin > Integer.parseInt(c.getEndMins())) {
+                		isNextWeek = 7;
+                	}
                 }
 
                 cal.add(Calendar.DAY_OF_MONTH, daysToAdd + isNextWeek);
@@ -262,21 +274,6 @@ public class ProcessCommand {
     }
 
     /**
-     * getCurrentDate: retrieve current date from user's device
-     *
-     * @author yingyun
-     * @param void
-     * @return formattedDate
-     *
-     */
-    private String getCurrentDate() {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        Date currentDate = new Date();
-        String formattedDate = dateFormat.format(currentDate);
-        return formattedDate;
-    }
-
-    /**
      * processDate: process the splitInput array to Identify month signatures
      * and store them into the command object in the correct format
      *
@@ -313,10 +310,18 @@ public class ProcessCommand {
 
         // if user did not enter any date, set date line of task as current date
         if (c.getEndMonth() == null && !(commandType.equals("edit") || commandType.equals("update"))) {
-            String dateDetails = getCurrentDate();
-            c.setEndDay(dateDetails.substring(8, 10));
-            c.setEndMonth(dateDetails.substring(5, 7));
-            c.setEndYear(dateDetails.substring(0, 4));
+            Calendar cal = Calendar.getInstance();
+        	if(c.getEndHours()!=null) {
+            	if(Integer.parseInt(c.getEndHours()) < cal.get(Calendar.HOUR_OF_DAY)) {
+            		cal.add(Calendar.DATE, 1);
+            	}
+            	else if(Integer.parseInt(c.getEndHours()) == cal.get(Calendar.HOUR_OF_DAY) && Integer.parseInt(c.getEndMins()) < cal.get(Calendar.MINUTE)) {
+            		cal.add(Calendar.DATE, 1);
+            	}
+            }
+            c.setEndDay(cal.get(Calendar.DAY_OF_MONTH)+"");
+            c.setEndMonth(cal.get(Calendar.MONTH)+1+"");
+            c.setEndYear(cal.get(Calendar.YEAR)+"");
         }
     }
 

@@ -167,7 +167,7 @@ public class TaskTrackerGUI extends javax.swing.JFrame {
 		case "ya":
 				com = pc.process(conflictedUserInput);
 				conflictedUserInput=null;
-			
+				break;
 		case "no":
 		case "n":
 			com.setKeyword(CANCELLED);

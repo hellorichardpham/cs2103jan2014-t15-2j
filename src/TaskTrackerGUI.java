@@ -1,5 +1,3 @@
-import javax.swing.JOptionPane;
-
 /**
  * Class TaskTrackerGUI This class acts as the GUI class to handle user events
  * 
@@ -7,6 +5,10 @@ import javax.swing.JOptionPane;
  */
 public class TaskTrackerGUI extends javax.swing.JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	//code placed at front of feedback for GUI to recognize there is a conflict
 	private final static String CONFLICTED_CODE = "-cs2103--conflicted";
 	private final static String CANCELLED = "cancel";
@@ -24,7 +26,6 @@ public class TaskTrackerGUI extends javax.swing.JFrame {
 	 * This method is called from within the constructor to initialize the form.
 	 * @author Tian Weizhou
 	 */
-	@SuppressWarnings("unchecked")
 	// <editor-fold defaultstate="collapsed"
 	// desc="Generated Code">//GEN-BEGIN:initComponents
 	private void initComponents() {

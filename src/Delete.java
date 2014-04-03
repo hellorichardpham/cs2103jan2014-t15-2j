@@ -100,6 +100,7 @@ public class Delete {
 		for (int i = 0; i < taskList.size(); i++) {
 			if (ec.isTaskIDMatch(taskList.get(i).getTaskID(), taskIdNumber)) {
 				output = output + "Succesfully Deleted: "+ taskList.get(i).getDetails() + "\n";
+				ec.saveToPrevTaskList();
 				taskList.remove(taskList.get(i));
 									
 				isFound = true;

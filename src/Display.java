@@ -4,13 +4,24 @@ public class Display extends Task {
 
 	private final static String TASKLIST_EMPTY_MESSAGE = "There are no tasks in the task list.\n";
 	private static final CharSequence EMPTY_STRING = "";
+	private static ArrayList<Task>[][] monthList;
+	private static Command command = null;
 	private ArrayList<Task> taskList;
+	SortDate sorted;
 
 	//constructor
 	public Display(ArrayList<Task> taskList){
 		this.taskList = taskList;
 	}
-
+	
+	public Display(ArrayList<Task> taskList, Command command, ArrayList<Task>[][] monthList){
+		this.taskList = taskList;
+		this.command = command;
+		this.monthList = monthList;
+		sorted = new SortDate(taskList);
+		taskList = sorted.sort();
+	}
+	
 	/**
 	 * 
 	 * display: display all tasks found in the taskList
@@ -21,6 +32,7 @@ public class Display extends Task {
 	 */
 	public String displayTaskList() {
                 String dispOut = "";
+                System.out.println("month " + command.getEndMonth());
 		if (!taskList.isEmpty()) {
 			dispOut = dispOut + printListingHeader();
 			for (Task task : taskList) {
@@ -58,6 +70,48 @@ public class Display extends Task {
 		}
                 return dispOut;
 	}
+	
+	public String displayMonth() {
+
+		System.out.println("displayMonth");
+		String month = command.getEndMonth();
+		switch(month) {
+		case "01":
+		return sorted.printMonthList(0);
+		case "02":
+			return sorted.printMonthList(1);
+		case "03":
+			return sorted.printMonthList(2);
+		case "04":
+			return sorted.printMonthList(3);
+		case "05":
+			//System.out.println("case 05");
+			return sorted.printMonthList(4);
+		case "06":
+			//System.out.println("case 06");
+			return sorted.printMonthList(5);
+		case "07":
+			//System.out.println("case 07");
+			return sorted.printMonthList(6);
+		case "08":
+			//System.out.println("case 08");
+			return sorted.printMonthList(7);
+		case "09":
+			//System.out.println("case 09");
+			return sorted.printMonthList(8);
+		case "10":
+			//System.out.println("case 10");
+			return sorted.printMonthList(9);
+		case "11":
+			//System.out.println("case 11");
+			return sorted.printMonthList(10);
+		case "12":
+			//System.out.println("case 12");
+			return sorted.printMonthList(11);
+		}
+		return "invalid month";
+	}
+	
 
 	/**
 	 * 

@@ -5,6 +5,7 @@ public class ExeCom {
 	private static ArrayList<Task> taskList;
 	private static ArrayList<Task> prevTaskList;
 	private static ArrayList<Task> redoTaskList;
+	private static ArrayList<Task>[][] monthList;
 	private static String feedback;
 
 	// code placed at front of feedback for GUI to recognize there is a conflict
@@ -60,6 +61,11 @@ public class ExeCom {
 		return taskList;
 	}
 
+	public static ArrayList<Task>[][] getMonthListInstance() {
+		monthList = new ArrayList[12][1];
+		return monthList;
+	}
+
 	// constructor
 	ExeCom() {
 		if (taskList == null) {
@@ -83,7 +89,6 @@ public class ExeCom {
 		feedback = "";
 		c = command;
 		String keyWord = c.getKeyword().toLowerCase();
-
 		Storage s = new Storage();
 		s.loadStorage();
 
@@ -114,9 +119,12 @@ public class ExeCom {
 			break;
 
 		case DISPLAY:
-			Display d = new Display(getTaskListInstance());
+			Display d = new Display(getTaskListInstance(), c,
+					getMonthListInstance());
 			if (isValidUndoRedoDisplayCommand()) {
 				feedback = feedback + d.displayTaskList();
+			} else if (isDisplayMonth()) {
+				feedback = feedback + d.displayMonth();
 			} else if (isDisplayCompleted()) {
 				feedback = feedback + d.displayCompleted();
 			} else {
@@ -196,6 +204,11 @@ public class ExeCom {
 			feedback = CANCELLED_ACTION_MESSAGE;
 			break;
 
+		case "sort":
+			SortDate sorted = new SortDate(getTaskListInstance());
+			taskList = sorted.sort();
+			sorted.printMonthList(4);
+			break;
 		default:
 			feedback = INVALID_COMMAND_MESSAGE;
 
@@ -324,6 +337,39 @@ public class ExeCom {
 		} else {
 			return false;
 		}
+	}
+
+	private boolean isDisplayMonth() {
+		if (c.getEndMonth() != null) { //handles bad commands like "display ofuh"
+			switch (c.getEndMonth()) {
+			case "01":
+				return true;
+			case "02":
+				return true;
+			case "03":
+				return true;
+			case "04":
+				return true;
+			case "05":
+				return true;
+			case "06":
+				return true;
+			case "07":
+				return true;
+			case "08":
+				return true;
+			case "09":
+				return true;
+			case "10":
+				return true;
+			case "11":
+				return true;
+			case "12":
+				return true;
+			}
+			return false;
+		}
+		return false;
 	}
 
 	/**
@@ -698,7 +744,15 @@ public class ExeCom {
 	 * @return boolean
 	 */
 	public static boolean isValidUndoRedoDisplayCommand() {
-		if (c.getDetails() == null) {
+		if (c.getDetails() == null && c.getEndMonth() == null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public static boolean isValidDisplayMonthCommand() {
+		if (c.getDetails().equals("null") && !(c.getEndMonth().equals("null"))) {
 			return true;
 		} else {
 			return false;
@@ -719,5 +773,9 @@ public class ExeCom {
 
 	public static void setRedoableFalse() {
 		isRedoable = false;
+	}
+
+	public static void sort() {
+
 	}
 }

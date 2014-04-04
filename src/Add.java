@@ -7,7 +7,6 @@ public class Add {
 	//constructor
 	public Add(ArrayList<Task> taskList){
 		this.taskList = taskList;
-
 	}
 
 	/**
@@ -91,5 +90,5 @@ public class Add {
 			//ExeCom.setFeedback(taskList.get(conflicts.get(i)).displayTask());
 		}
 	}
-
+	
 }//end class

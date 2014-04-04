@@ -119,13 +119,18 @@ public class ExeCom {
 			break;
 
 		case DISPLAY:
+			System.out.println("Display1");
 			Display d = new Display(getTaskListInstance(), c,
 					getMonthListInstance());
-			if (isValidUndoRedoDisplayCommand()) {
-				feedback = feedback + d.displayTaskList();
-			} else if (isDisplayMonth()) {
+			if (isDisplayMonth()) {
+				System.out.println("I'm here at displayMonth");
 				feedback = feedback + d.displayMonth();
+			} else if (isValidUndoRedoDisplayCommand()) {
+				System.out.println("I'm here at displayTaskList");
+				feedback = feedback + d.displayTaskList();
 			} else if (isDisplayCompleted()) {
+				System.out.println("I'm here at displayCompleted");
+
 				feedback = feedback + d.displayCompleted();
 			} else {
 				feedback = feedback + INVALID_COMMAND_MESSAGE;
@@ -202,12 +207,6 @@ public class ExeCom {
 
 		case CANCELLED:
 			feedback = CANCELLED_ACTION_MESSAGE;
-			break;
-
-		case "sort":
-			SortDate sorted = new SortDate(getTaskListInstance());
-			taskList = sorted.sort();
-			sorted.printMonthList(4);
 			break;
 		default:
 			feedback = INVALID_COMMAND_MESSAGE;
@@ -331,16 +330,21 @@ public class ExeCom {
 	 * 
 	 */
 	private boolean isDisplayCompleted() {
-		if (c.getDetails().equals("completed")
-				|| c.getDetails().equals("completed tasks")) {
-			return true;
+		if (c.getDetails() != null) {
+			if (c.getDetails().equals("completed")
+					|| c.getDetails().equals("completed tasks")) {
+				return true;
+			} else {
+				return false;
+			}
 		} else {
 			return false;
 		}
 	}
 
 	private boolean isDisplayMonth() {
-		if (c.getEndMonth() != null) { //handles bad commands like "display ofuh"
+		if (c.getEndMonth() != null) { // handles bad commands like
+										// "display ofuh"
 			switch (c.getEndMonth()) {
 			case "01":
 				return true;
@@ -744,7 +748,7 @@ public class ExeCom {
 	 * @return boolean
 	 */
 	public static boolean isValidUndoRedoDisplayCommand() {
-		if (c.getDetails() == null && c.getEndMonth() == null) {
+		if (c.getDetails() == null) {
 			return true;
 		} else {
 			return false;

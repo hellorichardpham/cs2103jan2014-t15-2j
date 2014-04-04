@@ -298,7 +298,7 @@ public class ProcessCommand {
 				splitInput[i] = EMPTY_STRING;
 				splitInput[i - 1] = EMPTY_STRING;
 
-				if (i - 2 > 0 && (splitInput[i - 2].equals("to") || splitInput[i - 2].equals("from"))) {
+				if (i - 2 > 0 && (splitInput[i-2].equals("-") ||(splitInput[i - 2].equals("to") || splitInput[i - 2].equals("from")))) {
 					splitInput[i - 2] = EMPTY_STRING;
 				}
 			}

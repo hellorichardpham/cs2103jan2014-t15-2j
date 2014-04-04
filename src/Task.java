@@ -257,5 +257,4 @@ public class Task {
 				+ "//completed " + completed + " ";
 	}
 
-
 }

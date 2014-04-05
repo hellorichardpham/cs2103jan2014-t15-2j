@@ -161,6 +161,12 @@ public class TaskTrackerGUI extends javax.swing.JFrame {
 	private void commandLineActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_commandLineActionPerformed
 		String userInput = commandLine.getText().trim();
 		commandLine.setText("");
+		
+		try {
+			Alarm.setAlarm();
+		} catch (Exception e) {
+		}
+		
 		ProcessCommand pc = new ProcessCommand();
 		ExeCom ec = ExeCom.getInstance();
 		Command com = pc.process(userInput);

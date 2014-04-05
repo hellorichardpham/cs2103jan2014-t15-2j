@@ -119,18 +119,13 @@ public class ExeCom {
 			break;
 
 		case DISPLAY:
-			System.out.println("Display1");
 			Display d = new Display(getTaskListInstance(), c,
 					getMonthListInstance());
 			if (isDisplayMonth()) {
-				System.out.println("I'm here at displayMonth");
 				feedback = feedback + d.displayMonth();
 			} else if (isValidUndoRedoDisplayCommand()) {
-				System.out.println("I'm here at displayTaskList");
 				feedback = feedback + d.displayTaskList();
 			} else if (isDisplayCompleted()) {
-				System.out.println("I'm here at displayCompleted");
-
 				feedback = feedback + d.displayCompleted();
 			} else {
 				feedback = feedback + INVALID_COMMAND_MESSAGE;

@@ -32,7 +32,6 @@ public class Display extends Task {
 	 */
 	public String displayTaskList() {
                 String dispOut = "";
-                System.out.println("month " + command.getEndMonth());
 		if (!taskList.isEmpty()) {
 			dispOut = dispOut + printListingHeader();
 			for (Task task : taskList) {
@@ -72,8 +71,6 @@ public class Display extends Task {
 	}
 	
 	public String displayMonth() {
-
-		System.out.println("displayMonth");
 		String month = command.getEndMonth();
 		switch(month) {
 		case "01":
@@ -85,28 +82,20 @@ public class Display extends Task {
 		case "04":
 			return sorted.printMonthList(3);
 		case "05":
-			//System.out.println("case 05");
 			return sorted.printMonthList(4);
 		case "06":
-			//System.out.println("case 06");
 			return sorted.printMonthList(5);
 		case "07":
-			//System.out.println("case 07");
 			return sorted.printMonthList(6);
 		case "08":
-			//System.out.println("case 08");
 			return sorted.printMonthList(7);
 		case "09":
-			//System.out.println("case 09");
 			return sorted.printMonthList(8);
 		case "10":
-			//System.out.println("case 10");
 			return sorted.printMonthList(9);
 		case "11":
-			//System.out.println("case 11");
 			return sorted.printMonthList(10);
 		case "12":
-			//System.out.println("case 12");
 			return sorted.printMonthList(11);
 		}
 		return "invalid month";

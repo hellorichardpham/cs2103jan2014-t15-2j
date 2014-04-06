@@ -20,7 +20,13 @@ public class TaskTrackerGUI extends javax.swing.JFrame {
 	 * @author Tian Weizhou
 	 */
 	public TaskTrackerGUI() {
-		initComponents();
+		try {
+			initComponents();
+			Alarm.setAlarm();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -31,7 +37,6 @@ public class TaskTrackerGUI extends javax.swing.JFrame {
 	// <editor-fold defaultstate="collapsed"
 	// desc="Generated Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
-
 		jScrollPane1 = new javax.swing.JScrollPane();
 		displayTextBox = new javax.swing.JTextArea();
 		commandLine = new javax.swing.JTextField();
@@ -161,12 +166,7 @@ public class TaskTrackerGUI extends javax.swing.JFrame {
 	private void commandLineActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_commandLineActionPerformed
 		String userInput = commandLine.getText().trim();
 		commandLine.setText("");
-		
-		try {
-			Alarm.setAlarm();
-		} catch (Exception e) {
-		}
-		
+
 		ProcessCommand pc = new ProcessCommand();
 		ExeCom ec = ExeCom.getInstance();
 		Command com = pc.process(userInput);

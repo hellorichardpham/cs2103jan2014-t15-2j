@@ -86,6 +86,8 @@ public class ExeCom {
 	 * 
 	 */
 	public String executeCommand(Command command) throws Exception {
+
+		
 		feedback = "";
 		c = command;
 		String keyWord = c.getKeyword().toLowerCase();
@@ -179,10 +181,10 @@ public class ExeCom {
 			saveToRedoTaskList();
 			break;
 
-		case EMAIL:
-			Email email = new Email(getTaskListInstance());
-			email.emailUser();
-			break;
+		// case EMAIL:
+		// Email email = new Email(getTaskListInstance());
+		// email.emailUser();
+		// break;
 
 		case UNDO:
 			if (isUndoable) {

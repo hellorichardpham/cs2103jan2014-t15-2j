@@ -29,18 +29,19 @@ public class SortDate {
 	}
 
 	public static String printMonthList(int monthIndex) {
-		String output = "";
+		String output = printMonthName(monthIndex);
 		for (int j = 0; j < monthList[monthIndex][0].size(); j++) {
-			output += monthList[monthIndex][0].get(j).displayTask() + "\n";
+			String print = monthList[monthIndex][0].get(j).displayTask();
+			output += printTaskWithIndex(monthList[monthIndex][0].get(j), print);
 		}
-		return output;
+		// New Line added to separate display from next command's feedback
+		return output + "\n";
 	}
 
 	public static ArrayList<Task> sort() {
-		System.out.println("Performing sort method");
 		for (int i = 0; i < months.size() - 1; i++) {
 			for (int j = 0; j < taskList.size(); j++) {
-				if (months.get(i).contains(taskList.get(j).getStartMonth())) {
+				if (isMatchingTaskMonth(taskList.get(j), months.get(i))) {
 					monthList[i][0].add(taskList.get(j));
 					sortedTaskList.add(taskList.get(j));
 				}
@@ -49,12 +50,25 @@ public class SortDate {
 		return sortedTaskList;
 	}
 
+	public static boolean isMatchingTaskMonth(Task task, String month) {
+		if (!task.getStartMonth().equals("null")) {
+			System.out.println("not equal to null");
+			return month.contains(task.getStartMonth());
+		} else {
+			System.out.println("this should be null: " + task.getStartMonth());
+			return month.contains(task.getEndMonth());
+		}
+
+	}
+
 	public static void initializeMonths() {
 		months = new ArrayList<String>(); // resets months so no overflow
-		/* Each time we add single digits, we add 1 and 01 because the user
-		 might enter may 01 2014 instead. This allows us to catch both. We may
-		 want to force the month to be a certain way so we don't have to do
-		 this.*/
+		/*
+		 * Each time we add single digits, we add 1 and 01 because the user
+		 * might enter may 01 2014 instead. This allows us to catch both. We may
+		 * want to force the month to be a certain way so we don't have to do
+		 * this.
+		 */
 		months.add("1 01");
 		months.add("2 02");
 		months.add("3 03");
@@ -67,6 +81,36 @@ public class SortDate {
 		months.add("10");
 		months.add("11");
 		months.add("12");
+	}
+
+	public static String printMonthName(int monthIndex) {
+		switch (monthIndex) {
+		case 0:
+			return "Displaying all tasks in January: \n";
+		case 1:
+			return "Displaying all tasks in February: \n";
+		case 2:
+			return "Displaying all tasks in March: \n";
+		case 3:
+			return "Displaying all tasks in April: \n";
+		case 4:
+			return "Displaying all tasks in May: \n";
+		case 5:
+			return "Displaying all tasks in June: \n";
+		case 6:
+			return "Displaying all tasks in July: \n";
+		case 7:
+			return "Displaying all tasks in August: \n";
+		case 8:
+			return "Displaying all tasks in September: \n";
+		case 9:
+			return "Displaying all tasks in October: \n";
+		case 10:
+			return "Displaying all tasks in November: \n";
+		case 11:
+			return "Displaying all tasks in December: \n";
+		}
+		return "";
 	}
 
 	public static void initializeDays() {
@@ -109,4 +153,7 @@ public class SortDate {
 		}
 	}
 
+	private static String printTaskWithIndex(Task task, String print) {
+		return (taskList.indexOf(task) + 1) + ": " + print + "\n";
+	}
 }

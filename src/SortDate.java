@@ -30,16 +30,17 @@ public class SortDate {
 
 	public static String printMonthList(int monthIndex) {
 		String output = "";
-			for (int j = 0; j < monthList[monthIndex][0].size(); j++) {
-				output += monthList[monthIndex][0].get(j).displayTask() + "\n";
-			}
-			return output;
+		for (int j = 0; j < monthList[monthIndex][0].size(); j++) {
+			output += monthList[monthIndex][0].get(j).displayTask() + "\n";
+		}
+		return output;
 	}
 
 	public static ArrayList<Task> sort() {
+		System.out.println("Performing sort method");
 		for (int i = 0; i < months.size() - 1; i++) {
 			for (int j = 0; j < taskList.size(); j++) {
-				if (taskList.get(j).getStartMonth().equals(months.get(i))) {
+				if (months.get(i).contains(taskList.get(j).getStartMonth())) {
 					monthList[i][0].add(taskList.get(j));
 					sortedTaskList.add(taskList.get(j));
 				}
@@ -49,16 +50,20 @@ public class SortDate {
 	}
 
 	public static void initializeMonths() {
-		months = new ArrayList<String>(); //resets months so no overflow
-		months.add("01");
-		months.add("02");
-		months.add("03");
-		months.add("04");
-		months.add("05");
-		months.add("06");
-		months.add("07");
-		months.add("08");
-		months.add("09");
+		months = new ArrayList<String>(); // resets months so no overflow
+		/* Each time we add single digits, we add 1 and 01 because the user
+		 might enter may 01 2014 instead. This allows us to catch both. We may
+		 want to force the month to be a certain way so we don't have to do
+		 this.*/
+		months.add("1 01");
+		months.add("2 02");
+		months.add("3 03");
+		months.add("4 04");
+		months.add("5 05");
+		months.add("6 06");
+		months.add("7 07");
+		months.add("8 08");
+		months.add("9 09");
 		months.add("10");
 		months.add("11");
 		months.add("12");

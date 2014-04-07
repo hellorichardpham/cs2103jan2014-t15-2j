@@ -4,7 +4,8 @@ public class SortDate {
 	public static ArrayList<String> months = new ArrayList<String>();
 	public static ArrayList<String> days = new ArrayList<String>();
 	private static ArrayList<Task> sortedTaskList = new ArrayList<Task>();
-	private static ArrayList<Task>[][] monthList = new ArrayList[12][1];
+	private static ArrayList<Task>[][] startMonthList = new ArrayList[12][1];
+	private static ArrayList<Task>[][] endMonthList = new ArrayList[12][1];
 	private static ArrayList<Task> taskList;
 
 	// constructor
@@ -18,7 +19,8 @@ public class SortDate {
 
 	public static void initializeMonthList() {
 		for (int i = 0; i < 12; i++) {
-			monthList[i][0] = new ArrayList<Task>();
+			startMonthList[i][0] = new ArrayList<Task>();
+			endMonthList[i][0] = new ArrayList<Task>();
 		}
 	}
 
@@ -28,11 +30,23 @@ public class SortDate {
 		}
 	}
 
-	public static String printMonthList(int monthIndex) {
-		String output = printMonthName(monthIndex);
-		for (int j = 0; j < monthList[monthIndex][0].size(); j++) {
-			String print = monthList[monthIndex][0].get(j).displayTask();
-			output += printTaskWithIndex(monthList[monthIndex][0].get(j), print);
+	public static String printStartMonthList(int monthIndex) {
+		String output = printStartMonthName(monthIndex);
+		for (int j = 0; j < startMonthList[monthIndex][0].size(); j++) {
+			String print = startMonthList[monthIndex][0].get(j).displayTask();
+			output += printTaskWithIndex(startMonthList[monthIndex][0].get(j),
+					print);
+		}
+		// New Line added to separate display from next command's feedback
+		return output + "\n";
+	}
+	
+	public static String printEndMonthList(int monthIndex) {
+		String output = printEndMonthName(monthIndex);
+		for (int j = 0; j < endMonthList[monthIndex][0].size(); j++) {
+			String print = endMonthList[monthIndex][0].get(j).displayTask();
+			output += printTaskWithIndex(endMonthList[monthIndex][0].get(j),
+					print);
 		}
 		// New Line added to separate display from next command's feedback
 		return output + "\n";
@@ -41,24 +55,29 @@ public class SortDate {
 	public static ArrayList<Task> sort() {
 		for (int i = 0; i < months.size() - 1; i++) {
 			for (int j = 0; j < taskList.size(); j++) {
-				if (isMatchingTaskMonth(taskList.get(j), months.get(i))) {
-					monthList[i][0].add(taskList.get(j));
+				if (isMatchingTaskStartMonth(taskList.get(j), months.get(i))) {
+					startMonthList[i][0].add(taskList.get(j));
 					sortedTaskList.add(taskList.get(j));
+				}
+				if (isMatchingTaskEndMonth(taskList.get(j), months.get(i))) {
+					endMonthList[i][0].add(taskList.get(j));
 				}
 			}
 		}
 		return sortedTaskList;
 	}
 
-	public static boolean isMatchingTaskMonth(Task task, String month) {
+	public static boolean isMatchingTaskStartMonth(Task task, String month) {
 		if (!task.getStartMonth().equals("null")) {
 			System.out.println("not equal to null");
 			return month.contains(task.getStartMonth());
 		} else {
-			System.out.println("this should be null: " + task.getStartMonth());
-			return month.contains(task.getEndMonth());
+			return false;
 		}
+	}
 
+	public static boolean isMatchingTaskEndMonth(Task task, String month) {
+			return month.contains(task.getEndMonth());
 	}
 
 	public static void initializeMonths() {
@@ -83,32 +102,62 @@ public class SortDate {
 		months.add("12");
 	}
 
-	public static String printMonthName(int monthIndex) {
+	public static String printStartMonthName(int monthIndex) {
 		switch (monthIndex) {
 		case 0:
-			return "Displaying all tasks in January: \n";
+			return "Displaying all tasks that start in January: \n";
 		case 1:
-			return "Displaying all tasks in February: \n";
+			return "Displaying all tasks that start in February: \n";
 		case 2:
-			return "Displaying all tasks in March: \n";
+			return "Displaying all tasks that start in March: \n";
 		case 3:
-			return "Displaying all tasks in April: \n";
+			return "Displaying all tasks that start in April: \n";
 		case 4:
-			return "Displaying all tasks in May: \n";
+			return "Displaying all tasks that start in May: \n";
 		case 5:
-			return "Displaying all tasks in June: \n";
+			return "Displaying all tasks that start in June: \n";
 		case 6:
-			return "Displaying all tasks in July: \n";
+			return "Displaying all tasks that start in July: \n";
 		case 7:
-			return "Displaying all tasks in August: \n";
+			return "Displaying all tasks that start in August: \n";
 		case 8:
-			return "Displaying all tasks in September: \n";
+			return "Displaying all tasks that start in September: \n";
 		case 9:
-			return "Displaying all tasks in October: \n";
+			return "Displaying all tasks that start in October: \n";
 		case 10:
-			return "Displaying all tasks in November: \n";
+			return "Displaying all tasks that start in November: \n";
 		case 11:
-			return "Displaying all tasks in December: \n";
+			return "Displaying all tasks that start in December: \n";
+		}
+		return "";
+	}
+	
+	public static String printEndMonthName(int monthIndex) {
+		switch (monthIndex) {
+		case 0:
+			return "Displaying all tasks that end in January: \n";
+		case 1:
+			return "Displaying all tasks that end in February: \n";
+		case 2:
+			return "Displaying all tasks that end in March: \n";
+		case 3:
+			return "Displaying all tasks that end in April: \n";
+		case 4:
+			return "Displaying all tasks that end in May: \n";
+		case 5:
+			return "Displaying all tasks that end in June: \n";
+		case 6:
+			return "Displaying all tasks that end in July: \n";
+		case 7:
+			return "Displaying all tasks that end in August: \n";
+		case 8:
+			return "Displaying all tasks that end in September: \n";
+		case 9:
+			return "Displaying all tasks that end in October: \n";
+		case 10:
+			return "Displaying all tasks that end in November: \n";
+		case 11:
+			return "Displaying all tasks that end in December: \n";
 		}
 		return "";
 	}
@@ -149,7 +198,8 @@ public class SortDate {
 
 	public static void initializeCalender() {
 		for (int i = 0; i < months.size(); i++) {
-			monthList[i][0] = new ArrayList<Task>();
+			startMonthList[i][0] = new ArrayList<Task>();
+			endMonthList[i][0] = new ArrayList<Task>();
 		}
 	}
 

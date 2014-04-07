@@ -34,6 +34,7 @@ public class ExeCom {
 	private static final String NO_DETAILS_MESSAGE = "No details detected! This task is not added to the task list\n";
 	private static final String INVALID_TIME_MESSAGE = "Time entered is invalid! This task is not added to the task list.\n";
 	private static final String CANCELLED_ACTION_MESSAGE = "The action has been cancelled.\n";
+	private static final String DISPLAYD = "displayd";
 	private static ExeCom theOne;
 	private static boolean isUndoable = false;
 	private static boolean isRedoable = false;
@@ -113,10 +114,10 @@ public class ExeCom {
 						feedback = feedback + "Add task anyway? (Yes/No): \n\n";
 					}
 				} else {
-					feedback = feedback + INVALID_TIME_MESSAGE;
+					feedback = feedback + INVALID_TIME_MESSAGE + "\n";
 				}
 			} else {
-				feedback = feedback + NO_DETAILS_MESSAGE;
+				feedback = feedback + NO_DETAILS_MESSAGE + "\n";
 			}
 			break;
 
@@ -124,7 +125,7 @@ public class ExeCom {
 			Display d = new Display(getTaskListInstance(), c,
 					getMonthListInstance());
 			if (isDisplayMonth()) {
-				feedback = feedback + d.displayMonth();
+				feedback = feedback + d.displayStartMonth();
 			} else if (isValidUndoRedoDisplayCommand()) {
 				feedback = feedback + d.displayTaskList();
 			} else if (isDisplayCompleted()) {
@@ -133,7 +134,15 @@ public class ExeCom {
 				feedback = feedback + INVALID_COMMAND_MESSAGE;
 			}
 			break;
-
+		case DISPLAYD:
+			Display displayDeadline = new Display(getTaskListInstance(), c,
+					getMonthListInstance());
+			if (isDisplayMonth()) {
+				feedback = feedback + displayDeadline.displayEndMonth();
+			} else {
+				feedback = feedback + INVALID_COMMAND_MESSAGE;
+			}
+			break;
 		case DELETE:
 			saveToPrevTaskList();
 			Delete del = new Delete();
@@ -168,7 +177,7 @@ public class ExeCom {
 				feedback = feedback + u.editContent(c);
 				saveToRedoTaskList();
 			} else {
-				feedback = CONFLICTED_CODE + printConflictedTasks(conflicts);
+				feedback = CONFLICTED_CODE + printConflictedTasks(conflicts) + "\n";
 				feedback = feedback + "Edit task anyway? (Yes/No): \n";
 			}
 			break;
@@ -203,10 +212,10 @@ public class ExeCom {
 			break;
 
 		case CANCELLED:
-			feedback = CANCELLED_ACTION_MESSAGE;
+			feedback = CANCELLED_ACTION_MESSAGE + "\n";
 			break;
 		default:
-			feedback = INVALID_COMMAND_MESSAGE;
+			feedback = INVALID_COMMAND_MESSAGE + "\n";
 
 		}
 

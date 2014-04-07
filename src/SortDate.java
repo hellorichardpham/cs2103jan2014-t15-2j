@@ -30,7 +30,7 @@ public class SortDate {
 		}
 	}
 
-	public static String printStartMonthList(int monthIndex) {
+	public String printStartMonthList(int monthIndex) {
 		String output = printStartMonthName(monthIndex);
 		for (int j = 0; j < startMonthList[monthIndex][0].size(); j++) {
 			String print = startMonthList[monthIndex][0].get(j).displayTask();
@@ -41,7 +41,7 @@ public class SortDate {
 		return output + "\n";
 	}
 	
-	public static String printEndMonthList(int monthIndex) {
+	public String printEndMonthList(int monthIndex) {
 		String output = printEndMonthName(monthIndex);
 		for (int j = 0; j < endMonthList[monthIndex][0].size(); j++) {
 			String print = endMonthList[monthIndex][0].get(j).displayTask();
@@ -52,7 +52,7 @@ public class SortDate {
 		return output + "\n";
 	}
 
-	public static ArrayList<Task> sort() {
+	public ArrayList<Task> sort() {
 		for (int i = 0; i < months.size() - 1; i++) {
 			for (int j = 0; j < taskList.size(); j++) {
 				if (isMatchingTaskStartMonth(taskList.get(j), months.get(i))) {
@@ -69,7 +69,6 @@ public class SortDate {
 
 	public static boolean isMatchingTaskStartMonth(Task task, String month) {
 		if (!task.getStartMonth().equals("null")) {
-			System.out.println("not equal to null");
 			return month.contains(task.getStartMonth());
 		} else {
 			return false;

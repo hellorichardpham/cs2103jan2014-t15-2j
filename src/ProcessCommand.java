@@ -49,19 +49,19 @@ public class ProcessCommand {
 
 		processDetails(splitInput);
 
-		/*
-		 * //to check command object System.out.println("command: " +
-		 * c.getKeyword()); System.out.println("details: " + c.getDetails());
-		 * System.out.println("Start time: " + c.getStartHours() +
-		 * c.getStartMins()); System.out.println("end time: " + c.getEndHours()
-		 * + c.getEndMins()); System.out.println("Start date: " +
-		 * c.getStartDay() + c.getStartMonth() +c.getStartYear());
-		 * System.out.println("end date: " + c.getEndDay() + c.getEndMonth()
-		 * +c.getEndYear()); System.out.println("location: " + c.getLocation());
-		 * System.out.println("priority: " + c.getPriority());
-		 * System.out.println("category: " + c.getCategory());
-		 * System.out.println("id: " + c.getTaskID());
-		 */
+	//	to check command object 
+		System.out.println("command: " +
+		  c.getKeyword()); System.out.println("details: " + c.getDetails());
+		 System.out.println("Start time: " + c.getStartHours() +
+		 c.getStartMins()); System.out.println("end time: " + c.getEndHours()
+		 + c.getEndMins()); System.out.println("Start date: " +
+		 c.getStartDay() + c.getStartMonth() +c.getStartYear());
+		 System.out.println("end date: " + c.getEndDay() + c.getEndMonth()
+		  +c.getEndYear()); System.out.println("location: " + c.getLocation());
+		  System.out.println("priority: " + c.getPriority());
+		  System.out.println("category: " + c.getCategory());
+		 System.out.println("id: " + c.getTaskID());
+		 
 		return c;
 	}
 
@@ -479,9 +479,9 @@ public class ProcessCommand {
 			}
 		}
 
-		// if user did not enter any date, set date line of task as current date
+		// if user did not enter any date, set deadline of task as current date
 		if (c.getEndMonth() == null
-				&& !(commandType.equals("edit") || commandType.equals("update"))) {
+				&& !(c.getKeyword().equals("edit") || c.getKeyword().equals("update") || c.getKeyword().equals("display"))) {
 			Calendar cal = Calendar.getInstance();
 			if (c.getEndHours() != null) {
 				if (Integer.parseInt(c.getEndHours()) < cal

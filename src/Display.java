@@ -2,7 +2,8 @@ import java.util.ArrayList;
 
 public class Display extends Task {
 
-	private final static String TASKLIST_EMPTY_MESSAGE = "There are no tasks in the task list.\n";
+	private final static String TASKLIST_EMPTY_MESSAGE = "There are no tasks in the task list!\n";
+	private static final String NO_RELATED_TASKS_MESSAGE = "There are no related tasks!";
 	private static final CharSequence EMPTY_STRING = "";
 	private static ArrayList<Task>[][] monthList;
 	private static Command command = null;
@@ -36,8 +37,7 @@ public class Display extends Task {
 		if (!taskList.isEmpty()) {
 			dispOut = dispOut + printListingHeader();
 			for (Task task : taskList) {
-				String print = task.displayTask();
-				dispOut = dispOut + printTaskWithIndex(task, print);
+				dispOut = setTaskToDisplay(dispOut, task);
 			}
 		} else if (taskList.isEmpty()) {
 			dispOut = TASKLIST_EMPTY_MESSAGE;
@@ -59,8 +59,7 @@ public class Display extends Task {
 			dispOut = dispOut + printListingHeader();
 			for (Task task : taskList) {
 				if (task.isCompleted() == false) {
-					String print = task.displayTask();
-					dispOut = dispOut + printTaskWithIndex(task, print);
+					dispOut = setTaskToDisplay(dispOut, task);
 				}
 			}
 		} else if (taskList.isEmpty()) {
@@ -85,15 +84,84 @@ public class Display extends Task {
 			dispOut = dispOut + "The following tasks are completed: \n";
 			for (Task task : taskList) {
 				if (task.isCompleted()) {
-
-					String info = task.displayTask();
-					dispOut = dispOut + printTaskWithIndex(task, info);
+					dispOut = setTaskToDisplay(dispOut, task);
 				}
 			}
 		} else {
 			dispOut = TASKLIST_EMPTY_MESSAGE;
 		}
 		return dispOut + "\n";
+	}
+
+	
+	/**
+	 * displayDate: display all tasks that matches input date, if any.
+	 * 
+	 * @author Ying Yun
+	 * @param void
+	 * @return string
+	 */
+	public String displayDate() {
+		String dispOut = "";
+		if (!taskList.isEmpty()) {
+			if(haveTasksWithMatchingDates()){
+				dispOut = setTasksWithMatchingDates();
+			}else{
+				dispOut = NO_RELATED_TASKS_MESSAGE;
+			}
+		}else {
+			dispOut = TASKLIST_EMPTY_MESSAGE;
+		}
+		return dispOut + "\n";
+	}
+
+	/**
+	 * setTasksWithMatchingDates: collates all related tasks with matching dates into one string
+	 * 
+	 * @author Ying Yun
+	 * @param void
+	 * @return string
+	 */
+	private String setTasksWithMatchingDates() {
+		String dispOut = "";
+		dispOut = dispOut + "The following tasks are related to input date: \n";
+		for (Task task : taskList) {
+			if (isMatchingStartDate(task) || isMatchingEndDate(task)) {
+				dispOut = setTaskToDisplay(dispOut, task);
+			}
+		}
+		return dispOut;
+	}
+
+	/**
+	 * haveTasksWithMatchingDates: check if taskList has any tasks that is related to the input date
+	 * 
+	 * @author Ying Yun
+	 * @param void
+	 * @return boolean
+	 */
+	private boolean haveTasksWithMatchingDates() {
+		for (Task task : taskList) {
+			if (isMatchingStartDate(task) || isMatchingEndDate(task)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * setTaskToDisplay: Given a single task, it formats the string to sent for printing 
+	 * including task index and all attributes.
+	 * 
+	 * @author yingyun
+	 * @param dispOut
+	 * @param task
+	 * @return String
+	 */
+	private String setTaskToDisplay(String dispOut, Task task) {
+		String info = task.displayTask();
+		dispOut = dispOut + printTaskWithIndex(task, info);
+		return dispOut;
 	}
 
 	public String displayStartMonth() {
@@ -159,7 +227,6 @@ public class Display extends Task {
 	}
 
 	/**
-	 * 
 	 * printListingHeader: print header for listing
 	 * 
 	 * @author Ying Yun
@@ -181,5 +248,128 @@ public class Display extends Task {
 	 */
 	private String printTaskWithIndex(Task task, String print) {
 		return (taskList.indexOf(task) + 1) + ": " + print + "\n";
+	}
+
+	/**
+	 * isMatchingStartDate: checks if the command's start date is same as task's start date
+	 * 
+	 * @author yingyun
+	 * @param task
+	 * @return boolean
+	 */
+	private boolean isMatchingStartDate(Task task) {
+		if (isMatchingStartDay(task) && 
+				isMatchingStartMonth(task) && 
+				isMatchingStartYear(task)){
+			return true;
+		}else {
+			return false;
+
+		}
+	}
+
+	/**
+	 * isMatchingStartDay: checks if the command's start day is same as task's start day
+	 * 
+	 * @author yingyun
+	 * @param task
+	 * @return boolean
+	 */
+	private boolean isMatchingStartDay(Task task) {
+		if (task.getStartDay().equals(command.getStartDay())){
+			return true;
+		}else {
+			return false;
+		}
+	}
+
+	/**
+	 * isMatchingStartMonth: checks if the command's start month is same as task's start month
+	 * 
+	 * @author yingyun
+	 * @param task
+	 * @return boolean
+	 */
+	private boolean isMatchingStartMonth(Task task) {
+		if (task.getStartMonth().equals(command.getStartMonth())){
+			return true;
+		}else {
+			return false;
+		}
+	}
+
+	/**
+	 * isMatchingStartYear: checks if the command's start year is same as task's start year
+	 * 
+	 * @author yingyun
+	 * @param task
+	 * @return boolean
+	 */
+	private boolean isMatchingStartYear(Task task) {
+		if (task.getStartYear().equals(command.getStartYear())){
+			return true;
+		}else {
+			return false;
+		}
+	}
+
+	/**
+	 * isMatchingEndDate: checks if the command's end date is same as task's end date (including day,month and year)
+	 * 
+	 * @author yingyun
+	 * @param task
+	 * @return boolean
+	 */
+	private boolean isMatchingEndDate(Task task) {
+		if (isMatchingEndDay(task) && 	isMatchingEndMonth(task) && isMatchingEndYear(task)){
+			return true;
+		}else {
+			return false;
+		}
+	}
+
+	/**
+	 * isMatchingEndDay: checks if the command's end day is same as task's end day
+	 * 
+	 * @author yingyun
+	 * @param task
+	 * @return boolean
+	 */
+	private boolean isMatchingEndDay(Task task) {
+		if (task.getEndDay().equals(command.getEndDay())){
+			return true;
+		}else {
+			return false;
+		}
+	}
+
+	/**
+	 * isMatchingEndMonth: checks if the command's end month is same as task's end month
+	 * 
+	 * @author yingyun
+	 * @param task
+	 * @return boolean
+	 */
+	private boolean isMatchingEndMonth(Task task) {
+		if (task.getEndMonth().equals(command.getEndMonth())){
+			return true;
+		}else {
+			return false;
+		}
+	}
+
+	/**
+	 * isMatchingEndYear: checks if the command's end year is same as task's end year
+	 * 
+	 * @author yingyun
+	 * @param task
+	 * @return boolean
+	 */
+	private boolean isMatchingEndYear(Task task) {
+		if (task.getEndYear().equals(command.getEndYear())){
+			return true;
+		}else {
+			return false;
+		}
 	}
 }// end class

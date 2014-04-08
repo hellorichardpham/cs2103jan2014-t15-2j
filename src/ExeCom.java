@@ -36,6 +36,7 @@ public class ExeCom {
 	private static final String INVALID_TIME_MESSAGE = "Time entered is invalid! This task is not added to the task list.\n";
 	private static final String CANCELLED_ACTION_MESSAGE = "The action has been cancelled.\n";
 	private static final String DISPLAYD = "displayd";
+	private static final Object EMPTY_STRING = "";
 	private static ExeCom theOne;
 	private static boolean isUndoable = false;
 	private static boolean isRedoable = false;
@@ -92,7 +93,7 @@ public class ExeCom {
 		feedback = "";
 		c = command;
 		String keyWord = c.getKeyword().toLowerCase();
-		
+
 		Storage s = new Storage();
 		s.loadStorage();
 
@@ -125,7 +126,9 @@ public class ExeCom {
 		case DISPLAY:
 			Display d = new Display(getTaskListInstance(), c,
 					getMonthListInstance());
-			if (isDisplayMonth()) {
+			if (isValidDisplayDateCommand()){
+				feedback = feedback + d.displayDate();
+			}else if (isDisplayMonth()) {
 				feedback = feedback + d.displayStartMonth();
 			} else if (isValidUndoRedoDisplayCommand()) {
 				feedback = feedback + d.displayTaskList();
@@ -137,6 +140,7 @@ public class ExeCom {
 				feedback = feedback + INVALID_COMMAND_MESSAGE;
 			}
 			break;
+			
 		case DISPLAYD:
 			Display displayDeadline = new Display(getTaskListInstance(), c,
 					getMonthListInstance());
@@ -194,10 +198,10 @@ public class ExeCom {
 			saveToRedoTaskList();
 			break;
 
-		// case EMAIL:
-		// Email email = new Email(getTaskListInstance());
-		// email.emailUser();
-		// break;
+			// case EMAIL:
+			// Email email = new Email(getTaskListInstance());
+			// email.emailUser();
+			// break;
 
 		case UNDO:
 			if (isUndoable) {
@@ -250,202 +254,6 @@ public class ExeCom {
 	}
 
 	/**
-	 * isValidTime: check if user entered valid time which is from 0000 t0 2359
-	 * 
-	 * @author yingyun
-	 * @param void
-	 * @return boolean
-	 * 
-	 */
-	private boolean isValidTime() {
-		if (isValidHours() && isValidMins()) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	/**
-	 * isValidhours: check if user entered between 0 to 23 hours
-	 * 
-	 * @author yingyun
-	 * @param void
-	 * @return boolean
-	 * 
-	 */
-	private boolean isValidHours() {
-		if (c.getStartHours() != null) {
-			int startHours = Integer.parseInt(c.getStartHours());
-			if (0 > startHours || startHours >= 24) {
-				return false;
-			}
-		}
-
-		if (c.getEndHours() != null) {
-			int endHours = Integer.parseInt(c.getEndHours());
-			if (0 > endHours || endHours >= 24) {
-				return false;
-			}
-		}
-
-		return true;
-	}
-
-	/**
-	 * isValidMins: check if user entered between 0 to 59 minutes
-	 * 
-	 * @author yingyun
-	 * @param void
-	 * @return boolean
-	 * 
-	 */
-	private boolean isValidMins() {
-		if (c.getStartMins() != null) {
-			int startMins = Integer.parseInt(c.getStartMins());
-			if (0 > startMins || startMins >= 24) {
-				return false;
-			}
-		}
-
-		if (c.getEndMins() != null) {
-			int endMins = Integer.parseInt(c.getEndMins());
-			if (0 > endMins || endMins >= 24) {
-				return false;
-			}
-		}
-
-		return true;
-	}
-
-	/**
-	 * 
-	 * isValidAddCommand: Check if user keyed in details (mandatory)
-	 * 
-	 * @author yingyun
-	 * @param void
-	 * @return boolean
-	 * 
-	 */
-	private boolean isValidAddCommand() {
-		if (c.getDetails() != null) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	/**
-	 * 
-	 * isDisplayCompleted: Check if user wants to display list of completed
-	 * tasks
-	 * 
-	 * @author yingyun
-	 * @param void
-	 * @return boolean
-	 * 
-	 */
-	private boolean isDisplayCompleted() {
-		if (c.getDetails() != null) {
-			if (c.getDetails().equals("completed")
-					|| c.getDetails().equals("completed tasks")) {
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
-	}
-
-	/**
-	 * 
-	 * isDisplayUncompleted: Check if user wants to display a list of
-	 * uncompleted tasks
-	 * 
-	 * @author Khaleef
-	 * @param void
-	 * @return boolean
-	 * 
-	 */
-	private boolean isDisplayUncompleted() {
-		if (c.getDetails() != null) {
-			if (c.getDetails().equals("uncompleted")
-					|| c.getDetails().equals("uncompleted tasks")
-					|| c.getDetails().equals("uc")
-					|| c.getDetails().equals("uc tasks")) {
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
-	}
-
-	private boolean isDisplayMonth() {
-		if (c.getEndMonth() != null) { // handles bad commands like
-										// "display ofuh"
-			switch (c.getEndMonth()) {
-			case "01":
-				return true;
-			case "02":
-				return true;
-			case "03":
-				return true;
-			case "04":
-				return true;
-			case "05":
-				return true;
-			case "06":
-				return true;
-			case "07":
-				return true;
-			case "08":
-				return true;
-			case "09":
-				return true;
-			case "10":
-				return true;
-			case "11":
-				return true;
-			case "12":
-				return true;
-			}
-			return false;
-		}
-		return false;
-	}
-
-	/**
-	 * 
-	 * isTaskIDMatch: Checks if a task's taskID is equal to the userSpecified
-	 * taskIdNumber that he's searching for.
-	 * 
-	 * @author Richard, yingyun
-	 * @param String
-	 *            , int
-	 * @return boolean
-	 * 
-	 */
-
-	public boolean isTaskIDMatch(String specifiedTaskID, int taskIdNumber) {
-		return Integer.parseInt(specifiedTaskID) == taskIdNumber;
-	}
-
-	/**
-	 * retrieveTaskIdNumber: retrieves user-specified taskID.
-	 * 
-	 * @author Richard, yingyun
-	 * @param String
-	 * @return int
-	 * 
-	 */
-
-	public int retrieveTaskIdNumber(String taskID) {
-		return Integer.parseInt(taskID);
-	}
-
-	/**
 	 * 
 	 * undo: Reset taskList then add contents of pTL to tL.
 	 * 
@@ -493,26 +301,6 @@ public class ExeCom {
 	}
 
 	/**
-	 * printConflictedTask: print all tasks that conflicts with current task
-	 * 
-	 * @author Wei Zhou
-	 * @param ArrayList
-	 *            <Integer>
-	 * @return void
-	 */
-	private static String printConflictedTasks(ArrayList<Integer> conflicts) {
-		String conflictList = "";
-		conflictList = conflictList
-				+ "There is a conflict with these tasks: \n";
-		for (int i = 0; i < conflicts.size(); i++) {
-			conflictList = conflictList + (conflicts.get(i) + 1) + ": ";
-			conflictList = conflictList
-					+ taskList.get(conflicts.get(i)).displayTask() + "\n";
-		}
-		return conflictList;
-	}
-
-	/**
 	 * checkConflict: check conflict of time and date, return ArrayList<Integer>
 	 * with the elements being the indexes of conflicting tasks in tasklist
 	 * 
@@ -556,6 +344,26 @@ public class ExeCom {
 			}
 		}
 		return conflicts;
+	}
+
+	/**
+	 * printConflictedTask: print all tasks that conflicts with current task
+	 * 
+	 * @author Wei Zhou
+	 * @param ArrayList
+	 *            <Integer>
+	 * @return void
+	 */
+	private static String printConflictedTasks(ArrayList<Integer> conflicts) {
+		String conflictList = "";
+		conflictList = conflictList
+				+ "There is a conflict with these tasks: \n";
+		for (int i = 0; i < conflicts.size(); i++) {
+			conflictList = conflictList + (conflicts.get(i) + 1) + ": ";
+			conflictList = conflictList
+					+ taskList.get(conflicts.get(i)).displayTask() + "\n";
+		}
+		return conflictList;
 	}
 
 	/**
@@ -788,7 +596,12 @@ public class ExeCom {
 	 * @return boolean
 	 */
 	public static boolean isValidUndoRedoDisplayCommand() {
-		if (c.getDetails() == null) {
+		if (c.getDetails() == null && c.getEndDay()==null && c.getEndMonth()==null 
+				&& c.getEndYear()==null 
+				&& c.getStartDay()==null 
+				&& c.getStartMonth()==null 
+				&& c.getStartYear()==null 
+				) {
 			return true;
 		} else {
 			return false;
@@ -796,11 +609,206 @@ public class ExeCom {
 	}
 
 	public static boolean isValidDisplayMonthCommand() {
-		if (c.getDetails().equals("null") && !(c.getEndMonth().equals("null"))) {
+		if (c.getDetails().equals(null) && !(c.getEndMonth().equals(null))) {
 			return true;
 		} else {
 			return false;
 		}
+	}
+
+	/**
+	 * 
+	 * isValidAddCommand: Check if user keyed in details (mandatory)
+	 * 
+	 * @author yingyun
+	 * @param void
+	 * @return boolean
+	 * 
+	 */
+	private boolean isValidAddCommand() {
+		if (c.getDetails() != null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * 
+	 * isDisplayDate: Check if user wants to display a list of
+	 * tasks of a particular date
+	 * 
+	 * @author Ying Yun
+	 * @param void
+	 * @return boolean
+	 * 
+	 */
+	private static boolean isValidDisplayDateCommand() {
+		if (c.getEndMonth()!=null && (!c.getEndDay().equals(EMPTY_STRING)|| c.getEndDay().equals(null))) { 
+			return true;
+		}else { 
+			return false;
+		}
+	}
+
+	/**
+	 * isValidTime: check if user entered valid time which is from 0000 t0 2359
+	 * 
+	 * @author yingyun
+	 * @param void
+	 * @return boolean
+	 * 
+	 */
+	private boolean isValidTime() {
+		if (isValidHours() && isValidMins()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * isValidhours: check if user entered between 0 to 23 hours
+	 * 
+	 * @author yingyun
+	 * @param void
+	 * @return boolean
+	 * 
+	 */
+	private boolean isValidHours() {
+		if (c.getStartHours() != null) {
+			int startHours = Integer.parseInt(c.getStartHours());
+			if (0 > startHours || startHours >= 24) {
+				return false;
+			}
+		}
+	
+		if (c.getEndHours() != null) {
+			int endHours = Integer.parseInt(c.getEndHours());
+			if (0 > endHours || endHours >= 24) {
+				return false;
+			}
+		}
+	
+		return true;
+	}
+
+	/**
+	 * isValidMins: check if user entered between 0 to 59 minutes
+	 * 
+	 * @author yingyun
+	 * @param void
+	 * @return boolean
+	 * 
+	 */
+	private boolean isValidMins() {
+		if (c.getStartMins() != null) {
+			int startMins = Integer.parseInt(c.getStartMins());
+			if (0 > startMins || startMins >= 24) {
+				return false;
+			}
+		}
+	
+		if (c.getEndMins() != null) {
+			int endMins = Integer.parseInt(c.getEndMins());
+			if (0 > endMins || endMins >= 24) {
+				return false;
+			}
+		}
+	
+		return true;
+	}
+
+	/**
+	 * 
+	 * isDisplayCompleted: Check if user wants to display list of completed
+	 * tasks
+	 * 
+	 * @author yingyun
+	 * @param void
+	 * @return boolean
+	 * 
+	 */
+	private boolean isDisplayCompleted() {
+		if (c.getDetails() != null) {
+			if (c.getDetails().equals("completed")
+					|| c.getDetails().equals("completed tasks")) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * 
+	 * isDisplayUncompleted: Check if user wants to display a list of
+	 * uncompleted tasks
+	 * 
+	 * @author Khaleef
+	 * @param void
+	 * @return boolean
+	 * 
+	 */
+	private boolean isDisplayUncompleted() {
+		if (c.getDetails() != null) {
+			if (c.getDetails().equals("uncompleted")
+					|| c.getDetails().equals("uncompleted tasks")
+					|| c.getDetails().equals("uc")
+					|| c.getDetails().equals("uc tasks")) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * 
+	 * isDisplayMonth: Check if user wants to display a list of
+	 * tasks of a particular month
+	 * 
+	 * @author Richard
+	 * @param void
+	 * @return boolean
+	 * 
+	 */
+	private boolean isDisplayMonth() {
+		if (c.getEndMonth() != null && c.getEndDay().equals(EMPTY_STRING)) { // handles bad commands like
+			// "display ofuh"
+			switch (c.getEndMonth()) {
+			case "01":
+				return true;
+			case "02":
+				return true;
+			case "03":
+				return true;
+			case "04":
+				return true;
+			case "05":
+				return true;
+			case "06":
+				return true;
+			case "07":
+				return true;
+			case "08":
+				return true;
+			case "09":
+				return true;
+			case "10":
+				return true;
+			case "11":
+				return true;
+			case "12":
+				return true;
+			}
+			return false;
+		}
+		return false;
 	}
 
 	public static void setUndoableTrue() {
@@ -817,5 +825,34 @@ public class ExeCom {
 
 	public static void setRedoableFalse() {
 		isRedoable = false;
+	}
+
+	/**
+	 * 
+	 * isTaskIDMatch: Checks if a task's taskID is equal to the userSpecified
+	 * taskIdNumber that he's searching for.
+	 * 
+	 * @author Richard, yingyun
+	 * @param String
+	 *            , int
+	 * @return boolean
+	 * 
+	 */
+	
+	public boolean isTaskIDMatch(String specifiedTaskID, int taskIdNumber) {
+		return Integer.parseInt(specifiedTaskID) == taskIdNumber;
+	}
+
+	/**
+	 * retrieveTaskIdNumber: retrieves user-specified taskID.
+	 * 
+	 * @author Richard, yingyun
+	 * @param String
+	 * @return int
+	 * 
+	 */
+	
+	public int retrieveTaskIdNumber(String taskID) {
+		return Integer.parseInt(taskID);
 	}
 }

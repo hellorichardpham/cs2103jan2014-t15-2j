@@ -40,7 +40,7 @@ public class Search {
 	 * search: Cycle through entire taskList looking for User-specified keyword.
 	 * Add all tasks that contain keyword into the searchResults ArrayList.
 	 * 
-	 * @author Richard
+	 * @author Richard, Ying Yun
 	 * @param void
 	 * @return void
 	 */
@@ -49,6 +49,7 @@ public class Search {
             boolean isFound = false;
 			resetSearchResults();
 			String searchKeyword = c.getDetails();
+
 			for (Task task : taskList) {
 				if (hasMatchingKeyword(task, searchKeyword)) {
 					searchResults.add(task);
@@ -91,7 +92,11 @@ public class Search {
 	 */
 
 	public static boolean hasMatchingKeyword(Task task, String searchKeyword) {
-		return task.getDetails().contains(searchKeyword);
+		if(task.getDetails().contains(searchKeyword) || task.getPriority().contains(searchKeyword) ||
+				task.getCategory().contains(searchKeyword))
+		
+		return true;
+		else return false;
 	}
 	
 	/**

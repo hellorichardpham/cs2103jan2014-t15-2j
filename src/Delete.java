@@ -3,6 +3,7 @@ import java.util.ArrayList;
 public class Delete {
 	private final static String TASKID_NOT_FOUND_MESSAGE = "That Task ID Number was not found";
 	private static final String DELETE_CATEGORYPRIORITYLOCATION_SUCCESSFUL = "Deleted all related tasks!";
+	private static final String DELETE_CATEGORYPRIORITYLOCATION_UNSUCCESSFUL = "No tasks were found with that information!";
 	private ArrayList<Task> taskList;
 
 	// constructor
@@ -27,8 +28,11 @@ public class Delete {
 				feedback += deleteSpecifiedTask(target);
 			} else { // element is a string containing
 						// location/priority/category
-				deleteSpecifiedLocationPriorityCategory(target);
-				feedback = DELETE_CATEGORYPRIORITYLOCATION_SUCCESSFUL;
+				if (deleteSpecifiedLocationPriorityCategory(target)) {
+					feedback = DELETE_CATEGORYPRIORITYLOCATION_SUCCESSFUL;
+				} else {
+					feedback = DELETE_CATEGORYPRIORITYLOCATION_UNSUCCESSFUL;
+				}
 			}
 		}// end delete
 		return feedback + "\n";
@@ -45,8 +49,9 @@ public class Delete {
 	 * @return void
 	 * 
 	 */
-	private void deleteSpecifiedLocationPriorityCategory(String target) {
+	private boolean deleteSpecifiedLocationPriorityCategory(String target) {
 		target = target.toLowerCase();
+		boolean isDeleted = false;
 		switch (target) {
 		// priority
 		case "low":
@@ -54,8 +59,10 @@ public class Delete {
 		case "high":
 			for (int i = 0; i < taskList.size(); i++) {
 				Task currentTask = taskList.get(i);
-				if (currentTask.getPriority().equals(target))
+				if (currentTask.getPriority().equals(target)) {
 					taskList.remove(i);
+					isDeleted = true;
+				}
 			}
 			break;
 
@@ -66,8 +73,10 @@ public class Delete {
 		case "personal":
 			for (int i = 0; i < taskList.size(); i++) {
 				Task currentTask = taskList.get(i);
-				if (currentTask.getCategory().equals(target))
+				if (currentTask.getCategory().equals(target)) {
 					taskList.remove(i);
+					isDeleted = true;
+				}
 			}
 			break;
 
@@ -75,11 +84,14 @@ public class Delete {
 		default:
 			for (int i = 0; i < taskList.size(); i++) {
 				Task currentTask = taskList.get(i);
-				if (currentTask.getLocation().equals(target))
+				if (currentTask.getLocation().equals(target)) {
 					taskList.remove(i);
+					isDeleted = true;
+				}
 			}
 			break;
 		}
+		return isDeleted;
 	}
 
 	/**
@@ -95,12 +107,12 @@ public class Delete {
 		ExeCom ec = ExeCom.getInstance();
 		int taskIdNumber = ec.retrieveTaskIdNumber(target);
 		boolean isFound = false;
-		
+
 		// loop thru whole taskList to find for the user specified task
 		String output = "";
 		for (int i = 0; i < taskList.size(); i++) {
 			if (ec.isTaskIDMatch(taskList.get(i).getTaskID(), taskIdNumber)) {
-				output += taskList.get(i).getDetails();				
+				output += taskList.get(i).getDetails();
 				ec.setUndoableTrue();
 				ec.setRedoableFalse();
 				taskList.remove(taskList.get(i));

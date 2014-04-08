@@ -5,7 +5,7 @@ import java.util.Calendar;
  * ProcessCommand (class) : This class acts as the language processing unit,
  * converting what the user inputs as a String to various attributes in the
  * Command Class
- *
+ * 
  * @author Tian Weizhou
  */
 public class ProcessCommand {
@@ -20,11 +20,12 @@ public class ProcessCommand {
 	/**
 	 * process: Extracts information from the userInput String and stores them
 	 * to a Command object
-	 *
+	 * 
 	 * @author Tian Weizhou
-	 * @param String userInput
+	 * @param String
+	 *            userInput
 	 * @return Command
-	 *
+	 * 
 	 */
 	public Command process(String userInput) {
 
@@ -67,16 +68,21 @@ public class ProcessCommand {
 	/**
 	 * processFirstWordAsCommand: Extracts the first word in the userInput
 	 * String as the Command keyword
-	 *
+	 * 
 	 * @author Tian Weizhou
-	 * @param String[]
+	 * @param String
+	 *            []
 	 */
 	private String processFirstWordAsCommand(String[] splitInput) {
 
 		String firstWord = splitInput[0];
+		firstWord = convertMultipleCommandKeywords(firstWord);
+		
 		c.setKeyword(firstWord);
 		splitInput[0] = EMPTY_STRING;
+		
 
+		
 		switch (firstWord.toLowerCase()) {
 		case "delete":
 		case "completed":
@@ -102,9 +108,10 @@ public class ProcessCommand {
 	 * processProrityCategoryLocation: Extracts Location, Priority and Category
 	 * information by looking for keywords in the splitInput array and stores
 	 * them into the command object
-	 *
+	 * 
 	 * @author Tian Weizhou
-	 * @param String[] splitInput
+	 * @param String
+	 *            [] splitInput
 	 */
 	private void processPriorityCategoryLocation(String[] splitInput) {
 		for (int i = 0; i < splitInput.length; i++) {
@@ -138,9 +145,10 @@ public class ProcessCommand {
 
 	/**
 	 * processLocation: Extracts Location by alternative indentifier (@)
-	 *
+	 * 
 	 * @author Tian Weizhou
-	 * @param String[]
+	 * @param String
+	 *            []
 	 */
 	private void processLocation(String[] splitInput) {
 		for (int i = 0; i < splitInput.length; i++) {
@@ -156,9 +164,10 @@ public class ProcessCommand {
 	 * extractTime: Extracts initial time data from the userInput String and
 	 * includes cases for flexible input. Reformats data and returns as standard
 	 * String.
-	 *
+	 * 
 	 * @author Tian Weizhou
-	 * @param String[]
+	 * @param String
+	 *            []
 	 */
 	String extractTime(String[] splitInput) {
 		String time = EMPTY_STRING;
@@ -185,10 +194,11 @@ public class ProcessCommand {
 	/**
 	 * processTime: process the timeDetails String to extract out the time in
 	 * the correct format String and store in into the command object
-	 *
+	 * 
 	 * @author Tan Ying Yun
-	 * @param String timeDetails
-	 *
+	 * @param String
+	 *            timeDetails
+	 * 
 	 */
 	public void processTime(String timeDetails) {
 		// if user did not provide any time in input
@@ -229,7 +239,7 @@ public class ProcessCommand {
 
 	/**
 	 * isRange: checks if the input time is a range or just an end time
-	 *
+	 * 
 	 * @author yingyun
 	 * @param String
 	 * @return boolean
@@ -244,10 +254,11 @@ public class ProcessCommand {
 
 	/**
 	 * processDayOfWeek: Extracts date given the day of the week of user enters
-	 *
+	 * 
 	 * @author Tian Weizhou
-	 * @param String[] splitInput
-	 *
+	 * @param String
+	 *            [] splitInput
+	 * 
 	 */
 	private void processDayofWeek(String[] splitInput) {
 		for (int i = splitInput.length - 1; i > 0; i--) {
@@ -268,7 +279,10 @@ public class ProcessCommand {
 				}
 
 				if (i - 2 > 0) {
-					if (splitInput[i-2].equals("-") || splitInput[i - 2].equals("to") || splitInput[i - 2].equals("from") || splitInput[i-2].equals("frm")) {
+					if (splitInput[i - 2].equals("-")
+							|| splitInput[i - 2].equals("to")
+							|| splitInput[i - 2].equals("from")
+							|| splitInput[i - 2].equals("frm")) {
 						splitInput[i - 2] = EMPTY_STRING;
 					}
 				}
@@ -281,14 +295,14 @@ public class ProcessCommand {
 				if (daysToAdd < 0) {
 					isNextWeek = 7;
 				}
-				if (daysToAdd==0 && c.getEndHours() != null) {
+				if (daysToAdd == 0 && c.getEndHours() != null) {
 					int currentHour = cal.get(Calendar.HOUR_OF_DAY);
 					int currentMin = cal.get(Calendar.MINUTE);
 
-					if(currentHour > Integer.parseInt(c.getEndHours())) {
+					if (currentHour > Integer.parseInt(c.getEndHours())) {
 						isNextWeek = 7;
-					}
-					else if(currentHour == Integer.parseInt(c.getEndHours()) && currentMin > Integer.parseInt(c.getEndMins())) {
+					} else if (currentHour == Integer.parseInt(c.getEndHours())
+							&& currentMin > Integer.parseInt(c.getEndMins())) {
 						isNextWeek = 7;
 					}
 				}
@@ -304,11 +318,12 @@ public class ProcessCommand {
 	/**
 	 * findDaysOfWeek: Identifies if a String contains a weekday and returns the
 	 * day of the week as a integer
-	 *
+	 * 
 	 * @author Tian Weizhou
-	 * @param String ithInput
+	 * @param String
+	 *            ithInput
 	 * @return int day of week
-	 *
+	 * 
 	 */
 	private int findDaysofWeek(String ithInput) {
 		int days = -1;
@@ -350,41 +365,45 @@ public class ProcessCommand {
 	}
 
 	/**
-	 * processTodayTmr: Detects if user types "today" or "tmr" and interpret it as a date
-	 * String as the Command keyword
-	 *
+	 * processTodayTmr: Detects if user types "today" or "tmr" and interpret it
+	 * as a date String as the Command keyword
+	 * 
 	 * @author Tian Weizhou
-	 * @param String[]
+	 * @param String
+	 *            []
 	 */
 	private void processTodayTmr(String[] splitInput) {
 		for (int i = splitInput.length - 1; i > 0; i--) {
 			Calendar cal = Calendar.getInstance();
-			switch (splitInput[i].toLowerCase()){
+			switch (splitInput[i].toLowerCase()) {
 			case "tommorrow":
 			case "tomorrow":
 			case "tmrw":
 			case "tmr":
 				cal.add(Calendar.DAY_OF_MONTH, 1);
-			case "today":	
+			case "today":
 			case "2day":
-				
+
 				setDate(cal);
 				splitInput[i] = EMPTY_STRING;
 				if (i - 2 > 0) {
-					if (splitInput[i-1].equals("-") || splitInput[i - 1].equals("to") || splitInput[i - 1].equals("from") || splitInput[i - 1].equals("frm")) {
+					if (splitInput[i - 1].equals("-")
+							|| splitInput[i - 1].equals("to")
+							|| splitInput[i - 1].equals("from")
+							|| splitInput[i - 1].equals("frm")) {
 						splitInput[i - 1] = EMPTY_STRING;
 					}
 				}
-	
+
 			}
-	
+
 		}
-	
+
 	}
 
 	/**
 	 * setDate: set the appropriate date attributes depending on calendar
-	 *
+	 * 
 	 * @author ying yun
 	 * @param Calendar
 	 * @return void
@@ -399,7 +418,7 @@ public class ProcessCommand {
 
 	/**
 	 * setStartDate: set start date of command depending on calendar
-	 *
+	 * 
 	 * @author ying yun
 	 * @param Calendar
 	 * @return void
@@ -412,7 +431,7 @@ public class ProcessCommand {
 
 	/**
 	 * setEndDate: set end date of command depending on calendar
-	 *
+	 * 
 	 * @author ying yun
 	 * @param Calendar
 	 * @return void
@@ -426,10 +445,11 @@ public class ProcessCommand {
 	/**
 	 * processDate: process the splitInput array to Identify month signatures
 	 * and store them into the command object in the correct format
-	 *
+	 * 
 	 * @author Tian Weizhou
-	 * @param String [] splitInput
-	 *
+	 * @param String
+	 *            [] splitInput
+	 * 
 	 */
 	private void processDate(String[] splitInput, String commandType) {
 
@@ -452,20 +472,27 @@ public class ProcessCommand {
 				splitInput[i] = EMPTY_STRING;
 				splitInput[i - 1] = EMPTY_STRING;
 
-				if (i - 2 > 0 && (splitInput[i-2].equals("-") ||(splitInput[i - 2].equals("to") || splitInput[i - 2].equals("from")))) {
+				if (i - 2 > 0
+						&& (splitInput[i - 2].equals("-") || (splitInput[i - 2]
+								.equals("to") || splitInput[i - 2]
+								.equals("from")))) {
 					splitInput[i - 2] = EMPTY_STRING;
 				}
 			}
 		}
 
 		// if user did not enter any date, set date line of task as current date
-		if (c.getEndMonth() == null && !(commandType.equals("edit") || commandType.equals("update"))) {
+		if (c.getEndMonth() == null
+				&& !(commandType.equals("edit") || commandType.equals("update"))) {
 			Calendar cal = Calendar.getInstance();
-			if(c.getEndHours()!=null) {
-				if(Integer.parseInt(c.getEndHours()) < cal.get(Calendar.HOUR_OF_DAY)) {
+			if (c.getEndHours() != null) {
+				if (Integer.parseInt(c.getEndHours()) < cal
+						.get(Calendar.HOUR_OF_DAY)) {
 					cal.add(Calendar.DATE, 1);
-				}
-				else if(Integer.parseInt(c.getEndHours()) == cal.get(Calendar.HOUR_OF_DAY) && Integer.parseInt(c.getEndMins()) < cal.get(Calendar.MINUTE)) {
+				} else if (Integer.parseInt(c.getEndHours()) == cal
+						.get(Calendar.HOUR_OF_DAY)
+						&& Integer.parseInt(c.getEndMins()) < cal
+								.get(Calendar.MINUTE)) {
 					cal.add(Calendar.DATE, 1);
 				}
 			}
@@ -476,7 +503,7 @@ public class ProcessCommand {
 	/**
 	 * findMonth: identifies if input String is a month and returns integer
 	 * value of month
-	 *
+	 * 
 	 * @author Tian Weizhou
 	 * @param String
 	 * @return String
@@ -539,9 +566,10 @@ public class ProcessCommand {
 	/**
 	 * setStartYearIfNoInput: Sets the Start year as current year if the user
 	 * did not input a year
-	 *
+	 * 
 	 * @author Tian Weizhou
-	 * @param String[], int
+	 * @param String
+	 *            [], int
 	 */
 	private void setStartYearIfUserNoInput(String[] splitInput, int i) {
 		if (i + 1 < splitInput.length) {
@@ -568,9 +596,10 @@ public class ProcessCommand {
 	/**
 	 * setEndYearIfNoInput: Sets the end year as current year if the user did
 	 * not input a year
-	 *
+	 * 
 	 * @author Tian Weizhou
-	 * @param String[], int
+	 * @param String
+	 *            [], int
 	 */
 	private void setEndYearIfUserNoInput(String[] splitInput, int i) {
 		if (i + 1 < splitInput.length) {
@@ -598,7 +627,7 @@ public class ProcessCommand {
 	 * switchIfDateAreReversed: Handles case where user inputs weekday followed
 	 * by month as date input. Or when end date is earlier than start date.
 	 * Switches mixed up attributes
-	 *
+	 * 
 	 * @author Tian Weizhou
 	 */
 	private void switchIfDatesAreReversed() {
@@ -619,9 +648,10 @@ public class ProcessCommand {
 
 	/**
 	 * processDetails: Extracts Task details and stores them into Command object
-	 *
+	 * 
 	 * @author Tian Weizhou
-	 * @param String[]
+	 * @param String
+	 *            []
 	 */
 	private void processDetails(String[] splitInput) {
 		String details = "";
@@ -641,20 +671,23 @@ public class ProcessCommand {
 	/**
 	 * ifEndDateEarlierThanStart: Checks if the user input end date is earlier
 	 * than the start date
-	 *
+	 * 
 	 * @author Tian Weizhou
 	 * @return boolean
-	 *
+	 * 
 	 */
 	private boolean ifEndDateEarlierThanStart() {
 		if (c.getStartYear() != null) {
-			if (Integer.parseInt(c.getEndYear()) < Integer.parseInt(c.getStartYear())) {
+			if (Integer.parseInt(c.getEndYear()) < Integer.parseInt(c
+					.getStartYear())) {
 				return true;
 			}
-			if (Integer.parseInt(c.getEndMonth()) < Integer.parseInt(c.getStartMonth())) {
+			if (Integer.parseInt(c.getEndMonth()) < Integer.parseInt(c
+					.getStartMonth())) {
 				return true;
 			}
-			if (Integer.parseInt(c.getEndDay()) < Integer.parseInt(c.getStartDay())) {
+			if (Integer.parseInt(c.getEndDay()) < Integer.parseInt(c
+					.getStartDay())) {
 				return true;
 			}
 		}
@@ -664,9 +697,10 @@ public class ProcessCommand {
 	/**
 	 * extractDetails: Extracts Location/Priority/Category details by
 	 * concatenating Strings in between // identifier
-	 *
+	 * 
 	 * @author Tian Weizhou
-	 * @param String[], int
+	 * @param String
+	 *            [], int
 	 */
 	private String extractDetails(String[] splitInput, int i) {
 		String details = EMPTY_STRING;
@@ -678,4 +712,37 @@ public class ProcessCommand {
 		return details.trim();
 	}
 
+	public static String convertMultipleCommandKeywords(String command) {
+		if (command.equals("disp") || command.equals("dis")
+				|| command.equals("d") || command.equals("di")) {
+			command = "display";
+		} else if (command.equals("a") || command.equals("ad")) {
+			command = "add";
+		} else if (command.equals("de") || command.equals("del")
+				|| command.equals("dele")) {
+			command = "delete";
+		} else if (command.equals("s") || command.equals("se")
+				|| command.equals("sea") || command.equals("sear")
+				|| command.equals("searc")) {
+			command = "search";
+		} else if (command.equals("u") || command.equals("un")
+				|| command.equals("und")) {
+			command = "undo";
+		} else if (command.equals("r") || command.equals("re")
+				|| command.equals("red")) {
+			command = "redo";
+		} else if (command.equals("e") || command.equals("ed")
+				|| command.equals("edi")) {
+			command = "edit";
+		} else if (command.equals("em") || command.equals("ema")) {
+			command = "email";
+		} else if (command.equals("c") || command.equals("cl")
+				|| command.equals("cle") || command.equals("clea")
+				|| command.equals("clr")) {
+			command = "clear";
+		} else {
+			// do nothing
+		}
+		return command;
+	}
 }

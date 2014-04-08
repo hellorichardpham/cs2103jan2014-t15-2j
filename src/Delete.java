@@ -21,17 +21,17 @@ public class Delete {
 	 */
 
 	public String delete(Command c) {
-		String feedback = "";
+		String feedback = "Succesfully Deleted: \n";
 		for (String target : c.getTargetedTasks()) {
 			if (isInteger(target)) {
-				feedback = deleteSpecifiedTask(target);
+				feedback += deleteSpecifiedTask(target);
 			} else { // element is a string containing
 						// location/priority/category
 				deleteSpecifiedLocationPriorityCategory(target);
 				feedback = DELETE_CATEGORYPRIORITYLOCATION_SUCCESSFUL;
 			}
 		}// end delete
-		return feedback;
+		return feedback + "\n";
 	}
 
 	/**
@@ -95,22 +95,24 @@ public class Delete {
 		ExeCom ec = ExeCom.getInstance();
 		int taskIdNumber = ec.retrieveTaskIdNumber(target);
 		boolean isFound = false;
-		String output = "";
+		// StringBuilder outputBuilder = new StringBuilder();
+		// outputBuilder.append("Succesfully Deleted: \n");
 		// loop thru whole taskList to find for the user specified task
+		String output = "";
 		for (int i = 0; i < taskList.size(); i++) {
 			if (ec.isTaskIDMatch(taskList.get(i).getTaskID(), taskIdNumber)) {
+				output += taskList.get(i).getDetails();				
 				ec.setUndoableTrue();
 				ec.setRedoableFalse();
-				output = output + "Succesfully Deleted: "
-						+ taskList.get(i).getDetails() + "\n";
 				taskList.remove(taskList.get(i));
 				isFound = true;
 			}
 		}
+		//String output = outputBuilder.toString();
 		if (!isFound) {
 			output = TASKID_NOT_FOUND_MESSAGE;
 		}
-		return output;
+		return output + "\n";
 	}
 
 	/**

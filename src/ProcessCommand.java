@@ -77,12 +77,10 @@ public class ProcessCommand {
 
 		String firstWord = splitInput[0];
 		firstWord = convertMultipleCommandKeywords(firstWord);
-		
+
 		c.setKeyword(firstWord);
 		splitInput[0] = EMPTY_STRING;
-		
 
-		
 		switch (firstWord.toLowerCase()) {
 		case "delete":
 		case "completed":
@@ -713,17 +711,20 @@ public class ProcessCommand {
 	}
 
 	public static String convertMultipleCommandKeywords(String command) {
+		command = command.toLowerCase();
 		if (command.equals("disp") || command.equals("dis")
-				|| command.equals("d") || command.equals("di")) {
+				|| command.equals("d") || command.equals("di")
+				|| command.equals("show")) {
 			command = "display";
 		} else if (command.equals("a") || command.equals("ad")) {
 			command = "add";
 		} else if (command.equals("de") || command.equals("del")
-				|| command.equals("dele")) {
+				|| command.equals("dele") || command.equals("rm")
+				|| command.equals("rem") || command.equals("rmv")) {
 			command = "delete";
 		} else if (command.equals("s") || command.equals("se")
 				|| command.equals("sea") || command.equals("sear")
-				|| command.equals("searc")) {
+				|| command.equals("searc") || command.equals("find")) {
 			command = "search";
 		} else if (command.equals("u") || command.equals("un")
 				|| command.equals("und")) {
@@ -732,14 +733,22 @@ public class ProcessCommand {
 				|| command.equals("red")) {
 			command = "redo";
 		} else if (command.equals("e") || command.equals("ed")
-				|| command.equals("edi")) {
+				|| command.equals("edi") || command.equals("change")) {
 			command = "edit";
-		} else if (command.equals("em") || command.equals("ema")) {
+		} else if (command.equals("em") || command.equals("ema")
+				|| command.equals("send")) {
 			command = "email";
 		} else if (command.equals("c") || command.equals("cl")
 				|| command.equals("cle") || command.equals("clea")
 				|| command.equals("clr")) {
 			command = "clear";
+		} else if (command.equals("dm") || command.equals("dism")
+				|| command.equals("dispm") || command.equals("displaym")
+				|| command.equals("deadline") || command.equals("dispd")
+				|| command.equals("dd") || command.equals("dead")
+				|| command.equals("dl") || command.equals("deadl")
+				|| command.equals("ends") || command.equals("end")) {
+			command = "displayd";
 		} else {
 			// do nothing
 		}

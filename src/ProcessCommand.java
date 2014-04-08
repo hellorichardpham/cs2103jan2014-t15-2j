@@ -39,6 +39,8 @@ public class ProcessCommand {
 		processPriorityCategoryLocation(splitInput);
 		processLocation(splitInput);
 
+		//	processBy(splitInput);
+
 		String timeDetails = extractTime(splitInput);
 		processTime(timeDetails);
 
@@ -49,20 +51,20 @@ public class ProcessCommand {
 
 		processDetails(splitInput);
 
-	//	to check command object 
+		//	to check command object 
 		System.out.println("command: " +
-		  c.getKeyword()); System.out.println("details: " + c.getDetails());
-		 System.out.println("Start time: " + c.getStartHours() +
-		 c.getStartMins()); System.out.println("end time: " + c.getEndHours()
-		 + c.getEndMins()); System.out.println("Start date: " +
-		 c.getStartDay() + c.getStartMonth() +c.getStartYear());
-		 System.out.println("end date: " + c.getEndDay() + c.getEndMonth()
-		  +c.getEndYear()); System.out.println("location: " + c.getLocation());
-		  System.out.println("priority: " + c.getPriority());
-		  System.out.println("category: " + c.getCategory());
-		 System.out.println("id: " + c.getTaskID());
-		 
-		return c;
+				c.getKeyword()); System.out.println("details: " + c.getDetails());
+				System.out.println("Start time: " + c.getStartHours() +
+						c.getStartMins()); System.out.println("end time: " + c.getEndHours()
+								+ c.getEndMins()); System.out.println("Start date: " +
+										c.getStartDay() + c.getStartMonth() +c.getStartYear());
+								System.out.println("end date: " + c.getEndDay() + c.getEndMonth()
+										+c.getEndYear()); System.out.println("location: " + c.getLocation());
+										System.out.println("priority: " + c.getPriority());
+										System.out.println("category: " + c.getCategory());
+										System.out.println("id: " + c.getTaskID());
+
+										return c;
 	}
 
 	/**
@@ -174,6 +176,9 @@ public class ProcessCommand {
 			if (splitInput[i].contains("hrs")) {
 				time = time + splitInput[i];
 				splitInput[i] = EMPTY_STRING;
+				if(splitInput[i-1].equals("by")){
+					splitInput[i-1] = EMPTY_STRING;
+				}
 				if (i + 1 < splitInput.length
 						&& splitInput[i + 1].contains("hrs")) {
 					time = time + splitInput[i + 1];
@@ -276,6 +281,7 @@ public class ProcessCommand {
 				case "on":
 				case "to":
 				case "from":
+				case "by":
 					splitInput[i - 1] = EMPTY_STRING;
 				}
 
@@ -390,6 +396,7 @@ public class ProcessCommand {
 				if (i - 2 > 0) {
 					if (splitInput[i - 1].equals("-")
 							|| splitInput[i - 1].equals("to")
+							|| splitInput[i - 1].equals("by")
 							|| splitInput[i - 1].equals("from")
 							|| splitInput[i - 1].equals("frm")) {
 						splitInput[i - 1] = EMPTY_STRING;
@@ -473,10 +480,10 @@ public class ProcessCommand {
 				splitInput[i] = EMPTY_STRING;
 				splitInput[i - 1] = EMPTY_STRING;
 
-				if (i - 2 > 0
-						&& (splitInput[i - 2].equals("-") || (splitInput[i - 2]
-								.equals("to") || splitInput[i - 2]
-								.equals("from")))) {
+				if (i - 2 > 0 && (splitInput[i - 2].equals("-") || 
+								splitInput[i - 2].equals("to") ||
+								splitInput[i - 2].equals("by") ||
+								splitInput[i - 2].equals("from"))) {
 					splitInput[i - 2] = EMPTY_STRING;
 				}
 			}
@@ -493,7 +500,7 @@ public class ProcessCommand {
 				} else if (Integer.parseInt(c.getEndHours()) == cal
 						.get(Calendar.HOUR_OF_DAY)
 						&& Integer.parseInt(c.getEndMins()) < cal
-								.get(Calendar.MINUTE)) {
+						.get(Calendar.MINUTE)) {
 					cal.add(Calendar.DATE, 1);
 				}
 			}

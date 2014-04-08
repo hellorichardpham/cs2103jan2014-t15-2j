@@ -84,6 +84,7 @@ public class ProcessCommand {
 		switch (firstWord.toLowerCase()) {
 		case "delete":
 		case "completed":
+		case "done":
 			int size = splitInput.length; // number of task specified by user
 			ArrayList<String> specifiedTasks = new ArrayList<String>(size);
 			for (int i = 1; i < size; i++) {

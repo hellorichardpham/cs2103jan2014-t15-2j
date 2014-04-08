@@ -12,20 +12,21 @@ public class ExeCom {
 	private final static String CONFLICTED_CODE = "-cs2103--conflicted ";
 
 	private final static String ADD = "add";
-	private final static String DISPLAY = "display";
-	private final static String DELETE = "delete";
-	private final static String SEARCH = "search";
-	private final static String UNDO = "undo";
-	private final static String EDIT = "edit";
-	private static final String UPDATE = "update";
-	private final static String REDO = "redo";
-	private final static String EMAIL = "email";
-	private final static String JUSTADD = "justadd";
-	private final static String JUSTEDIT = "justedit";
-	private final static String JUSTUPDATE = "justupdate";
 	private static final String COMPLETED = "completed";
 	private static final String CANCELLED = "cancel";
 	private static final String CLEAR = "clear";
+	private final static String DISPLAY = "display";
+	private final static String DELETE = "delete";
+	private static final String DONE = "done";
+	private final static String EDIT = "edit";
+	private final static String EMAIL = "email";
+	private final static String REDO = "redo";
+	private final static String SEARCH = "search";
+	private final static String UNDO = "undo";
+	private static final String UPDATE = "update";
+	private final static String JUSTADD = "justadd";
+	private final static String JUSTEDIT = "justedit";
+	private final static String JUSTUPDATE = "justupdate";
 	private final static String ADD_SUCCESSFUL_MESSAGE = "That task has successfully been added to the Task List.\n";
 	private final static String UNDO_SUCCESS_MESSAGE = "Action has successfully been undone.\n";
 	private static final String REDO_SUCCESS_MESSAGE = "Action has successfully been redone.\n";
@@ -159,6 +160,7 @@ public class ExeCom {
 			break;
 
 		case COMPLETED:
+		case DONE:
 			saveToPrevTaskList();
 			Completed completed = new Completed();
 			feedback = feedback + completed.markCompleted(c);

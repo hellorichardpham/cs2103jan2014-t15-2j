@@ -28,17 +28,15 @@ public class Display extends Task {
 	 * 
 	 * display: display all tasks found in the taskList
 	 * 
-	 * @author Khaleef
+	 * @author Ying Yun
 	 * @param void
 	 * @return void
 	 */
 	public String displayTaskList() {
 		String dispOut = "";
 		if (!taskList.isEmpty()) {
-			dispOut = dispOut + printListingHeader();
-			for (Task task : taskList) {
-				dispOut = setTaskToDisplay(dispOut, task);
-			}
+			dispOut += displayCompleted();
+			dispOut += displayUncompleted();
 		} else if (taskList.isEmpty()) {
 			dispOut = TASKLIST_EMPTY_MESSAGE;
 		}
@@ -56,7 +54,7 @@ public class Display extends Task {
 	public String displayUncompleted() {
 		String dispOut = "";
 		if (!taskList.isEmpty()) {
-			dispOut = dispOut + printListingHeader();
+			dispOut = dispOut + printUncompletedListingHeader();
 			for (Task task : taskList) {
 				if (task.isCompleted() == false) {
 					dispOut = setTaskToDisplay(dispOut, task);
@@ -81,7 +79,7 @@ public class Display extends Task {
 	public String displayCompleted() {
 		String dispOut = "";
 		if (!taskList.isEmpty()) {
-			dispOut = dispOut + "The following tasks are completed: \n";
+			dispOut = dispOut + printCompletedListingHeader();
 			for (Task task : taskList) {
 				if (task.isCompleted()) {
 					dispOut = setTaskToDisplay(dispOut, task);
@@ -237,6 +235,26 @@ public class Display extends Task {
 		return "~~~~~ Listing of all tasks ~~~~~\n";
 	}
 
+	/**
+	 * printCompletedListingHeader: print header for completed listing
+	 * 
+	 * @author Ying Yun
+	 * @param void
+	 * @return void
+	 */
+	private String printCompletedListingHeader() {
+		return "~~~~~ Listing of completed tasks ~~~~~\n";
+	}
+	/**
+	 * printUncompletedListingHeader: print header for uncompleted listing
+	 * 
+	 * @author Ying Yun
+	 * @param void
+	 * @return void
+	 */
+	private String printUncompletedListingHeader() {
+		return "~~~~~ Listing of pending tasks ~~~~~\n";
+	}
 	/**
 	 * 
 	 * printTaskIndex: print index number of current task

@@ -95,8 +95,7 @@ public class Delete {
 		ExeCom ec = ExeCom.getInstance();
 		int taskIdNumber = ec.retrieveTaskIdNumber(target);
 		boolean isFound = false;
-		// StringBuilder outputBuilder = new StringBuilder();
-		// outputBuilder.append("Succesfully Deleted: \n");
+		
 		// loop thru whole taskList to find for the user specified task
 		String output = "";
 		for (int i = 0; i < taskList.size(); i++) {
@@ -108,7 +107,6 @@ public class Delete {
 				isFound = true;
 			}
 		}
-		//String output = outputBuilder.toString();
 		if (!isFound) {
 			output = TASKID_NOT_FOUND_MESSAGE;
 		}

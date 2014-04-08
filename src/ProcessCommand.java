@@ -163,7 +163,7 @@ public class ProcessCommand {
 	 * includes cases for flexible input. Reformats data and returns as standard
 	 * String.
 	 * 
-	 * @author Tian Weizhou
+	 * @author Tian Weizhou, yingyun
 	 * @param String
 	 *            []
 	 */
@@ -182,6 +182,8 @@ public class ProcessCommand {
 					time = time + splitInput[i + 2];
 					splitInput[i + 1] = EMPTY_STRING;
 					splitInput[i + 2] = EMPTY_STRING;
+				}else if (splitInput[i].indexOf("hrs")!=splitInput[i].lastIndexOf("hrs")){
+					time = splitInput[i].replace("-", EMPTY_STRING);
 				}
 				return time;
 			}

@@ -9,19 +9,20 @@ public class Display extends Task {
 	private ArrayList<Task> taskList;
 	SortDate sorted;
 
-	//constructor
-	public Display(ArrayList<Task> taskList){
+	// constructor
+	public Display(ArrayList<Task> taskList) {
 		this.taskList = taskList;
 	}
-	
-	public Display(ArrayList<Task> taskList, Command command, ArrayList<Task>[][] monthList){
+
+	public Display(ArrayList<Task> taskList, Command command,
+			ArrayList<Task>[][] monthList) {
 		this.taskList = taskList;
 		this.command = command;
 		this.monthList = monthList;
 		sorted = new SortDate(taskList);
 		taskList = sorted.sort();
 	}
-	
+
 	/**
 	 * 
 	 * display: display all tasks found in the taskList
@@ -31,18 +32,44 @@ public class Display extends Task {
 	 * @return void
 	 */
 	public String displayTaskList() {
-                String dispOut = "";
+		String dispOut = "";
 		if (!taskList.isEmpty()) {
 			dispOut = dispOut + printListingHeader();
 			for (Task task : taskList) {
 				String print = task.displayTask();
 				dispOut = dispOut + printTaskWithIndex(task, print);
 			}
-		}
-		else if (taskList.isEmpty()) {
+		} else if (taskList.isEmpty()) {
 			dispOut = TASKLIST_EMPTY_MESSAGE;
-		} 
-                return dispOut + "\n";
+		}
+		return dispOut + "\n";
+	}
+
+	/**
+	 * 
+	 * display: display all uncompleted tasks found in the taskList
+	 * 
+	 * @author Khaleef
+	 * @param void
+	 * @return void
+	 */
+	public String displayUncompleted() {
+		String dispOut = "";
+		if (!taskList.isEmpty()) {
+			dispOut = dispOut + printListingHeader();
+			for (Task task : taskList) {
+				if (task.isCompleted() == false) {
+					String print = task.displayTask();
+					dispOut = dispOut + printTaskWithIndex(task, print);
+				}
+			}
+		} else if (taskList.isEmpty()) {
+			dispOut = TASKLIST_EMPTY_MESSAGE;
+		}
+		if (dispOut.equals(null) || dispOut.isEmpty() || dispOut.equals(""))
+			return dispOut = TASKLIST_EMPTY_MESSAGE;
+		else
+			return dispOut + "\n";
 	}
 
 	/**
@@ -53,28 +80,27 @@ public class Display extends Task {
 	 * @return void
 	 */
 	public String displayCompleted() {
-                String dispOut = "";
-		if (!taskList.isEmpty()){
+		String dispOut = "";
+		if (!taskList.isEmpty()) {
 			dispOut = dispOut + "The following tasks are completed: \n";
-			for (Task task : taskList){
-				if (task.isCompleted()){
-					
+			for (Task task : taskList) {
+				if (task.isCompleted()) {
+
 					String info = task.displayTask();
 					dispOut = dispOut + printTaskWithIndex(task, info);
 				}
 			}
-		}
-		else{
+		} else {
 			dispOut = TASKLIST_EMPTY_MESSAGE;
 		}
-                return dispOut + "\n";
+		return dispOut + "\n";
 	}
-	
+
 	public String displayStartMonth() {
 		String month = command.getEndMonth();
-		switch(month) {
+		switch (month) {
 		case "01":
-		return sorted.printStartMonthList(0);
+			return sorted.printStartMonthList(0);
 		case "02":
 			return sorted.printStartMonthList(1);
 		case "03":
@@ -100,12 +126,12 @@ public class Display extends Task {
 		}
 		return "invalid month";
 	}
-	
+
 	public String displayEndMonth() {
 		String month = command.getEndMonth();
-		switch(month) {
+		switch (month) {
 		case "01":
-		return sorted.printEndMonthList(0);
+			return sorted.printEndMonthList(0);
 		case "02":
 			return sorted.printEndMonthList(1);
 		case "03":
@@ -131,7 +157,7 @@ public class Display extends Task {
 		}
 		return "invalid month";
 	}
-	
+
 	/**
 	 * 
 	 * printListingHeader: print header for listing
@@ -149,10 +175,11 @@ public class Display extends Task {
 	 * printTaskIndex: print index number of current task
 	 * 
 	 * @author Ying Yun
-	 * @param Task, String
+	 * @param Task
+	 *            , String
 	 * @return void
 	 */
 	private String printTaskWithIndex(Task task, String print) {
-		return (taskList.indexOf(task)+1) + ": " + print + "\n";
+		return (taskList.indexOf(task) + 1) + ": " + print + "\n";
 	}
-}//end class
+}// end class

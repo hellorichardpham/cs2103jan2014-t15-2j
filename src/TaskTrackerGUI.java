@@ -50,7 +50,7 @@ public class TaskTrackerGUI extends javax.swing.JFrame {
 		displayTextBox.setEditable(false);
 		displayTextBox.setColumns(20);
 		displayTextBox.setRows(5);
-		displayTextBox.setText("Welcome to TaskTracker :)\n\n\n");
+		displayTextBox.setText("Welcome to TaskTracker :)\n\n");
 		jScrollPane1.setViewportView(displayTextBox);
 
 		commandLine.addActionListener(new java.awt.event.ActionListener() {
@@ -170,6 +170,10 @@ public class TaskTrackerGUI extends javax.swing.JFrame {
 		ProcessCommand pc = new ProcessCommand();
 		ExeCom ec = ExeCom.getInstance();
 		Command com = pc.process(userInput);
+
+		if (com.getKeyword().contains("clear"))
+			displayTextBox.setText("Welcome to TaskTracker :)\n\n");
+
 		if (conflictedUserInput != null) {
 			switch (userInput.toLowerCase()) {
 			case "yes":

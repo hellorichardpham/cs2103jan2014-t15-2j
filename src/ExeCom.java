@@ -25,6 +25,7 @@ public class ExeCom {
 	private final static String JUSTUPDATE = "justupdate";
 	private static final String COMPLETED = "completed";
 	private static final String CANCELLED = "cancel";
+	private static final String CLEAR = "clear";
 	private final static String ADD_SUCCESSFUL_MESSAGE = "That task has successfully been added to the Task List.\n";
 	private final static String UNDO_SUCCESS_MESSAGE = "Action has successfully been undone.\n";
 	private static final String REDO_SUCCESS_MESSAGE = "Action has successfully been redone.\n";
@@ -88,7 +89,6 @@ public class ExeCom {
 	 */
 	public String executeCommand(Command command) throws Exception {
 
-		
 		feedback = "";
 		c = command;
 		String keyWord = c.getKeyword().toLowerCase();
@@ -130,6 +130,8 @@ public class ExeCom {
 				feedback = feedback + d.displayTaskList();
 			} else if (isDisplayCompleted()) {
 				feedback = feedback + d.displayCompleted();
+			} else if (isDisplayUncompleted()) {
+				feedback = feedback + d.displayUncompleted();
 			} else {
 				feedback = feedback + INVALID_COMMAND_MESSAGE;
 			}
@@ -177,7 +179,8 @@ public class ExeCom {
 				feedback = feedback + u.editContent(c);
 				saveToRedoTaskList();
 			} else {
-				feedback = CONFLICTED_CODE + printConflictedTasks(conflicts) + "\n";
+				feedback = CONFLICTED_CODE + printConflictedTasks(conflicts)
+						+ "\n";
 				feedback = feedback + "Edit task anyway? (Yes/No): \n";
 			}
 			break;
@@ -213,6 +216,11 @@ public class ExeCom {
 
 		case CANCELLED:
 			feedback = CANCELLED_ACTION_MESSAGE + "\n";
+			break;
+			
+		case CLEAR:
+			;
+			
 			break;
 		default:
 			feedback = INVALID_COMMAND_MESSAGE + "\n";
@@ -339,6 +347,30 @@ public class ExeCom {
 		if (c.getDetails() != null) {
 			if (c.getDetails().equals("completed")
 					|| c.getDetails().equals("completed tasks")) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * 
+	 * isDisplayUncompleted: Check if user wants to display a list of uncompleted tasks
+	 * 
+	 * @author Khaleef
+	 * @param void
+	 * @return boolean
+	 * 
+	 */
+	private boolean isDisplayUncompleted() {
+		if (c.getDetails() != null) {
+			if (c.getDetails().equals("uncompleted")
+					|| c.getDetails().equals("uncompleted tasks")
+					|| c.getDetails().equals("uc")
+					|| c.getDetails().equals("uc tasks")) {
 				return true;
 			} else {
 				return false;

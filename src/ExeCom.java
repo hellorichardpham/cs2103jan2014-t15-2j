@@ -92,6 +92,7 @@ public class ExeCom {
 		feedback = "";
 		c = command;
 		String keyWord = c.getKeyword().toLowerCase();
+		
 		Storage s = new Storage();
 		s.loadStorage();
 
@@ -217,10 +218,10 @@ public class ExeCom {
 		case CANCELLED:
 			feedback = CANCELLED_ACTION_MESSAGE + "\n";
 			break;
-			
+
 		case CLEAR:
 			;
-			
+
 			break;
 		default:
 			feedback = INVALID_COMMAND_MESSAGE + "\n";
@@ -358,7 +359,8 @@ public class ExeCom {
 
 	/**
 	 * 
-	 * isDisplayUncompleted: Check if user wants to display a list of uncompleted tasks
+	 * isDisplayUncompleted: Check if user wants to display a list of
+	 * uncompleted tasks
 	 * 
 	 * @author Khaleef
 	 * @param void
@@ -815,9 +817,5 @@ public class ExeCom {
 
 	public static void setRedoableFalse() {
 		isRedoable = false;
-	}
-
-	public static void sort() {
-
 	}
 }

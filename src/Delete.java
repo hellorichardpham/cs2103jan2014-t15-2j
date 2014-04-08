@@ -22,7 +22,7 @@ public class Delete {
 	 */
 
 	public String delete(Command c) {
-		String feedback = "Succesfully Deleted: \n";
+		String feedback = "";
 		for (String target : c.getTargetedTasks()) {
 			if (isInteger(target)) {
 				feedback += deleteSpecifiedTask(target);
@@ -109,10 +109,10 @@ public class Delete {
 		boolean isFound = false;
 
 		// loop thru whole taskList to find for the user specified task
-		String output = "";
+		String output = "Succesfully Deleted: \n";
 		for (int i = 0; i < taskList.size(); i++) {
 			if (ec.isTaskIDMatch(taskList.get(i).getTaskID(), taskIdNumber)) {
-				output += taskList.get(i).getDetails();
+				output += taskList.get(i).getDetails() + "\n";
 				ec.setUndoableTrue();
 				ec.setRedoableFalse();
 				taskList.remove(taskList.get(i));

@@ -15,7 +15,7 @@ public class Delete {
 	 * 
 	 * delete: Go through taskList and remove task with matching taskID
 	 * 
-	 * @author A0085107J, Richard
+	 * @author A0085107J, A0118590A
 	 * @param command
 	 * @return string
 	 * 
@@ -150,7 +150,7 @@ public class Delete {
 	 * is a valid taskID (positive integer) CURRENTLY NOT IN USE AS PARAMETER
 	 * CAN BE LOCATION/PRIORITY/CATEGORY
 	 * 
-	 * @author Richard, A0085107J
+	 * @author A0118590A, A0085107J
 	 * @param void
 	 * @return boolean
 	 * 

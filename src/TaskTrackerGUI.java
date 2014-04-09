@@ -21,7 +21,7 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 	/**
 	 * Creates new form TaskTrackerGUI
 	 * 
-	 * @author Tian Weizhou
+	 * @author A0083093E
 	 */
 	public TaskTrackerGUI() {
 		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\Khaleef\\workspace\\cs2103jan2014-t15-2j\\src\\icon.png"));
@@ -34,12 +34,7 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 			e.printStackTrace();
 		}
 	}
-
-	/**
-	 * This method is called from within the constructor to initialize the form.
-	 * 
-	 * @author Tian Weizhou
-	 */
+	
 	// <editor-fold defaultstate="collapsed"
 	// desc="Generated Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
@@ -52,7 +47,10 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 		jLabel1 = new javax.swing.JLabel();
 
 		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
+		
+		undoButton.setEnabled(false);
+		redoButton.setEnabled(false);
+		
 		displayTextBox.setEditable(false);
 		displayTextBox.setColumns(20);
 		displayTextBox.setRows(5);
@@ -166,7 +164,7 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 	}// </editor-fold>//GEN-END:initComponents
 
 	/**
-	 * This line describes the action taken by the program when the user enters
+	 * This method describes the action taken by the program when the user enters
 	 * a line of command
 	 * 
 	 * @author Tian Weizhou
@@ -207,18 +205,32 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 		String feedback;
 		feedback = ExeCom.getFeedback();
 
+		feedback = replaceConflictCode(userInput, feedback);
+		setUndoRedoButtons();	
+		printFeedback(feedback);
+	}
+	
+	/**
+	 * This method stamps the "just" keyword over the original add or edit keyword so that ExeCom executes
+	 * the command without checking for conflicts
+	 * Subsequently, it removes the codeword for printing
+	 * 
+	 * @author A0083093E
+	 * @param userInput
+	 * @param feedback
+	 * @return feedback String
+	 */
+	private String replaceConflictCode(String userInput, String feedback) {
 		if (feedback.contains(CONFLICTED_CODE)) {
 			// change command keyword to justadd
 			conflictedUserInput = "just" + userInput;
 			feedback = feedback.replace(CONFLICTED_CODE, "").trim();
 		}
-		displayTextBox.append(feedback);
-		displayTextBox.setCaretPosition(displayTextBox.getDocument().getLength());
-
-	}// GEN-LAST:event_commandLineActionPerformed
+		return feedback;
+	}
 
 	/**
-	 * This line describes the action taken by the program when the user clicks
+	 * This method describes the action taken by the program when the user clicks
 	 * on the Undo button
 	 * 
 	 * @author Tian Weizhou
@@ -233,12 +245,12 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 			System.out.println("Could not perform undo command");
 		}
 		String feedback = ExeCom.getFeedback();
-		displayTextBox.append(feedback);
-		displayTextBox.setCaretPosition(displayTextBox.getDocument().getLength());
+		printFeedback(feedback);
+		setUndoRedoButtons();
 	}// GEN-LAST:event_undoButtonActionPerformed
 
 	/**
-	 * This line describes the action taken by the program when the user clicks
+	 * This method describes the action taken by the program when the user clicks
 	 * on the Redo button
 	 * 
 	 * @author Tian Weizhou
@@ -253,9 +265,28 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 			System.out.println("Could not perform redo command");
 		}
 		String feedback = ExeCom.getFeedback();
+		printFeedback(feedback);
+		setUndoRedoButtons();
+	}// GEN-LAST:event_redoButtonActionPerformed
+	
+	/**
+	 * This method checks the undo and redo Stacks and updates the buttons accordingly
+	 * @author A0083093E 
+	 */
+	private void setUndoRedoButtons() {
+		undoButton.setEnabled(ExeCom.checkUndoStack());
+		redoButton.setEnabled(ExeCom.checkRedoStack());
+	}
+	
+	/**
+	 * This methof prints the String feedback returned by ExeCom
+	 * @param String feedback
+	 * @author A0083093E
+	 */
+	private void printFeedback(String feedback) {
 		displayTextBox.append(feedback);
 		displayTextBox.setCaretPosition(displayTextBox.getDocument().getLength());
-	}// GEN-LAST:event_redoButtonActionPerformed
+	}
 
 	/**
 	 * This line closes the program when the user clicks on the Exit button
@@ -321,7 +352,11 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 	private javax.swing.JButton undoButton;
 	// End of variables declaration//GEN-END:variables
 
-	@Override
+	/**
+	 * This method allows User to press the up and down directional keys to scroll the textField
+	 * @author A0083093E
+	 * @Override
+	**/
 	public void keyPressed(KeyEvent e) {
 		int keyCode = e.getKeyCode();
 		//if User presses UP key

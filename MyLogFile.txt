@@ -1,4 +1,0 @@
-Apr 09, 2014 3:55:01 AM Storage loadStorage
-INFO: Start of retrieving tasks
-Apr 09, 2014 3:55:01 AM Storage loadStorage
-INFO: Retrieve task successful

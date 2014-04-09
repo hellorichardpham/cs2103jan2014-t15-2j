@@ -17,6 +17,16 @@ public class SortDate {
 		this.taskList = taskList;
 	}
 
+	/*
+	 * initializeMonthList: sets new ArrayLists for the 2D Arrays holding the
+	 * start/end month results
+	 * 
+	 * @author A0118590A
+	 * 
+	 * @param void
+	 * 
+	 * @return void
+	 */
 	public static void initializeMonthList() {
 		for (int i = 0; i < 12; i++) {
 			startMonthList[i][0] = new ArrayList<Task>();
@@ -24,12 +34,31 @@ public class SortDate {
 		}
 	}
 
+	/*
+	 * printSorted: Displays the entire taskList in descending order based on
+	 * start month
+	 * 
+	 * @author A0118590A
+	 * 
+	 * @param void
+	 * 
+	 * @return void
+	 */
 	public static void printSorted() {
 		for (Task task : sortedTaskList) {
 			System.out.println(task.displayTask());
 		}
 	}
 
+	/*
+	 * printStartMonthList: Displays all tasks that begin in the specified month
+	 * 
+	 * @author A0118590A
+	 * 
+	 * @param int
+	 * 
+	 * @return String
+	 */
 	public String printStartMonthList(int monthIndex) {
 		String output = printStartMonthName(monthIndex);
 		for (int j = 0; j < startMonthList[monthIndex][0].size(); j++) {
@@ -40,7 +69,16 @@ public class SortDate {
 		// New Line added to separate display from next command's feedback
 		return output + "\n";
 	}
-	
+
+	/*
+	 * printStartMonthList: Displays all tasks that end in the specified month
+	 * 
+	 * @author A0118590A
+	 * 
+	 * @param int
+	 * 
+	 * @return String
+	 */
 	public String printEndMonthList(int monthIndex) {
 		String output = printEndMonthName(monthIndex);
 		for (int j = 0; j < endMonthList[monthIndex][0].size(); j++) {
@@ -52,6 +90,15 @@ public class SortDate {
 		return output + "\n";
 	}
 
+	/*
+	 * sort: Sorts tasks into two lists based on start/end month
+	 * 
+	 * @author A0118590A
+	 * 
+	 * @param void
+	 * 
+	 * @return ArrayList<Task>
+	 */
 	public ArrayList<Task> sort() {
 		for (int i = 0; i < months.size() - 1; i++) {
 			for (int j = 0; j < taskList.size(); j++) {
@@ -67,6 +114,16 @@ public class SortDate {
 		return sortedTaskList;
 	}
 
+	/*
+	 * isMatchingTaskStartMonth: Returns True/False depending on if a task
+	 * starts in the specified month
+	 * 
+	 * @author A0118590A
+	 * 
+	 * @param Task, String
+	 * 
+	 * @return boolean
+	 */
 	public static boolean isMatchingTaskStartMonth(Task task, String month) {
 		if (!task.getStartMonth().equals("null")) {
 			return month.contains(task.getStartMonth());
@@ -75,10 +132,31 @@ public class SortDate {
 		}
 	}
 
+	/*
+	 * isMatchingTaskEndMonth: Returns True/False depending on if a task ends in
+	 * the specified month
+	 * 
+	 * @author A0118590A
+	 * 
+	 * @param Task, String
+	 * 
+	 * @return boolean
+	 */
 	public static boolean isMatchingTaskEndMonth(Task task, String month) {
-			return month.contains(task.getEndMonth());
+		return month.contains(task.getEndMonth());
 	}
 
+	/*
+	 * initializeMonths: Resets months variable and adds the number that
+	 * correlates to each month. (Jan == 01). Note that it contains both because
+	 * the input may come as one or two digits
+	 * 
+	 * @author A0118590A
+	 * 
+	 * @param void
+	 * 
+	 * @return void
+	 */
 	public static void initializeMonths() {
 		months = new ArrayList<String>(); // resets months so no overflow
 		/*
@@ -101,6 +179,16 @@ public class SortDate {
 		months.add("12");
 	}
 
+	/*
+	 * printStartMonthName: Prints the display header depending on which month
+	 * we are about to display
+	 * 
+	 * @author A0118590A
+	 * 
+	 * @param int
+	 * 
+	 * @return String
+	 */
 	public static String printStartMonthName(int monthIndex) {
 		switch (monthIndex) {
 		case 0:
@@ -130,7 +218,17 @@ public class SortDate {
 		}
 		return "";
 	}
-	
+
+	/*
+	 * printEndMonthName: Prints the display header depending on which month we
+	 * are about to display
+	 * 
+	 * @author A0118590A
+	 * 
+	 * @param int
+	 * 
+	 * @return String
+	 */
 	public static String printEndMonthName(int monthIndex) {
 		switch (monthIndex) {
 		case 0:
@@ -161,6 +259,16 @@ public class SortDate {
 		return "";
 	}
 
+	/*
+	 * initializeDays: Initializes days ArrayList with each numerical day from
+	 * 1-31
+	 * 
+	 * @author A0118590A
+	 * 
+	 * @param void
+	 * 
+	 * @return void
+	 */
 	public static void initializeDays() {
 		days.add("1");
 		days.add("2");
@@ -195,6 +303,15 @@ public class SortDate {
 		days.add("31");
 	}
 
+	/*
+	 * initializeCalender: Initializes start and end Month array
+	 * 
+	 * @author A0118590A
+	 * 
+	 * @param void
+	 * 
+	 * @return void
+	 */
 	public static void initializeCalender() {
 		for (int i = 0; i < months.size(); i++) {
 			startMonthList[i][0] = new ArrayList<Task>();
@@ -202,6 +319,14 @@ public class SortDate {
 		}
 	}
 
+	/**
+	 * 
+	 * printTaskIndex: print index number of current task
+	 * 
+	 * @author A0085107J
+	 * @param Task, String
+	 * @return void
+	 */
 	private static String printTaskWithIndex(Task task, String print) {
 		return (taskList.indexOf(task) + 1) + ": " + print + "\n";
 	}

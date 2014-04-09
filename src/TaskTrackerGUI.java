@@ -23,6 +23,7 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 	 * @author Tian Weizhou
 	 */
 	public TaskTrackerGUI() {
+		setTitle("TaskTracker");
 		try {
 			initComponents();
 			Alarm.setAlarm();

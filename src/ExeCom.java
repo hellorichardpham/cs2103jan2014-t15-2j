@@ -1,10 +1,12 @@
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Stack;
 
 public class ExeCom {
 	private static Command c;
 	private static ArrayList<Task> taskList;
-	private static ArrayList<Task> prevTaskList;
-	private static ArrayList<Task> redoTaskList;
+	private static Stack<ArrayList<Task>> undoStack;
+	private static Stack<ArrayList<Task>> redoStack;
 	private static ArrayList<Task>[][] monthList;
 	private static String feedback;
 
@@ -39,8 +41,6 @@ public class ExeCom {
 	private static final String DISPLAYD = "displayd";
 	private static final Object EMPTY_STRING = "";
 	private static ExeCom theOne;
-	private static boolean isUndoable = false;
-	private static boolean isRedoable = false;
 
 	public static String getFeedback() {
 		return feedback;
@@ -75,8 +75,8 @@ public class ExeCom {
 		if (taskList == null) {
 			taskList = new ArrayList<Task>();
 		}
-		prevTaskList = new ArrayList<Task>();
-		redoTaskList = new ArrayList<Task>();
+		undoStack = new Stack<ArrayList<Task>>();
+		redoStack = new Stack<ArrayList<Task>>();
 	}
 
 	/**
@@ -141,7 +141,7 @@ public class ExeCom {
 				feedback = feedback + INVALID_COMMAND_MESSAGE;
 			}
 			break;
-			
+
 		case DISPLAYD:
 			Display displayDeadline = new Display(getTaskListInstance(), c,
 					getMonthListInstance());
@@ -152,19 +152,17 @@ public class ExeCom {
 			}
 			break;
 		case DELETE:
-			saveToPrevTaskList();
+			saveToUndoStack();
 			Delete del = new Delete();
 			feedback = feedback + del.delete(c);
-			saveToRedoTaskList();
 			// s.loadStorage(); // to update the taskList
 			break;
 
 		case COMPLETED:
 		case DONE:
-			saveToPrevTaskList();
+			saveToUndoStack();
 			Completed completed = new Completed();
 			feedback = feedback + completed.markCompleted(c);
-			saveToRedoTaskList();
 			break;
 
 		case SEARCH:
@@ -181,10 +179,9 @@ public class ExeCom {
 			ArrayList<Integer> conflicts = new ArrayList<Integer>();
 			conflicts = checkConflict();
 			if (conflicts.size() <= 0) {
-				saveToPrevTaskList();
+				saveToUndoStack();
 				Update u = new Update();
 				feedback = feedback + u.editContent(c);
-				saveToRedoTaskList();
 			} else {
 				feedback = CONFLICTED_CODE + printConflictedTasks(conflicts)
 						+ "\n";
@@ -194,10 +191,9 @@ public class ExeCom {
 
 		case JUSTUPDATE:
 		case JUSTEDIT:
-			saveToPrevTaskList();
+			saveToUndoStack();
 			Update u = new Update();
 			feedback = feedback + u.editContent(c);
-			saveToRedoTaskList();
 			break;
 
 			// case EMAIL:
@@ -206,19 +202,11 @@ public class ExeCom {
 			// break;
 
 		case UNDO:
-			if (isUndoable) {
-				undo();
-			} else {
-				feedback = UNDO_UNSUCCESSFUL_MESSAGE + "\n";
-			}
+			undo();
 			break;
 
 		case REDO:
-			if (isRedoable) {
-				redo();
-			} else {
-				feedback = REDO_UNSUCCESSFUL_MESSAGE + "\n";
-			}
+			redo();
 			break;
 
 		case CANCELLED:
@@ -241,6 +229,7 @@ public class ExeCom {
 	/**
 	 * addTask: Adds Task to Tasklist and updates the undo and redo tasklists
 	 * 
+	 * 
 	 * @author Tian Weizhou
 	 * @param Command
 	 * @return void
@@ -248,10 +237,8 @@ public class ExeCom {
 	private void addTask(Command command) throws Exception {
 		// System.out.println(command.getDetails());
 		Add add = new Add(getTaskListInstance());
-		saveToPrevTaskList();
+		saveToUndoStack();
 		add.addToTaskList(command);
-		saveToRedoTaskList();
-		setUndoableTrue();
 		feedback = feedback + ADD_SUCCESSFUL_MESSAGE;
 	}
 
@@ -264,13 +251,14 @@ public class ExeCom {
 	 * @return void
 	 */
 	public static void undo() {
-		if (!prevTaskList.isEmpty() && isValidUndoRedoDisplayCommand()) {
-			resetTaskList();
-			transferTasksFromTo(prevTaskList, taskList);
-			setUndoableFalse();
-			setRedoableTrue();
+		if (!undoStack.empty() && isValidUndoRedoDisplayCommand()) {
+			ArrayList<Task> newCopy = new ArrayList<Task>();
+			transferTasksFromTo(taskList,newCopy);
+			redoStack.push(newCopy);
+			taskList = undoStack.pop();
+
 			feedback = UNDO_SUCCESS_MESSAGE;
-		} else if (isValidUndoRedoDisplayCommand() && prevTaskList.isEmpty()) {
+		} else if (isValidUndoRedoDisplayCommand() && undoStack.empty()) {
 			feedback = UNDO_UNSUCCESSFUL_MESSAGE;
 		} else {
 			feedback = INVALID_COMMAND_MESSAGE;
@@ -285,17 +273,13 @@ public class ExeCom {
 	 * @return void
 	 */
 	public static void redo() {
-		if ((!redoTaskList.isEmpty() && isValidUndoRedoDisplayCommand())
-				|| !prevTaskList.isEmpty()) {
-			resetTaskList();
-			transferTasksFromTo(redoTaskList, taskList);
-			/*
-			 * for (Task task : redoTaskList) { taskList.add(task); }
-			 */
+		if (!redoStack.empty() && isValidUndoRedoDisplayCommand()){
+			ArrayList<Task> newCopy = new ArrayList<Task>();
+			transferTasksFromTo(taskList,newCopy);
+			undoStack.push(newCopy);
+			taskList = redoStack.pop();
 			feedback = REDO_SUCCESS_MESSAGE;
-			setUndoableTrue();
-			setRedoableFalse();
-		} else if (isValidUndoRedoDisplayCommand() && redoTaskList.isEmpty()) {
+		} else if (isValidUndoRedoDisplayCommand() && redoStack.empty()) {
 			feedback = REDO_UNSUCCESSFUL_MESSAGE;
 		} else {
 			feedback = INVALID_COMMAND_MESSAGE;
@@ -506,9 +490,11 @@ public class ExeCom {
 	 * @return void
 	 * 
 	 */
-	public void saveToPrevTaskList() {
-		resetPrevTaskList();
-		transferTasksFromTo(taskList, prevTaskList);
+	public void saveToUndoStack() {
+		ArrayList<Task> undoList = new ArrayList<Task>();
+		transferTasksFromTo(taskList,undoList);
+		undoStack.push(undoList);
+		//transferTasksFromTo(taskList, prevTaskList);
 		/*
 		 * for (Task task : taskList) { prevTaskList.add(new Task(task)); }
 		 */
@@ -524,40 +510,13 @@ public class ExeCom {
 	 * @return void
 	 * 
 	 */
-
-	public void saveToRedoTaskList() {
-		resetRedoTaskList();
-		transferTasksFromTo(taskList, redoTaskList);
-
+	public void saveToRedoStack() {
+		ArrayList<Task> redoList = new ArrayList<Task>();
+		transferTasksFromTo(taskList,redoList);
+		undoStack.push(redoList);
 		/*
 		 * for (Task task : taskList) { redoTaskList.add(new Task(task)); }
 		 */
-	}
-
-	/**
-	 * 
-	 * resetRedoTaskList: Reinitializes redoTaskList so it will be empty when we
-	 * redo a command.
-	 * 
-	 * @author Richard
-	 * @param void
-	 * @return void
-	 */
-	public static void resetRedoTaskList() {
-		redoTaskList = new ArrayList<Task>();
-	}
-
-	/**
-	 * 
-	 * resetPrevTaskList: Reinitializes prevTaskList so it will be empty when we
-	 * undo a command.
-	 * 
-	 * @author Richard
-	 * @param void
-	 * @return void
-	 */
-	public static void resetPrevTaskList() {
-		prevTaskList = new ArrayList<Task>();
 	}
 
 	/**
@@ -598,8 +557,7 @@ public class ExeCom {
 	 * @return boolean
 	 */
 	public static boolean isValidUndoRedoDisplayCommand() {
-		if (c.getDetails() == null && c.getEndDay()==null && c.getEndMonth()==null 
-				&& c.getEndYear()==null 
+		if (c.getDetails() == null
 				&& c.getStartDay()==null 
 				&& c.getStartMonth()==null 
 				&& c.getStartYear()==null 
@@ -684,14 +642,14 @@ public class ExeCom {
 				return false;
 			}
 		}
-	
+
 		if (c.getEndHours() != null) {
 			int endHours = Integer.parseInt(c.getEndHours());
 			if (0 > endHours || endHours >= 24) {
 				return false;
 			}
 		}
-	
+
 		return true;
 	}
 
@@ -710,14 +668,14 @@ public class ExeCom {
 				return false;
 			}
 		}
-	
+
 		if (c.getEndMins() != null) {
 			int endMins = Integer.parseInt(c.getEndMins());
 			if (0 > endMins || endMins >= 24) {
 				return false;
 			}
 		}
-	
+
 		return true;
 	}
 
@@ -813,22 +771,6 @@ public class ExeCom {
 		return false;
 	}
 
-	public static void setUndoableTrue() {
-		isUndoable = true;
-	}
-
-	public static void setUndoableFalse() {
-		isUndoable = false;
-	}
-
-	public static void setRedoableTrue() {
-		isRedoable = true;
-	}
-
-	public static void setRedoableFalse() {
-		isRedoable = false;
-	}
-
 	/**
 	 * 
 	 * isTaskIDMatch: Checks if a task's taskID is equal to the userSpecified
@@ -839,7 +781,7 @@ public class ExeCom {
 	 * @return boolean
 	 * 
 	 */
-	
+
 	public boolean isTaskIDMatch(String specifiedTaskID, int taskIdNumber) {
 		return Integer.parseInt(specifiedTaskID) == taskIdNumber;
 	}
@@ -852,7 +794,7 @@ public class ExeCom {
 	 * @return int
 	 * 
 	 */
-	
+
 	public int retrieveTaskIdNumber(String taskID) {
 		return Integer.parseInt(taskID);
 	}

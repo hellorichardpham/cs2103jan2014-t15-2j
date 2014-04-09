@@ -84,7 +84,7 @@ public class ExeCom {
 	 * executeCommand: determines which action to perform based on the
 	 * userCommand then calls the appropriate method.
 	 * 
-	 * @author Richard, Joey, Ying Yun, Khaleef
+	 * @author Richard, Joey,A0085107J, Khaleef
 	 * @param Command
 	 * @return String
 	 * 
@@ -622,7 +622,7 @@ public class ExeCom {
 	 * 
 	 * isValidAddCommand: Check if user keyed in details (mandatory)
 	 * 
-	 * @author yingyun
+	 * @author A0085107J
 	 * @param void
 	 * @return boolean
 	 * 
@@ -640,7 +640,7 @@ public class ExeCom {
 	 * isDisplayDate: Check if user wants to display a list of
 	 * tasks of a particular date
 	 * 
-	 * @author Ying Yun
+	 * @author A0085107J
 	 * @param void
 	 * @return boolean
 	 * 
@@ -656,7 +656,7 @@ public class ExeCom {
 	/**
 	 * isValidTime: check if user entered valid time which is from 0000 t0 2359
 	 * 
-	 * @author yingyun
+	 * @author A0085107J
 	 * @param void
 	 * @return boolean
 	 * 
@@ -672,7 +672,7 @@ public class ExeCom {
 	/**
 	 * isValidhours: check if user entered between 0 to 23 hours
 	 * 
-	 * @author yingyun
+	 * @author A0085107J
 	 * @param void
 	 * @return boolean
 	 * 
@@ -698,7 +698,7 @@ public class ExeCom {
 	/**
 	 * isValidMins: check if user entered between 0 to 59 minutes
 	 * 
-	 * @author yingyun
+	 * @author A0085107J
 	 * @param void
 	 * @return boolean
 	 * 
@@ -726,7 +726,7 @@ public class ExeCom {
 	 * isDisplayCompleted: Check if user wants to display list of completed
 	 * tasks
 	 * 
-	 * @author yingyun
+	 * @author A0085107J
 	 * @param void
 	 * @return boolean
 	 * 
@@ -834,9 +834,8 @@ public class ExeCom {
 	 * isTaskIDMatch: Checks if a task's taskID is equal to the userSpecified
 	 * taskIdNumber that he's searching for.
 	 * 
-	 * @author Richard, yingyun
-	 * @param String
-	 *            , int
+	 * @author A0085107J
+	 * @param String , int
 	 * @return boolean
 	 * 
 	 */
@@ -848,7 +847,7 @@ public class ExeCom {
 	/**
 	 * retrieveTaskIdNumber: retrieves user-specified taskID.
 	 * 
-	 * @author Richard, yingyun
+	 * @author A0085107J
 	 * @param String
 	 * @return int
 	 * 

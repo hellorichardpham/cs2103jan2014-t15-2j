@@ -19,7 +19,7 @@ public class UI {
 	/**
 	 * promptUser: get user's command input
 	 * 
-	 * @author Ying Yun
+	 * @author A0085107J
 	 * @param void
 	 * @return String
 	 */
@@ -32,7 +32,7 @@ public class UI {
 	/**
 	 * askForUserResponse: get user input
 	 * 
-	 * @author Ying Yun
+	 * @author A0085107J
 	 * @param void
 	 * @return String
 	 */

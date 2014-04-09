@@ -5,7 +5,7 @@ public class Update {
 	 * editContent: edit content of specific task using the taskID based on
 	 * user's input
 	 * 
-	 * @author yingyun, weizhou
+	 * @author A0085107J
 	 * @param void
 	 * @return void
 	 */
@@ -72,9 +72,8 @@ public class Update {
 	 * merge: returns selected information from either command object or task
 	 * object.
 	 * 
-	 * @author yingyun
-	 * @param String
-	 *            , String
+	 * @author A0085107J
+	 * @param String, String
 	 * @return String
 	 */
 	private static String merge(String fromCommand, String fromTask) {

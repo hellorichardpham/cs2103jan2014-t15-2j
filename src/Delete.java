@@ -15,9 +15,9 @@ public class Delete {
 	 * 
 	 * delete: Go through taskList and remove task with matching taskID
 	 * 
-	 * @author Richard, Ying Yun
-	 * @param void
-	 * @return void
+	 * @author A0085107J, Richard
+	 * @param command
+	 * @return string
 	 * 
 	 */
 
@@ -44,7 +44,7 @@ public class Delete {
 	 * to location, priority or category and delete all related tasks from
 	 * taskList
 	 * 
-	 * @author Ying Yun
+	 * @author A0085107J
 	 * @param String
 	 * @return void
 	 * 
@@ -98,7 +98,7 @@ public class Delete {
 	 * 
 	 * deleteSpecifiedTask: Deletes one Task from TaskList
 	 * 
-	 * @author Ying Yun
+	 * @author A0085107J
 	 * @param String
 	 * @return void
 	 * 
@@ -130,7 +130,7 @@ public class Delete {
 	 * isInteger: Checks whether the string in TargetedTask[] is an integer or
 	 * not
 	 * 
-	 * @author Ying Yun
+	 * @author A0085107J
 	 * @param String
 	 * @return boolean
 	 * 
@@ -152,7 +152,7 @@ public class Delete {
 	 * is a valid taskID (positive integer) CURRENTLY NOT IN USE AS PARAMETER
 	 * CAN BE LOCATION/PRIORITY/CATEGORY
 	 * 
-	 * @author Richard, yingyun
+	 * @author Richard, A0085107J
 	 * @param void
 	 * @return boolean
 	 * 

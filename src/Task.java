@@ -2,7 +2,7 @@
  * Task (class) : This class acts as a blueprint for any task object. It
  * contains information regarding a single task.
  * 
- * @author yingyun
+ * @author A0085107J
  */
 public class Task {
 	protected String details;
@@ -196,7 +196,7 @@ public class Task {
 	/**
 	 * displayTask: display non-empty task attributes and their headers
 	 * 
-	 * @author Ying Yun
+	 * @author A0085107J
 	 * @param void
 	 * @return String
 	 */
@@ -244,7 +244,7 @@ public class Task {
 	 * displayToStorage: display non-empty task attributes in the correct order
 	 * to external .txt file
 	 * 
-	 * @author Ying Yun, Khaleef
+	 * @author A0085107J, Khaleef
 	 * @param void
 	 * @return String
 	 */

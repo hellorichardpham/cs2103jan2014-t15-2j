@@ -6,7 +6,7 @@ import java.util.Calendar;
  * converting what the user inputs as a String to various attributes in the
  * Command Class
  * 
- * @author Tian Weizhou
+ * @author A0083093E
  */
 public class ProcessCommand {
 
@@ -21,9 +21,8 @@ public class ProcessCommand {
 	 * process: Extracts information from the userInput String and stores them
 	 * to a Command object
 	 * 
-	 * @author Tian Weizhou
-	 * @param String
-	 *            userInput
+	 * @author A0083093E
+	 * @param String userInput
 	 * @return Command
 	 * 
 	 */
@@ -51,7 +50,7 @@ public class ProcessCommand {
 
 		processDetails(splitInput);
 
-		//	to check command object 
+		/*//	to check command object 
 		System.out.println("command: " +
 				c.getKeyword()); System.out.println("details: " + c.getDetails());
 				System.out.println("Start time: " + c.getStartHours() +
@@ -62,16 +61,16 @@ public class ProcessCommand {
 										+c.getEndYear()); System.out.println("location: " + c.getLocation());
 										System.out.println("priority: " + c.getPriority());
 										System.out.println("category: " + c.getCategory());
-										System.out.println("id: " + c.getTaskID());
+										System.out.println("id: " + c.getTaskID());*/
 
-										return c;
+		return c;
 	}
 
 	/**
 	 * processFirstWordAsCommand: Extracts the first word in the userInput
 	 * String as the Command keyword
 	 * 
-	 * @author Tian Weizhou
+	 * @author A0083093E
 	 * @param String
 	 *            []
 	 */
@@ -110,7 +109,7 @@ public class ProcessCommand {
 	 * information by looking for keywords in the splitInput array and stores
 	 * them into the command object
 	 * 
-	 * @author Tian Weizhou
+	 * @author A0083093E
 	 * @param String
 	 *            [] splitInput
 	 */
@@ -147,7 +146,7 @@ public class ProcessCommand {
 	/**
 	 * processLocation: Extracts Location by alternative indentifier (@)
 	 * 
-	 * @author Tian Weizhou
+	 * @author A0083093E
 	 * @param String
 	 *            []
 	 */
@@ -166,7 +165,7 @@ public class ProcessCommand {
 	 * includes cases for flexible input. Reformats data and returns as standard
 	 * String.
 	 * 
-	 * @author Tian Weizhou, yingyun
+	 * @author A0083093E, A0085107J
 	 * @param String
 	 *            []
 	 */
@@ -201,7 +200,7 @@ public class ProcessCommand {
 	 * processTime: process the timeDetails String to extract out the time in
 	 * the correct format String and store in into the command object
 	 * 
-	 * @author Tan Ying Yun
+	 * @author A0085107J
 	 * @param String
 	 *            timeDetails
 	 * 
@@ -246,7 +245,7 @@ public class ProcessCommand {
 	/**
 	 * isRange: checks if the input time is a range or just an end time
 	 * 
-	 * @author yingyun
+	 * @author A0085107J
 	 * @param String
 	 * @return boolean
 	 */
@@ -261,7 +260,7 @@ public class ProcessCommand {
 	/**
 	 * processDayOfWeek: Extracts date given the day of the week of user enters
 	 * 
-	 * @author Tian Weizhou
+	 * @author A0083093E
 	 * @param String
 	 *            [] splitInput
 	 * 
@@ -326,7 +325,7 @@ public class ProcessCommand {
 	 * findDaysOfWeek: Identifies if a String contains a weekday and returns the
 	 * day of the week as a integer
 	 * 
-	 * @author Tian Weizhou
+	 * @author A0083093E
 	 * @param String
 	 *            ithInput
 	 * @return int day of week
@@ -375,7 +374,7 @@ public class ProcessCommand {
 	 * processTodayTmr: Detects if user types "today" or "tmr" and interpret it
 	 * as a date String as the Command keyword
 	 * 
-	 * @author Tian Weizhou
+	 * @author A0083093E
 	 * @param String
 	 *            []
 	 */
@@ -412,7 +411,7 @@ public class ProcessCommand {
 	/**
 	 * setDate: set the appropriate date attributes depending on calendar
 	 * 
-	 * @author ying yun
+	 * @author A0085107J
 	 * @param Calendar
 	 * @return void
 	 */
@@ -427,7 +426,7 @@ public class ProcessCommand {
 	/**
 	 * setStartDate: set start date of command depending on calendar
 	 * 
-	 * @author ying yun
+	 * @author A0085107J
 	 * @param Calendar
 	 * @return void
 	 */
@@ -440,7 +439,7 @@ public class ProcessCommand {
 	/**
 	 * setEndDate: set end date of command depending on calendar
 	 * 
-	 * @author ying yun
+	 * @author A0085107J
 	 * @param Calendar
 	 * @return void
 	 */
@@ -454,7 +453,7 @@ public class ProcessCommand {
 	 * processDate: process the splitInput array to Identify month signatures
 	 * and store them into the command object in the correct format
 	 * 
-	 * @author Tian Weizhou
+	 * @author A0083093E
 	 * @param String
 	 *            [] splitInput
 	 * 
@@ -481,9 +480,9 @@ public class ProcessCommand {
 				splitInput[i - 1] = EMPTY_STRING;
 
 				if (i - 2 > 0 && (splitInput[i - 2].equals("-") || 
-								splitInput[i - 2].equals("to") ||
-								splitInput[i - 2].equals("by") ||
-								splitInput[i - 2].equals("from"))) {
+						splitInput[i - 2].equals("to") ||
+						splitInput[i - 2].equals("by") ||
+						splitInput[i - 2].equals("from"))) {
 					splitInput[i - 2] = EMPTY_STRING;
 				}
 			}
@@ -512,7 +511,7 @@ public class ProcessCommand {
 	 * findMonth: identifies if input String is a month and returns integer
 	 * value of month
 	 * 
-	 * @author Tian Weizhou
+	 * @author A0083093E
 	 * @param String
 	 * @return String
 	 */
@@ -575,7 +574,7 @@ public class ProcessCommand {
 	 * setStartYearIfNoInput: Sets the Start year as current year if the user
 	 * did not input a year
 	 * 
-	 * @author Tian Weizhou
+	 * @author A0083093E
 	 * @param String
 	 *            [], int
 	 */
@@ -605,7 +604,7 @@ public class ProcessCommand {
 	 * setEndYearIfNoInput: Sets the end year as current year if the user did
 	 * not input a year
 	 * 
-	 * @author Tian Weizhou
+	 * @author A0083093E
 	 * @param String
 	 *            [], int
 	 */
@@ -625,6 +624,7 @@ public class ProcessCommand {
 
 	/**
 	 * setEndAsCurrentYEar: Sets the end year as current year
+	 * @author A0083093E
 	 */
 	private void setEndAsCurrentYear() {
 		Calendar cal = Calendar.getInstance();
@@ -636,7 +636,7 @@ public class ProcessCommand {
 	 * by month as date input. Or when end date is earlier than start date.
 	 * Switches mixed up attributes
 	 * 
-	 * @author Tian Weizhou
+	 * @author A0083093E
 	 */
 	private void switchIfDatesAreReversed() {
 		if (indexOfMonth > indexOfDayOfWeek || ifEndDateEarlierThanStart()) {
@@ -657,7 +657,7 @@ public class ProcessCommand {
 	/**
 	 * processDetails: Extracts Task details and stores them into Command object
 	 * 
-	 * @author Tian Weizhou
+	 * @author A0083093E
 	 * @param String
 	 *            []
 	 */
@@ -680,7 +680,7 @@ public class ProcessCommand {
 	 * ifEndDateEarlierThanStart: Checks if the user input end date is earlier
 	 * than the start date
 	 * 
-	 * @author Tian Weizhou
+	 * @author A0083093E
 	 * @return boolean
 	 * 
 	 */
@@ -706,7 +706,7 @@ public class ProcessCommand {
 	 * extractDetails: Extracts Location/Priority/Category details by
 	 * concatenating Strings in between // identifier
 	 * 
-	 * @author Tian Weizhou
+	 * @author A0083093E
 	 * @param String
 	 *            [], int
 	 */

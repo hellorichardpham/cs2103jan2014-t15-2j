@@ -113,8 +113,6 @@ public class Delete {
 		for (int i = 0; i < taskList.size(); i++) {
 			if (ec.isTaskIDMatch(taskList.get(i).getTaskID(), taskIdNumber)) {
 				output += taskList.get(i).getDetails() + "\n";
-				ec.setUndoableTrue();
-				ec.setRedoableFalse();
 				taskList.remove(taskList.get(i));
 				isFound = true;
 			}

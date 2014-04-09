@@ -84,7 +84,7 @@ public class ExeCom {
 	 * executeCommand: determines which action to perform based on the
 	 * userCommand then calls the appropriate method.
 	 * 
-	 * @author Richard, Joey,A0085107J, Khaleef
+	 * @author A0118590A, Joey,A0085107J, Khaleef
 	 * @param Command
 	 * @return String
 	 * 
@@ -246,7 +246,7 @@ public class ExeCom {
 	 * 
 	 * undo: Reset taskList then add contents of pTL to tL.
 	 * 
-	 * @author Richard
+	 * @author A0118590A
 	 * @param void
 	 * @return void
 	 */
@@ -268,7 +268,7 @@ public class ExeCom {
 	/**
 	 * redo: Reperforms any task that was done before undo() was called.
 	 * 
-	 * @author Richard
+	 * @author A0118590A
 	 * @param void
 	 * @return void
 	 */
@@ -472,7 +472,14 @@ public class ExeCom {
 		return start;
 
 	}
-
+	/**
+	 * 
+	 * transferTasksFromTo: Move tasks from one ArrayList to another
+	 * 
+	 * @author A0118590A
+	 * @param ArrayList<Task>, ArrayList<Task>
+	 * @return void
+	 */
 	public static void transferTasksFromTo(ArrayList<Task> source,
 			ArrayList<Task> target) {
 		for (Task task : source) {
@@ -485,7 +492,7 @@ public class ExeCom {
 	 * saveToPrevTaskList: Reset prevTaskList and add all objects from taskList
 	 * to pTL
 	 * 
-	 * @author Richard
+	 * @author A0118590A
 	 * @param void
 	 * @return void
 	 * 
@@ -505,7 +512,7 @@ public class ExeCom {
 	 * saveToRedoTaskList: Reset redoTaskList and add all objects from taskList
 	 * to rTL
 	 * 
-	 * @author Richard
+	 * @author A0118590A
 	 * @param void
 	 * @return void
 	 * 
@@ -524,7 +531,7 @@ public class ExeCom {
 	 * resetTaskList: Reinitializes taskList so it will be empty when we perform
 	 * undo or redo.
 	 * 
-	 * @author Richard
+	 * @author A0118590A
 	 * @param void
 	 * @return void
 	 */
@@ -537,7 +544,7 @@ public class ExeCom {
 	 * isValidSearchCommand: Makes sure there is a keyword that the user is
 	 * searching for instead of an invalid command like "search"
 	 * 
-	 * @author Richard
+	 * @author A0118590A
 	 * @param String
 	 *            []
 	 * @return boolean
@@ -552,7 +559,7 @@ public class ExeCom {
 	 * isValidUndoRedoDisplayCommand: Checks if the user specified an invalid
 	 * command where undo/redo/display is followed by another String.
 	 * 
-	 * @author Richard
+	 * @author A0118590A
 	 * @param void
 	 * @return boolean
 	 */
@@ -732,7 +739,7 @@ public class ExeCom {
 	 * isDisplayMonth: Check if user wants to display a list of
 	 * tasks of a particular month
 	 * 
-	 * @author Richard
+	 * @author A0118590A
 	 * @param void
 	 * @return boolean
 	 * 

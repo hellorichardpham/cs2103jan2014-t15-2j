@@ -16,7 +16,7 @@ public class Search {
 	 * 
 	 * printSearch: Display task details of all tasks in Search Results
 	 * 
-	 * @author Richard, Ying Yun
+	 * @author Richard, A0085107J
 	 * @param void
 	 * @return void
 	 */
@@ -40,7 +40,7 @@ public class Search {
 	 * search: Cycle through entire taskList looking for User-specified keyword.
 	 * Add all tasks that contain keyword into the searchResults ArrayList.
 	 * 
-	 * @author Richard, Ying Yun
+	 * @author Richard, A0085107J
 	 * @param void
 	 * @return void
 	 */

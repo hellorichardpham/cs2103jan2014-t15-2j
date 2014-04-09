@@ -28,7 +28,7 @@ public class Display extends Task {
 	 * 
 	 * display: display all tasks found in the taskList
 	 * 
-	 * @author Ying Yun
+	 * @author A0085107J
 	 * @param void
 	 * @return void
 	 */
@@ -72,7 +72,7 @@ public class Display extends Task {
 	/**
 	 * displayCompleted: prints out all completed tasks in taskList
 	 * 
-	 * @author Ying Yun
+	 * @author A0085107J
 	 * @param void
 	 * @return void
 	 */
@@ -95,7 +95,7 @@ public class Display extends Task {
 	/**
 	 * displayDate: display all tasks that matches input date, if any.
 	 * 
-	 * @author Ying Yun
+	 * @author A0085107J
 	 * @param void
 	 * @return string
 	 */
@@ -116,7 +116,7 @@ public class Display extends Task {
 	/**
 	 * setTasksWithMatchingDates: collates all related tasks with matching dates into one string
 	 * 
-	 * @author Ying Yun
+	 * @author A0085107J
 	 * @param void
 	 * @return string
 	 */
@@ -134,7 +134,7 @@ public class Display extends Task {
 	/**
 	 * haveTasksWithMatchingDates: check if taskList has any tasks that is related to the input date
 	 * 
-	 * @author Ying Yun
+	 * @author A0085107J
 	 * @param void
 	 * @return boolean
 	 */
@@ -151,7 +151,7 @@ public class Display extends Task {
 	 * setTaskToDisplay: Given a single task, it formats the string to sent for printing 
 	 * including task index and all attributes.
 	 * 
-	 * @author yingyun
+	 * @author A0085107J
 	 * @param dispOut
 	 * @param task
 	 * @return String
@@ -227,7 +227,7 @@ public class Display extends Task {
 	/**
 	 * printListingHeader: print header for listing
 	 * 
-	 * @author Ying Yun
+	 * @author A0085107J
 	 * @param void
 	 * @return void
 	 */
@@ -238,7 +238,7 @@ public class Display extends Task {
 	/**
 	 * printCompletedListingHeader: print header for completed listing
 	 * 
-	 * @author Ying Yun
+	 * @author A0085107J
 	 * @param void
 	 * @return void
 	 */
@@ -248,7 +248,7 @@ public class Display extends Task {
 	/**
 	 * printUncompletedListingHeader: print header for uncompleted listing
 	 * 
-	 * @author Ying Yun
+	 * @author A0085107J
 	 * @param void
 	 * @return void
 	 */
@@ -259,7 +259,7 @@ public class Display extends Task {
 	 * 
 	 * printTaskIndex: print index number of current task
 	 * 
-	 * @author Ying Yun
+	 * @author A0085107J
 	 * @param Task
 	 *            , String
 	 * @return void
@@ -271,7 +271,7 @@ public class Display extends Task {
 	/**
 	 * isMatchingStartDate: checks if the command's start date is same as task's start date
 	 * 
-	 * @author yingyun
+	 * @author A0085107J
 	 * @param task
 	 * @return boolean
 	 */
@@ -289,7 +289,7 @@ public class Display extends Task {
 	/**
 	 * isMatchingStartDay: checks if the command's start day is same as task's start day
 	 * 
-	 * @author yingyun
+	 * @author A0085107J
 	 * @param task
 	 * @return boolean
 	 */
@@ -304,7 +304,7 @@ public class Display extends Task {
 	/**
 	 * isMatchingStartMonth: checks if the command's start month is same as task's start month
 	 * 
-	 * @author yingyun
+	 * @author A0085107J
 	 * @param task
 	 * @return boolean
 	 */
@@ -319,7 +319,7 @@ public class Display extends Task {
 	/**
 	 * isMatchingStartYear: checks if the command's start year is same as task's start year
 	 * 
-	 * @author yingyun
+	 * @author A0085107J
 	 * @param task
 	 * @return boolean
 	 */
@@ -334,7 +334,7 @@ public class Display extends Task {
 	/**
 	 * isMatchingEndDate: checks if the command's end date is same as task's end date (including day,month and year)
 	 * 
-	 * @author yingyun
+	 * @author A0085107J
 	 * @param task
 	 * @return boolean
 	 */
@@ -349,7 +349,7 @@ public class Display extends Task {
 	/**
 	 * isMatchingEndDay: checks if the command's end day is same as task's end day
 	 * 
-	 * @author yingyun
+	 * @author A0085107J
 	 * @param task
 	 * @return boolean
 	 */
@@ -364,7 +364,7 @@ public class Display extends Task {
 	/**
 	 * isMatchingEndMonth: checks if the command's end month is same as task's end month
 	 * 
-	 * @author yingyun
+	 * @author A0085107J
 	 * @param task
 	 * @return boolean
 	 */
@@ -379,7 +379,7 @@ public class Display extends Task {
 	/**
 	 * isMatchingEndYear: checks if the command's end year is same as task's end year
 	 * 
-	 * @author yingyun
+	 * @author A0085107J
 	 * @param task
 	 * @return boolean
 	 */

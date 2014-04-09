@@ -3,7 +3,7 @@ import java.util.ArrayList;
 	/**
 	 * Command (class) : This class acts as a blueprint for any task object. It contains
 	 * information regarding a single task.
-	 * @author yingyun
+	 * @author A0085107J
 	 */
 public class Command {
 

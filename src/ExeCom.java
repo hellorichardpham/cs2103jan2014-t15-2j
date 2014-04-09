@@ -805,4 +805,12 @@ public class ExeCom {
 	public int retrieveTaskIdNumber(String taskID) {
 		return Integer.parseInt(taskID);
 	}
+
+	public static boolean checkUndoStack() {
+		return !undoStack.empty();
+	}
+	
+	public static boolean checkRedoStack() {
+		return !redoStack.empty();
+	}
 }

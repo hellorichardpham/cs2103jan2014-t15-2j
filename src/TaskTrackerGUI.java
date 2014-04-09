@@ -2,6 +2,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.Toolkit;
 
+import javax.swing.JTextPane;
+
 /**
  * Class TaskTrackerGUI This class acts as the GUI class to handle user events
  * 
@@ -39,7 +41,7 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 	// desc="Generated Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
 		jScrollPane = new javax.swing.JScrollPane();
-		displayTextBox = new javax.swing.JTextArea();
+		displayTextBox = new javax.swing.JTextPane();
 		commandLine = new javax.swing.JTextField();
 		undoButton = new javax.swing.JButton();
 		redoButton = new javax.swing.JButton();
@@ -52,8 +54,7 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 		redoButton.setEnabled(false);
 		
 		displayTextBox.setEditable(false);
-		displayTextBox.setColumns(20);
-		displayTextBox.setRows(5);
+		
 		displayTextBox.setText("Welcome to TaskTracker :)\n\n");
 		jScrollPane.setViewportView(displayTextBox);
 
@@ -284,7 +285,7 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 	 * @author A0083093E
 	 */
 	private void printFeedback(String feedback) {
-		displayTextBox.append(feedback);
+		displayTextBox.setText(displayTextBox.getText() + feedback);
 		displayTextBox.setCaretPosition(displayTextBox.getDocument().getLength());
 	}
 
@@ -344,7 +345,7 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables
 	private javax.swing.JTextField commandLine;
-	private javax.swing.JTextArea displayTextBox;
+	private JTextPane displayTextBox;
 	private javax.swing.JButton exitButton;
 	private javax.swing.JLabel jLabel1;
 	private javax.swing.JScrollPane jScrollPane;

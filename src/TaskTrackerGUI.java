@@ -1,5 +1,6 @@
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.Toolkit;
 
 /**
  * Class TaskTrackerGUI This class acts as the GUI class to handle user events
@@ -23,6 +24,7 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 	 * @author Tian Weizhou
 	 */
 	public TaskTrackerGUI() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\Khaleef\\workspace\\cs2103jan2014-t15-2j\\src\\icon.png"));
 		setTitle("TaskTracker");
 		try {
 			initComponents();

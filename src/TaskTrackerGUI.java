@@ -1,9 +1,12 @@
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 /**
  * Class TaskTrackerGUI This class acts as the GUI class to handle user events
  * 
  * @author A0083093E
  */
-public class TaskTrackerGUI extends javax.swing.JFrame {
+public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 
 	/**
 	 * 
@@ -37,7 +40,7 @@ public class TaskTrackerGUI extends javax.swing.JFrame {
 	// <editor-fold defaultstate="collapsed"
 	// desc="Generated Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
-		jScrollPane1 = new javax.swing.JScrollPane();
+		jScrollPane = new javax.swing.JScrollPane();
 		displayTextBox = new javax.swing.JTextArea();
 		commandLine = new javax.swing.JTextField();
 		undoButton = new javax.swing.JButton();
@@ -51,7 +54,9 @@ public class TaskTrackerGUI extends javax.swing.JFrame {
 		displayTextBox.setColumns(20);
 		displayTextBox.setRows(5);
 		displayTextBox.setText("Welcome to TaskTracker :)\n\n");
-		jScrollPane1.setViewportView(displayTextBox);
+		jScrollPane.setViewportView(displayTextBox);
+
+		commandLine.addKeyListener(this);
 
 		commandLine.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -89,40 +94,40 @@ public class TaskTrackerGUI extends javax.swing.JFrame {
 				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 				.addGroup(
 						layout.createSequentialGroup()
-								.addContainerGap()
-								.addGroup(
-										layout.createParallelGroup(
-												javax.swing.GroupLayout.Alignment.LEADING)
-												.addComponent(
-														jScrollPane1,
-														javax.swing.GroupLayout.Alignment.TRAILING)
+						.addContainerGap()
+						.addGroup(
+								layout.createParallelGroup(
+										javax.swing.GroupLayout.Alignment.LEADING)
+										.addComponent(
+												jScrollPane,
+												javax.swing.GroupLayout.Alignment.TRAILING)
 												.addGroup(
 														layout.createSequentialGroup()
-																.addComponent(
-																		undoButton)
+														.addComponent(
+																undoButton)
 																.addGap(18, 18,
 																		18)
-																.addComponent(
-																		redoButton)
-																.addPreferredGap(
-																		javax.swing.LayoutStyle.ComponentPlacement.RELATED,
-																		662,
-																		Short.MAX_VALUE)
-																.addComponent(
-																		exitButton))
-												.addGroup(
-														javax.swing.GroupLayout.Alignment.TRAILING,
-														layout.createSequentialGroup()
-																.addComponent(
-																		jLabel1,
-																		javax.swing.GroupLayout.PREFERRED_SIZE,
-																		101,
-																		javax.swing.GroupLayout.PREFERRED_SIZE)
-																.addPreferredGap(
-																		javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																.addComponent(
-																		commandLine)))
-								.addContainerGap()));
+																		.addComponent(
+																				redoButton)
+																				.addPreferredGap(
+																						javax.swing.LayoutStyle.ComponentPlacement.RELATED,
+																						662,
+																						Short.MAX_VALUE)
+																						.addComponent(
+																								exitButton))
+																								.addGroup(
+																										javax.swing.GroupLayout.Alignment.TRAILING,
+																										layout.createSequentialGroup()
+																										.addComponent(
+																												jLabel1,
+																												javax.swing.GroupLayout.PREFERRED_SIZE,
+																												101,
+																												javax.swing.GroupLayout.PREFERRED_SIZE)
+																												.addPreferredGap(
+																														javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																														.addComponent(
+																																commandLine)))
+																																.addContainerGap()));
 
 		layout.linkSize(javax.swing.SwingConstants.HORIZONTAL,
 				new java.awt.Component[] { exitButton, redoButton, undoButton });
@@ -131,10 +136,10 @@ public class TaskTrackerGUI extends javax.swing.JFrame {
 				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 				.addGroup(
 						layout.createSequentialGroup()
-								.addContainerGap()
-								.addComponent(jScrollPane1,
-										javax.swing.GroupLayout.DEFAULT_SIZE,
-										363, Short.MAX_VALUE)
+						.addContainerGap()
+						.addComponent(jScrollPane,
+								javax.swing.GroupLayout.DEFAULT_SIZE,
+								363, Short.MAX_VALUE)
 								.addGap(18, 18, 18)
 								.addGroup(
 										layout.createParallelGroup(
@@ -144,15 +149,15 @@ public class TaskTrackerGUI extends javax.swing.JFrame {
 														javax.swing.GroupLayout.PREFERRED_SIZE,
 														javax.swing.GroupLayout.DEFAULT_SIZE,
 														javax.swing.GroupLayout.PREFERRED_SIZE)
-												.addComponent(jLabel1))
-								.addGap(18, 18, 18)
-								.addGroup(
-										layout.createParallelGroup(
-												javax.swing.GroupLayout.Alignment.BASELINE)
-												.addComponent(undoButton)
-												.addComponent(redoButton)
-												.addComponent(exitButton))
-								.addContainerGap()));
+														.addComponent(jLabel1))
+														.addGap(18, 18, 18)
+														.addGroup(
+																layout.createParallelGroup(
+																		javax.swing.GroupLayout.Alignment.BASELINE)
+																		.addComponent(undoButton)
+																		.addComponent(redoButton)
+																		.addComponent(exitButton))
+																		.addContainerGap()));
 
 		pack();
 	}// </editor-fold>//GEN-END:initComponents
@@ -205,6 +210,7 @@ public class TaskTrackerGUI extends javax.swing.JFrame {
 			feedback = feedback.replace(CONFLICTED_CODE, "").trim();
 		}
 		displayTextBox.append(feedback);
+		displayTextBox.setCaretPosition(displayTextBox.getDocument().getLength());
 
 	}// GEN-LAST:event_commandLineActionPerformed
 
@@ -225,6 +231,7 @@ public class TaskTrackerGUI extends javax.swing.JFrame {
 		}
 		String feedback = ExeCom.getFeedback();
 		displayTextBox.append(feedback);
+		displayTextBox.setCaretPosition(displayTextBox.getDocument().getLength());
 	}// GEN-LAST:event_undoButtonActionPerformed
 
 	/**
@@ -244,6 +251,7 @@ public class TaskTrackerGUI extends javax.swing.JFrame {
 		}
 		String feedback = ExeCom.getFeedback();
 		displayTextBox.append(feedback);
+		displayTextBox.setCaretPosition(displayTextBox.getDocument().getLength());
 	}// GEN-LAST:event_redoButtonActionPerformed
 
 	/**
@@ -279,16 +287,16 @@ public class TaskTrackerGUI extends javax.swing.JFrame {
 			}
 		} catch (ClassNotFoundException ex) {
 			java.util.logging.Logger.getLogger(TaskTrackerGUI.class.getName())
-					.log(java.util.logging.Level.SEVERE, null, ex);
+			.log(java.util.logging.Level.SEVERE, null, ex);
 		} catch (InstantiationException ex) {
 			java.util.logging.Logger.getLogger(TaskTrackerGUI.class.getName())
-					.log(java.util.logging.Level.SEVERE, null, ex);
+			.log(java.util.logging.Level.SEVERE, null, ex);
 		} catch (IllegalAccessException ex) {
 			java.util.logging.Logger.getLogger(TaskTrackerGUI.class.getName())
-					.log(java.util.logging.Level.SEVERE, null, ex);
+			.log(java.util.logging.Level.SEVERE, null, ex);
 		} catch (javax.swing.UnsupportedLookAndFeelException ex) {
 			java.util.logging.Logger.getLogger(TaskTrackerGUI.class.getName())
-					.log(java.util.logging.Level.SEVERE, null, ex);
+			.log(java.util.logging.Level.SEVERE, null, ex);
 		}
 		// </editor-fold>
 
@@ -305,8 +313,32 @@ public class TaskTrackerGUI extends javax.swing.JFrame {
 	private javax.swing.JTextArea displayTextBox;
 	private javax.swing.JButton exitButton;
 	private javax.swing.JLabel jLabel1;
-	private javax.swing.JScrollPane jScrollPane1;
+	private javax.swing.JScrollPane jScrollPane;
 	private javax.swing.JButton redoButton;
 	private javax.swing.JButton undoButton;
 	// End of variables declaration//GEN-END:variables
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		int keyCode = e.getKeyCode();
+		//if User presses UP key
+		if(keyCode==38) {
+			jScrollPane.getVerticalScrollBar().setValue(jScrollPane.getVerticalScrollBar().getValue()-30);
+		}
+		//if User presses DOWN key
+		if(keyCode==40) {
+			jScrollPane.getVerticalScrollBar().setValue(jScrollPane.getVerticalScrollBar().getValue()+30);
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// Do Nothing
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// Do Nothing
+
+	}
 }

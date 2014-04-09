@@ -19,8 +19,6 @@ public class Update {
 			Task currentTask = ExeCom.getTaskListInstance().get(i);
 			int currentTaskID = Integer.parseInt(currentTask.getTaskID());
 			if (currentTaskID == id) {
-				ec.setUndoableTrue();
-				ec.setRedoableFalse();
 				currentTask.setDetails(merge(c.getDetails(),
 						currentTask.getDetails()));
 

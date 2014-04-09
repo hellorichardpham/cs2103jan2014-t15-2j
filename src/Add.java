@@ -20,8 +20,6 @@ public class Add {
 	public void addToTaskList(Command c) throws Exception {
 		{
 			ExeCom ec = ExeCom.getInstance();
-			ec.setUndoableTrue();
-			ec.setRedoableFalse();
 			Task taskToAdd = new Task(c);
 			taskToAdd.setTaskID(Integer.toString(ExeCom.getTaskListInstance().size() + 1));
 			taskList.add(taskToAdd);

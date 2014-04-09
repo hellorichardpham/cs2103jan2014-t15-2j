@@ -1,7 +1,7 @@
 /**
  * Class TaskTrackerGUI This class acts as the GUI class to handle user events
  * 
- * @author Tian Weizhou
+ * @author A0083093E
  */
 public class TaskTrackerGUI extends javax.swing.JFrame {
 

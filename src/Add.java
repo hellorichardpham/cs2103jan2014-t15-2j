@@ -13,7 +13,7 @@ public class Add {
 	 * 
 	 * addToTaskList: Add tasks to arrayList and set taskID.
 	 * 
-	 * @author Richard
+	 * @author A0118590A
 	 * @param void
 	 * @return void
 	 */

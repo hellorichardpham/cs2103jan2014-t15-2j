@@ -5,7 +5,7 @@ public class Update {
 	 * editContent: edit content of specific task using the taskID based on
 	 * user's input
 	 * 
-	 * @author A0085107J
+	 * @author A0085107J, A0097961M
 	 * @param void
 	 * @return void
 	 */

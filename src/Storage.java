@@ -32,7 +32,7 @@ public class Storage {
 	 * loadStorage: retrieve tasks found in the external file called Storage.txt
 	 * to taskList
 	 * 
-	 * @author Khaleef
+	 * @author A0097961M
 	 * @param void
 	 * @return void
 	 */
@@ -144,7 +144,7 @@ public class Storage {
 	 * 
 	 * setDetailsAttibutes: set attributes for details into arrayList
 	 * 
-	 * @author Khaleef
+	 * @author A0097961M
 	 * @param Task, String
 	 * @return void
 	 */
@@ -157,7 +157,7 @@ public class Storage {
 	 * setLocationToTaskIDAttribute: set attributes for location, category, priority, taskID
 	 * into arrayList
 	 * 
-	 * @author Khaleef
+	 * @author A0097961M
 	 * @param String[], int, Task, String, String, String
 	 * @return void
 	 */
@@ -177,7 +177,7 @@ public class Storage {
 	 * into arrayList
 	 * to taskList
 	 * 
-	 * @author Khaleef
+	 * @author A0097961M
 	 * @param String[], Task, int
 	 * @return void
 	 */
@@ -229,7 +229,7 @@ public class Storage {
 	 * 
 	 * saveStorage: save taskList to external file fileName
 	 * 
-	 * @author Khaleef
+	 * @author A0097961M
 	 * @param void
 	 * @return void
 	 */
@@ -248,7 +248,7 @@ public class Storage {
 	/**
 	 * printTaskIdToStorage: return task ID of current Task
 	 * 
-	 * @author Ying Yun, Khaleef
+	 * @author A0085107J, A0097961M
 	 * @param Task
 	 * @return int
 	 */

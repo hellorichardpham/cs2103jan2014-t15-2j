@@ -36,7 +36,7 @@ public class Display extends Task {
 	 * 
 	 * display: display all tasks found in the taskList
 	 * 
-	 * @author A0085107J
+	 * @author A0085107J, A0097961M
 	 * @param void
 	 * @return void
 	 */
@@ -55,7 +55,7 @@ public class Display extends Task {
 	 * 
 	 * display: display all uncompleted tasks found in the taskList
 	 * 
-	 * @author Khaleef
+	 * @author A0097961M
 	 * @param void
 	 * @return void
 	 */

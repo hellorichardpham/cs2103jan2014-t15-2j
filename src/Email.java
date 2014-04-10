@@ -17,6 +17,15 @@ public class Email {
 		this.taskList = taskList;
 	}
 
+	/*
+	 * emailUser: configurations of the email name, host, information, etc
+	 * 
+	 * @author A0097961M
+	 * 
+	 * @param Task
+	 * 
+	 * @return void
+	 */
 	public static void emailUser(String task_Info) throws Exception {
 
 		String name = NAME;

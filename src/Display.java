@@ -13,7 +13,8 @@ public class Display extends Task {
 	private static ArrayList<Task> sortedTaskList = new ArrayList<Task>();
 	private static ArrayList<Task>[][] startMonthList = new ArrayList[12][1];
 	private static ArrayList<Task>[][] endMonthList = new ArrayList[12][1];
-	//SortDate sorted;
+
+	// SortDate sorted;
 
 	// constructor
 	public Display(ArrayList<Task> taskList) {
@@ -455,14 +456,20 @@ public class Display extends Task {
 	 * @return String
 	 */
 	public String printStartMonthList(int monthIndex) {
+		boolean isFound = false;
 		String output = printStartMonthName(monthIndex);
 		for (int j = 0; j < startMonthList[monthIndex][0].size(); j++) {
+			isFound = true;
 			String print = startMonthList[monthIndex][0].get(j).displayTask();
 			output += printTaskWithIndex(startMonthList[monthIndex][0].get(j),
 					print);
 		}
-		// New Line added to separate display from next command's feedback
-		return output + "\n";
+		if (isFound) {
+			return output + "\n";
+		} else {
+			return "There are no tasks that start in "
+					+ printMonthName(monthIndex);
+		}
 	}
 
 	/*
@@ -475,14 +482,20 @@ public class Display extends Task {
 	 * @return String
 	 */
 	public static String printEndMonthList(int monthIndex) {
+		boolean isFound = false;
 		String output = printEndMonthName(monthIndex);
 		for (int j = 0; j < endMonthList[monthIndex][0].size(); j++) {
+			isFound = true;
 			String print = endMonthList[monthIndex][0].get(j).displayTask();
 			output += printTaskWithIndex(endMonthList[monthIndex][0].get(j),
 					print);
 		}
-		// New Line added to separate display from next command's feedback
-		return output + "\n";
+		if (isFound) {
+			return output + "\n";
+		} else {
+			return "There are no tasks that end in "
+					+ printMonthName(monthIndex);
+		}
 	}
 
 	/*
@@ -650,6 +663,36 @@ public class Display extends Task {
 			return "Displaying all tasks that end in November: \n";
 		case 11:
 			return "Displaying all tasks that end in December: \n";
+		}
+		return "";
+	}
+
+	public static String printMonthName(int monthIndex) {
+		switch (monthIndex) {
+		case 0:
+			return "January \n";
+		case 1:
+			return "February \n";
+		case 2:
+			return "March \n";
+		case 3:
+			return "April \n";
+		case 4:
+			return "May \n";
+		case 5:
+			return "June \n";
+		case 6:
+			return "July \n";
+		case 7:
+			return "August \n";
+		case 8:
+			return "September \n";
+		case 9:
+			return "October \n";
+		case 10:
+			return "November \n";
+		case 11:
+			return "December \n";
 		}
 		return "";
 	}

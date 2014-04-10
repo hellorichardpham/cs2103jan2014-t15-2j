@@ -671,14 +671,14 @@ public class ExeCom {
 	private boolean isValidMins() {
 		if (c.getStartMins() != null) {
 			int startMins = Integer.parseInt(c.getStartMins());
-			if (0 > startMins || startMins >= 24) {
+			if (0 > startMins || startMins >= 59) {
 				return false;
 			}
 		}
 
 		if (c.getEndMins() != null) {
 			int endMins = Integer.parseInt(c.getEndMins());
-			if (0 > endMins || endMins >= 24) {
+			if (0 > endMins || endMins >= 59) {
 				return false;
 			}
 		}

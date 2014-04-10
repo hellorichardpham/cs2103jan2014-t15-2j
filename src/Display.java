@@ -4,6 +4,8 @@ public class Display extends Task {
 
 	private final static String TASKLIST_EMPTY_MESSAGE = "There are no tasks in the task list!\n";
 	private static final String NO_RELATED_TASKS_MESSAGE = "There are no related tasks! \n";
+	private static final String NO_TASKS_END = "There are no tasks that end in ";
+	private static final String NO_TASKS_START = "There are no tasks that start in ";
 	private static final CharSequence EMPTY_STRING = "";
 	private static ArrayList<Task>[][] monthList;
 	private static Command command = null;
@@ -467,8 +469,7 @@ public class Display extends Task {
 		if (isFound) {
 			return output + "\n";
 		} else {
-			return "There are no tasks that start in "
-					+ printMonthName(monthIndex);
+			return NO_TASKS_START + printMonthName(monthIndex);
 		}
 	}
 
@@ -493,9 +494,9 @@ public class Display extends Task {
 		if (isFound) {
 			return output + "\n";
 		} else {
-			return "There are no tasks that end in "
-					+ printMonthName(monthIndex);
+			return NO_TASKS_END + printMonthName(monthIndex);
 		}
+
 	}
 
 	/*

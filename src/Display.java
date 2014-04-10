@@ -3,7 +3,7 @@ import java.util.ArrayList;
 public class Display extends Task {
 
 	private final static String TASKLIST_EMPTY_MESSAGE = "There are no tasks in the task list!\n";
-	private static final String NO_RELATED_TASKS_MESSAGE = "There are no related tasks!";
+	private static final String NO_RELATED_TASKS_MESSAGE = "There are no related tasks! \n";
 	private static final CharSequence EMPTY_STRING = "";
 	private static ArrayList<Task>[][] monthList;
 	private static Command command = null;

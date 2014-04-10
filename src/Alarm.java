@@ -19,7 +19,7 @@ public class Alarm {
 	 * 
 	 * setAlarm: set alarm by sending the timing to Alarm class
 	 * 
-	 * @author Khaleef
+	 * @author A0097961M
 	 * @param void
 	 * @return void
 	 */
@@ -73,7 +73,7 @@ public class Alarm {
 	 * 
 	 * Alarm: set alarm to the scheduler in RemindTask
 	 * 
-	 * @author Khaleef
+	 * @author A0097961M
 	 * @param void
 	 * @return void
 	 */
@@ -86,9 +86,9 @@ public class Alarm {
 	
 	/**
 	 * 
-	 * RemindTask: using a timer to perform a task, if task is near, user will received an email on the specific task
+	 * RemindTask: when a scheduler is called, the alarm's task will be mailed to users.
 	 * 
-	 * @author Khaleef
+	 * @author A0097961M
 	 * @param void
 	 * @return void
 	 */

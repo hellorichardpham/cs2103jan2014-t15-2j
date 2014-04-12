@@ -30,7 +30,7 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 	private static StyledDocument doc;
 	private static Style blue1;
 	private static Style blue2;
-	private static Style blue3;
+	private static Style green;
 	private static Style black;
 	private static Style gray;
 	private static Style red;
@@ -205,6 +205,12 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 		}
 	}
 	
+	/**
+	 * This method prints the string onto the displaybox in the specified style without a newline
+	 * @author A0083093E
+	 * @param string
+	 * @param style
+	 */
 	private void print(String s, Style style) {
 		try {
 			doc.insertString(doc.getLength(), s, style);
@@ -212,7 +218,11 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 			e1.printStackTrace();
 		}
 	}
-
+	
+	/**
+	 * This method sets the styles available for printing
+	 * @author A0083093E
+	 */
 	private void setStyles() {
 	
 		Color darkBlue = new Color(27,67,118);
@@ -227,11 +237,17 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 		StyleConstants.setFontSize(blue2, 15);
 		StyleConstants.setFontFamily(blue2, "arial");
 		
-		Color lightestBlue = new Color(182,182,215);
-		blue3 = displayTextBox.addStyle("This prints in lightest blue", null);
-		StyleConstants.setForeground(blue3, lightestBlue);
-		StyleConstants.setFontSize(blue3, 15);
-		StyleConstants.setFontFamily(blue3, "arial");
+		Color greenish = new Color(46,139,87);
+		green = displayTextBox.addStyle("This prints in lightest blue", null);
+		StyleConstants.setForeground(green, greenish);
+		StyleConstants.setFontSize(green, 15);
+		StyleConstants.setFontFamily(green, "arial");
+		
+		Color darkRed = new Color(128,0,128);
+		red = displayTextBox.addStyle("This prints in red",null);
+		StyleConstants.setForeground(red, darkRed);
+		StyleConstants.setFontSize(red, 15);
+		StyleConstants.setFontFamily(red, "arial");
 		
 		black = displayTextBox.addStyle("This prints in black", null);
 		StyleConstants.setForeground(black, Color.black);
@@ -246,7 +262,7 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 		Color dark = new Color(154,50,50);
 		header = displayTextBox.addStyle("This prints the headers",null);
 		StyleConstants.setForeground(header, dark);
-		StyleConstants.setFontFamily(header, "comic sans ms");
+		StyleConstants.setFontFamily(header, "times new roman");
 		StyleConstants.setFontSize(header, 20);
 	}
 
@@ -254,9 +270,9 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 	 * This method describes the action taken by the program when the user enters
 	 * a line of command
 	 * 
-	 * @author Tian Weizhou
+	 * @author A0083093E
 	 */
-	private void commandLineActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_commandLineActionPerformed
+	private void commandLineActionPerformed(java.awt.event.ActionEvent evt) {
 		String userInput = commandLine.getText().trim();
 		commandLine.setText("");
 
@@ -320,9 +336,9 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 	 * This method describes the action taken by the program when the user clicks
 	 * on the Undo button
 	 * 
-	 * @author Tian Weizhou
+	 * @author A0083093E
 	 */
-	private void undoButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_undoButtonActionPerformed
+	private void undoButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		ExeCom ec = ExeCom.getInstance();
 		Command command = new Command();
 		command.setKeyword("undo");
@@ -334,15 +350,15 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 		String feedback = ExeCom.getFeedback();
 		printFeedback(feedback);
 		setUndoRedoButtons();
-	}// GEN-LAST:event_undoButtonActionPerformed
+	}
 
 	/**
 	 * This method describes the action taken by the program when the user clicks
 	 * on the Redo button
 	 * 
-	 * @author Tian Weizhou
+	 * @author A0083093E
 	 */
-	private void redoButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_redoButtonActionPerformed
+	private void redoButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		ExeCom ec = ExeCom.getInstance();
 		Command command = new Command();
 		command.setKeyword("redo");
@@ -354,7 +370,7 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 		String feedback = ExeCom.getFeedback();
 		printFeedback(feedback);
 		setUndoRedoButtons();
-	}// GEN-LAST:event_redoButtonActionPerformed
+	}
 	
 	/**
 	 * This method checks the undo and redo Stacks and updates the buttons accordingly
@@ -366,31 +382,130 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 	}
 	
 	/**
-	 * This methof prints the String feedback returned by ExeCom
+	 * This method prints the String feedback returned by ExeCom
 	 * @param String feedback
 	 * @author A0083093E
 	 */
 	private void printFeedback(String feedback) {
 		String[] feedbackArray = feedback.split("\n");
+
 		for(int i=0;i<feedbackArray.length;i++) {
-			print("HEHE\n" + feedbackArray[i],blue1);
+			if(feedbackArray[i].length()!=0 && Character.isDigit(feedbackArray[i].charAt(0))) {
+				
+				String details = "";
+				String startDate = "";
+				String endDate = "";
+				String startTime = "";
+				String endTime = "";
+				String location = "";	
+				String priority = "";
+				String category = "";
+				
+				//print index
+				print(feedbackArray[i].substring(0,feedbackArray[i].indexOf(":")+1) + " ",black);
+				String[] componentArray = feedbackArray[i].split("//");
+				for(int j=0;j<componentArray.length;j++) {
+					if(componentArray[j].contains("DECS2103:")) {
+						details = componentArray[j].substring(10);
+					}
+					if(componentArray[j].contains("SDCS2103:")) {
+						startDate = componentArray[j].substring(10);
+					}
+					if(componentArray[j].contains("EDCS2103:")) {
+						endDate = componentArray[j].substring(10);
+					}
+					if(componentArray[j].contains("STCS2103:")) {
+						startTime = componentArray[j].substring(10);
+					}
+					if(componentArray[j].contains("ETCS2103:")) {
+						endTime = componentArray[j].substring(10);
+					}
+					if(componentArray[j].contains("LOCS2103:")) {
+						location = componentArray[j].substring(10);
+					}
+					if(componentArray[j].contains("CACS2103:")) {
+						category = componentArray[j].substring(10);
+					}
+					if(componentArray[j].contains("PRCS2103:")) {
+						priority = componentArray[j].substring(10);
+					}
+				}
+				printTime(startTime,endTime);
+				printDetails(details);
+				printLocation(location);
+				printDate(startDate,endDate);
+				printCategory(category);
+				printPriority(priority);
+				printLine("",black);
+				
+			}
+			else if(feedbackArray[i].contains("=====")) {
+				printLine(feedbackArray[i],header);
+			}
+			else {
+				printLine(feedbackArray[i],blue1);
+			}
 		}
+		
+		printLine("",black);
 		displayTextBox.setCaretPosition(displayTextBox.getDocument().getLength());
+	}
+
+	private void printDetails(String details) {
+		print(details,blue1);
+	}
+
+	private void printPriority(String priority) {
+		if(!priority.equals("")) {
+			print("[" + priority + "]",red);
+		}
+	}
+
+	private void printCategory(String category) {
+		if(!category.equals("")) {
+			print(" {" + category + "} ",blue2);
+		}
+		
+	}
+
+	private void printLocation(String location) {
+		if(!location.equals("")) {
+			print(" @" + location,red);
+		}
+	}
+
+	private void printDate(String startDate, String endDate) {
+		if(startDate.equals("")) {
+			print(" on " + endDate , green);
+		} else {
+			print(" from " + startDate + " to " + endDate , green);
+		}
+	}
+
+	private void printTime(String startTime, String endTime) {
+		if(startTime.equals("") && endTime.equals("")) {
+			return;
+		}
+		else if(!startTime.equals("") && !endTime.equals("")) {
+			print("[" + startTime + "-" + endTime + "] ",gray);
+		}
+		else if(!startTime.equals("")) {
+			print("[" + startTime + "] ",gray);
+		}
+			else {
+				print("[" + endTime + "] ",gray);
+			}
 	}
 
 	/**
 	 * This line closes the program when the user clicks on the Exit button
 	 * 
-	 * @author Tian Weizhou
+	 * @author A0083093E
 	 */
-	private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_exitButtonActionPerformed
+	private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		System.exit(0);
-	}// GEN-LAST:event_exitButtonActionPerformed
+	}
 
-	/**
-	 * @param args
-	 *            the command line arguments
-	 */
 	public static void main(String args[]) {
 		/* Set the Nimbus look and feel */
 		// <editor-fold defaultstate="collapsed"

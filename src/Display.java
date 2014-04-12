@@ -16,8 +16,6 @@ public class Display extends Task {
 	private static ArrayList<Task>[][] startMonthList = new ArrayList[12][1];
 	private static ArrayList<Task>[][] endMonthList = new ArrayList[12][1];
 
-	// SortDate sorted;
-
 	// constructor
 	public Display(ArrayList<Task> taskList) {
 		this.taskList = taskList;

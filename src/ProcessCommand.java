@@ -50,19 +50,6 @@ public class ProcessCommand {
 
 		processDetails(splitInput);
 
-		/*//	to check command object 
-		System.out.println("command: " +
-				c.getKeyword()); System.out.println("details: " + c.getDetails());
-				System.out.println("Start time: " + c.getStartHours() +
-						c.getStartMins()); System.out.println("end time: " + c.getEndHours()
-								+ c.getEndMins()); System.out.println("Start date: " +
-										c.getStartDay() + c.getStartMonth() +c.getStartYear());
-								System.out.println("end date: " + c.getEndDay() + c.getEndMonth()
-										+c.getEndYear()); System.out.println("location: " + c.getLocation());
-										System.out.println("priority: " + c.getPriority());
-										System.out.println("category: " + c.getCategory());
-										System.out.println("id: " + c.getTaskID());*/
-
 		return c;
 	}
 

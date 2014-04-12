@@ -355,7 +355,7 @@ public class ProcessCommand {
 	 * as a date String as the Command keyword
 	 * 
 	 * @author A0083093E
-	 * @param String[]
+	 * @param splitInput
 	 */
 	private void processTodayTmr(String[] splitInput) {
 		for (int i = splitInput.length - 1; i > 0; i--) {
@@ -368,6 +368,10 @@ public class ProcessCommand {
 				cal.add(Calendar.DAY_OF_MONTH, 1);
 			case "today":
 			case "2day":
+			case "tonight":
+			case "tonite":
+			case "2night":
+			case "2nite":
 
 				setDate(cal);
 				splitInput[i] = EMPTY_STRING;
@@ -380,11 +384,8 @@ public class ProcessCommand {
 						splitInput[i - 1] = EMPTY_STRING;
 					}
 				}
-
 			}
-
 		}
-
 	}
 
 	/**

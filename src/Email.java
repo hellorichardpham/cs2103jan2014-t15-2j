@@ -9,7 +9,7 @@ public class Email {
 	private static final String EMAIL_J = "tianweizhou@gmail.com";
 
 	/*
-	 * emailUser: configurations of the email name, host, information, etc
+	 * emailUser: set up of the email name, host, password, recipients
 	 * 
 	 * @author A0097961M-reused
 	 * 

@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 public class Email {
 	private static final String NAME = "TaskTracker";
 	private static final String EMAIL = "tasktrackernus@gmail.com";
@@ -9,13 +7,6 @@ public class Email {
 	private static final String EMAIL_R = "hellorichardpham@gmail.com";
 	private static final String EMAIL_Y = "tyingyun@hotmail.com";
 	private static final String EMAIL_J = "tianweizhou@gmail.com";
-	private static final String EMAIL_SUCCESS_MESSAGE = "Email sent. Thank you for waiting.";
-
-	private static ArrayList<Task> taskList;
-
-	public Email(ArrayList<Task> taskList) {
-		this.taskList = taskList;
-	}
 
 	/*
 	 * emailUser: configurations of the email name, host, information, etc
@@ -27,6 +18,7 @@ public class Email {
 	 * @return void
 	 */
 	public static void emailUser(String task_Info) throws Exception {
+		System.out.println("EMAIL " + task_Info);
 
 		String name = NAME;
 		String email = EMAIL;
@@ -45,18 +37,12 @@ public class Email {
 		// List of recipients to email
 		String[] recipients = new String[] { EMAIL_K, EMAIL_R, EMAIL_Y, EMAIL_J };
 
-		// String subject = "Storage.txt";
 		String subject = SUBJECT;
 
 		String messageBody = task_Info;
 
-		taskList = ExeCom.getTaskListInstance();
-
-		// System.out.println("Sending email. Please wait.");
 		if (new MailUtil().sendMail(recipients, subject, messageBody, name,
 				email, password, host)) {
-			// ExeCom.setFeedback(EMAIL_SUCCESS_MESSAGE);
 		}
 	}
-
 }

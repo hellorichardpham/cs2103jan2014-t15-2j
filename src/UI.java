@@ -19,7 +19,7 @@ public class UI {
 	/**
 	 * promptUser: get user's command input
 	 * 
-	 * @author A0085107J
+	 * @author A0085107J-unused
 	 * @param void
 	 * @return String
 	 */
@@ -32,7 +32,7 @@ public class UI {
 	/**
 	 * askForUserResponse: get user input
 	 * 
-	 * @author A0085107J
+	 * @author A0085107J-unused
 	 * @param void
 	 * @return String
 	 */

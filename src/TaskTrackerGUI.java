@@ -1,8 +1,15 @@
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.color.*;
+import java.awt.Color;
 import java.awt.Toolkit;
+import java.util.ArrayList;
 
 import javax.swing.JTextPane;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 /**
  * Class TaskTrackerGUI This class acts as the GUI class to handle user events
@@ -18,6 +25,17 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 	// code placed at front of feedback for GUI to recognize there is a conflict
 	private final static String CONFLICTED_CODE = "-cs2103--conflicted";
 	private final static String CANCELLED = "cancel";
+	private final static String WELCOME_MESSAGE = "======= Welcome to TaskTracker! =======\n";
+	
+	private static StyledDocument doc;
+	private static Style blue1;
+	private static Style blue2;
+	private static Style blue3;
+	private static Style black;
+	private static Style gray;
+	private static Style red;
+	private static Style header;
+	
 	private String conflictedUserInput;
 
 	/**
@@ -32,7 +50,6 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 			initComponents();
 			Alarm.setAlarm();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -54,8 +71,10 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 		redoButton.setEnabled(false);
 		
 		displayTextBox.setEditable(false);
+		doc = displayTextBox.getStyledDocument();
+		setStyles();
+		displayWelcomeMessage();
 		
-		displayTextBox.setText("Welcome to TaskTracker :)\n\n");
 		jScrollPane.setViewportView(displayTextBox);
 
 		commandLine.addKeyListener(this);
@@ -163,6 +182,73 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 
 		pack();
 	}// </editor-fold>//GEN-END:initComponents
+	
+	/**
+	 * This method prints the welcome message
+	 * @author A0083093E
+	 */
+	private void displayWelcomeMessage(){
+		printLine(WELCOME_MESSAGE, header);
+	}
+	
+	/**
+	 * This method prints the string onto the displaybox in the specified style with a newline
+	 * @author A0083093E
+	 * @param string
+	 * @param style
+	 */
+	private void printLine(String s, Style style) {
+		try {
+			doc.insertString(doc.getLength(), s + "\n", style);
+		} catch (BadLocationException e1) {
+			e1.printStackTrace();
+		}
+	}
+	
+	private void print(String s, Style style) {
+		try {
+			doc.insertString(doc.getLength(), s, style);
+		} catch(BadLocationException e1) {
+			e1.printStackTrace();
+		}
+	}
+
+	private void setStyles() {
+	
+		Color darkBlue = new Color(27,67,118);
+		blue1 = displayTextBox.addStyle("This prints in dark blue", null);
+		StyleConstants.setForeground(blue1, darkBlue);
+		StyleConstants.setFontSize(blue1, 15);
+		StyleConstants.setFontFamily(blue1, "arial");
+		
+		Color lighterBlue = new Color(96,117,158);
+		blue2 = displayTextBox.addStyle("This prints in lighter blue", null);
+		StyleConstants.setForeground(blue2, lighterBlue);
+		StyleConstants.setFontSize(blue2, 15);
+		StyleConstants.setFontFamily(blue2, "arial");
+		
+		Color lightestBlue = new Color(182,182,215);
+		blue3 = displayTextBox.addStyle("This prints in lightest blue", null);
+		StyleConstants.setForeground(blue3, lightestBlue);
+		StyleConstants.setFontSize(blue3, 15);
+		StyleConstants.setFontFamily(blue3, "arial");
+		
+		black = displayTextBox.addStyle("This prints in black", null);
+		StyleConstants.setForeground(black, Color.black);
+		StyleConstants.setFontSize(black, 15);
+		StyleConstants.setFontFamily(black, "arial");
+		
+		gray = displayTextBox.addStyle("This prints in gray", null);
+		StyleConstants.setForeground(gray, Color.gray);
+		StyleConstants.setFontSize(gray, 15);
+		StyleConstants.setFontFamily(gray, "arial");
+		
+		Color dark = new Color(154,50,50);
+		header = displayTextBox.addStyle("This prints the headers",null);
+		StyleConstants.setForeground(header, dark);
+		StyleConstants.setFontFamily(header, "comic sans ms");
+		StyleConstants.setFontSize(header, 20);
+	}
 
 	/**
 	 * This method describes the action taken by the program when the user enters
@@ -178,22 +264,22 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 		ExeCom ec = ExeCom.getInstance();
 		Command com = pc.process(userInput);
 
-		if (com.getKeyword().contains("clear"))
-			displayTextBox.setText("Welcome to TaskTracker :)\n\n");
-
+		if (com.getKeyword().contains("clear")) {
+			displayTextBox.setText("");
+			printLine(WELCOME_MESSAGE,header);
+		}
+		
 		if (conflictedUserInput != null) {
 			switch (userInput.toLowerCase()) {
 			case "yes":
 			case "y":
 			case "ya":
 				com = pc.process(conflictedUserInput);
-				System.out.println(com);
 				conflictedUserInput = null;
 				break;
-			case "no":
-			case "n":
+			default :
 				com.setKeyword(CANCELLED);
-
+				conflictedUserInput = null;
 			}
 		}
 
@@ -285,7 +371,10 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 	 * @author A0083093E
 	 */
 	private void printFeedback(String feedback) {
-		displayTextBox.setText(displayTextBox.getText() + feedback);
+		String[] feedbackArray = feedback.split("\n");
+		for(int i=0;i<feedbackArray.length;i++) {
+			print("HEHE\n" + feedbackArray[i],blue1);
+		}
 		displayTextBox.setCaretPosition(displayTextBox.getDocument().getLength());
 	}
 

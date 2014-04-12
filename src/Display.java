@@ -261,7 +261,7 @@ public class Display extends Task {
 	 * @return void
 	 */
 	private String printCompletedListingHeader() {
-		return "~~~~~ Listing of completed tasks ~~~~~\n";
+		return "== Listing of completed tasks =====\n";
 	}
 
 	/**
@@ -272,7 +272,7 @@ public class Display extends Task {
 	 * @return void
 	 */
 	private String printUncompletedListingHeader() {
-		return "~~~~~ Listing of pending tasks ~~~~~\n";
+		return "== Listing of pending tasks =====\n";
 	}
 
 	/**

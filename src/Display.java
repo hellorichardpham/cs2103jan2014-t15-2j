@@ -44,7 +44,6 @@ public class Display extends Task {
 	public String displayTaskList() {
 		String dispOut = "";
 		if (!taskList.isEmpty()) {
-			dispOut += displayCompleted();
 			dispOut += displayUncompleted();
 		} else if (taskList.isEmpty()) {
 			dispOut = TASKLIST_EMPTY_MESSAGE;
@@ -253,16 +252,6 @@ public class Display extends Task {
 		return "invalid month";
 	}
 
-	/**
-	 * printListingHeader: print header for listing
-	 * 
-	 * @author A0085107J
-	 * @param void
-	 * @return void
-	 */
-	private String printListingHeader() {
-		return "~~~~~ Listing of all tasks ~~~~~\n";
-	}
 
 	/**
 	 * printCompletedListingHeader: print header for completed listing

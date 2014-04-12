@@ -1,7 +1,7 @@
 /**
  * Taken from http://codesstore.blogspot.sg/2011/10/send-email-in-java-with-gmail.html
  * 
- * @author Sameera Jayasekara 
+ * @author A0097961M-reused
  * 
  */
 

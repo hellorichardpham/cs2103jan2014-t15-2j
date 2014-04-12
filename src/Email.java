@@ -11,7 +11,7 @@ public class Email {
 	/*
 	 * emailUser: configurations of the email name, host, information, etc
 	 * 
-	 * @author A0097961M
+	 * @author A0097961M-reused
 	 * 
 	 * @param Task
 	 * 

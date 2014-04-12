@@ -61,7 +61,7 @@ public class Alarm {
 					+ EQUAL_BLANK_SPACE + hours + EQUAL_COLON + mins;
 			dateTime = sdf.parse(input);
 			time = ((dateTime.getTime() - date.getTime()) / THOUSAND_CONST);
-			System.out.println("SET ALARM " + time);
+			//System.out.println("SET ALARM " + time);
 
 			if (time > 0) {
 				Alarm reminderBeep = new Alarm(time);
@@ -143,7 +143,7 @@ public class Alarm {
 
 					if (time >= (currentTime - TEN_THOUSAND_CONST)
 							&& (time <= currentTime + TEN_THOUSAND_CONST)) {
-						System.out.println(t.displayTask());
+						//System.out.println(t.displayTask());
 						Email.emailUser(t.displayTask());
 					}
 

@@ -21,7 +21,6 @@ public class ExeCom {
 	private final static String DELETE = "delete";
 	private static final String DONE = "done";
 	private final static String EDIT = "edit";
-	private final static String EMAIL = "email";
 	private final static String REDO = "redo";
 	private final static String SEARCH = "search";
 	private final static String UNDO = "undo";
@@ -29,6 +28,8 @@ public class ExeCom {
 	private final static String JUSTADD = "justadd";
 	private final static String JUSTEDIT = "justedit";
 	private final static String JUSTUPDATE = "justupdate";
+	private final static String EXIT = "exit";
+	private final static String QUIT = "quit";
 	private final static String ADD_SUCCESSFUL_MESSAGE = "That task has successfully been added to the Task List.\n";
 	private final static String UNDO_SUCCESS_MESSAGE = "Action has successfully been undone.\n";
 	private static final String REDO_SUCCESS_MESSAGE = "Action has successfully been redone.\n";
@@ -197,11 +198,6 @@ public class ExeCom {
 			feedback = feedback + u.editContent(c);
 			break;
 
-			// case EMAIL:
-			// Email email = new Email(getTaskListInstance());
-			// email.emailUser();
-			// break;
-
 		case UNDO:
 			undo();
 			break;
@@ -216,13 +212,15 @@ public class ExeCom {
 
 		case CLEAR:
 			;
-
+			
+		case EXIT:
+		case QUIT:
+			System.exit(0);
 			break;
 		default:
 			feedback = INVALID_COMMAND_MESSAGE + "\n";
 
 		}
-
 		s.saveStorage();
 		return feedback;
 	}

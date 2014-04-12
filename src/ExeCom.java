@@ -573,7 +573,16 @@ public class ExeCom {
 			return false;
 		}
 	}
-
+	
+	/**
+	 * 
+	 * isValidDisplayMonthCommand: Check if user is trying to display a month
+	 * 
+	 * @author A0118590A
+	 * @param void
+	 * @return boolean
+	 * 
+	 */
 	public static boolean isValidDisplayMonthCommand() {
 		if (c.getDetails().equals(null) && !(c.getEndMonth().equals(null))) {
 			return true;

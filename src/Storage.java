@@ -209,7 +209,7 @@ public class Storage {
 	 * createFileIfNotExist: automatically creates an external .txt file for
 	 * user if storage.txt is not found
 	 * 
-	 * @author Wei Zhou
+	 * @author A0083093E
 	 * @param void
 	 * @return Buffered Reader
 	 */

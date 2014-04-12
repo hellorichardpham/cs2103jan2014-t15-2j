@@ -21,6 +21,7 @@ public class Task {
 	protected String category;
 	protected String taskID;
 	protected String completed;
+	private long timeNum; //used for sorting
 
 	// constructor
 	public Task(Command c) {
@@ -38,6 +39,13 @@ public class Task {
 		location = c.getLocation();
 		priority = c.getPriority();
 		category = c.getCategory();
+
+		this.timeNum = 100000000*Long.parseLong(endYear) + 1000000*Long.parseLong(endMonth) + 10000*Long.parseLong(endDay);
+		if(endHours!=null) {
+			this.timeNum += 100*Long.parseLong(endHours) + Long.parseLong(endMins); 
+		} else {
+			this.timeNum += 2359;
+		}
 	}
 
 	public Task(Task task) {
@@ -56,9 +64,20 @@ public class Task {
 		this.priority = task.getPriority();
 		this.category = task.getCategory();
 		this.taskID = task.getTaskID();
+		
+		this.timeNum = 100000000*Long.parseLong(endYear) + 1000000*Long.parseLong(endMonth) + 10000*Long.parseLong(endDay);
+		if(!endHours.equals("null")) {
+			this.timeNum += 100*Long.parseLong(endHours) + Long.parseLong(endMins); 
+		} else {
+			this.timeNum += 2359;
+		}
 	}
 
 	public Task() {
+	}
+	
+	public long getTimeNum() {
+		return timeNum;
 	}
 
 	public String getDetails() {
@@ -203,38 +222,38 @@ public class Task {
 	public String displayTask() {
 		String info = null;
 		if (!details.equals("null")) {
-			info = "Details: " + details;
+			info = "//DECS2103: " + details;
 		}
 
 		if ((!startDay.equals("null") && !startMonth.equals("null") && !startYear
 				.equals("null"))) {
-			info = info.concat(" Start Date: " + startDay + "/" + startMonth
+			info = info.concat("//SDCS2103: " + startDay + "/" + startMonth
 					+ "/" + startYear);
 		}
 
 		if ((!endDay.equals("null") && !endMonth.equals("null") && !endYear
 				.equals("null"))
 				|| (endDay != null && endMonth != null && endYear != null)) {
-			info = info.concat(" End Date: " + endDay + "/" + endMonth + "/"
+			info = info.concat("//EDCS2103: " + endDay + "/" + endMonth + "/"
 					+ endYear);
 		}
 
 		if (!startHours.equals("null") && !startMins.equals("null")) {
-			info = info.concat(" Start Time: " + startHours + ":" + startMins);
+			info = info.concat("//STCS2103: " + startHours + ":" + startMins);
 		}
 		if ((!endHours.equals("null") && !endMins.equals("null"))) {
-			info = info.concat(" End Time: " + endHours + ":" + endMins);
+			info = info.concat("//ETCS2103: " + endHours + ":" + endMins);
 		}
 
 		if (!location.equals("null")) {
-			info = info.concat(" Location: " + location);
+			info = info.concat("//LOCS2103: " + location);
 		}
 
 		if (!category.equals("null")) {
-			info = info.concat(" Category: " + category);
+			info = info.concat("//CACS2103: " + category);
 		}
 		if (!priority.equals("null")) {
-			info = info.concat(" Priority: " + priority);
+			info = info.concat("//PRCS2103: " + priority);
 		}
 
 		return info;

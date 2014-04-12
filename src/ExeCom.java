@@ -209,10 +209,8 @@ public class ExeCom {
 		case CANCELLED:
 			feedback = CANCELLED_ACTION_MESSAGE + "\n";
 			break;
-
 		case CLEAR:
-			;
-			
+			break;
 		case EXIT:
 		case QUIT:
 			System.exit(0);

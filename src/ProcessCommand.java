@@ -4,7 +4,7 @@ import java.util.Calendar;
 /**
  * ProcessCommand (class) : This class acts as the language processing unit,
  * converting what the user inputs as a String to various attributes in the
- * Command Class
+ * Command Object
  * 
  * @author A0083093E
  */
@@ -22,7 +22,7 @@ public class ProcessCommand {
 	 * to a Command object
 	 * 
 	 * @author A0083093E
-	 * @param String userInput
+	 * @param userInput
 	 * @return Command
 	 * 
 	 */
@@ -58,8 +58,7 @@ public class ProcessCommand {
 	 * String as the Command keyword
 	 * 
 	 * @author A0083093E
-	 * @param String
-	 *            []
+	 * @param splitInput
 	 */
 	private String processFirstWordAsCommand(String[] splitInput) {
 
@@ -97,8 +96,7 @@ public class ProcessCommand {
 	 * them into the command object
 	 * 
 	 * @author A0083093E
-	 * @param String
-	 *            [] splitInput
+	 * @param splitInput
 	 */
 	private void processPriorityCategoryLocation(String[] splitInput) {
 		for (int i = 0; i < splitInput.length; i++) {
@@ -134,8 +132,7 @@ public class ProcessCommand {
 	 * processLocation: Extracts Location by alternative indentifier (@)
 	 * 
 	 * @author A0083093E
-	 * @param String
-	 *            []
+	 * @param splitInput
 	 */
 	private void processLocation(String[] splitInput) {
 		for (int i = 0; i < splitInput.length; i++) {
@@ -153,8 +150,7 @@ public class ProcessCommand {
 	 * String.
 	 * 
 	 * @author A0083093E, A0085107J
-	 * @param String
-	 *            []
+	 * @param splitInput
 	 */
 	String extractTime(String[] splitInput) {
 		String time = EMPTY_STRING;
@@ -188,8 +184,7 @@ public class ProcessCommand {
 	 * the correct format String and store in into the command object
 	 * 
 	 * @author A0085107J
-	 * @param String
-	 *            timeDetails
+	 * @param timeDetails
 	 * 
 	 */
 	public void processTime(String timeDetails) {
@@ -248,8 +243,7 @@ public class ProcessCommand {
 	 * processDayOfWeek: Extracts date given the day of the week of user enters
 	 * 
 	 * @author A0083093E
-	 * @param String
-	 *            [] splitInput
+	 * @param String[] splitInput
 	 * 
 	 */
 	private void processDayofWeek(String[] splitInput) {
@@ -313,8 +307,7 @@ public class ProcessCommand {
 	 * day of the week as a integer
 	 * 
 	 * @author A0083093E
-	 * @param String
-	 *            ithInput
+	 * @param String ithInput
 	 * @return int day of week
 	 * 
 	 */
@@ -362,8 +355,7 @@ public class ProcessCommand {
 	 * as a date String as the Command keyword
 	 * 
 	 * @author A0083093E
-	 * @param String
-	 *            []
+	 * @param String[]
 	 */
 	private void processTodayTmr(String[] splitInput) {
 		for (int i = splitInput.length - 1; i > 0; i--) {
@@ -441,8 +433,7 @@ public class ProcessCommand {
 	 * and store them into the command object in the correct format
 	 * 
 	 * @author A0083093E
-	 * @param String
-	 *            [] splitInput
+	 * @param String[] splitInput
 	 * 
 	 */
 	private void processDate(String[] splitInput, String commandType) {
@@ -562,8 +553,7 @@ public class ProcessCommand {
 	 * did not input a year
 	 * 
 	 * @author A0083093E
-	 * @param String
-	 *            [], int
+	 * @param String[], int
 	 */
 	private void setStartYearIfUserNoInput(String[] splitInput, int i) {
 		if (i + 1 < splitInput.length) {
@@ -592,8 +582,7 @@ public class ProcessCommand {
 	 * not input a year
 	 * 
 	 * @author A0083093E
-	 * @param String
-	 *            [], int
+	 * @param String[], int
 	 */
 	private void setEndYearIfUserNoInput(String[] splitInput, int i) {
 		if (i + 1 < splitInput.length) {
@@ -645,8 +634,7 @@ public class ProcessCommand {
 	 * processDetails: Extracts Task details and stores them into Command object
 	 * 
 	 * @author A0083093E
-	 * @param String
-	 *            []
+	 * @param String[]
 	 */
 	private void processDetails(String[] splitInput) {
 		String details = "";
@@ -694,8 +682,7 @@ public class ProcessCommand {
 	 * concatenating Strings in between // identifier
 	 * 
 	 * @author A0083093E
-	 * @param String
-	 *            [], int
+	 * @param String[], int
 	 */
 	private String extractDetails(String[] splitInput, int i) {
 		String details = EMPTY_STRING;

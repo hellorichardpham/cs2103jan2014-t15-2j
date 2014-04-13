@@ -4,7 +4,7 @@ public class Search {
 	private final static String TASK_NOT_FOUND_MESSAGE = "That task could not be found.\n";
 	private static final String EMPTY_STRING = "";
 	private static ArrayList<Task> searchResults;
-	private ArrayList<Task> taskList;
+	private static ArrayList<Task> taskList;
 
 	public Search(ArrayList<Task> taskList) {
 		this.taskList = taskList;
@@ -22,10 +22,10 @@ public class Search {
 	public static String printSearch() {
 		String details = "";
 		if (!searchResults.isEmpty()) {
+			details = "Displaying search results: \n";
 			for (Task task : searchResults) {
-				details = details + "Task ID: " + task.getTaskID() + "\n";
-				String taskToPrint = task.displayTask();
-				details = details + taskToPrint + "\n";
+				String print = task.displayTask();
+				details += printTaskWithIndex(task, print);
 			}
 		} else {
 			details = TASK_NOT_FOUND_MESSAGE;
@@ -83,7 +83,7 @@ public class Search {
 		}
 	}
 
-	//@author A0118590A
+	// @author A0118590A
 	/**
 	 * 
 	 * resetSearchResults: Reinitializes searchResults so it will be empty when
@@ -97,7 +97,7 @@ public class Search {
 		searchResults = new ArrayList<Task>();
 	}
 
-	//@author A0118590A
+	// @author A0118590A
 	/**
 	 * 
 	 * getSearchResults: Returns searchResultes arrayList<Task>
@@ -107,5 +107,18 @@ public class Search {
 	 */
 	public static ArrayList<Task> getSearchResults() {
 		return searchResults;
+	}
+
+	/**
+	 * 
+	 * printTaskIndex: print index number of current task
+	 * 
+	 * @author A0085107J
+	 * @param Task
+	 *            , String
+	 * @return String
+	 */
+	private static String printTaskWithIndex(Task task, String print) {
+		return (taskList.indexOf(task) + 1) + ": " + print + "\n";
 	}
 }

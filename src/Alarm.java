@@ -1,6 +1,8 @@
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+//@author A0097961M
+
 public class Alarm {
 
 	private static final String EQUAL_NULL = "null";
@@ -15,11 +17,11 @@ public class Alarm {
 
 	Timer timer;
 
+	//@author A0097961M
 	/**
 	 * 
 	 * setAlarm: set alarm by sending the timing to Alarm class
 	 * 
-	 * @author A0097961M
 	 * @param void
 	 * @return void
 	 */
@@ -68,26 +70,25 @@ public class Alarm {
 		}
 	}
 
+	//@author A0097961M
 	/**
 	 * 
 	 * Alarm: set alarm to the scheduler by creating instance of RemindTask class
 	 * 
-	 * @author A0097961M
 	 * @param void
 	 * @return void
 	 */
 	private Alarm(long sec) {
-		// At this line a new Thread will be created
 		timer = new Timer();
 		// delay in milliseconds
 		timer.schedule(new RemindTask(), sec * THOUSAND_CONST);
 	}
 
+	//@author A0097961M
 	/**
 	 * 
 	 * RemindTask: when a scheduler is called, run() method will be automatically and finally the task(s) will be mailed to user(s)
 	 * 
-	 * @author A0097961M
 	 * @param void
 	 * @return void
 	 */

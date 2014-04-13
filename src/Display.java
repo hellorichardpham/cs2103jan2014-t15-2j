@@ -51,11 +51,11 @@ public class Display extends Task {
 		return dispOut + "\n";
 	}
 
+	//@author A0097961M
 	/**
 	 * 
 	 * displayUncompleted: display all uncompleted tasks found in the taskList
 	 * 
-	 * @author A0097961M
 	 * @param void
 	 * @return void
 	 */

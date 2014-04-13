@@ -1,3 +1,5 @@
+//@author A0097961M
+
 public class Email {
 	private static final String NAME = "TaskTracker";
 	private static final String EMAIL = "tasktrackernus@gmail.com";
@@ -8,18 +10,15 @@ public class Email {
 	private static final String EMAIL_Y = "tyingyun@hotmail.com";
 	private static final String EMAIL_J = "tianweizhou@gmail.com";
 
+	// @author A0097961M
 	/*
 	 * emailUser: set up of the email name, host, password, recipients
-	 * 
-	 * @author A0097961M-reused
 	 * 
 	 * @param Task
 	 * 
 	 * @return void
 	 */
 	public static void emailUser(String task_Info) throws Exception {
-		System.out.println("EMAIL " + task_Info);
-
 		String name = NAME;
 		String email = EMAIL;
 		String password = PASSWORD;

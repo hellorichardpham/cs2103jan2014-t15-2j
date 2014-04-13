@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.PrintWriter;
 import java.util.logging.*;
 
+//@author A0097961M
 public class Storage {
 
 	private static final String FILENAME = "Storage.txt";
@@ -20,19 +21,19 @@ public class Storage {
 	private static final String EQUAL_TASKID = "//taskid";
 	private static final String EQUAL_BLANK_SPACE = " ";
 	private static final String EQUAL_EMPTY_STRING = "";
-	
+
 	private static final int ZERO_CONST = 0;
 	private static final int ONE_CONST = 1;
 	private static final int TEN_CONST = 10;
 
 	private static Logger logger = Logger.getLogger("MyLog");
 
+	//@author A0097961M
 	/**
 	 * 
 	 * loadStorage: retrieve tasks found in the external file called Storage.txt
 	 * to taskList
 	 * 
-	 * @author A0097961M
 	 * @param void
 	 * @return void
 	 */
@@ -55,6 +56,7 @@ public class Storage {
 			logger.addHandler(fh);
 			SimpleFormatter formatter = new SimpleFormatter();
 			fh.setFormatter(formatter);
+			// log message written to MyLogFile.txt during start
 			logger.log(Level.INFO, LOG_START);
 
 			while ((text = fileReader.readLine()) != null) {
@@ -65,7 +67,7 @@ public class Storage {
 				String priority = EQUAL_EMPTY_STRING;
 				String details = EQUAL_EMPTY_STRING;
 				String complete = EQUAL_EMPTY_STRING;
-				
+
 				int i;
 				int endPosition = ZERO_CONST;
 				int startPosition = ZERO_CONST;
@@ -105,13 +107,17 @@ public class Storage {
 					}
 				}
 				if (location.endsWith(EQUAL_BLANK_SPACE))
-					location = location.substring(ZERO_CONST, location.length() - ONE_CONST);
+					location = location.substring(ZERO_CONST, location.length()
+							- ONE_CONST);
 				if (category.endsWith(EQUAL_BLANK_SPACE))
-					category = category.substring(ZERO_CONST, category.length() - ONE_CONST);
+					category = category.substring(ZERO_CONST, category.length()
+							- ONE_CONST);
 				if (priority.endsWith(EQUAL_BLANK_SPACE))
-					priority = priority.substring(ZERO_CONST, priority.length() - ONE_CONST);
+					priority = priority.substring(ZERO_CONST, priority.length()
+							- ONE_CONST);
 				if (complete.endsWith(EQUAL_BLANK_SPACE))
-					complete = complete.substring(ZERO_CONST, complete.length() - ONE_CONST);
+					complete = complete.substring(ZERO_CONST, complete.length()
+							- ONE_CONST);
 
 				setLocationToTaskIDAttribute(retrieve, arraySize, task,
 						location, category, priority, complete);
@@ -128,41 +134,46 @@ public class Storage {
 						details += retrieve[counter] + EQUAL_BLANK_SPACE;
 					}
 				}
-				
+
 				setDetailsAttibutes(task, details);
 				ExeCom.getTaskListInstance().add(task);
 			}
 			fileReader.close();
 		} catch (Exception ex) {
+			// log message written to MyLogFile.txt if error
 			logger.log(Level.WARNING, LOG_ERROR, ex);
 		}
+		// log message written to MyLogFile.txt if successful
 		logger.log(Level.INFO, LOG_END);
 		fh.close();
 	}
 
+	//@author A0097961M
 	/**
 	 * 
 	 * setDetailsAttibutes: set attributes for details into arrayList
 	 * 
-	 * @author A0097961M
-	 * @param Task, String
+	 * @param Task
+	 *            , String
 	 * @return void
 	 */
 	private void setDetailsAttibutes(Task task, String details) {
 		task.setDetails(details);
 	}
-	
+
+	//@author A0097961M
 	/**
 	 * 
-	 * setLocationToTaskIDAttribute: set attributes for location, category, priority, taskID
-	 * into arrayList
+	 * setLocationToTaskIDAttribute: set attributes for location, category,
+	 * priority, taskID into arrayList
 	 * 
-	 * @author A0097961M
-	 * @param String[], int, Task, String, String, String
+	 * @param String
+	 *            [], int, Task, String, String, String
 	 * @return void
 	 */
 	private void setLocationToTaskIDAttribute(String[] retrieve, int arraySize,
-			Task task, String location, String category, String priority, String complete) {
+			Task task, String location, String category, String priority,
+			String complete) {
 		task.setLocation(location);
 		task.setCategory(category);
 		task.setPriority(priority);
@@ -170,15 +181,15 @@ public class Storage {
 		task.setTaskID(retrieve[arraySize - ONE_CONST]);
 	}
 
+	//@author A0097961M
 	/**
 	 * 
-	 * setDayToMinsAttributes: set attributes for startDay, startMonth, startYear, 
-	 * endDay, endMonth, endYear, startHours, startMins, endHours, endMins
-	 * into arrayList
-	 * to taskList
+	 * setDayToMinsAttributes: set attributes for startDay, startMonth,
+	 * startYear, endDay, endMonth, endYear, startHours, startMins, endHours,
+	 * endMins into arrayList to taskList
 	 * 
-	 * @author A0097961M
-	 * @param String[], Task, int
+	 * @param String
+	 *            [], Task, int
 	 * @return void
 	 */
 	private void setDayToMinsAttributes(String[] retrieve, Task task,
@@ -204,12 +215,12 @@ public class Storage {
 		task.setEndMins(retrieve[startPosition]);
 	}
 
+	//@author A0083093E
 	/**
 	 * 
 	 * createFileIfNotExist: automatically creates an external .txt file for
 	 * user if storage.txt is not found
 	 * 
-	 * @author A0083093E
 	 * @param void
 	 * @return Buffered Reader
 	 */
@@ -225,11 +236,11 @@ public class Storage {
 		return input;
 	}
 
+	//@author A0097961M
 	/**
 	 * 
 	 * saveStorage: save taskList to external file fileName
 	 * 
-	 * @author A0097961M
 	 * @param void
 	 * @return void
 	 */
@@ -245,10 +256,10 @@ public class Storage {
 		pw.close();
 	}
 
+	//@author A0085107J
 	/**
 	 * printTaskIdToStorage: return task ID of current Task
 	 * 
-	 * @author A0085107J, A0097961M
 	 * @param Task
 	 * @return int
 	 */

@@ -44,7 +44,7 @@ public class ExeCom {
 	private static ExeCom theOne;
 
 	public static ExeCom getInstance() {
-		if(theOne==null){
+		if (theOne == null) {
 			theOne = new ExeCom();
 		}
 		return theOne;
@@ -57,8 +57,6 @@ public class ExeCom {
 	public static void setFeedback(String feedback) {
 		ExeCom.feedback = feedback;
 	}
-
-
 
 	public static ArrayList<Task>[][] getMonthListInstance() {
 		monthList = new ArrayList[12][1];
@@ -91,8 +89,8 @@ public class ExeCom {
 
 	//@author A0083093E
 	/**
-	 * NOTE: this essential method is contributed by all 4 members throughout the whole project 
-	 * period hence are putting the author tag in the method. 
+	 * NOTE: this essential method is contributed by all 4 members throughout
+	 * the whole project period hence are putting the author tag in the method.
 	 * When we collate, this method might be segmented.
 	 * 
 	 * executeCommand: determines which action to perform based on the
@@ -118,7 +116,7 @@ public class ExeCom {
 		case JUSTADD:
 			addTask(command);
 			break;
-			//author A0085107J
+		//author A0085107J
 		case ADD:
 			if (isValidAddCommand()) {
 				if (isValidTime()) {
@@ -139,13 +137,12 @@ public class ExeCom {
 			}
 			break;
 
-
 		case DISPLAY:
 			Display d = new Display(getTaskListInstance(), c,
 					getMonthListInstance());
-			if (isValidDisplayDateCommand()){
+			if (isValidDisplayDateCommand()) {
 				feedback = feedback + d.displayDate();
-			}else if (isDisplayMonth()) {
+			} else if (isDisplayMonth()) {
 				feedback = feedback + d.displayStartMonth();
 			} else if (isValidUndoRedoDisplayCommand()) {
 				feedback = feedback + d.displayTaskList();
@@ -158,7 +155,7 @@ public class ExeCom {
 			}
 			break;
 
-			//@author A0118590A
+		//@author A0118590A
 		case DISPLAYD:
 			Display displayDeadline = new Display(getTaskListInstance(), c,
 					getMonthListInstance());
@@ -190,7 +187,7 @@ public class ExeCom {
 			}
 			break;
 
-			//@author A0097961M
+		//@author A0097961M
 		case EDIT:
 		case UPDATE:
 			ArrayList<Integer> conflicts = new ArrayList<Integer>();
@@ -224,10 +221,10 @@ public class ExeCom {
 		case CANCELLED:
 			feedback = CANCELLED_ACTION_MESSAGE + "\n";
 			break;
-
+		//@author A0097961M
 		case CLEAR:
 			break;
-
+		//@author A0097961M
 		case EXIT:
 		case QUIT:
 			System.exit(0);
@@ -265,7 +262,7 @@ public class ExeCom {
 	public static void undo() {
 		if (!undoStack.empty() && isValidUndoRedoDisplayCommand()) {
 			ArrayList<Task> newCopy = new ArrayList<Task>();
-			transferTasksFromTo(taskList,newCopy);
+			transferTasksFromTo(taskList, newCopy);
 			redoStack.push(newCopy);
 			taskList = undoStack.pop();
 
@@ -285,9 +282,9 @@ public class ExeCom {
 	 * @return void
 	 */
 	public static void redo() {
-		if (!redoStack.empty() && isValidUndoRedoDisplayCommand()){
+		if (!redoStack.empty() && isValidUndoRedoDisplayCommand()) {
 			ArrayList<Task> newCopy = new ArrayList<Task>();
-			transferTasksFromTo(taskList,newCopy);
+			transferTasksFromTo(taskList, newCopy);
 			undoStack.push(newCopy);
 			taskList = redoStack.pop();
 			feedback = REDO_SUCCESS_MESSAGE;
@@ -348,7 +345,8 @@ public class ExeCom {
 	/**
 	 * printConflictedTask: print all tasks that conflicts with current task
 	 * 
-	 * @param ArrayList<Integer>
+	 * @param ArrayList
+	 *            <Integer>
 	 * @return void
 	 */
 	private static String printConflictedTasks(ArrayList<Integer> conflicts) {
@@ -483,12 +481,14 @@ public class ExeCom {
 		return start;
 
 	}
+
 	/**
 	 * 
 	 * transferTasksFromTo: Move tasks from one ArrayList to another
 	 * 
 	 * @author A0118590A
-	 * @param ArrayList<Task>, ArrayList<Task>
+	 * @param ArrayList
+	 *            <Task>, ArrayList<Task>
 	 * @return void
 	 */
 	public static void transferTasksFromTo(ArrayList<Task> source,
@@ -510,7 +510,7 @@ public class ExeCom {
 	 */
 	public void saveToUndoStack() {
 		ArrayList<Task> undoList = new ArrayList<Task>();
-		transferTasksFromTo(taskList,undoList);
+		transferTasksFromTo(taskList, undoList);
 		undoStack.push(undoList);
 	}
 
@@ -526,7 +526,7 @@ public class ExeCom {
 	 */
 	public void saveToRedoStack() {
 		ArrayList<Task> redoList = new ArrayList<Task>();
-		transferTasksFromTo(taskList,redoList);
+		transferTasksFromTo(taskList, redoList);
 		undoStack.push(redoList);
 		/*
 		 * for (Task task : taskList) { redoTaskList.add(new Task(task)); }
@@ -571,11 +571,8 @@ public class ExeCom {
 	 * @return boolean
 	 */
 	public static boolean isValidUndoRedoDisplayCommand() {
-		if (c.getDetails() == null
-				&& c.getStartDay()==null 
-				&& c.getStartMonth()==null 
-				&& c.getStartYear()==null 
-				) {
+		if (c.getDetails() == null && c.getStartDay() == null
+				&& c.getStartMonth() == null && c.getStartYear() == null) {
 			return true;
 		} else {
 			return false;
@@ -619,17 +616,19 @@ public class ExeCom {
 	//@author A0085107J
 	/**
 	 * 
-	 * isDisplayDate: Check if user wants to display a list of
-	 * tasks of a particular date
+	 * isDisplayDate: Check if user wants to display a list of tasks of a
+	 * particular date
 	 * 
 	 * @param void
 	 * @return boolean
 	 * 
 	 */
 	private static boolean isValidDisplayDateCommand() {
-		if (c.getEndMonth()!=null && (!c.getEndDay().equals(EMPTY_STRING)|| c.getEndDay().equals(null))) { 
+		if (c.getEndMonth() != null
+				&& (!c.getEndDay().equals(EMPTY_STRING) || c.getEndDay()
+						.equals(null))) {
 			return true;
-		}else { 
+		} else {
 			return false;
 		}
 	}
@@ -725,12 +724,12 @@ public class ExeCom {
 		}
 	}
 
+	//@author A0097961M
 	/**
 	 * 
 	 * isDisplayUncompleted: Check if user wants to display a list of
 	 * uncompleted tasks
 	 * 
-	 * @author Khaleef
 	 * @param void
 	 * @return boolean
 	 * 
@@ -752,8 +751,8 @@ public class ExeCom {
 
 	/**
 	 * 
-	 * isDisplayMonth: Check if user wants to display a list of
-	 * tasks of a particular month
+	 * isDisplayMonth: Check if user wants to display a list of tasks of a
+	 * particular month
 	 * 
 	 * @author A0118590A
 	 * @param void
@@ -761,7 +760,10 @@ public class ExeCom {
 	 * 
 	 */
 	private boolean isDisplayMonth() {
-		if (c.getEndMonth() != null && c.getEndDay().equals(EMPTY_STRING)) { // handles bad commands like
+		if (c.getEndMonth() != null && c.getEndDay().equals(EMPTY_STRING)) { // handles
+																				// bad
+																				// commands
+																				// like
 			// "display ofuh"
 			switch (c.getEndMonth()) {
 			case "01":
@@ -793,13 +795,15 @@ public class ExeCom {
 		}
 		return false;
 	}
+
 	//@author A0085107J
 	/**
 	 * 
 	 * isTaskIDMatch: Checks if a task's taskID is equal to the userSpecified
 	 * taskIdNumber that he's searching for.
 	 * 
-	 * @param String , int
+	 * @param String
+	 *            , int
 	 * @return boolean
 	 * 
 	 */
@@ -807,6 +811,7 @@ public class ExeCom {
 	public boolean isTaskIDMatch(String specifiedTaskID, int taskIdNumber) {
 		return Integer.parseInt(specifiedTaskID) == taskIdNumber;
 	}
+
 	//@author A0085107J
 	/**
 	 * retrieveTaskIdNumber: retrieves user-specified taskID.
@@ -821,8 +826,8 @@ public class ExeCom {
 
 	//@author A0083093E
 	/**
-	 * checkUndoStack: checks if undo stack is empty
-	 * checkRedoStack: checks if redo stack is empty
+	 * checkUndoStack: checks if undo stack is empty checkRedoStack: checks if
+	 * redo stack is empty
 	 * 
 	 * @param void
 	 * @return boolean

@@ -1,9 +1,17 @@
 import java.util.Scanner;
 
-
 public class UI {
 	Scanner scanner = new Scanner(System.in);
 
+	
+	//@author A0097961M-unused
+	//not used as we switched to a GUI based design
+	/**
+	 * printWelcomeMessage: command line interface's welcome message
+	 * 
+	 * @param void
+	 * @return void
+	 */
 	public void printWelcomeMessage() {
 		System.out.println("   .    .  .  .. .. ........  ...   ............................................... ........  ..................................................................");
 		System.out.println(" ..~~....~:...:~....... .??.................................... ............... ...~~~~~~~~...............?+....:~~~~~~~................. ...?+..................");

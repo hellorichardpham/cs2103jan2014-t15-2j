@@ -244,11 +244,11 @@ public class Task {
 		return info;
 	}
 
+	//@author A0097961M
 	/**
-	 * displayToStorage: display non-empty task attributes in the correct order
-	 * to external .txt file
+	 * displayToStorage: display task attributes in the correct order
+	 * to be used by saveStorage() method in Storage.java.
 	 * 
-	 * @author A0097961M
 	 * @param void
 	 * @return String
 	 */

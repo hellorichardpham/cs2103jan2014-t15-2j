@@ -1,22 +1,21 @@
+//@author A0097961M-reused
 /**
  * Taken from http://codesstore.blogspot.sg/2011/10/send-email-in-java-with-gmail.html
  * Part of the util class for email to work
  * 
- * @author A0097961M-reused
- * 
  */
 
-import java.io.UnsupportedEncodingException;  
-import java.util.Properties;  
-import java.util.logging.Level;  
-import java.util.logging.Logger;  
-import javax.mail.Message;  
-import javax.mail.MessagingException;  
-import javax.mail.PasswordAuthentication;  
-import javax.mail.Session;  
-import javax.mail.Transport;  
-import javax.mail.internet.InternetAddress;  
-import javax.mail.internet.MimeMessage;  
+import java.io.UnsupportedEncodingException;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 public class MailUtil {
 
@@ -24,10 +23,10 @@ public class MailUtil {
 			String message, String FROM_NAME, String FROM_ADDRESS,
 			String PASSWORD, String SMTP_HOST) {
 		try {
-			
+
 			final String email = FROM_ADDRESS;
 			final String pwd = PASSWORD;
-			
+
 			Properties props = new Properties();
 			props.put("mail.smtp.host", SMTP_HOST);
 			props.put("mail.smtp.auth", "true");
@@ -37,8 +36,7 @@ public class MailUtil {
 			Session session = Session.getDefaultInstance(props,
 					new javax.mail.Authenticator() {
 						protected PasswordAuthentication getPasswordAuthentication() {
-							return new PasswordAuthentication(email,
-									pwd);
+							return new PasswordAuthentication(email, pwd);
 						}
 					});
 			Message msg = new MimeMessage(session);

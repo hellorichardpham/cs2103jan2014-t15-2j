@@ -22,8 +22,7 @@ public class Add {
 			ExeCom ec = ExeCom.getInstance();
 			Task taskToAdd = new Task(c);
 			taskToAdd.setTaskID(Integer.toString(ExeCom.getTaskListInstance().size() + 1));
-			taskList.add(taskToAdd);
-		}
+		taskList.add(taskToAdd);
 	}
 
 	/**

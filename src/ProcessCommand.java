@@ -1,12 +1,12 @@
 import java.util.ArrayList;
 import java.util.Calendar;
 
+//@author A0083093E
 /**
  * ProcessCommand (class) : This class acts as the language processing unit,
  * converting what the user inputs as a String to various attributes in the
  * Command Object
  * 
- * @author A0083093E
  */
 public class ProcessCommand {
 
@@ -17,11 +17,11 @@ public class ProcessCommand {
 
 	private Command c;
 
+	//@author A0083093E
 	/**
 	 * process: Extracts information from the userInput String and stores them
 	 * to a Command object
 	 * 
-	 * @author A0083093E
 	 * @param userInput
 	 * @return Command
 	 * 
@@ -53,11 +53,11 @@ public class ProcessCommand {
 		return c;
 	}
 
+	//@author A0083093E
 	/**
 	 * processFirstWordAsCommand: Extracts the first word in the userInput
 	 * String as the Command keyword
 	 * 
-	 * @author A0083093E
 	 * @param splitInput
 	 */
 	private String processFirstWordAsCommand(String[] splitInput) {
@@ -90,12 +90,12 @@ public class ProcessCommand {
 		return firstWord;
 	}
 
+	//@author A0083093E
 	/**
 	 * processProrityCategoryLocation: Extracts Location, Priority and Category
 	 * information by looking for keywords in the splitInput array and stores
 	 * them into the command object
 	 * 
-	 * @author A0083093E
 	 * @param splitInput
 	 */
 	private void processPriorityCategoryLocation(String[] splitInput) {
@@ -128,10 +128,10 @@ public class ProcessCommand {
 		}
 	}
 
+	//@author A0083093E
 	/**
 	 * processLocation: Extracts Location by alternative indentifier (@)
 	 * 
-	 * @author A0083093E
 	 * @param splitInput
 	 */
 	private void processLocation(String[] splitInput) {
@@ -143,13 +143,12 @@ public class ProcessCommand {
 		}
 
 	}
-
+	//@author A0085107J
 	/**
 	 * extractTime: Extracts initial time data from the userInput String and
 	 * includes cases for flexible input. Reformats data and returns as standard
 	 * String.
 	 * 
-	 * @author A0083093E, A0085107J
 	 * @param splitInput
 	 */
 	String extractTime(String[] splitInput) {
@@ -179,13 +178,12 @@ public class ProcessCommand {
 		return null;
 	}
 
+	//@author A0085107J
 	/**
 	 * processTime: process the timeDetails String to extract out the time in
 	 * the correct format String and store in into the command object
 	 * 
-	 * @author A0085107J
 	 * @param timeDetails
-	 * 
 	 */
 	public void processTime(String timeDetails) {
 		// if user did not provide any time in input
@@ -224,10 +222,10 @@ public class ProcessCommand {
 		}
 	}
 
+	//@author A0085107J
 	/**
 	 * isRange: checks if the input time is a range or just an end time
 	 * 
-	 * @author A0085107J
 	 * @param String
 	 * @return boolean
 	 */
@@ -239,10 +237,10 @@ public class ProcessCommand {
 		}
 	}
 
+	//@author A0083093E
 	/**
 	 * processDayOfWeek: Extracts date given the day of the week of user enters
 	 * 
-	 * @author A0083093E
 	 * @param String[] splitInput
 	 * 
 	 */
@@ -302,11 +300,11 @@ public class ProcessCommand {
 
 	}
 
+	//@author A0083093E
 	/**
 	 * findDaysOfWeek: Identifies if a String contains a weekday and returns the
 	 * day of the week as a integer
 	 * 
-	 * @author A0083093E
 	 * @param String ithInput
 	 * @return int day of week
 	 * 
@@ -350,11 +348,11 @@ public class ProcessCommand {
 		return days;
 	}
 
+	//@author A0083093E
 	/**
 	 * processTodayTmr: Detects if user types "today" or "tmr" and interpret it
 	 * as a date String as the Command keyword
 	 * 
-	 * @author A0083093E
 	 * @param splitInput
 	 */
 	private void processTodayTmr(String[] splitInput) {
@@ -388,10 +386,10 @@ public class ProcessCommand {
 		}
 	}
 
+	//@author A0085107J
 	/**
 	 * setDate: set the appropriate date attributes depending on calendar
 	 * 
-	 * @author A0085107J
 	 * @param Calendar
 	 * @return void
 	 */
@@ -402,11 +400,10 @@ public class ProcessCommand {
 			setStartDate(cal);
 		}
 	}
-
+	//@author A0085107J
 	/**
 	 * setStartDate: set start date of command depending on calendar
 	 * 
-	 * @author A0085107J
 	 * @param Calendar
 	 * @return void
 	 */
@@ -416,10 +413,10 @@ public class ProcessCommand {
 		c.setStartDay(cal.get(Calendar.DAY_OF_MONTH) + "");
 	}
 
+	//@author A0085107J
 	/**
 	 * setEndDate: set end date of command depending on calendar
 	 * 
-	 * @author A0085107J
 	 * @param Calendar
 	 * @return void
 	 */
@@ -429,11 +426,11 @@ public class ProcessCommand {
 		c.setEndDay(cal.get(Calendar.DAY_OF_MONTH) + "");
 	}
 
+	//@author A0083093E
 	/**
 	 * processDate: process the splitInput array to Identify month signatures
 	 * and store them into the command object in the correct format
 	 * 
-	 * @author A0083093E
 	 * @param String[] splitInput
 	 * 
 	 */
@@ -467,7 +464,6 @@ public class ProcessCommand {
 			}
 		}
 
-		// if user did not enter any date, set deadline of task as current date
 		if (c.getEndMonth() == null
 				&& !(c.getKeyword().equals("edit") || c.getKeyword().equals("update") || c.getKeyword().equals("display"))) {
 			Calendar cal = Calendar.getInstance();
@@ -486,11 +482,11 @@ public class ProcessCommand {
 		}
 	}
 
+	//@author A0083093E
 	/**
 	 * findMonth: identifies if input String is a month and returns integer
 	 * value of month
 	 * 
-	 * @author A0083093E
 	 * @param String
 	 * @return String
 	 */
@@ -549,11 +545,11 @@ public class ProcessCommand {
 		return month;
 	}
 
+	//@author A0083093E
 	/**
 	 * setStartYearIfNoInput: Sets the Start year as current year if the user
 	 * did not input a year
 	 * 
-	 * @author A0083093E
 	 * @param String[], int
 	 */
 	private void setStartYearIfUserNoInput(String[] splitInput, int i) {
@@ -570,20 +566,35 @@ public class ProcessCommand {
 		}
 	}
 
+	//@author A0083093E
 	/**
 	 * setStartAsCurrentYEar: Sets the start year as current year
+	 * @param void
+	 * @return void
 	 */
 	private void setStartAsCurrentYear() {
 		Calendar cal = Calendar.getInstance();
 		c.setStartYear(cal.get(Calendar.YEAR) + "");
 	}
 
+	//@author A0083093E
+	/**
+	 * setEndAsCurrentYEar: Sets the end year as current year
+	 * @param void
+	 * @return void
+	 */
+	private void setEndAsCurrentYear() {
+		Calendar cal = Calendar.getInstance();
+		c.setEndYear(cal.get(Calendar.YEAR) + "");
+	}
+
+	//@author A0083093E
 	/**
 	 * setEndYearIfNoInput: Sets the end year as current year if the user did
 	 * not input a year
 	 * 
-	 * @author A0083093E
 	 * @param String[], int
+	 * @return void
 	 */
 	private void setEndYearIfUserNoInput(String[] splitInput, int i) {
 		if (i + 1 < splitInput.length) {
@@ -599,21 +610,12 @@ public class ProcessCommand {
 		}
 	}
 
-	/**
-	 * setEndAsCurrentYEar: Sets the end year as current year
-	 * @author A0083093E
-	 */
-	private void setEndAsCurrentYear() {
-		Calendar cal = Calendar.getInstance();
-		c.setEndYear(cal.get(Calendar.YEAR) + "");
-	}
-
+	//@author A0083093E
 	/**
 	 * switchIfDateAreReversed: Handles case where user inputs weekday followed
 	 * by month as date input. Or when end date is earlier than start date.
 	 * Switches mixed up attributes
 	 * 
-	 * @author A0083093E
 	 */
 	private void switchIfDatesAreReversed() {
 		if (indexOfMonth > indexOfDayOfWeek || ifEndDateEarlierThanStart()) {
@@ -631,10 +633,10 @@ public class ProcessCommand {
 		}
 	}
 
+	//@author A0083093E
 	/**
 	 * processDetails: Extracts Task details and stores them into Command object
 	 * 
-	 * @author A0083093E
 	 * @param String[]
 	 */
 	private void processDetails(String[] splitInput) {
@@ -652,11 +654,11 @@ public class ProcessCommand {
 		}
 	}
 
+	//@author A0083093E
 	/**
 	 * ifEndDateEarlierThanStart: Checks if the user input end date is earlier
 	 * than the start date
 	 * 
-	 * @author A0083093E
 	 * @return boolean
 	 * 
 	 */
@@ -678,11 +680,11 @@ public class ProcessCommand {
 		return false;
 	}
 
+	//@author A0083093E
 	/**
 	 * extractDetails: Extracts Location/Priority/Category details by
 	 * concatenating Strings in between // identifier
 	 * 
-	 * @author A0083093E
 	 * @param String[], int
 	 */
 	private String extractDetails(String[] splitInput, int i) {
@@ -695,6 +697,14 @@ public class ProcessCommand {
 		return details.trim();
 	}
 
+	//@author A0118590A
+	/**
+	 * convertMultipleCommandKeywords: handles different cases of user input
+	 * and interpreting it.
+	 * 
+	 * @param String
+	 * @return String
+	 */
 	public static String convertMultipleCommandKeywords(String command) {
 		command = command.toLowerCase();
 		if (command.equals("disp") || command.equals("dis")
@@ -704,8 +714,9 @@ public class ProcessCommand {
 		} else if (command.equals("a") || command.equals("ad")) {
 			command = "add";
 		} else if (command.equals("de") || command.equals("del")
-				|| command.equals("dele") || command.equals("rm")
-				|| command.equals("rem") || command.equals("rmv")) {
+				|| command.equals("dele") || command.equals("remove") || 
+				command.equals("rm") || command.equals("rem") ||
+				command.equals("rmv")) {
 			command = "delete";
 		} else if (command.equals("s") || command.equals("se")
 				|| command.equals("sea") || command.equals("sear")

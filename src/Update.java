@@ -1,11 +1,10 @@
 public class Update {
 
+	//@author A0085107J
 	/**
-	 * 
 	 * editContent: edit content of specific task using the taskID based on
 	 * user's input
 	 * 
-	 * @author A0085107J, A0097961M
 	 * @param void
 	 * @return void
 	 */
@@ -66,11 +65,11 @@ public class Update {
 		return feedback;
 	}
 
+	//@author A0085107J
 	/**
 	 * merge: returns selected information from either command object or task
 	 * object.
 	 * 
-	 * @author A0085107J
 	 * @param String, String
 	 * @return String
 	 */

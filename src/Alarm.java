@@ -67,7 +67,7 @@ public class Alarm {
 			}
 		}
 	}
-	
+
 	/**
 	 * 
 	 * Alarm: set alarm to the scheduler by creating instance of RemindTask class
@@ -82,7 +82,7 @@ public class Alarm {
 		// delay in milliseconds
 		timer.schedule(new RemindTask(), sec * THOUSAND_CONST);
 	}
-	
+
 	/**
 	 * 
 	 * RemindTask: when a scheduler is called, run() method will be automatically and finally the task(s) will be mailed to user(s)

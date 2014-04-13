@@ -7,7 +7,6 @@ public class Search {
 	private static ArrayList<Task> searchResults;
 	private ArrayList<Task> taskList;
 	
-	//constructor
 	public Search(ArrayList<Task> taskList){
 		this.taskList = taskList;	
 	}
@@ -16,7 +15,7 @@ public class Search {
 	 * 
 	 * printSearch: Display task details of all tasks in Search Results
 	 * 
-	 * @author A0118590A, A0085107J
+	 * @author A0118590A
 	 * @param void
 	 * @return void
 	 */
@@ -40,7 +39,7 @@ public class Search {
 	 * search: Cycle through entire taskList looking for User-specified keyword.
 	 * Add all tasks that contain keyword into the searchResults ArrayList.
 	 * 
-	 * @author A0118590A, A0085107J
+	 * @author A0118590A
 	 * @param void
 	 * @return void
 	 */
@@ -95,6 +94,7 @@ public class Search {
 	public static void resetSearchResults() {
 		searchResults = new ArrayList<Task>();
 	}
+	
 	/*
 	 * @author A0118590A
 	 */

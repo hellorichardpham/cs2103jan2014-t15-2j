@@ -43,6 +43,13 @@ public class ExeCom {
 	private static final Object EMPTY_STRING = "";
 	private static ExeCom theOne;
 
+	public static ExeCom getInstance() {
+		if(theOne==null){
+			theOne = new ExeCom();
+		}
+		return theOne;
+	}
+
 	public static String getFeedback() {
 		return feedback;
 	}
@@ -51,14 +58,22 @@ public class ExeCom {
 		ExeCom.feedback = feedback;
 	}
 
-	// Allows all part of the program to get the same instance of ExeCom
-	public static ExeCom getInstance() {
-		if (theOne == null) {
-			theOne = new ExeCom();
-		}
-		return theOne;
+
+
+	public static ArrayList<Task>[][] getMonthListInstance() {
+		monthList = new ArrayList[12][1];
+		return monthList;
 	}
 
+	//@author A0085107J
+	/**
+	 * getTaskListInstance: singleton pattern as all parts of the program should
+	 * access the same tasklist. Creating a new one will cause user to lose data
+	 * 
+	 * @param void
+	 * @return ArrayList<Task>
+	 * 
+	 */
 	public static ArrayList<Task> getTaskListInstance() {
 		if (taskList == null) {
 			taskList = new ArrayList<Task>();
@@ -66,13 +81,7 @@ public class ExeCom {
 		return taskList;
 	}
 
-	public static ArrayList<Task>[][] getMonthListInstance() {
-		monthList = new ArrayList[12][1];
-		return monthList;
-	}
-
-	// constructor
-	ExeCom() {
+	public ExeCom() {
 		if (taskList == null) {
 			taskList = new ArrayList<Task>();
 		}
@@ -80,12 +89,15 @@ public class ExeCom {
 		redoStack = new Stack<ArrayList<Task>>();
 	}
 
+	//@author A0083093E
 	/**
+	 * NOTE: this essential method is contributed by all 4 members throughout the whole project 
+	 * period hence are putting the author tag in the method. 
+	 * When we collate, this method might be segmented.
 	 * 
 	 * executeCommand: determines which action to perform based on the
 	 * userCommand then calls the appropriate method.
 	 * 
-	 * @author A0118590A, Joey, A0085107J, A0097961M
 	 * @param Command
 	 * @return String
 	 * 
@@ -99,14 +111,14 @@ public class ExeCom {
 		Storage s = new Storage();
 		s.loadStorage();
 		Alarm.setAlarm();
-		
+
 		System.out.println(keyWord);
 		switch (keyWord) {
 
 		case JUSTADD:
 			addTask(command);
 			break;
-
+			//author A0085107J
 		case ADD:
 			if (isValidAddCommand()) {
 				if (isValidTime()) {
@@ -127,6 +139,7 @@ public class ExeCom {
 			}
 			break;
 
+
 		case DISPLAY:
 			Display d = new Display(getTaskListInstance(), c,
 					getMonthListInstance());
@@ -145,6 +158,7 @@ public class ExeCom {
 			}
 			break;
 
+			//@author A0118590A
 		case DISPLAYD:
 			Display displayDeadline = new Display(getTaskListInstance(), c,
 					getMonthListInstance());
@@ -158,7 +172,6 @@ public class ExeCom {
 			saveToUndoStack();
 			Delete del = new Delete();
 			feedback = feedback + del.delete(c);
-			// s.loadStorage(); // to update the taskList
 			break;
 
 		case COMPLETED:
@@ -177,6 +190,7 @@ public class ExeCom {
 			}
 			break;
 
+			//@author A0097961M
 		case EDIT:
 		case UPDATE:
 			ArrayList<Integer> conflicts = new ArrayList<Integer>();
@@ -210,12 +224,15 @@ public class ExeCom {
 		case CANCELLED:
 			feedback = CANCELLED_ACTION_MESSAGE + "\n";
 			break;
+
 		case CLEAR:
 			break;
+
 		case EXIT:
 		case QUIT:
 			System.exit(0);
 			break;
+
 		default:
 			feedback = INVALID_COMMAND_MESSAGE + "\n";
 
@@ -224,16 +241,14 @@ public class ExeCom {
 		return feedback;
 	}
 
+	//@author A0083093E
 	/**
 	 * addTask: Adds Task to Tasklist and updates the undo and redo tasklists
 	 * 
-	 * 
-	 * @author Tian Weizhou
 	 * @param Command
 	 * @return void
 	 */
 	private void addTask(Command command) throws Exception {
-		// System.out.println(command.getDetails());
 		Add add = new Add(getTaskListInstance());
 		saveToUndoStack();
 		add.addToTaskList(command);
@@ -241,7 +256,6 @@ public class ExeCom {
 	}
 
 	/**
-	 * 
 	 * undo: Reset taskList then add contents of pTL to tL.
 	 * 
 	 * @author A0118590A
@@ -284,11 +298,11 @@ public class ExeCom {
 		}
 	}
 
+	//@author A0083093E
 	/**
 	 * checkConflict: check conflict of time and date, return ArrayList<Integer>
 	 * with the elements being the indexes of conflicting tasks in tasklist
 	 * 
-	 * @author Tian Weizhou
 	 * @param void
 	 * @return ArrayList<Integer>
 	 */
@@ -330,12 +344,11 @@ public class ExeCom {
 		return conflicts;
 	}
 
+	//@author A0083093E
 	/**
 	 * printConflictedTask: print all tasks that conflicts with current task
 	 * 
-	 * @author Wei Zhou
-	 * @param ArrayList
-	 *            <Integer>
+	 * @param ArrayList<Integer>
 	 * @return void
 	 */
 	private static String printConflictedTasks(ArrayList<Integer> conflicts) {
@@ -350,11 +363,11 @@ public class ExeCom {
 		return conflictList;
 	}
 
+	//@author A0083093E
 	/**
 	 * setStartSignature: returns an integer value which contains all the end
 	 * date and end time info in a single number used for efficient comparison
 	 * 
-	 * @author Tian Weizhou
 	 * @param Command
 	 * @return int
 	 */
@@ -377,11 +390,11 @@ public class ExeCom {
 		return end;
 	}
 
+	//@author A0083093E
 	/**
 	 * setStartSignature: returns an integer value which contains all the start
 	 * date and start time info in a single number used for efficient comparison
 	 * 
-	 * @author Tian Weizhou
 	 * @param Command
 	 * @return int
 	 */
@@ -413,11 +426,11 @@ public class ExeCom {
 
 	}
 
+	//@author A0083093E
 	/**
 	 * setEndSignature: returns an integer value which contains all the End date
 	 * and End time details in a single number used for efficient comparison
 	 * 
-	 * @author Tian Weizhou
 	 * @param Task
 	 * @return int
 	 */
@@ -439,12 +452,12 @@ public class ExeCom {
 		return end;
 	}
 
+	//@author A0083093E
 	/**
 	 * setStartSignature: returns an integer value which contains all the start
 	 * date and start time details in a single number used for efficient
 	 * comparison
 	 * 
-	 * @author Tian Weizhou
 	 * @param Task
 	 * @return int
 	 */
@@ -499,10 +512,6 @@ public class ExeCom {
 		ArrayList<Task> undoList = new ArrayList<Task>();
 		transferTasksFromTo(taskList,undoList);
 		undoStack.push(undoList);
-		//transferTasksFromTo(taskList, prevTaskList);
-		/*
-		 * for (Task task : taskList) { prevTaskList.add(new Task(task)); }
-		 */
 	}
 
 	/**
@@ -572,7 +581,7 @@ public class ExeCom {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * 
 	 * isValidDisplayMonthCommand: Check if user is trying to display a month
@@ -590,11 +599,11 @@ public class ExeCom {
 		}
 	}
 
+	//@author A0085107J
 	/**
 	 * 
 	 * isValidAddCommand: Check if user keyed in details (mandatory)
 	 * 
-	 * @author A0085107J
 	 * @param void
 	 * @return boolean
 	 * 
@@ -607,12 +616,12 @@ public class ExeCom {
 		}
 	}
 
+	//@author A0085107J
 	/**
 	 * 
 	 * isDisplayDate: Check if user wants to display a list of
 	 * tasks of a particular date
 	 * 
-	 * @author A0085107J
 	 * @param void
 	 * @return boolean
 	 * 
@@ -625,10 +634,10 @@ public class ExeCom {
 		}
 	}
 
+	//@author A0085107J
 	/**
 	 * isValidTime: check if user entered valid time which is from 0000 t0 2359
 	 * 
-	 * @author A0085107J
 	 * @param void
 	 * @return boolean
 	 * 
@@ -641,10 +650,10 @@ public class ExeCom {
 		}
 	}
 
+	//@author A0085107J
 	/**
 	 * isValidhours: check if user entered between 0 to 23 hours
 	 * 
-	 * @author A0085107J
 	 * @param void
 	 * @return boolean
 	 * 
@@ -667,10 +676,10 @@ public class ExeCom {
 		return true;
 	}
 
+	//@author A0085107J
 	/**
 	 * isValidMins: check if user entered between 0 to 59 minutes
 	 * 
-	 * @author A0085107J
 	 * @param void
 	 * @return boolean
 	 * 
@@ -693,12 +702,12 @@ public class ExeCom {
 		return true;
 	}
 
+	//@author A0085107J
 	/**
 	 * 
 	 * isDisplayCompleted: Check if user wants to display list of completed
 	 * tasks
 	 * 
-	 * @author A0085107J
 	 * @param void
 	 * @return boolean
 	 * 
@@ -784,13 +793,12 @@ public class ExeCom {
 		}
 		return false;
 	}
-
+	//@author A0085107J
 	/**
 	 * 
 	 * isTaskIDMatch: Checks if a task's taskID is equal to the userSpecified
 	 * taskIdNumber that he's searching for.
 	 * 
-	 * @author A0085107J
 	 * @param String , int
 	 * @return boolean
 	 * 
@@ -799,24 +807,31 @@ public class ExeCom {
 	public boolean isTaskIDMatch(String specifiedTaskID, int taskIdNumber) {
 		return Integer.parseInt(specifiedTaskID) == taskIdNumber;
 	}
-
+	//@author A0085107J
 	/**
 	 * retrieveTaskIdNumber: retrieves user-specified taskID.
 	 * 
-	 * @author A0085107J
 	 * @param String
 	 * @return int
 	 * 
 	 */
-
 	public int retrieveTaskIdNumber(String taskID) {
 		return Integer.parseInt(taskID);
 	}
 
+	//@author A0083093E
+	/**
+	 * checkUndoStack: checks if undo stack is empty
+	 * checkRedoStack: checks if redo stack is empty
+	 * 
+	 * @param void
+	 * @return boolean
+	 * 
+	 */
 	public static boolean checkUndoStack() {
 		return !undoStack.empty();
 	}
-	
+
 	public static boolean checkRedoStack() {
 		return !redoStack.empty();
 	}

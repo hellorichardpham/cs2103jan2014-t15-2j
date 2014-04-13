@@ -1,6 +1,5 @@
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.color.*;
 import java.awt.Color;
 import java.awt.Toolkit;
 import java.util.ArrayList;
@@ -247,7 +246,7 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 	 * This method sets the styles available for printing
 	 */
 	private void setStyles() {
-
+	
 		Color darkBlue = new Color(27,67,118);
 		blue1 = displayTextBox.addStyle("This prints in dark blue", null);
 		StyleConstants.setForeground(blue1, darkBlue);
@@ -261,7 +260,7 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 		StyleConstants.setFontFamily(blue2, "arial");
 
 		Color greenish = new Color(46,139,87);
-		green = displayTextBox.addStyle("This prints in lightest blue", null);
+		green = displayTextBox.addStyle("This prints in green", null);
 		StyleConstants.setForeground(green, greenish);
 		StyleConstants.setFontSize(green, 15);
 		StyleConstants.setFontFamily(green, "arial");

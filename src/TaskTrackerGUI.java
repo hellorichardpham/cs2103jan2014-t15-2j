@@ -19,7 +19,7 @@ import javax.swing.text.StyledDocument;
 public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 
 	/**
-	 * 
+	 * @author A0083093E
 	 */
 	private static final long serialVersionUID = 1L;
 	// code placed at front of feedback for GUI to recognize there is a conflict
@@ -54,6 +54,13 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 		}
 	}
 	
+	/**
+	 * initComponents: initialise components of GUI
+	 * 
+	 * @author A0083093E generated
+	 * @param void
+	 * @return void
+	 */
 	// <editor-fold defaultstate="collapsed"
 	// desc="Generated Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
@@ -84,8 +91,6 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 				commandLineActionPerformed(evt);
 			}
 		});
-		
-		//commandLine.setText("What would you like to do?");
 		
 		undoButton.setText("Undo");
 		undoButton.addActionListener(new java.awt.event.ActionListener() {
@@ -408,7 +413,7 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 	
 	/**
 	 * This method prints the String feedback returned by ExeCom
-	 * @param String feedback
+	 * @param String
 	 * @author A0083093E
 	 */
 	private void printFeedback(String feedback) {
@@ -476,16 +481,37 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 		displayTextBox.setCaretPosition(displayTextBox.getDocument().getLength());
 	}
 
+	/**
+	 * printDetails: displays detail attribute on the GUI
+	 * 
+	 * @author A0083093E
+	 * @param String
+	 * @return void
+	 */
 	private void printDetails(String details) {
 		print(details,blue1);
 	}
 
+	/**
+	 * printPriority: displays priority attribute on the GUI
+	 * 
+	 * @author A0083093E
+	 * @param String
+	 * @return void
+	 */
 	private void printPriority(String priority) {
 		if(!priority.equals("")) {
 			print("[" + priority + "]",red);
 		}
 	}
 
+	/**
+	 * printCategory: displays category attribute on the GUI
+	 * 
+	 * @author A0083093E
+	 * @param String
+	 * @return void
+	 */
 	private void printCategory(String category) {
 		if(!category.equals("")) {
 			print(" {" + category + "} ",blue2);
@@ -493,12 +519,26 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 		
 	}
 
+	/**
+	 * printLocation: displays location attribute on the GUI
+	 * 
+	 * @author A0083093E
+	 * @param String
+	 * @return void
+	 */
 	private void printLocation(String location) {
 		if(!location.equals("")) {
 			print(" @" + location,red);
 		}
 	}
 
+	/**
+	 * printDate: displays date attributes on the GUI
+	 * 
+	 * @author A0083093E
+	 * @param String, String
+	 * @return void
+	 */
 	private void printDate(String startDate, String endDate) {
 		if(startDate.equals("")) {
 			print(" on " + endDate , green);
@@ -507,6 +547,13 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 		}
 	}
 
+	/**
+	 * printTime: displays time attributes on the GUI
+	 * 
+	 * @author A0083093E
+	 * @param String, String
+	 * @return void
+	 */
 	private void printTime(String startTime, String endTime) {
 		if(startTime.equals("") && endTime.equals("")) {
 			return;

@@ -54,7 +54,7 @@ public class Display extends Task {
 
 	/**
 	 * 
-	 * display: display all uncompleted tasks found in the taskList
+	 * displayUncompleted: display all uncompleted tasks found in the taskList
 	 * 
 	 * @author A0097961M
 	 * @param void
@@ -214,7 +214,7 @@ public class Display extends Task {
 		}
 	}
 
-	/*
+	/**
 	 * displayStartMonth: Displays the contents
 	 * 
 	 * @author A0118590A
@@ -254,7 +254,7 @@ public class Display extends Task {
 		return "invalid month";
 	}
 
-	/*
+	/**
 	 * displayEndMonth: Displays the contents of the ArrayList that end in a
 	 * particular month
 	 * 

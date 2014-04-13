@@ -79,6 +79,10 @@ public class Task {
 	public long getTimeNum() {
 		return timeNum;
 	}
+	
+	public void setTimeNum(long timeNum) {
+		this.timeNum = timeNum;
+	}
 
 	public String getDetails() {
 		return details;
@@ -273,7 +277,7 @@ public class Task {
 				+ startHours + " " + startMins + " " + endHours + " " + endMins
 				+ " " + "//location " + location + " " + "//category "
 				+ category + " " + "//priority " + priority + " "
-				+ "//completed " + completed + " ";
+				+ "//completed " + completed + " " + "//timenum " + timeNum + " ";
 	}
 
 }

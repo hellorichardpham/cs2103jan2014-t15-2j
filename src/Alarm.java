@@ -11,13 +11,14 @@ public class Alarm {
 	private static final String DATE_TIME_FORMAT = "dd/MM/yyyy hh:mm";
 	private static final String EQUAL_BLANK_SPACE = " ";
 	private static final String EQUAL_COLON = ":";
+	private static final String TASKID = "Task id no";
 
 	private static final int THOUSAND_CONST = 1000;
 	private static final int TEN_THOUSAND_CONST = 10000;
 
 	Timer timer;
 
-	//@author A0097961M
+	// @author A0097961M
 	/**
 	 * 
 	 * setAlarm: set alarm by sending the timing to Alarm class
@@ -70,10 +71,11 @@ public class Alarm {
 		}
 	}
 
-	//@author A0097961M
+	// @author A0097961M
 	/**
 	 * 
-	 * Alarm: set alarm to the scheduler by creating instance of RemindTask class
+	 * Alarm: set alarm to the scheduler by creating instance of RemindTask
+	 * class
 	 * 
 	 * @param void
 	 * @return void
@@ -84,10 +86,11 @@ public class Alarm {
 		timer.schedule(new RemindTask(), sec * THOUSAND_CONST);
 	}
 
-	//@author A0097961M
+	// @author A0097961M
 	/**
 	 * 
-	 * RemindTask: when a scheduler is called, run() method will be automatically and finally the task(s) will be mailed to user(s)
+	 * RemindTask: when a scheduler is called, run() method will be
+	 * automatically and finally the task(s) will be mailed to user(s)
 	 * 
 	 * @param void
 	 * @return void
@@ -135,7 +138,10 @@ public class Alarm {
 
 					if (time >= (currentTime - TEN_THOUSAND_CONST)
 							&& (time <= currentTime + TEN_THOUSAND_CONST)) {
-						Email.emailUser(t.displayTask());
+
+						String task_info = TASKID + EQUAL_BLANK_SPACE + (ExeCom.getTaskListInstance()
+								.indexOf(t) + 1) + EQUAL_BLANK_SPACE + t.displayTaskEmail();
+						Email.emailUser(task_info);
 					}
 
 				}
@@ -144,4 +150,5 @@ public class Alarm {
 			}
 		}
 	}
+
 }

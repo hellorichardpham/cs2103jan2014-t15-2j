@@ -243,6 +243,54 @@ public class Task {
 
 		return info;
 	}
+	
+	//@author A0085107J
+	/**
+	 * displayTaskEmail: display non-empty task attributes and their headers
+	 * 
+	 * @param void
+	 * @return String
+	 */
+	public String displayTaskEmail() {
+		String info = null;
+		if (!details.equals("null")) {
+			info = "Details: " + details;
+		}
+
+		if ((!startDay.equals("null") && !startMonth.equals("null") && !startYear
+				.equals("null"))) {
+			info = info.concat(" Start Date: " + startDay + "/" + startMonth
+					+ "/" + startYear);
+		}
+
+		if ((!endDay.equals("null") && !endMonth.equals("null") && !endYear
+				.equals("null"))
+				|| (endDay != null && endMonth != null && endYear != null)) {
+			info = info.concat(" End Date: " + endDay + "/" + endMonth + "/"
+					+ endYear);
+		}
+
+		if (!startHours.equals("null") && !startMins.equals("null")) {
+			info = info.concat(" Start Time: " + startHours + ":" + startMins);
+		}
+		if ((!endHours.equals("null") && !endMins.equals("null"))) {
+			info = info.concat(" End Time: " + endHours + ":" + endMins);
+		}
+
+		if (!location.equals("null")) {
+			info = info.concat(" Location: " + location);
+		}
+
+		if (!category.equals("null")) {
+			info = info.concat(" Category: " + category);
+		}
+		if (!priority.equals("null")) {
+			info = info.concat(" Priority: " + priority);
+		}
+
+		return info;
+	}
+
 
 	//@author A0097961M
 	/**

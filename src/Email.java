@@ -4,7 +4,10 @@ public class Email {
 	private static final String NAME = "TaskTracker";
 	private static final String EMAIL = "tasktrackernus@gmail.com";
 	private static final String PASSWORD = "112233445566778899NUS";
-	private static final String SUBJECT = "Reminder from TaskTracker";
+	private static final String SALUTATIONS = "Dear Sir or Madam,\n\n";
+	private static final String DETAILS = "Your notifications details is as follow:\n";
+	private static final String REGARDS = "Regards,\nTaskTracker";
+	private static final String SUBJECT = "Reminder From TaskTracker";
 	private static final String EMAIL_K = "khaleef1990@gmail.com";
 	private static final String EMAIL_R = "hellorichardpham@gmail.com";
 	private static final String EMAIL_Y = "tyingyun@hotmail.com";
@@ -38,7 +41,7 @@ public class Email {
 
 		String subject = SUBJECT;
 
-		String messageBody = task_Info;
+		String messageBody = SALUTATIONS + DETAILS + task_Info + "\n\n" + REGARDS;
 
 		if (new MailUtil().sendMail(recipients, subject, messageBody, name,
 				email, password, host)) {

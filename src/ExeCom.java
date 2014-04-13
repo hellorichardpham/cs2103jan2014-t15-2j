@@ -110,7 +110,6 @@ public class ExeCom {
 		s.loadStorage();
 		Alarm.setAlarm();
 
-		System.out.println(keyWord);
 		switch (keyWord) {
 
 		case JUSTADD:

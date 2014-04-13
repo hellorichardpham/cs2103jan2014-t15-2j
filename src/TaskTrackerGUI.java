@@ -238,7 +238,7 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 		StyleConstants.setFontFamily(blue2, "arial");
 		
 		Color greenish = new Color(46,139,87);
-		green = displayTextBox.addStyle("This prints in lightest blue", null);
+		green = displayTextBox.addStyle("This prints in green", null);
 		StyleConstants.setForeground(green, greenish);
 		StyleConstants.setFontSize(green, 15);
 		StyleConstants.setFontFamily(green, "arial");

@@ -44,7 +44,7 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 	 * @author A0083093E
 	 */
 	public TaskTrackerGUI() {
-		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\Khaleef\\workspace\\cs2103jan2014-t15-2j\\src\\icon.png"));
+		setIconImage(Toolkit.getDefaultToolkit().getImage("src\\icon.png"));
 		setTitle("TaskTracker");
 		try {
 			initComponents();

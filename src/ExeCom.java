@@ -111,7 +111,7 @@ public class ExeCom {
 
 		Storage s = new Storage();
 		s.loadStorage();
-		Alarm.setAlarm();
+		Alarm.setNotification();
 
 		switch (keyWord) {
 

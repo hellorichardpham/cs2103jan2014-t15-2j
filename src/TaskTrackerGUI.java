@@ -42,7 +42,7 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 		setTitle("TaskTracker");
 		try {
 			initComponents();
-			Alarm.setAlarm();
+			Alarm.setNotification();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

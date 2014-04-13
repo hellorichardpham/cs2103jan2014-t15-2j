@@ -25,7 +25,7 @@ public class Alarm {
 	 * @param void
 	 * @return void
 	 */
-	public static void setAlarm() throws Exception {
+	public static void setNotification() throws Exception {
 		SimpleDateFormat sdf = new SimpleDateFormat(DATE_TIME_FORMAT);
 
 		Storage s = new Storage();

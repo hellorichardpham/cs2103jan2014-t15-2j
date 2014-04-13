@@ -17,6 +17,7 @@ public class Display extends Task {
 	private static ArrayList<Task>[][] startMonthList = new ArrayList[12][1];
 	private static ArrayList<Task>[][] endMonthList = new ArrayList[12][1];
 
+	// constructor
 	public Display(ArrayList<Task> taskList) {
 		this.taskList = taskList;
 	}
@@ -33,11 +34,11 @@ public class Display extends Task {
 		taskList = this.sort();
 	}
 
-	//@author A0085107J
 	/**
 	 * 
 	 * display: display all tasks found in the taskList
 	 * 
+	 * @author A0085107J, A0097961M
 	 * @param void
 	 * @return void
 	 */
@@ -77,10 +78,10 @@ public class Display extends Task {
 			return dispOut + "\n";
 	}
 
-	//@author A0085107J
 	/**
 	 * displayCompleted: prints out all completed tasks in taskList
 	 * 
+	 * @author A0085107J
 	 * @param void
 	 * @return void
 	 */
@@ -99,10 +100,10 @@ public class Display extends Task {
 		return dispOut + "\n";
 	}
 
-	//@author A0085107J
 	/**
 	 * displayDate: display all tasks that matches input date, if any.
 	 * 
+	 * @author A0085107J
 	 * @param void
 	 * @return string
 	 */
@@ -120,11 +121,11 @@ public class Display extends Task {
 		return dispOut + "\n";
 	}
 
-	//@author A0085107J
 	/**
 	 * setTasksWithMatchingDates: collates all related tasks with matching dates
 	 * into one string
 	 * 
+	 * @author A0085107J
 	 * @param void
 	 * @return string
 	 */
@@ -139,11 +140,11 @@ public class Display extends Task {
 		return dispOut;
 	}
 
-	//@author A0085107J
 	/**
 	 * haveTasksWithMatchingDates: check if taskList has any tasks that is
 	 * related to the input date
 	 * 
+	 * @author A0085107J
 	 * @param void
 	 * @return boolean
 	 */
@@ -156,11 +157,11 @@ public class Display extends Task {
 		return false;
 	}
 
-	//@author A0085107J
 	/**
 	 * setTaskToDisplay: Given a single task, it formats the string to sent for
 	 * printing including task index and all attributes.
 	 * 
+	 * @author A0085107J
 	 * @param dispOut
 	 * @param task
 	 * @return String
@@ -171,26 +172,26 @@ public class Display extends Task {
 		return dispOut;
 	}
 
-	//@author A0085107J
 	/**
 	 * displayTaskForToday: Format string to contain all information of tasks that ends today
 	 * 
+	 * @author A0085107J
 	 * @param void
 	 * @return String
 	 */
 	public String displayTaskForToday() {
-		String dispOut = "";
-		if (!taskList.isEmpty()) {
-			dispOut = dispOut + printTaskForTodayHeader();
-			for (Task task : taskList) {
-				if (isEndingToday(task)) {
-					dispOut = setTaskToDisplay(dispOut, task);
+			String dispOut = "";
+			if (!taskList.isEmpty()) {
+				dispOut = dispOut + printTaskForTodayHeader();
+				for (Task task : taskList) {
+					if (isEndingToday(task)) {
+						dispOut = setTaskToDisplay(dispOut, task);
+					}
 				}
+			} else {
+				dispOut = TASKLIST_EMPTY_MESSAGE;
 			}
-		} else {
-			dispOut = TASKLIST_EMPTY_MESSAGE;
-		}
-		return dispOut + "\n";
+			return dispOut + "\n";
 	}
 
 	//@author A0085107J
@@ -235,10 +236,10 @@ public class Display extends Task {
 		return feedback;
 	}
 
-	//@author A0085107J
 	/**
 	 * displayTaskForToday: checks if a particular task's end date is today
 	 * 
+	 * @author A0085107J
 	 * @param Task
 	 * @return boolean
 	 */
@@ -254,12 +255,11 @@ public class Display extends Task {
 			return false;
 		}
 	}
-
+	
+	//@author A0118590A
 	/**
 	 * displayStartMonth: Displays the contents
-	 * 
-	 * @author A0118590A
-	 * 
+	 *  
 	 * @param void
 	 * 
 	 * @return void
@@ -294,12 +294,11 @@ public class Display extends Task {
 		}
 		return "invalid month";
 	}
-
+	
+	//@author A0118590A
 	/**
 	 * displayEndMonth: Displays the contents of the ArrayList that end in a
 	 * particular month
-	 * 
-	 * @author A0118590A
 	 * 
 	 * @param void
 	 * 
@@ -336,10 +335,11 @@ public class Display extends Task {
 		return "invalid month";
 	}
 
-	//@author A0085107J
+
 	/**
 	 * printCompletedListingHeader: print header for completed listing
 	 * 
+	 * @author A0085107J
 	 * @param void
 	 * @return string
 	 */
@@ -347,22 +347,22 @@ public class Display extends Task {
 		return "== Listing of completed tasks =====\n";
 	}
 
-	//@author A0085107J
 	/**
 	 * printTaskForTodayHeader: print header for today's tasks
 	 * 
+	 * @author A0085107J
 	 * @param void
 	 * @return string
 	 */
 	private String printTaskForTodayHeader() {
-
+		
 		return "== Today's Tasks =====\n";
 	}
 
-	//@author A0085107J
 	/**
 	 * printUncompletedListingHeader: print header for uncompleted listing
 	 * 
+	 * @author A0085107J
 	 * @param void
 	 * @return String
 	 */
@@ -370,23 +370,24 @@ public class Display extends Task {
 		return "== Listing of pending tasks =====\n";
 	}
 
-	//@author A0085107J
 	/**
 	 * 
 	 * printTaskIndex: print index number of current task
 	 * 
-	 * @param Task, String
+	 * @author A0085107J
+	 * @param Task
+	 *            , String
 	 * @return String
 	 */
 	private static String printTaskWithIndex(Task task, String print) {
 		return (taskList.indexOf(task) + 1) + ": " + print + "\n";
 	}
 
-	//@author A0085107J
 	/**
 	 * isMatchingStartDate: checks if the command's start date is same as task's
 	 * start date
 	 * 
+	 * @author A0085107J
 	 * @param task
 	 * @return boolean
 	 */
@@ -400,11 +401,11 @@ public class Display extends Task {
 		}
 	}
 
-	//@author A0085107J
 	/**
 	 * isMatchingStartDay: checks if the command's start day is same as task's
 	 * start day
 	 * 
+	 * @author A0085107J
 	 * @param task
 	 * @return boolean
 	 */
@@ -416,11 +417,11 @@ public class Display extends Task {
 		}
 	}
 
-	//@author A0085107J
 	/**
 	 * isMatchingStartMonth: checks if the command's start month is same as
 	 * task's start month
 	 * 
+	 * @author A0085107J
 	 * @param task
 	 * @return boolean
 	 */
@@ -432,11 +433,11 @@ public class Display extends Task {
 		}
 	}
 
-	//@author A0085107J
 	/**
 	 * isMatchingStartYear: checks if the command's start year is same as task's
 	 * start year
 	 * 
+	 * @author A0085107J
 	 * @param task
 	 * @return boolean
 	 */
@@ -448,11 +449,11 @@ public class Display extends Task {
 		}
 	}
 
-	//@author A0085107J
 	/**
 	 * isMatchingEndDate: checks if the command's end date is same as task's end
 	 * date (including day,month and year)
 	 * 
+	 * @author A0085107J
 	 * @param task
 	 * @return boolean
 	 */
@@ -465,11 +466,11 @@ public class Display extends Task {
 		}
 	}
 
-	//@author A0085107J
 	/**
 	 * isMatchingEndDay: checks if the command's end day is same as task's end
 	 * day
 	 * 
+	 * @author A0085107J
 	 * @param task
 	 * @return boolean
 	 */
@@ -481,11 +482,11 @@ public class Display extends Task {
 		}
 	}
 
-	//@author A0085107J
 	/**
 	 * isMatchingEndMonth: checks if the command's end month is same as task's
 	 * end month
 	 * 
+	 * @author A0085107J
 	 * @param task
 	 * @return boolean
 	 */
@@ -497,11 +498,11 @@ public class Display extends Task {
 		}
 	}
 
-	//@author A0085107J
 	/**
 	 * isMatchingEndYear: checks if the command's end year is same as task's end
 	 * year
 	 * 
+	 * @author A0085107J
 	 * @param task
 	 * @return boolean
 	 */
@@ -513,11 +514,11 @@ public class Display extends Task {
 		}
 	}
 
+	//@author A0118590A
 	/*
 	 * printSorted: Displays the entire taskList in descending order based on
 	 * start month
 	 * 
-	 * @author A0118590A
 	 * 
 	 * @param void
 	 * 
@@ -528,12 +529,11 @@ public class Display extends Task {
 			System.out.println(task.displayTask());
 		}
 	}
-
+	
+	//@author A0118590A
 	/*
 	 * printStartMonthList: Displays all tasks that begin in the specified month
-	 * 
-	 * @author A0118590A
-	 * 
+	 *  
 	 * @param int
 	 * 
 	 * @return String
@@ -550,15 +550,14 @@ public class Display extends Task {
 		if (isFound) {
 			return output + "\n";
 		} else {
-			return NO_TASKS_START + printMonthName(monthIndex);
+			return NO_TASKS_START + printMonthName(monthIndex) + "\n";
 		}
 	}
 
+	//@author A0118590A
 	/*
 	 * printStartMonthList: Displays all tasks that end in the specified month
-	 * 
-	 * @author A0118590A
-	 * 
+     * 
 	 * @param int
 	 * 
 	 * @return String
@@ -575,15 +574,15 @@ public class Display extends Task {
 		if (isFound) {
 			return output + "\n";
 		} else {
-			return NO_TASKS_END + printMonthName(monthIndex);
+			return NO_TASKS_END + printMonthName(monthIndex) + "\n";
 		}
 
 	}
-
+	
+	//@author A0118590A
 	/*
 	 * sort: Sorts tasks into two lists based on start/end month
 	 * 
-	 * @author A0118590A
 	 * 
 	 * @param void
 	 * 
@@ -604,11 +603,10 @@ public class Display extends Task {
 		return sortedTaskList;
 	}
 
+	//@author A0118590A
 	/*
 	 * isMatchingTaskStartMonth: Returns True/False depending on if a task
 	 * starts in the specified month
-	 * 
-	 * @author A0118590A
 	 * 
 	 * @param Task, String
 	 * 
@@ -622,11 +620,11 @@ public class Display extends Task {
 		}
 	}
 
+	//@author A0118590A
 	/*
 	 * isMatchingTaskEndMonth: Returns True/False depending on if a task ends in
 	 * the specified month
 	 * 
-	 * @author A0118590A
 	 * 
 	 * @param Task, String
 	 * 
@@ -635,13 +633,13 @@ public class Display extends Task {
 	public static boolean isMatchingTaskEndMonth(Task task, String month) {
 		return month.contains(task.getEndMonth());
 	}
-
+	
+	//@author A0118590A
 	/*
 	 * initializeMonths: Resets months variable and adds the number that
 	 * correlates to each month. (Jan == 01). Note that it contains both because
 	 * the input may come as one or two digits
 	 * 
-	 * @author A0118590A
 	 * 
 	 * @param void
 	 * 
@@ -669,11 +667,11 @@ public class Display extends Task {
 		months.add("12");
 	}
 
+	//@author A0118590A
 	/*
 	 * printStartMonthName: Prints the display header depending on which month
 	 * we are about to display
 	 * 
-	 * @author A0118590A
 	 * 
 	 * @param int
 	 * 
@@ -709,11 +707,11 @@ public class Display extends Task {
 		return "";
 	}
 
+	//@author A0118590A
 	/*
 	 * printEndMonthName: Prints the display header depending on which month we
 	 * are about to display
 	 * 
-	 * @author A0118590A
 	 * 
 	 * @param int
 	 * 
@@ -749,11 +747,11 @@ public class Display extends Task {
 		return "";
 	}
 
+	//@author A0118590A
 	/*
-	 * printMonthName: Prints the display header depending on which month we
-	 * are about to display
+	 * printMonthName: Prints the name of the month only. Used for display
+	 * purposes
 	 * 
-	 * @author A0118590A
 	 * 
 	 * @param int
 	 * 
@@ -789,11 +787,11 @@ public class Display extends Task {
 		return "";
 	}
 
+	//@author A0118590A
 	/*
 	 * initializeDays: Initializes days ArrayList with each numerical day from
 	 * 1-31
 	 * 
-	 * @author A0118590A
 	 * 
 	 * @param void
 	 * 
@@ -833,10 +831,10 @@ public class Display extends Task {
 		days.add("31");
 	}
 
+	//@author A0118590A
 	/*
 	 * initializeCalender: Initializes start and end Month array
 	 * 
-	 * @author A0118590A
 	 * 
 	 * @param void
 	 * 
@@ -849,11 +847,11 @@ public class Display extends Task {
 		}
 	}
 
+	//@author A0118590A
 	/*
 	 * initializeMonthList: sets new ArrayLists for the 2D Arrays holding the
 	 * start/end month results
 	 * 
-	 * @author A0118590A
 	 * 
 	 * @param void
 	 * 
@@ -865,4 +863,4 @@ public class Display extends Task {
 			endMonthList[i][0] = new ArrayList<Task>();
 		}
 	}
-}
+}// end class

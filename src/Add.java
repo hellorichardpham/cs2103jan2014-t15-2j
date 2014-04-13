@@ -8,11 +8,11 @@ public class Add {
 		this.taskList = taskList;
 	}
 
+	//@author A0118590A
 	/**
 	 * 
 	 * addToTaskList: Add tasks to arrayList and set taskID.
 	 * 
-	 * @author A0118590A
 	 * @param void
 	 * @return void
 	 */

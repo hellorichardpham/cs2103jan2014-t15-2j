@@ -43,7 +43,7 @@ public class ExeCom {
 	private static final String CANCELLED_ACTION_MESSAGE = "The action has been cancelled.\n";
 	private static final String DISPLAYD = "displayd";
 	private static final Object EMPTY_STRING = "";
-	
+
 	private static ExeCom theOne;
 
 	public static ExeCom getInstance() {
@@ -66,7 +66,7 @@ public class ExeCom {
 		return monthList;
 	}
 
-	//@author A0085107J
+	// @author A0085107J
 	/**
 	 * getTaskListInstance: singleton pattern as all parts of the program should
 	 * access the same tasklist. Creating a new one will cause user to lose data
@@ -90,7 +90,7 @@ public class ExeCom {
 		redoStack = new Stack<ArrayList<Task>>();
 	}
 
-	//@author A0083093E
+	// @author A0083093E
 	/**
 	 * NOTE: this essential method is contributed by all 4 members throughout
 	 * the whole project period hence are putting the author tag in the method.
@@ -118,7 +118,7 @@ public class ExeCom {
 		case JUSTADD:
 			addTask(command);
 			break;
-		//author A0085107J
+		// author A0085107J
 		case ADD:
 			if (isValidAddCommand()) {
 				if (isValidTime()) {
@@ -138,7 +138,7 @@ public class ExeCom {
 				feedback = feedback + NO_DETAILS_MESSAGE + "\n";
 			}
 			break;
-
+		// @author A0118590A
 		case DISPLAY:
 			Display d = new Display(getTaskListInstance(), c,
 					getMonthListInstance());
@@ -156,14 +156,14 @@ public class ExeCom {
 				feedback += INVALID_COMMAND_MESSAGE;
 			}
 			break;
-		
+
 		case HELP:
 		case QUESTION_MARK:
 			Display dis = new Display(getTaskListInstance());
 			feedback += dis.displayHelp();
 			break;
-			
-		//@author A0118590A
+
+		// @author A0118590A
 		case DISPLAYD:
 			Display displayDeadline = new Display(getTaskListInstance(), c,
 					getMonthListInstance());
@@ -195,7 +195,7 @@ public class ExeCom {
 			}
 			break;
 
-		//@author A0097961M
+		// @author A0097961M
 		case EDIT:
 		case UPDATE:
 			ArrayList<Integer> conflicts = new ArrayList<Integer>();
@@ -217,11 +217,11 @@ public class ExeCom {
 			Update u = new Update();
 			feedback = feedback + u.editContent(c);
 			break;
-
+		// @author A0118590A
 		case UNDO:
 			undo();
 			break;
-
+		// @author A0118590A
 		case REDO:
 			redo();
 			break;
@@ -229,10 +229,10 @@ public class ExeCom {
 		case CANCELLED:
 			feedback = CANCELLED_ACTION_MESSAGE + "\n";
 			break;
-		//@author A0097961M
+		// @author A0097961M
 		case CLEAR:
 			break;
-		//@author A0097961M
+		// @author A0097961M
 		case EXIT:
 		case QUIT:
 			System.exit(0);
@@ -246,7 +246,7 @@ public class ExeCom {
 		return feedback;
 	}
 
-	//@author A0083093E
+	// @author A0083093E
 	/**
 	 * addTask: Adds Task to Tasklist and updates the undo and redo tasklists
 	 * 
@@ -260,10 +260,10 @@ public class ExeCom {
 		feedback = feedback + ADD_SUCCESSFUL_MESSAGE;
 	}
 
+	//@author A0118590A
 	/**
 	 * undo: Reset taskList then add contents of pTL to tL.
 	 * 
-	 * @author A0118590A
 	 * @param void
 	 * @return void
 	 */
@@ -282,10 +282,10 @@ public class ExeCom {
 		}
 	}
 
+	//@author A0118590A
 	/**
 	 * redo: Reperforms any task that was done before undo() was called.
 	 * 
-	 * @author A0118590A
 	 * @param void
 	 * @return void
 	 */
@@ -303,7 +303,7 @@ public class ExeCom {
 		}
 	}
 
-	//@author A0083093E
+	// @author A0083093E
 	/**
 	 * checkConflict: check conflict of time and date, return ArrayList<Integer>
 	 * with the elements being the indexes of conflicting tasks in tasklist
@@ -349,7 +349,7 @@ public class ExeCom {
 		return conflicts;
 	}
 
-	//@author A0083093E
+	// @author A0083093E
 	/**
 	 * printConflictedTask: print all tasks that conflicts with current task
 	 * 
@@ -369,7 +369,7 @@ public class ExeCom {
 		return conflictList;
 	}
 
-	//@author A0083093E
+	// @author A0083093E
 	/**
 	 * setStartSignature: returns an integer value which contains all the end
 	 * date and end time info in a single number used for efficient comparison
@@ -396,7 +396,7 @@ public class ExeCom {
 		return end;
 	}
 
-	//@author A0083093E
+	// @author A0083093E
 	/**
 	 * setStartSignature: returns an integer value which contains all the start
 	 * date and start time info in a single number used for efficient comparison
@@ -432,7 +432,7 @@ public class ExeCom {
 
 	}
 
-	//@author A0083093E
+	// @author A0083093E
 	/**
 	 * setEndSignature: returns an integer value which contains all the End date
 	 * and End time details in a single number used for efficient comparison
@@ -458,7 +458,7 @@ public class ExeCom {
 		return end;
 	}
 
-	//@author A0083093E
+	// @author A0083093E
 	/**
 	 * setStartSignature: returns an integer value which contains all the start
 	 * date and start time details in a single number used for efficient
@@ -489,12 +489,12 @@ public class ExeCom {
 		return start;
 
 	}
-
+	
+	//@author A0118590A
 	/**
 	 * 
 	 * transferTasksFromTo: Move tasks from one ArrayList to another
 	 * 
-	 * @author A0118590A
 	 * @param ArrayList
 	 *            <Task>, ArrayList<Task>
 	 * @return void
@@ -506,12 +506,12 @@ public class ExeCom {
 		}
 	}
 
+	//@author A0118590A
 	/**
 	 * 
 	 * saveToPrevTaskList: Reset prevTaskList and add all objects from taskList
 	 * to pTL
 	 * 
-	 * @author A0118590A
 	 * @param void
 	 * @return void
 	 * 
@@ -522,12 +522,12 @@ public class ExeCom {
 		undoStack.push(undoList);
 	}
 
+	//@author A0118590A
 	/**
 	 * 
 	 * saveToRedoTaskList: Reset redoTaskList and add all objects from taskList
 	 * to rTL
 	 * 
-	 * @author A0118590A
 	 * @param void
 	 * @return void
 	 * 
@@ -541,12 +541,12 @@ public class ExeCom {
 		 */
 	}
 
+	//@author A0118590A
 	/**
 	 * 
 	 * resetTaskList: Reinitializes taskList so it will be empty when we perform
 	 * undo or redo.
 	 * 
-	 * @author A0118590A
 	 * @param void
 	 * @return void
 	 */
@@ -554,12 +554,12 @@ public class ExeCom {
 		taskList = new ArrayList<Task>();
 	}
 
+	//@author A0118590A
 	/**
 	 * 
 	 * isValidSearchCommand: Makes sure there is a keyword that the user is
 	 * searching for instead of an invalid command like "search"
 	 * 
-	 * @author A0118590A
 	 * @param String
 	 *            []
 	 * @return boolean
@@ -569,12 +569,12 @@ public class ExeCom {
 		return c.getDetails() != null;
 	}
 
+	//@author A0118590A
 	/**
 	 * 
 	 * isValidUndoRedoDisplayCommand: Checks if the user specified an invalid
 	 * command where undo/redo/display is followed by another String.
 	 * 
-	 * @author A0118590A
 	 * @param void
 	 * @return boolean
 	 */
@@ -587,11 +587,11 @@ public class ExeCom {
 		}
 	}
 
+	//@author A0118590A
 	/**
 	 * 
 	 * isValidDisplayMonthCommand: Check if user is trying to display a month
 	 * 
-	 * @author A0118590A
 	 * @param void
 	 * @return boolean
 	 * 
@@ -604,7 +604,7 @@ public class ExeCom {
 		}
 	}
 
-	//@author A0085107J
+	// @author A0085107J
 	/**
 	 * 
 	 * isValidAddCommand: Check if user keyed in details (mandatory)
@@ -621,7 +621,7 @@ public class ExeCom {
 		}
 	}
 
-	//@author A0085107J
+	// @author A0085107J
 	/**
 	 * 
 	 * isDisplayDate: Check if user wants to display a list of tasks of a
@@ -641,7 +641,7 @@ public class ExeCom {
 		}
 	}
 
-	//@author A0085107J
+	// @author A0085107J
 	/**
 	 * isValidTime: check if user entered valid time which is from 0000 t0 2359
 	 * 
@@ -657,7 +657,7 @@ public class ExeCom {
 		}
 	}
 
-	//@author A0085107J
+	// @author A0085107J
 	/**
 	 * isValidhours: check if user entered between 0 to 23 hours
 	 * 
@@ -683,7 +683,7 @@ public class ExeCom {
 		return true;
 	}
 
-	//@author A0085107J
+	// @author A0085107J
 	/**
 	 * isValidMins: check if user entered between 0 to 59 minutes
 	 * 
@@ -709,7 +709,7 @@ public class ExeCom {
 		return true;
 	}
 
-	//@author A0085107J
+	// @author A0085107J
 	/**
 	 * 
 	 * isDisplayCompleted: Check if user wants to display list of completed
@@ -732,7 +732,7 @@ public class ExeCom {
 		}
 	}
 
-	//@author A0097961M
+	// @author A0097961M
 	/**
 	 * 
 	 * isDisplayUncompleted: Check if user wants to display a list of
@@ -757,12 +757,12 @@ public class ExeCom {
 		}
 	}
 
+	//@author A0118590A
 	/**
 	 * 
 	 * isDisplayMonth: Check if user wants to display a list of tasks of a
 	 * particular month
 	 * 
-	 * @author A0118590A
 	 * @param void
 	 * @return boolean
 	 * 
@@ -804,7 +804,7 @@ public class ExeCom {
 		return false;
 	}
 
-	//@author A0085107J
+	// @author A0085107J
 	/**
 	 * 
 	 * isTaskIDMatch: Checks if a task's taskID is equal to the userSpecified
@@ -820,7 +820,7 @@ public class ExeCom {
 		return Integer.parseInt(specifiedTaskID) == taskIdNumber;
 	}
 
-	//@author A0085107J
+	// @author A0085107J
 	/**
 	 * retrieveTaskIdNumber: retrieves user-specified taskID.
 	 * 
@@ -832,7 +832,7 @@ public class ExeCom {
 		return Integer.parseInt(taskID);
 	}
 
-	//@author A0083093E
+	// @author A0083093E
 	/**
 	 * checkUndoStack: checks if undo stack is empty checkRedoStack: checks if
 	 * redo stack is empty

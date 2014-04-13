@@ -39,7 +39,7 @@ public class Task {
 		location = c.getLocation();
 		priority = c.getPriority();
 		category = c.getCategory();
-
+    completed= "false";
 		this.timeNum = 100000000*Long.parseLong(endYear) + 1000000*Long.parseLong(endMonth) + 10000*Long.parseLong(endDay);
 		if(endHours!=null) {
 			this.timeNum += 100*Long.parseLong(endHours) + Long.parseLong(endMins); 

@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class Display extends Task {
 
@@ -171,6 +172,48 @@ public class Display extends Task {
 		return dispOut;
 	}
 
+	/**
+	 * displayTaskForToday: Format string to contain all information of tasks that ends today
+	 * 
+	 * @author A0085107J
+	 * @param void
+	 * @return String
+	 */
+	public String displayTaskForToday() {
+			String dispOut = "";
+			if (!taskList.isEmpty()) {
+				dispOut = dispOut + printTaskForTodayHeader();
+				for (Task task : taskList) {
+					if (isEndingToday(task)) {
+						dispOut = setTaskToDisplay(dispOut, task);
+					}
+				}
+			} else {
+				dispOut = TASKLIST_EMPTY_MESSAGE;
+			}
+			return dispOut + "\n";
+	}
+
+	/**
+	 * displayTaskForToday: checks if a particular task's end date is today
+	 * 
+	 * @author A0085107J
+	 * @param Task
+	 * @return boolean
+	 */
+	private boolean isEndingToday(Task task) {
+		Calendar cal = Calendar.getInstance();
+		String currentDay = cal.get(Calendar.DAY_OF_MONTH) + "";
+		String currentMonth = cal.get(Calendar.MONTH) + 1 + "";
+		String currentYear = cal.get(Calendar.YEAR) + "";
+		if (task.getEndDay().equals(currentDay) && task.getEndMonth().equals(currentMonth) 
+				&& task.getEndYear().equals(currentYear))
+			return true;
+		else {
+			return false;
+		}
+	}
+
 	/*
 	 * displayStartMonth: Displays the contents
 	 * 
@@ -258,10 +301,22 @@ public class Display extends Task {
 	 * 
 	 * @author A0085107J
 	 * @param void
-	 * @return void
+	 * @return string
 	 */
 	private String printCompletedListingHeader() {
 		return "== Listing of completed tasks =====\n";
+	}
+
+	/**
+	 * printTaskForTodayHeader: print header for today's tasks
+	 * 
+	 * @author A0085107J
+	 * @param void
+	 * @return string
+	 */
+	private String printTaskForTodayHeader() {
+		
+		return "== Today's Tasks =====\n";
 	}
 
 	/**
@@ -269,7 +324,7 @@ public class Display extends Task {
 	 * 
 	 * @author A0085107J
 	 * @param void
-	 * @return void
+	 * @return String
 	 */
 	private String printUncompletedListingHeader() {
 		return "== Listing of pending tasks =====\n";
@@ -282,7 +337,7 @@ public class Display extends Task {
 	 * @author A0085107J
 	 * @param Task
 	 *            , String
-	 * @return void
+	 * @return String
 	 */
 	private static String printTaskWithIndex(Task task, String print) {
 		return (taskList.indexOf(task) + 1) + ": " + print + "\n";

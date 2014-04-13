@@ -25,7 +25,7 @@ public class Completed {
 	public String markCompleted(Command c) {
 		String feedback = "";
 		for(String target : c.getTargetedTasks()){
-			feedback = feedback + markSpecificTaskCompleted(target);
+			feedback += markSpecificTaskCompleted(target);
 		}
 		return feedback;
 	}

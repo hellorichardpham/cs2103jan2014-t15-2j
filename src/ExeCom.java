@@ -99,7 +99,8 @@ public class ExeCom {
 		Storage s = new Storage();
 		s.loadStorage();
 		Alarm.setAlarm();
-
+		
+		System.out.println(keyWord);
 		switch (keyWord) {
 
 		case JUSTADD:

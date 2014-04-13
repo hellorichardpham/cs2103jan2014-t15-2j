@@ -84,7 +84,9 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 				commandLineActionPerformed(evt);
 			}
 		});
-
+		
+		//commandLine.setText("What would you like to do?");
+		
 		undoButton.setText("Undo");
 		undoButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -189,6 +191,28 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 	 */
 	private void displayWelcomeMessage(){
 		printLine(WELCOME_MESSAGE, header);
+		displayTaskForTheDay();
+	}
+
+	/**
+	 * displayTaskForTheDay: displays tasks that ends today
+	 * 
+	 * @author A0085107J
+	 * @param void
+	 * @return void
+	 */
+	private void displayTaskForTheDay() {
+		Storage s = new Storage();
+		try {
+			s.loadStorage();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		ArrayList<Task> taskList = ExeCom.getTaskListInstance();
+		Display d = new Display(taskList);
+		
+		String feedback = d.displayTaskForToday();
+		printFeedback(feedback);
 	}
 	
 	/**
@@ -290,6 +314,7 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 			case "yes":
 			case "y":
 			case "ya":
+			case "yeah":
 				com = pc.process(conflictedUserInput);
 				conflictedUserInput = null;
 				break;
@@ -402,7 +427,7 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 				String category = "";
 				
 				//print index
-				print(feedbackArray[i].substring(0,feedbackArray[i].indexOf(":")+1) + " ",black);
+				print(feedbackArray[i].substring(0,feedbackArray[i].indexOf(":")) + ". ",black);
 				String[] componentArray = feedbackArray[i].split("//");
 				for(int j=0;j<componentArray.length;j++) {
 					if(componentArray[j].contains("DECS2103:")) {

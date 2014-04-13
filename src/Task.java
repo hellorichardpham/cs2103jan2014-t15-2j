@@ -38,6 +38,8 @@ public class Task {
 		location = c.getLocation();
 		priority = c.getPriority();
 		category = c.getCategory();
+    completed= "false";
+
 	}
 
 	public Task(Task task) {

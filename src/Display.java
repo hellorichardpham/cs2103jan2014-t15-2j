@@ -7,7 +7,7 @@ public class Display extends Task {
 	private static final String NO_RELATED_TASKS_MESSAGE = "There are no related tasks! \n";
 	private static final String NO_TASKS_END = "There are no tasks that end in ";
 	private static final String NO_TASKS_START = "There are no tasks that start in ";
-	private static final CharSequence EMPTY_STRING = "";
+	private static final String EMPTY_STRING = "";
 	private static ArrayList<Task>[][] monthList;
 	private static Command command = null;
 	private static ArrayList<Task> taskList;
@@ -191,6 +191,48 @@ public class Display extends Task {
 			dispOut = TASKLIST_EMPTY_MESSAGE;
 		}
 		return dispOut + "\n";
+	}
+
+	//@author A0085107J
+	/**
+	 * displayHelp: prints out basic information on how to user the program
+	 * 
+	 * @param void
+	 * @return String
+	 */
+	public String displayHelp() {
+		String feedback=EMPTY_STRING;
+		feedback += "=====Help====\n"
+				+ "List of keywords:\n"
+				+ "Add, Delete,  Edit, Search, Display, Deadline, Done, Undo, Redo, "
+				+ "Clear, Exit\n \n"
+
+				+ "Possible tasks attributes:\n"
+				+ "Time, Date, Priority, Location, Category\n \n"
+
+				+ "List of possible shortcuts:\n"
+				+ "Add: a, ad\n"
+				+ "Delete: d, del, remove, rmv, rem, rm,\n"
+				+ "Edit: e, ed, update, upd, ud, change, chge\n"
+				+ "Search: s,srh, find, fd\n"
+				+ "Displayd: dm, dispm, displaym, deadline, dd, dl, ends, end\n"
+				+ "Display: d, dis, disp, show, shw\n"
+				+ "Undo: u, un, und\n"
+				+ "Redo: r, re, rd\n"
+				+ "Clear: c, cl, clr\n"
+				+ "Help: h, hp, hlp, ?, ??\n"
+				+ "Email: em, send, sd\n"
+				+ "Exit: ex, quit, qt, q\n \n"
+
+				+ "Adding Format:\n"
+				+ "    1. Details are necessary.\n"
+				+ "    2. Input time should have 24-hour format and have 'hrs' e.g 2359hrs\n"
+				+ "    3. Put \"//\" before location, priority and category. They can be represented by their first letter\n"
+				+ "       e.g //priority high or //p high\n"
+				+ "    4. For location, can replace \"//\" with \"@\" \n"
+				+ "       e.g @school\n"
+;
+		return feedback;
 	}
 
 	//@author A0085107J

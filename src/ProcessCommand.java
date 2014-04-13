@@ -709,9 +709,10 @@ public class ProcessCommand {
 		command = command.toLowerCase();
 		if (command.equals("disp") || command.equals("dis")
 				|| command.equals("d") || command.equals("di")
-				|| command.equals("show")) {
+				|| command.equals("show") || command.equals("shw")) {
 			command = "display";
-		} else if (command.equals("a") || command.equals("ad")) {
+		} else if (command.equals("a") || command.equals("ad")
+				||command.equals("addd")) {
 			command = "add";
 		} else if (command.equals("de") || command.equals("del")
 				|| command.equals("dele") || command.equals("remove") || 
@@ -720,19 +721,22 @@ public class ProcessCommand {
 			command = "delete";
 		} else if (command.equals("s") || command.equals("se")
 				|| command.equals("sea") || command.equals("sear")
-				|| command.equals("searc") || command.equals("find")) {
+				|| command.equals("searc") || command.equals("find")
+				|| command.equals("fd") || command.equals("srh")) {
 			command = "search";
 		} else if (command.equals("u") || command.equals("un")
-				|| command.equals("und")) {
+				|| command.equals("und") || command.equals("ud")) {
 			command = "undo";
 		} else if (command.equals("r") || command.equals("re")
-				|| command.equals("red")) {
+				|| command.equals("red") || command.equals("rd")) {
 			command = "redo";
 		} else if (command.equals("e") || command.equals("ed")
-				|| command.equals("edi") || command.equals("change")) {
+				|| command.equals("edi") || command.equals("update")
+				|| command.equals("upd")|| command.equals("ud")
+				|| command.equals("change") ||command.equals("chge")) {
 			command = "edit";
 		} else if (command.equals("em") || command.equals("ema")
-				|| command.equals("send")) {
+				|| command.equals("send") || command.equals("sd")) {
 			command = "email";
 		} else if (command.equals("c") || command.equals("cl")
 				|| command.equals("cle") || command.equals("clea")
@@ -745,8 +749,16 @@ public class ProcessCommand {
 				|| command.equals("dl") || command.equals("deadl")
 				|| command.equals("ends") || command.equals("end")) {
 			command = "displayd";
-		} else {
-			// do nothing
+		} else if (command.equals("hlp") || command.equals("??")
+				|| command.equals("hp") || command.equals("?")
+				||command.equals("h")){
+				command = "help";
+		} else if (command.equals("sc") || command.equals("scuts")
+				|| command.equals("stct") ||command.equals("scut")){
+				command = "shortcut";
+		}else if (command.equals("ex") || command.equals("q")
+			|| command.equals("quit") || command.equals("qt")){
+			command = "exit";
 		}
 		return command;
 	}

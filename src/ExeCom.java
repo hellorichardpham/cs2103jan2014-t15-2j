@@ -23,6 +23,8 @@ public class ExeCom {
 	private final static String EDIT = "edit";
 	private final static String REDO = "redo";
 	private final static String SEARCH = "search";
+	private final static String HELP = "help";
+	private final static String QUESTION_MARK = "?";
 	private final static String UNDO = "undo";
 	private static final String UPDATE = "update";
 	private final static String JUSTADD = "justadd";
@@ -41,6 +43,7 @@ public class ExeCom {
 	private static final String CANCELLED_ACTION_MESSAGE = "The action has been cancelled.\n";
 	private static final String DISPLAYD = "displayd";
 	private static final Object EMPTY_STRING = "";
+	
 	private static ExeCom theOne;
 
 	public static ExeCom getInstance() {
@@ -110,7 +113,6 @@ public class ExeCom {
 		s.loadStorage();
 		Alarm.setAlarm();
 
-		System.out.println(keyWord);
 		switch (keyWord) {
 
 		case JUSTADD:
@@ -141,20 +143,26 @@ public class ExeCom {
 			Display d = new Display(getTaskListInstance(), c,
 					getMonthListInstance());
 			if (isValidDisplayDateCommand()) {
-				feedback = feedback + d.displayDate();
+				feedback += d.displayDate();
 			} else if (isDisplayMonth()) {
-				feedback = feedback + d.displayStartMonth();
+				feedback += d.displayStartMonth();
 			} else if (isValidUndoRedoDisplayCommand()) {
-				feedback = feedback + d.displayTaskList();
+				feedback += d.displayTaskList();
 			} else if (isDisplayCompleted()) {
-				feedback = feedback + d.displayCompleted();
+				feedback += d.displayCompleted();
 			} else if (isDisplayUncompleted()) {
-				feedback = feedback + d.displayUncompleted();
+				feedback += d.displayUncompleted();
 			} else {
-				feedback = feedback + INVALID_COMMAND_MESSAGE;
+				feedback += INVALID_COMMAND_MESSAGE;
 			}
 			break;
-
+		
+		case HELP:
+		case QUESTION_MARK:
+			Display dis = new Display(getTaskListInstance());
+			feedback += dis.displayHelp();
+			break;
+			
 		//@author A0118590A
 		case DISPLAYD:
 			Display displayDeadline = new Display(getTaskListInstance(), c,

@@ -709,10 +709,12 @@ public class ProcessCommand {
 		command = command.toLowerCase();
 		if (command.equals("disp") || command.equals("dis")
 				|| command.equals("d") || command.equals("di")
-				|| command.equals("show") || command.equals("shw")) {
+				|| command.equals("show") || command.equals("shw")
+				||command.equals("view") || command.equals("v")) {
 			command = "display";
 		} else if (command.equals("a") || command.equals("ad")
-				||command.equals("addd")) {
+				||command.equals("addd") || command.equals("create")
+				|| command.equals("cr8")) {
 			command = "add";
 		} else if (command.equals("de") || command.equals("del")
 				|| command.equals("dele") || command.equals("remove") || 

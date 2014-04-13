@@ -11,22 +11,18 @@ import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
+//@author A0083093E
 /**
  * Class TaskTrackerGUI This class acts as the GUI class to handle user events
- * 
- * @author A0083093E
  */
 public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 
-	/**
-	 * @author A0083093E
-	 */
 	private static final long serialVersionUID = 1L;
 	// code placed at front of feedback for GUI to recognize there is a conflict
 	private final static String CONFLICTED_CODE = "-cs2103--conflicted";
 	private final static String CANCELLED = "cancel";
 	private final static String WELCOME_MESSAGE = "======= Welcome to TaskTracker! =======\n";
-	
+
 	private static StyledDocument doc;
 	private static Style blue1;
 	private static Style blue2;
@@ -35,13 +31,12 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 	private static Style gray;
 	private static Style red;
 	private static Style header;
-	
+
 	private String conflictedUserInput;
 
+	//@author A0083093E
 	/**
 	 * Creates new form TaskTrackerGUI
-	 * 
-	 * @author A0083093E
 	 */
 	public TaskTrackerGUI() {
 		setIconImage(Toolkit.getDefaultToolkit().getImage("src\\icon.png"));
@@ -53,11 +48,10 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 			e.printStackTrace();
 		}
 	}
-	
+	//@author A0083093E generated
 	/**
 	 * initComponents: initialise components of GUI
 	 * 
-	 * @author A0083093E generated
 	 * @param void
 	 * @return void
 	 */
@@ -73,15 +67,15 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 		jLabel1 = new javax.swing.JLabel();
 
 		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-		
+
 		undoButton.setEnabled(false);
 		redoButton.setEnabled(false);
-		
+
 		displayTextBox.setEditable(false);
 		doc = displayTextBox.getStyledDocument();
 		setStyles();
 		displayWelcomeMessage();
-		
+
 		jScrollPane.setViewportView(displayTextBox);
 
 		commandLine.addKeyListener(this);
@@ -91,7 +85,7 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 				commandLineActionPerformed(evt);
 			}
 		});
-		
+
 		undoButton.setText("Undo");
 		undoButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -189,20 +183,20 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 
 		pack();
 	}// </editor-fold>//GEN-END:initComponents
-	
+
+	//@author A0083093E
 	/**
 	 * This method prints the welcome message
-	 * @author A0083093E
 	 */
 	private void displayWelcomeMessage(){
 		printLine(WELCOME_MESSAGE, header);
 		displayTaskForTheDay();
 	}
 
+	//@author A0085107J
 	/**
 	 * displayTaskForTheDay: displays tasks that ends today
 	 * 
-	 * @author A0085107J
 	 * @param void
 	 * @return void
 	 */
@@ -215,14 +209,14 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 		}
 		ArrayList<Task> taskList = ExeCom.getTaskListInstance();
 		Display d = new Display(taskList);
-		
+
 		String feedback = d.displayTaskForToday();
 		printFeedback(feedback);
 	}
-	
+
+	//@author A0083093E
 	/**
 	 * This method prints the string onto the displaybox in the specified style with a newline
-	 * @author A0083093E
 	 * @param string
 	 * @param style
 	 */
@@ -233,10 +227,10 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 			e1.printStackTrace();
 		}
 	}
-	
+
+	//@author A0083093E
 	/**
 	 * This method prints the string onto the displaybox in the specified style without a newline
-	 * @author A0083093E
 	 * @param string
 	 * @param style
 	 */
@@ -247,47 +241,47 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 			e1.printStackTrace();
 		}
 	}
-	
+
+	//@author A0083093E
 	/**
 	 * This method sets the styles available for printing
-	 * @author A0083093E
 	 */
 	private void setStyles() {
-	
+
 		Color darkBlue = new Color(27,67,118);
 		blue1 = displayTextBox.addStyle("This prints in dark blue", null);
 		StyleConstants.setForeground(blue1, darkBlue);
 		StyleConstants.setFontSize(blue1, 15);
 		StyleConstants.setFontFamily(blue1, "arial");
-		
+
 		Color lighterBlue = new Color(96,117,158);
 		blue2 = displayTextBox.addStyle("This prints in lighter blue", null);
 		StyleConstants.setForeground(blue2, lighterBlue);
 		StyleConstants.setFontSize(blue2, 15);
 		StyleConstants.setFontFamily(blue2, "arial");
-		
+
 		Color greenish = new Color(46,139,87);
 		green = displayTextBox.addStyle("This prints in lightest blue", null);
 		StyleConstants.setForeground(green, greenish);
 		StyleConstants.setFontSize(green, 15);
 		StyleConstants.setFontFamily(green, "arial");
-		
+
 		Color darkRed = new Color(128,0,128);
 		red = displayTextBox.addStyle("This prints in red",null);
 		StyleConstants.setForeground(red, darkRed);
 		StyleConstants.setFontSize(red, 15);
 		StyleConstants.setFontFamily(red, "arial");
-		
+
 		black = displayTextBox.addStyle("This prints in black", null);
 		StyleConstants.setForeground(black, Color.black);
 		StyleConstants.setFontSize(black, 15);
 		StyleConstants.setFontFamily(black, "arial");
-		
+
 		gray = displayTextBox.addStyle("This prints in gray", null);
 		StyleConstants.setForeground(gray, Color.gray);
 		StyleConstants.setFontSize(gray, 15);
 		StyleConstants.setFontFamily(gray, "arial");
-		
+
 		Color dark = new Color(154,50,50);
 		header = displayTextBox.addStyle("This prints the headers",null);
 		StyleConstants.setForeground(header, dark);
@@ -295,11 +289,10 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 		StyleConstants.setFontSize(header, 20);
 	}
 
+	//@author A0083093E
 	/**
 	 * This method describes the action taken by the program when the user enters
 	 * a line of command
-	 * 
-	 * @author A0083093E
 	 */
 	private void commandLineActionPerformed(java.awt.event.ActionEvent evt) {
 		String userInput = commandLine.getText().trim();
@@ -313,7 +306,7 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 			displayTextBox.setText("");
 			printLine(WELCOME_MESSAGE,header);
 		}
-		
+
 		if (conflictedUserInput != null) {
 			switch (userInput.toLowerCase()) {
 			case "yes":
@@ -342,16 +335,15 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 		setUndoRedoButtons();	
 		printFeedback(feedback);
 	}
-	
+
+	//@author A0083093E
 	/**
 	 * This method stamps the "just" keyword over the original add or edit keyword so that ExeCom executes
 	 * the command without checking for conflicts
 	 * Subsequently, it removes the codeword for printing
 	 * 
-	 * @author A0083093E
-	 * @param userInput
-	 * @param feedback
-	 * @return feedback String
+	 * @param String,String
+	 * @return String
 	 */
 	private String replaceConflictCode(String userInput, String feedback) {
 		if (feedback.contains(CONFLICTED_CODE)) {
@@ -362,11 +354,10 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 		return feedback;
 	}
 
+	//@author A0083093E
 	/**
 	 * This method describes the action taken by the program when the user clicks
 	 * on the Undo button
-	 * 
-	 * @author A0083093E
 	 */
 	private void undoButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		ExeCom ec = ExeCom.getInstance();
@@ -382,11 +373,10 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 		setUndoRedoButtons();
 	}
 
+	//@author A0083093E
 	/**
 	 * This method describes the action taken by the program when the user clicks
 	 * on the Redo button
-	 * 
-	 * @author A0083093E
 	 */
 	private void redoButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		ExeCom ec = ExeCom.getInstance();
@@ -401,27 +391,27 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 		printFeedback(feedback);
 		setUndoRedoButtons();
 	}
-	
+
+	//@author A0083093E
 	/**
 	 * This method checks the undo and redo Stacks and updates the buttons accordingly
-	 * @author A0083093E 
 	 */
 	private void setUndoRedoButtons() {
 		undoButton.setEnabled(ExeCom.checkUndoStack());
 		redoButton.setEnabled(ExeCom.checkRedoStack());
 	}
-	
+
+	//@author A0083093E
 	/**
 	 * This method prints the String feedback returned by ExeCom
 	 * @param String
-	 * @author A0083093E
 	 */
 	private void printFeedback(String feedback) {
 		String[] feedbackArray = feedback.split("\n");
 
 		for(int i=0;i<feedbackArray.length;i++) {
 			if(feedbackArray[i].length()!=0 && Character.isDigit(feedbackArray[i].charAt(0))) {
-				
+
 				String details = "";
 				String startDate = "";
 				String endDate = "";
@@ -430,7 +420,7 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 				String location = "";	
 				String priority = "";
 				String category = "";
-				
+
 				//print index
 				print(feedbackArray[i].substring(0,feedbackArray[i].indexOf(":")) + ". ",black);
 				String[] componentArray = feedbackArray[i].split("//");
@@ -467,7 +457,7 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 				printCategory(category);
 				printPriority(priority);
 				printLine("",black);
-				
+
 			}
 			else if(feedbackArray[i].contains("=====")) {
 				printLine(feedbackArray[i],header);
@@ -476,15 +466,15 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 				printLine(feedbackArray[i],blue1);
 			}
 		}
-		
+
 		printLine("",black);
 		displayTextBox.setCaretPosition(displayTextBox.getDocument().getLength());
 	}
 
+	//@author A0083093E
 	/**
 	 * printDetails: displays detail attribute on the GUI
 	 * 
-	 * @author A0083093E
 	 * @param String
 	 * @return void
 	 */
@@ -492,10 +482,10 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 		print(details,blue1);
 	}
 
+	//@author A0083093E
 	/**
 	 * printPriority: displays priority attribute on the GUI
 	 * 
-	 * @author A0083093E
 	 * @param String
 	 * @return void
 	 */
@@ -505,10 +495,10 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 		}
 	}
 
+	//@author A0083093E
 	/**
 	 * printCategory: displays category attribute on the GUI
 	 * 
-	 * @author A0083093E
 	 * @param String
 	 * @return void
 	 */
@@ -516,13 +506,13 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 		if(!category.equals("")) {
 			print(" {" + category + "} ",blue2);
 		}
-		
+
 	}
 
+	//@author A0083093E
 	/**
 	 * printLocation: displays location attribute on the GUI
 	 * 
-	 * @author A0083093E
 	 * @param String
 	 * @return void
 	 */
@@ -532,10 +522,10 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 		}
 	}
 
+	//@author A0083093E
 	/**
 	 * printDate: displays date attributes on the GUI
 	 * 
-	 * @author A0083093E
 	 * @param String, String
 	 * @return void
 	 */
@@ -547,10 +537,10 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 		}
 	}
 
+	//@author A0083093E
 	/**
 	 * printTime: displays time attributes on the GUI
 	 * 
-	 * @author A0083093E
 	 * @param String, String
 	 * @return void
 	 */
@@ -564,20 +554,20 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 		else if(!startTime.equals("")) {
 			print("[" + startTime + "] ",gray);
 		}
-			else {
-				print("[" + endTime + "] ",gray);
-			}
+		else {
+			print("[" + endTime + "] ",gray);
+		}
 	}
 
+	//@author A0083093E
 	/**
 	 * This line closes the program when the user clicks on the Exit button
-	 * 
-	 * @author A0083093E
 	 */
 	private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		System.exit(0);
 	}
 
+	//@author A0083093E generated
 	public static void main(String args[]) {
 		/* Set the Nimbus look and feel */
 		// <editor-fold defaultstate="collapsed"
@@ -629,11 +619,11 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 	private javax.swing.JButton undoButton;
 	// End of variables declaration//GEN-END:variables
 
+	//@author A0083093E
 	/**
 	 * This method allows User to press the up and down directional keys to scroll the textField
-	 * @author A0083093E
 	 * @Override
-	**/
+	 **/
 	public void keyPressed(KeyEvent e) {
 		int keyCode = e.getKeyCode();
 		//if User presses UP key

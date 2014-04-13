@@ -1,23 +1,22 @@
 import java.util.ArrayList;
 
+//@author A0085107J
 /**
  * completed class: contains all methods related to completed feature
- * @author A0085107J
- * 
  */
+
 public class Completed {
 	private final static String TASKID_NOT_FOUND_MESSAGE = "That Task ID Number was not found";;
 	private ArrayList<Task> taskList;
 
-	//constructor
 	public Completed(){
 		taskList = ExeCom.getTaskListInstance();
 	}
 
+	//@author A0085107J
 	/**
 	 * markCompleted: marks a set of tasks as completed
 	 * 
-	 * @author A0085107J
 	 * @param Command
 	 * @return String
 	 * 
@@ -30,10 +29,10 @@ public class Completed {
 		return feedback;
 	}
 
+	//@author A0085107J
 	/**
 	 * markSpecificTaskCompleted: marks a task as completed
 	 * 
-	 * @author A0085107J
 	 * @param Command
 	 * @return String
 	 * 
@@ -43,7 +42,7 @@ public class Completed {
 		int taskIdNumber = ec.retrieveTaskIdNumber(target);
 		boolean isFound = false;
 		String output = "";
-		//loop thru whole taskList to find for the user specified task
+		//loop thru whole taskList to find for the user-specified task
 		for (int i = 0; i < taskList.size(); i++) {
 			if (isTaskFound(ec, taskIdNumber, i)) {
 				output += "This task is marked as completed: " + taskList.get(i).getDetails() + "\n";
@@ -58,12 +57,10 @@ public class Completed {
 		return output;
 	}
 
+	//@author A0085107J
 	/**
-	 * isTaskFound: checks if a particular task matches specificied taskIDs
-	 * @author A0085107J
-	 * @param ec
-	 * @param taskIdNumber
-	 * @param i
+	 * isTaskFound: checks if a particular task matches specified taskID
+	 * @param ExeCom, int, int
 	 * @return boolean
 	 */
 	private boolean isTaskFound(ExeCom ec, int taskIdNumber, int i) {

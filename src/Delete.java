@@ -6,16 +6,15 @@ public class Delete {
 	private static final String DELETE_CATEGORYPRIORITYLOCATION_UNSUCCESSFUL = "No tasks were found with that information!";
 	private ArrayList<Task> taskList;
 
-	// constructor
 	public Delete() {
 		this.taskList = ExeCom.getTaskListInstance();
 	}
 
+	//@author A0085107J
 	/**
 	 * 
 	 * delete: Go through taskList and remove task with matching taskID
 	 * 
-	 * @author A0085107J, A0118590A
 	 * @param command
 	 * @return string
 	 * 
@@ -26,25 +25,25 @@ public class Delete {
 		for (String target : c.getTargetedTasks()) {
 			if (isInteger(target)) {
 				feedback += deleteSpecifiedTask(target);
-			} else { // element is a string containing
-						// location/priority/category
+			} else { 
+				// element is a string containing location/priority/category
 				if (deleteSpecifiedLocationPriorityCategory(target)) {
 					feedback = DELETE_CATEGORYPRIORITYLOCATION_SUCCESSFUL;
 				} else {
 					feedback = DELETE_CATEGORYPRIORITYLOCATION_UNSUCCESSFUL;
 				}
 			}
-		}// end delete
+		}
 		return feedback + "\n";
 	}
 
+	//@author A0085107J
 	/**
 	 * 
 	 * deleteSpecifiedLocationPriorityCategory: Determine target string belongs
 	 * to location, priority or category and delete all related tasks from
 	 * taskList
 	 * 
-	 * @author A0085107J
 	 * @param String
 	 * @return void
 	 * 
@@ -66,7 +65,7 @@ public class Delete {
 			}
 			break;
 
-		// category
+			// category
 		case "family":
 		case "work":
 		case "friends":
@@ -80,7 +79,7 @@ public class Delete {
 			}
 			break;
 
-		// location
+			// location
 		default:
 			for (int i = 0; i < taskList.size(); i++) {
 				Task currentTask = taskList.get(i);
@@ -94,6 +93,7 @@ public class Delete {
 		return isDeleted;
 	}
 
+	//@author A0085107J
 	/**
 	 * 
 	 * deleteSpecifiedTask: Deletes one Task from TaskList
@@ -123,12 +123,10 @@ public class Delete {
 		return output + "\n";
 	}
 
+	//@author A0085107J
 	/**
+	 * isInteger: Checks whether the string in TargetedTask[] is an integer or not
 	 * 
-	 * isInteger: Checks whether the string in TargetedTask[] is an integer or
-	 * not
-	 * 
-	 * @author A0085107J
 	 * @param String
 	 * @return boolean
 	 * 
@@ -136,12 +134,10 @@ public class Delete {
 	public static boolean isInteger(String s) {
 		try {
 			Integer.parseInt(s);
+			return true;
 		} catch (NumberFormatException e) {
 			return false;
 		}
-		// only gets here if it successfully parsed the string, implying that
-		// particular string is an integer
-		return true;
 	}
 
 	/**
@@ -150,7 +146,7 @@ public class Delete {
 	 * is a valid taskID (positive integer) CURRENTLY NOT IN USE AS PARAMETER
 	 * CAN BE LOCATION/PRIORITY/CATEGORY
 	 * 
-	 * @author A0118590A, A0085107J
+	 * @author A0118590A
 	 * @param void
 	 * @return boolean
 	 * 

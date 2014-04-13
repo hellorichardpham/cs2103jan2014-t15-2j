@@ -1,9 +1,11 @@
+//@author A0085107J
+
 /**
  * Task (class) : This class acts as a blueprint for any task object. It
  * contains information regarding a single task.
  * 
- * @author A0085107J
  */
+
 public class Task {
 	protected String details;
 	protected String startDay;
@@ -38,7 +40,7 @@ public class Task {
 		location = c.getLocation();
 		priority = c.getPriority();
 		category = c.getCategory();
-    completed= "false";
+		completed= "false";
 
 	}
 
@@ -62,7 +64,7 @@ public class Task {
 
 	public Task() {
 	}
-	
+
 	public String getDetails() {
 		return details;
 	}
@@ -194,11 +196,11 @@ public class Task {
 	public void setCompleted(String completed) {
 		this.completed = completed;
 	}
-
+	
+	//@author A0085107J
 	/**
 	 * displayTask: display non-empty task attributes and their headers
 	 * 
-	 * @author A0085107J
 	 * @param void
 	 * @return String
 	 */
@@ -246,7 +248,7 @@ public class Task {
 	 * displayToStorage: display non-empty task attributes in the correct order
 	 * to external .txt file
 	 * 
-	 * @author A0085107J, A0097961M
+	 * @author A0097961M
 	 * @param void
 	 * @return String
 	 */

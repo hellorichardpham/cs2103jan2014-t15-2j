@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 public class UI {
 	Scanner scanner = new Scanner(System.in);
-	
+
 	public void printWelcomeMessage() {
 		System.out.println("   .    .  .  .. .. ........  ...   ............................................... ........  ..................................................................");
 		System.out.println(" ..~~....~:...:~....... .??.................................... ............... ...~~~~~~~~...............?+....:~~~~~~~................. ...?+..................");
@@ -16,10 +16,11 @@ public class UI {
 		System.out.println("  .....  .....    ............ .............. ................ ... ..............................................................................................");
 	}
 
+	//@author A0085107J-unused
+	//not used as we switched to a GUI based design
 	/**
 	 * promptUser: get user's command input
 	 * 
-	 * @author A0085107J-unused
 	 * @param void
 	 * @return String
 	 */
@@ -28,11 +29,12 @@ public class UI {
 		String userInput = scanner.nextLine();
 		return userInput;
 	}
-	
+
+	//@author A0085107J-unused
+	//not used as we switched to a GUI based design
 	/**
 	 * askForUserResponse: get user input
 	 * 
-	 * @author A0085107J-unused
 	 * @param void
 	 * @return String
 	 */

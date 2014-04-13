@@ -17,11 +17,10 @@ public class Storage {
 	private static final String EQUAL_CATEGORY = "//category";
 	private static final String EQUAL_PRIORITY = "//priority";
 	private static final String EQUAL_COMPLETE = "//completed";
-	private static final String EQUAL_TIMENUM = "//timenum";
 	private static final String EQUAL_TASKID = "//taskid";
 	private static final String EQUAL_BLANK_SPACE = " ";
 	private static final String EQUAL_EMPTY_STRING = "";
-
+	
 	private static final int ZERO_CONST = 0;
 	private static final int ONE_CONST = 1;
 	private static final int TEN_CONST = 10;
@@ -66,8 +65,7 @@ public class Storage {
 				String priority = EQUAL_EMPTY_STRING;
 				String details = EQUAL_EMPTY_STRING;
 				String complete = EQUAL_EMPTY_STRING;
-				String timenum = EQUAL_EMPTY_STRING;
-
+				
 				int i;
 				int endPosition = ZERO_CONST;
 				int startPosition = ZERO_CONST;
@@ -100,37 +98,23 @@ public class Storage {
 					}
 					if (retrieve[i].equals(EQUAL_COMPLETE)) {
 						for (int j = ONE_CONST; j < arraySize; j++) {
-							if (retrieve[j + i].equals(EQUAL_TIMENUM))
+							if (retrieve[j + i].equals(EQUAL_TASKID))
 								break;
 							complete += retrieve[j + i] + " ";
 						}
 					}
-					if (retrieve[i].equals(EQUAL_TIMENUM)) {
-						for (int j = ONE_CONST; j < arraySize; j++) {
-							if (retrieve[j + i].equals(EQUAL_TASKID))
-								break;
-							timenum += retrieve[j + i] + " ";
-						}
-					}
 				}
 				if (location.endsWith(EQUAL_BLANK_SPACE))
-					location = location.substring(ZERO_CONST, location.length()
-							- ONE_CONST);
+					location = location.substring(ZERO_CONST, location.length() - ONE_CONST);
 				if (category.endsWith(EQUAL_BLANK_SPACE))
-					category = category.substring(ZERO_CONST, category.length()
-							- ONE_CONST);
+					category = category.substring(ZERO_CONST, category.length() - ONE_CONST);
 				if (priority.endsWith(EQUAL_BLANK_SPACE))
-					priority = priority.substring(ZERO_CONST, priority.length()
-							- ONE_CONST);
+					priority = priority.substring(ZERO_CONST, priority.length() - ONE_CONST);
 				if (complete.endsWith(EQUAL_BLANK_SPACE))
-					complete = complete.substring(ZERO_CONST, complete.length()
-							- ONE_CONST);
-				if (timenum.endsWith(EQUAL_BLANK_SPACE))
-					timenum = timenum.substring(ZERO_CONST, timenum.length()
-							- ONE_CONST);
+					complete = complete.substring(ZERO_CONST, complete.length() - ONE_CONST);
 
 				setLocationToTaskIDAttribute(retrieve, arraySize, task,
-						location, category, priority, complete, timenum);
+						location, category, priority, complete);
 
 				startPosition = endPosition - TEN_CONST;
 				endPosition = startPosition;
@@ -144,7 +128,7 @@ public class Storage {
 						details += retrieve[counter] + EQUAL_BLANK_SPACE;
 					}
 				}
-
+				
 				setDetailsAttibutes(task, details);
 				ExeCom.getTaskListInstance().add(task);
 			}
@@ -161,44 +145,40 @@ public class Storage {
 	 * setDetailsAttibutes: set attributes for details into arrayList
 	 * 
 	 * @author A0097961M
-	 * @param Task
-	 *            , String
+	 * @param Task, String
 	 * @return void
 	 */
 	private void setDetailsAttibutes(Task task, String details) {
 		task.setDetails(details);
 	}
-
+	
 	/**
 	 * 
-	 * setLocationToTaskIDAttribute: set attributes for location, category,
-	 * priority, taskID into arrayList
+	 * setLocationToTaskIDAttribute: set attributes for location, category, priority, taskID
+	 * into arrayList
 	 * 
 	 * @author A0097961M
-	 * @param String
-	 *            [], int, Task, String, String, String
+	 * @param String[], int, Task, String, String, String
 	 * @return void
 	 */
 	private void setLocationToTaskIDAttribute(String[] retrieve, int arraySize,
-			Task task, String location, String category, String priority,
-			String complete, String timenum) {
+			Task task, String location, String category, String priority, String complete) {
 		task.setLocation(location);
 		task.setCategory(category);
 		task.setPriority(priority);
 		task.setCompleted(complete);
-		task.setTimeNum(Long.parseLong(timenum));
 		task.setTaskID(retrieve[arraySize - ONE_CONST]);
 	}
 
 	/**
 	 * 
-	 * setDayToMinsAttributes: set attributes for startDay, startMonth,
-	 * startYear, endDay, endMonth, endYear, startHours, startMins, endHours,
-	 * endMins into arrayList to taskList
+	 * setDayToMinsAttributes: set attributes for startDay, startMonth, startYear, 
+	 * endDay, endMonth, endYear, startHours, startMins, endHours, endMins
+	 * into arrayList
+	 * to taskList
 	 * 
 	 * @author A0097961M
-	 * @param String
-	 *            [], Task, int
+	 * @param String[], Task, int
 	 * @return void
 	 */
 	private void setDayToMinsAttributes(String[] retrieve, Task task,

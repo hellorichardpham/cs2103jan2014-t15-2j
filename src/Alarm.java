@@ -70,7 +70,7 @@ public class Alarm {
 	
 	/**
 	 * 
-	 * Alarm: set alarm to the scheduler in RemindTask
+	 * Alarm: set alarm to the scheduler by creating instance of RemindTask class
 	 * 
 	 * @author A0097961M
 	 * @param void
@@ -85,7 +85,7 @@ public class Alarm {
 	
 	/**
 	 * 
-	 * RemindTask: when a scheduler is called, the alarm's task will be mailed to users.
+	 * RemindTask: when a scheduler is called, run() method will be automatically and finally the task(s) will be mailed to user(s)
 	 * 
 	 * @author A0097961M
 	 * @param void

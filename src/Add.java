@@ -18,20 +18,13 @@ public class Add {
 	 * @return void
 	 */
 	public void addToTaskList(Command c) throws Exception {
-
-		Task taskToAdd = new Task(c);
-		taskToAdd.setTaskID(Integer.toString(ExeCom.getTaskListInstance().size() + 1));
-		boolean added = false;
-		for(int i=0;i<taskList.size();i++) {
-			if(taskList.get(i).getTimeNum() > taskToAdd.getTimeNum()) {
-				taskList.add(i,taskToAdd);
-			}
-		}
-		if(added == false) {
+		{
+			ExeCom ec = ExeCom.getInstance();
+			Task taskToAdd = new Task(c);
+			taskToAdd.setTaskID(Integer.toString(ExeCom.getTaskListInstance().size() + 1));
 			taskList.add(taskToAdd);
 		}
 	}
-
 
 	/**
 	 * handleConflict: print conflicted tasks and ask if user wants to add anyway

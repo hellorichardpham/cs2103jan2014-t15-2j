@@ -21,7 +21,6 @@ public class Task {
 	protected String category;
 	protected String taskID;
 	protected String completed;
-	private long timeNum; //used for sorting
 
 	// constructor
 	public Task(Command c) {
@@ -39,13 +38,6 @@ public class Task {
 		location = c.getLocation();
 		priority = c.getPriority();
 		category = c.getCategory();
-
-		this.timeNum = 100000000*Long.parseLong(endYear) + 1000000*Long.parseLong(endMonth) + 10000*Long.parseLong(endDay);
-		if(endHours!=null) {
-			this.timeNum += 100*Long.parseLong(endHours) + Long.parseLong(endMins); 
-		} else {
-			this.timeNum += 2359;
-		}
 	}
 
 	public Task(Task task) {
@@ -64,26 +56,11 @@ public class Task {
 		this.priority = task.getPriority();
 		this.category = task.getCategory();
 		this.taskID = task.getTaskID();
-		
-		this.timeNum = 100000000*Long.parseLong(endYear) + 1000000*Long.parseLong(endMonth) + 10000*Long.parseLong(endDay);
-		if(!endHours.equals("null")) {
-			this.timeNum += 100*Long.parseLong(endHours) + Long.parseLong(endMins); 
-		} else {
-			this.timeNum += 2359;
-		}
 	}
 
 	public Task() {
 	}
 	
-	public long getTimeNum() {
-		return timeNum;
-	}
-	
-	public void setTimeNum(long timeNum) {
-		this.timeNum = timeNum;
-	}
-
 	public String getDetails() {
 		return details;
 	}
@@ -277,7 +254,7 @@ public class Task {
 				+ startHours + " " + startMins + " " + endHours + " " + endMins
 				+ " " + "//location " + location + " " + "//category "
 				+ category + " " + "//priority " + priority + " "
-				+ "//completed " + completed + " " + "//timenum " + timeNum + " ";
+				+ "//completed " + completed + " ";
 	}
 
 }

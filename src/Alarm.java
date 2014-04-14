@@ -8,7 +8,7 @@ public class Alarm {
 	private static final String EQUAL_NULL = "null";
 	private static final String ZERO_ZERO_CONST = "00";
 	private static final String EQUAL_SLASH = "/";
-	private static final String DATE_TIME_FORMAT = "dd/MM/yyyy hh:mm";
+	private static final String DATE_TIME_FORMAT = "dd/MM/yyyy HH:mm";
 	private static final String EQUAL_BLANK_SPACE = " ";
 	private static final String EQUAL_COLON = ":";
 	private static final String TASKID = "Task id no";
@@ -138,9 +138,9 @@ public class Alarm {
 
 					if (time >= (currentTime - TEN_THOUSAND_CONST)
 							&& (time <= currentTime + TEN_THOUSAND_CONST)) {
-
-						String task_info = TASKID + EQUAL_BLANK_SPACE + (ExeCom.getTaskListInstance()
-								.indexOf(t) + 1) + EQUAL_BLANK_SPACE + t.displayTaskEmail();
+						String task_info = TASKID + EQUAL_BLANK_SPACE
+								+ (ExeCom.getTaskListInstance().indexOf(t) + 1)
+								+ EQUAL_BLANK_SPACE + t.displayTaskEmail();
 						Email.emailUser(task_info);
 					}
 

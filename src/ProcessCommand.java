@@ -42,8 +42,6 @@ public class ProcessCommand {
 		processPriorityCategoryLocation(splitInput);
 		processLocation(splitInput);
 
-		//	processBy(splitInput);
-
 		String timeDetails = extractTime(splitInput);
 		processTime(timeDetails);
 
@@ -367,6 +365,7 @@ public class ProcessCommand {
 			case "tomorrow":
 			case "tmrw":
 			case "tmr":
+			case "tml":
 				cal.add(Calendar.DAY_OF_MONTH, 1);
 			case "today":
 			case "2day":

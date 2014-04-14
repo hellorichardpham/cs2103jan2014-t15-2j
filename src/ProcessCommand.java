@@ -15,7 +15,11 @@ public class ProcessCommand {
 	int indexOfDayOfWeek = Integer.MAX_VALUE;
 	int indexOfMonth = Integer.MIN_VALUE;
 
-	private Command c;
+	private Command c = new Command();
+
+	public Command getCommand() {
+		return c;
+	}
 
 	//@author A0083093E
 	/**

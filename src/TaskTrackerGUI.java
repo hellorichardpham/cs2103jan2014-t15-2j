@@ -3,6 +3,8 @@ import java.awt.event.KeyListener;
 import java.awt.Color;
 import java.awt.Toolkit;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
@@ -55,133 +57,120 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 	 * @return void
 	 */
 	// <editor-fold defaultstate="collapsed"
-	// desc="Generated Code">//GEN-BEGIN:initComponents
-	private void initComponents() {
-		jScrollPane = new javax.swing.JScrollPane();
-		displayTextBox = new javax.swing.JTextPane();
-		commandLine = new javax.swing.JTextField();
-		undoButton = new javax.swing.JButton();
-		redoButton = new javax.swing.JButton();
-		exitButton = new javax.swing.JButton();
-		jLabel1 = new javax.swing.JLabel();
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
 
-		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        jScrollPane1 = new javax.swing.JScrollPane();
+        displayTextBox = new javax.swing.JTextArea();
+        commandLine = new javax.swing.JTextField();
+        undoButton = new javax.swing.JButton();
+        redoButton = new javax.swing.JButton();
+        exitButton = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        helpButton = new javax.swing.JButton();
 
-		undoButton.setEnabled(false);
-		redoButton.setEnabled(false);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-		displayTextBox.setEditable(false);
-		doc = displayTextBox.getStyledDocument();
-		setStyles();
-		displayWelcomeMessage();
+        displayTextBox.setEditable(false);
+        displayTextBox.setColumns(20);
+        displayTextBox.setRows(5);
+        displayTextBox.setText("Welcome to TaskTracker :)\n\n\n");
+        jScrollPane1.setViewportView(displayTextBox);
 
-		jScrollPane.setViewportView(displayTextBox);
+        commandLine.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                commandLineActionPerformed(evt);
+            }
+        });
 
-		commandLine.addKeyListener(this);
+        undoButton.setText("Undo");
+        undoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                undoButtonActionPerformed(evt);
+            }
+        });
 
-		commandLine.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				commandLineActionPerformed(evt);
-			}
-		});
+        redoButton.setText("Redo");
+        redoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                redoButtonActionPerformed(evt);
+            }
+        });
 
-		undoButton.setText("Undo");
-		undoButton.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				undoButtonActionPerformed(evt);
-			}
-		});
+        exitButton.setText("Exit");
+        exitButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exitButtonActionPerformed(evt);
+            }
+        });
 
-		redoButton.setText("Redo");
-		redoButton.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				redoButtonActionPerformed(evt);
-			}
-		});
+        jLabel1.setText("Enter Command:");
 
-		exitButton.setText("Exit");
-		exitButton.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				exitButtonActionPerformed(evt);
-			}
-		});
+        helpButton.setText("Help");
+        helpButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                helpButtonActionPerformed(evt);
+            }
+        });
 
-		jLabel1.setText("Enter Command:");
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(undoButton)
+                        .addGap(18, 18, 18)
+                        .addComponent(redoButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 587, Short.MAX_VALUE)
+                        .addComponent(helpButton)
+                        .addGap(18, 18, 18)
+                        .addComponent(exitButton))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(commandLine)))
+                .addContainerGap())
+        );
 
-		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(
-				getContentPane());
-		getContentPane().setLayout(layout);
-		layout.setHorizontalGroup(layout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(
-						layout.createSequentialGroup()
-						.addContainerGap()
-						.addGroup(
-								layout.createParallelGroup(
-										javax.swing.GroupLayout.Alignment.LEADING)
-										.addComponent(
-												jScrollPane,
-												javax.swing.GroupLayout.Alignment.TRAILING)
-												.addGroup(
-														layout.createSequentialGroup()
-														.addComponent(
-																undoButton)
-																.addGap(18, 18,
-																		18)
-																		.addComponent(
-																				redoButton)
-																				.addPreferredGap(
-																						javax.swing.LayoutStyle.ComponentPlacement.RELATED,
-																						662,
-																						Short.MAX_VALUE)
-																						.addComponent(
-																								exitButton))
-																								.addGroup(
-																										javax.swing.GroupLayout.Alignment.TRAILING,
-																										layout.createSequentialGroup()
-																										.addComponent(
-																												jLabel1,
-																												javax.swing.GroupLayout.PREFERRED_SIZE,
-																												101,
-																												javax.swing.GroupLayout.PREFERRED_SIZE)
-																												.addPreferredGap(
-																														javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																														.addComponent(
-																																commandLine)))
-																																.addContainerGap()));
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {exitButton, helpButton, redoButton, undoButton});
 
-		layout.linkSize(javax.swing.SwingConstants.HORIZONTAL,
-				new java.awt.Component[] { exitButton, redoButton, undoButton });
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 363, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(commandLine, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(undoButton)
+                    .addComponent(redoButton)
+                    .addComponent(exitButton)
+                    .addComponent(helpButton))
+                .addContainerGap())
+        );
 
-		layout.setVerticalGroup(layout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(
-						layout.createSequentialGroup()
-						.addContainerGap()
-						.addComponent(jScrollPane,
-								javax.swing.GroupLayout.DEFAULT_SIZE,
-								363, Short.MAX_VALUE)
-								.addGap(18, 18, 18)
-								.addGroup(
-										layout.createParallelGroup(
-												javax.swing.GroupLayout.Alignment.BASELINE)
-												.addComponent(
-														commandLine,
-														javax.swing.GroupLayout.PREFERRED_SIZE,
-														javax.swing.GroupLayout.DEFAULT_SIZE,
-														javax.swing.GroupLayout.PREFERRED_SIZE)
-														.addComponent(jLabel1))
-														.addGap(18, 18, 18)
-														.addGroup(
-																layout.createParallelGroup(
-																		javax.swing.GroupLayout.Alignment.BASELINE)
-																		.addComponent(undoButton)
-																		.addComponent(redoButton)
-																		.addComponent(exitButton))
-																		.addContainerGap()));
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
 
-		pack();
-	}// </editor-fold>//GEN-END:initComponents
+    private void helpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpButtonActionPerformed
+        Command help = new Command();
+        help.setKeyword("help");
+        ExeCom ex = ExeCom.getInstance();
+        
+            try {
+                String helpDisplay = ex.executeCommand(help);
+            } catch(Exception e) {
+            }
+            
+        print(helpDisplay,blue1);
+    }//GEN-LAST:event_helpButtonActionPerformed
 
 	//@author A0083093E
 	/**
@@ -608,15 +597,16 @@ public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
 		});
 	}
 
-	// Variables declaration - do not modify//GEN-BEGIN:variables
-	private javax.swing.JTextField commandLine;
-	private JTextPane displayTextBox;
-	private javax.swing.JButton exitButton;
-	private javax.swing.JLabel jLabel1;
-	private javax.swing.JScrollPane jScrollPane;
-	private javax.swing.JButton redoButton;
-	private javax.swing.JButton undoButton;
-	// End of variables declaration//GEN-END:variables
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField commandLine;
+    private javax.swing.JTextArea displayTextBox;
+    private javax.swing.JButton exitButton;
+    private javax.swing.JButton helpButton;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton redoButton;
+    private javax.swing.JButton undoButton;
+    // End of variables declaration//GEN-END:variables
 
 	//@author A0083093E
 	/**

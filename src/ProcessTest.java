@@ -65,4 +65,18 @@ public class ProcessTest {
 		String result3 = pc.extractTime(splitInput3);
 		assert(result3.equals("1400hrs1500hrs"));
 	}
+	
+	//@author A0083093E
+	@Test
+	public void testExtractLocation() {
+		String userInput = "add lunch with dad @home";
+		ProcessCommand pc = new ProcessCommand();
+		Command test = pc.process(userInput);
+		assert(test.getLocation().equals("home"));
+		
+		String userInput2 = "add lunch with dad //location Outram Park at NUS //priority high";
+		Command test2 = pc.process(userInput);
+		assert(test.getLocation().equals("Outram Park at NUS"));
+	}
+	
 }//end class

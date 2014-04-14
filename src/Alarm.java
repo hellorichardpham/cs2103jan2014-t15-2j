@@ -64,7 +64,7 @@ public class Alarm {
 					+ EQUAL_BLANK_SPACE + hours + EQUAL_COLON + mins;
 			dateTime = sdf.parse(input);
 			time = ((dateTime.getTime() - date.getTime()) / THOUSAND_CONST);
-
+			
 			if (time > 0) {
 				Alarm reminderBeep = new Alarm(time);
 			}
@@ -141,7 +141,7 @@ public class Alarm {
 						String task_info = TASKID + EQUAL_BLANK_SPACE
 								+ (ExeCom.getTaskListInstance().indexOf(t) + 1)
 								+ EQUAL_BLANK_SPACE + t.displayTaskEmail();
-						
+
 						Email em = Email.getTheEmailInstance();
 						em.emailUser(task_info);
 					}

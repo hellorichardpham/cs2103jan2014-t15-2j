@@ -1,0 +1,1902 @@
+//@author: a0118590a
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Add.java
+	 */
+
+	/**
+	 * 
+	 * addToTaskList: Add tasks to arrayList and set taskID.
+	 * 
+	 * @param void
+	 * @return void
+	 */
+	public String addToTaskList(Command c) throws Exception {
+		{
+			ExeCom ec = ExeCom.getInstance();
+			Task taskToAdd = new Task(c);
+			taskToAdd.setTaskID(Integer.toString(ExeCom.getTaskListInstance().size() + 1));
+			taskList.add(taskToAdd);
+			return taskToAdd.getTaskID();
+		}
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Add.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Delete.java
+	 */
+
+	/**
+	 * 
+	 * isPositiveInteger: Checks if the delete/update/edit/completed parameter
+	 * is a valid taskID (positive integer) CURRENTLY NOT IN USE AS PARAMETER
+	 * CAN BE LOCATION/PRIORITY/CATEGORY
+	 * 
+	 * @param void
+	 * @return boolean
+	 * 
+	 */
+	public static boolean isPositiveInteger(Command c) {
+		try {
+			boolean flag = false;
+			for (int i = 0; i < c.getTargetedTasks().size(); i++) {
+				if (Integer.parseInt(c.getTargetedTasks().get(i)) > 0) {
+					flag = true;
+				}
+			}
+			return flag;
+		} catch (NumberFormatException e) {
+			return false;
+		}
+	}
+
+}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Delete.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+	 */
+
+	/**
+	 * displayStartMonth: Displays the contents
+	 *  
+	 * @param void
+	 * 
+	 * @return void
+	 */
+	public String displayStartMonth() {
+		String month = command.getEndMonth();
+		switch (month) {
+		case "01":
+			return printStartMonthList(0);
+		case "02":
+			return printStartMonthList(1);
+		case "03":
+			return printStartMonthList(2);
+		case "04":
+			return printStartMonthList(3);
+		case "05":
+			return printStartMonthList(4);
+		case "06":
+			return printStartMonthList(5);
+		case "07":
+			return printStartMonthList(6);
+		case "08":
+			return printStartMonthList(7);
+		case "09":
+			return printStartMonthList(8);
+		case "10":
+			return printStartMonthList(9);
+		case "11":
+			return printStartMonthList(10);
+		case "12":
+			return printStartMonthList(11);
+		}
+		return "invalid month";
+	}
+	
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+	 */
+
+	/**
+	 * displayEndMonth: Displays the contents of the ArrayList that end in a
+	 * particular month
+	 * 
+	 * @param void
+	 * 
+	 * @return String
+	 */
+	public String displayEndMonth() {
+		String month = command.getEndMonth();
+		switch (month) {
+		case "01":
+			return printEndMonthList(0);
+		case "02":
+			return printEndMonthList(1);
+		case "03":
+			return printEndMonthList(2);
+		case "04":
+			return printEndMonthList(3);
+		case "05":
+			return printEndMonthList(4);
+		case "06":
+			return printEndMonthList(5);
+		case "07":
+			return printEndMonthList(6);
+		case "08":
+			return printEndMonthList(7);
+		case "09":
+			return printEndMonthList(8);
+		case "10":
+			return printEndMonthList(9);
+		case "11":
+			return printEndMonthList(10);
+		case "12":
+			return printEndMonthList(11);
+		}
+		return "invalid month";
+	}
+
+
+	/**
+	 * printCompletedListingHeader: print header for completed listing
+	 * 
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+	 */
+
+	/*
+	 * printSorted: Displays the entire taskList in descending order based on
+	 * start month
+	 * 
+	 * 
+	 * @param void
+	 * 
+	 * @return void
+	 */
+	public static void printSorted() {
+		for (Task task : sortedTaskList) {
+			System.out.println(task.displayTask());
+		}
+	}
+	
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+	 */
+
+	/*
+	 * printStartMonthList: Displays all tasks that begin in the specified month
+	 *  
+	 * @param int
+	 * 
+	 * @return String
+	 */
+	public String printStartMonthList(int monthIndex) {
+		boolean isFound = false;
+		String output = printStartMonthName(monthIndex);
+		for (int j = 0; j < startMonthList[monthIndex][0].size(); j++) {
+			isFound = true;
+			String print = startMonthList[monthIndex][0].get(j).displayTask();
+			output += printTaskWithIndex(startMonthList[monthIndex][0].get(j),
+					print);
+		}
+		if (isFound) {
+			return output + "\n";
+		} else {
+			return NO_TASKS_START + printMonthName(monthIndex) + "\n";
+		}
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+	 */
+
+	/*
+	 * printStartMonthList: Displays all tasks that end in the specified month
+     * 
+	 * @param int
+	 * 
+	 * @return String
+	 */
+	public static String printEndMonthList(int monthIndex) {
+		boolean isFound = false;
+		String output = printEndMonthName(monthIndex);
+		for (int j = 0; j < endMonthList[monthIndex][0].size(); j++) {
+			isFound = true;
+			String print = endMonthList[monthIndex][0].get(j).displayTask();
+			output += printTaskWithIndex(endMonthList[monthIndex][0].get(j),
+					print);
+		}
+		if (isFound) {
+			return output + "\n";
+		} else {
+			return NO_TASKS_END + printMonthName(monthIndex) + "\n";
+		}
+
+	}
+	
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+	 */
+
+	/*
+	 * sort: Sorts tasks into two lists based on start/end month
+	 * 
+	 * 
+	 * @param void
+	 * 
+	 * @return ArrayList<Task>
+	 */
+	public ArrayList<Task> sort() {
+		for (int i = 0; i < months.size() - 1; i++) {
+			for (int j = 0; j < taskList.size(); j++) {
+				if (isMatchingTaskStartMonth(taskList.get(j), months.get(i))) {
+					startMonthList[i][0].add(taskList.get(j));
+					sortedTaskList.add(taskList.get(j));
+				}
+				if (isMatchingTaskEndMonth(taskList.get(j), months.get(i))) {
+					endMonthList[i][0].add(taskList.get(j));
+				}
+			}
+		}
+		return sortedTaskList;
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+	 */
+
+	/*
+	 * isMatchingTaskStartMonth: Returns True/False depending on if a task
+	 * starts in the specified month
+	 * 
+	 * @param Task, String
+	 * 
+	 * @return boolean
+	 */
+	public static boolean isMatchingTaskStartMonth(Task task, String month) {
+		if (!task.getStartMonth().equals("null")) {
+			return month.contains(task.getStartMonth());
+		} else {
+			return false;
+		}
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+	 */
+
+	/*
+	 * isMatchingTaskEndMonth: Returns True/False depending on if a task ends in
+	 * the specified month
+	 * 
+	 * 
+	 * @param Task, String
+	 * 
+	 * @return boolean
+	 */
+	public static boolean isMatchingTaskEndMonth(Task task, String month) {
+		return month.contains(task.getEndMonth());
+	}
+	
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+	 */
+
+	/*
+	 * initializeMonths: Resets months variable and adds the number that
+	 * correlates to each month. (Jan == 01). Note that it contains both because
+	 * the input may come as one or two digits
+	 * 
+	 * 
+	 * @param void
+	 * 
+	 * @return void
+	 */
+	public static void initializeMonths() {
+		months = new ArrayList<String>(); // resets months so no overflow
+		/*
+		 * Each time we add single digits, we add 1 and 01 because the user
+		 * might enter may 01 2014 instead. This allows us to catch both. We may
+		 * want to force the month to be a certain way so we don't have to do
+		 * this.
+		 */
+		months.add("1 01");
+		months.add("2 02");
+		months.add("3 03");
+		months.add("4 04");
+		months.add("5 05");
+		months.add("6 06");
+		months.add("7 07");
+		months.add("8 08");
+		months.add("9 09");
+		months.add("10");
+		months.add("11");
+		months.add("12");
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+	 */
+
+	/*
+	 * printStartMonthName: Prints the display header depending on which month
+	 * we are about to display
+	 * 
+	 * 
+	 * @param int
+	 * 
+	 * @return String
+	 */
+	public static String printStartMonthName(int monthIndex) {
+		switch (monthIndex) {
+		case 0:
+			return "Displaying all tasks that start in January: \n";
+		case 1:
+			return "Displaying all tasks that start in February: \n";
+		case 2:
+			return "Displaying all tasks that start in March: \n";
+		case 3:
+			return "Displaying all tasks that start in April: \n";
+		case 4:
+			return "Displaying all tasks that start in May: \n";
+		case 5:
+			return "Displaying all tasks that start in June: \n";
+		case 6:
+			return "Displaying all tasks that start in July: \n";
+		case 7:
+			return "Displaying all tasks that start in August: \n";
+		case 8:
+			return "Displaying all tasks that start in September: \n";
+		case 9:
+			return "Displaying all tasks that start in October: \n";
+		case 10:
+			return "Displaying all tasks that start in November: \n";
+		case 11:
+			return "Displaying all tasks that start in December: \n";
+		}
+		return "";
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+	 */
+
+	/*
+	 * printEndMonthName: Prints the display header depending on which month we
+	 * are about to display
+	 * 
+	 * 
+	 * @param int
+	 * 
+	 * @return String
+	 */
+	public static String printEndMonthName(int monthIndex) {
+		switch (monthIndex) {
+		case 0:
+			return "Displaying all tasks that end in January: \n";
+		case 1:
+			return "Displaying all tasks that end in February: \n";
+		case 2:
+			return "Displaying all tasks that end in March: \n";
+		case 3:
+			return "Displaying all tasks that end in April: \n";
+		case 4:
+			return "Displaying all tasks that end in May: \n";
+		case 5:
+			return "Displaying all tasks that end in June: \n";
+		case 6:
+			return "Displaying all tasks that end in July: \n";
+		case 7:
+			return "Displaying all tasks that end in August: \n";
+		case 8:
+			return "Displaying all tasks that end in September: \n";
+		case 9:
+			return "Displaying all tasks that end in October: \n";
+		case 10:
+			return "Displaying all tasks that end in November: \n";
+		case 11:
+			return "Displaying all tasks that end in December: \n";
+		}
+		return "";
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+	 */
+
+	/*
+	 * printMonthName: Prints the name of the month only. Used for display
+	 * purposes
+	 * 
+	 * 
+	 * @param int
+	 * 
+	 * @return String
+	 */
+	public static String printMonthName(int monthIndex) {
+		switch (monthIndex) {
+		case 0:
+			return "January \n";
+		case 1:
+			return "February \n";
+		case 2:
+			return "March \n";
+		case 3:
+			return "April \n";
+		case 4:
+			return "May \n";
+		case 5:
+			return "June \n";
+		case 6:
+			return "July \n";
+		case 7:
+			return "August \n";
+		case 8:
+			return "September \n";
+		case 9:
+			return "October \n";
+		case 10:
+			return "November \n";
+		case 11:
+			return "December \n";
+		}
+		return "";
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+	 */
+
+	/*
+	 * initializeDays: Initializes days ArrayList with each numerical day from
+	 * 1-31
+	 * 
+	 * 
+	 * @param void
+	 * 
+	 * @return void
+	 */
+	public static void initializeDays() {
+		days.add("1");
+		days.add("2");
+		days.add("3");
+		days.add("4");
+		days.add("5");
+		days.add("6");
+		days.add("7");
+		days.add("8");
+		days.add("9");
+		days.add("10");
+		days.add("11");
+		days.add("12");
+		days.add("13");
+		days.add("14");
+		days.add("15");
+		days.add("16");
+		days.add("17");
+		days.add("18");
+		days.add("19");
+		days.add("20");
+		days.add("21");
+		days.add("22");
+		days.add("23");
+		days.add("24");
+		days.add("25");
+		days.add("26");
+		days.add("27");
+		days.add("28");
+		days.add("29");
+		days.add("30");
+		days.add("31");
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+	 */
+
+	/*
+	 * initializeCalender: Initializes start and end Month array
+	 * 
+	 * 
+	 * @param void
+	 * 
+	 * @return void
+	 */
+	public static void initializeCalender() {
+		for (int i = 0; i < months.size(); i++) {
+			startMonthList[i][0] = new ArrayList<Task>();
+			endMonthList[i][0] = new ArrayList<Task>();
+		}
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+	 */
+
+	/*
+	 * initializeMonthList: sets new ArrayLists for the 2D Arrays holding the
+	 * start/end month results
+	 * 
+	 * 
+	 * @param void
+	 * 
+	 * @return void
+	 */
+	public static void initializeMonthList() {
+		for (int i = 0; i < 12; i++) {
+			startMonthList[i][0] = new ArrayList<Task>();
+			endMonthList[i][0] = new ArrayList<Task>();
+		}
+	}
+}// end class
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+	 */
+
+		case DISPLAY:
+			Display d = new Display(getTaskListInstance(), c,
+					getMonthListInstance());
+			if (isValidDisplayDateCommand()) {
+				feedback += d.displayDate();
+			} else if (isDisplayMonth()) {
+				feedback += d.displayStartMonth();
+			} else if (isValidUndoRedoDisplayCommand()) {
+				feedback += d.displayTaskList();
+			} else if (isDisplayCompleted()) {
+				feedback += d.displayCompleted();
+			} else if (isDisplayUncompleted()) {
+				feedback += d.displayUncompleted();
+			} else {
+				feedback += INVALID_COMMAND_MESSAGE;
+			}
+			break;
+			
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+	 */
+
+		case DISPLAYD:
+			Display displayDeadline = new Display(getTaskListInstance(), c,
+					getMonthListInstance());
+			if (isDisplayMonth()) {
+				feedback = feedback + displayDeadline.displayEndMonth();
+			} else {
+				feedback = feedback + INVALID_COMMAND_MESSAGE;
+			}
+			break;
+		case DELETE:
+			saveToUndoStack();
+			Delete del = new Delete();
+			feedback = feedback + del.delete(c);
+			break;
+
+		case COMPLETED:
+		case DONE:
+			saveToUndoStack();
+			Completed completed = new Completed();
+			feedback = feedback + completed.markCompleted(c);
+			break;
+
+		case SEARCH:
+			if (isValidSearchCommand(c)) {
+				Search search = new Search(taskList);
+				feedback = feedback + search.searchTaskList(c);
+			} else {
+				feedback = feedback + INVALID_COMMAND_MESSAGE;
+			}
+			break;
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+	 */
+
+		case UNDO:
+			undo();
+			break;
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+	 */
+
+		case REDO:
+			redo();
+			break;
+
+		case CANCELLED:
+			feedback = CANCELLED_ACTION_MESSAGE + "\n";
+			break;
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+	 */
+
+	/**
+	 * undo: Reset taskList then add contents of pTL to tL.
+	 * 
+	 * @param void
+	 * @return void
+	 */
+	public static void undo() {
+		if (!undoStack.empty() && isValidUndoRedoDisplayCommand()) {
+			ArrayList<Task> newCopy = new ArrayList<Task>();
+			transferTasksFromTo(taskList, newCopy);
+			redoStack.push(newCopy);
+			taskList = undoStack.pop();
+
+			feedback = UNDO_SUCCESS_MESSAGE;
+		} else if (isValidUndoRedoDisplayCommand() && undoStack.empty()) {
+			feedback = UNDO_UNSUCCESSFUL_MESSAGE;
+		} else {
+			feedback = INVALID_COMMAND_MESSAGE;
+		}
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+	 */
+
+	/**
+	 * redo: Reperforms any task that was done before undo() was called.
+	 * 
+	 * @param void
+	 * @return void
+	 */
+	public static void redo() {
+		if (!redoStack.empty() && isValidUndoRedoDisplayCommand()) {
+			ArrayList<Task> newCopy = new ArrayList<Task>();
+			transferTasksFromTo(taskList, newCopy);
+			undoStack.push(newCopy);
+			taskList = redoStack.pop();
+			feedback = REDO_SUCCESS_MESSAGE;
+		} else if (isValidUndoRedoDisplayCommand() && redoStack.empty()) {
+			feedback = REDO_UNSUCCESSFUL_MESSAGE;
+		} else {
+			feedback = INVALID_COMMAND_MESSAGE;
+		}
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+	 */
+
+	/**
+	 * 
+	 * transferTasksFromTo: Move tasks from one ArrayList to another
+	 * 
+	 * @param ArrayList
+	 *            <Task>, ArrayList<Task>
+	 * @return void
+	 */
+	public static void transferTasksFromTo(ArrayList<Task> source,
+			ArrayList<Task> target) {
+		for (Task task : source) {
+			target.add(new Task(task));
+		}
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+	 */
+
+	/**
+	 * 
+	 * saveToPrevTaskList: Reset prevTaskList and add all objects from taskList
+	 * to pTL
+	 * 
+	 * @param void
+	 * @return void
+	 * 
+	 */
+	public void saveToUndoStack() {
+		ArrayList<Task> undoList = new ArrayList<Task>();
+		transferTasksFromTo(taskList, undoList);
+		undoStack.push(undoList);
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+	 */
+
+	/**
+	 * 
+	 * saveToRedoTaskList: Reset redoTaskList and add all objects from taskList
+	 * to rTL
+	 * 
+	 * @param void
+	 * @return void
+	 * 
+	 */
+	public void saveToRedoStack() {
+		ArrayList<Task> redoList = new ArrayList<Task>();
+		transferTasksFromTo(taskList, redoList);
+		undoStack.push(redoList);
+		/*
+		 * for (Task task : taskList) { redoTaskList.add(new Task(task)); }
+		 */
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+	 */
+
+	/**
+	 * 
+	 * resetTaskList: Reinitializes taskList so it will be empty when we perform
+	 * undo or redo.
+	 * 
+	 * @param void
+	 * @return void
+	 */
+	public static void resetTaskList() {
+		taskList = new ArrayList<Task>();
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+	 */
+
+	/**
+	 * 
+	 * isValidSearchCommand: Makes sure there is a keyword that the user is
+	 * searching for instead of an invalid command like "search"
+	 * 
+	 * @param String
+	 *            []
+	 * @return boolean
+	 */
+
+	public static boolean isValidSearchCommand(Command c) {
+		return c.getDetails() != null;
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+	 */
+
+	/**
+	 * 
+	 * isValidUndoRedoDisplayCommand: Checks if the user specified an invalid
+	 * command where undo/redo/display is followed by another String.
+	 * 
+	 * @param void
+	 * @return boolean
+	 */
+	public static boolean isValidUndoRedoDisplayCommand() {
+		if (c.getDetails() == null && c.getStartDay() == null
+				&& c.getStartMonth() == null && c.getStartYear() == null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+	 */
+
+	/**
+	 * 
+	 * isValidDisplayMonthCommand: Check if user is trying to display a month
+	 * 
+	 * @param void
+	 * @return boolean
+	 * 
+	 */
+	public static boolean isValidDisplayMonthCommand() {
+		if (c.getDetails().equals(null) && !(c.getEndMonth().equals(null))) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+	 */
+
+	/**
+	 * 
+	 * isDisplayMonth: Check if user wants to display a list of tasks of a
+	 * particular month
+	 * 
+	 * @param void
+	 * @return boolean
+	 * 
+	 */
+	private boolean isDisplayMonth() {
+		if (c.getEndMonth() != null && c.getEndDay().equals(EMPTY_STRING)) { // handles
+																				// bad
+																				// commands
+																				// like
+			// "display ofuh"
+			switch (c.getEndMonth()) {
+			case "01":
+				return true;
+			case "02":
+				return true;
+			case "03":
+				return true;
+			case "04":
+				return true;
+			case "05":
+				return true;
+			case "06":
+				return true;
+			case "07":
+				return true;
+			case "08":
+				return true;
+			case "09":
+				return true;
+			case "10":
+				return true;
+			case "11":
+				return true;
+			case "12":
+				return true;
+			}
+			return false;
+		}
+		return false;
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+	 */
+
+	/**
+	 * convertMultipleCommandKeywords: handles different cases of user input
+	 * and interpreting it.
+	 * 
+	 * @param String
+	 * @return String
+	 */
+	public static String convertMultipleCommandKeywords(String command) {
+		command = command.toLowerCase();
+		if (command.equals("disp") || command.equals("dis")
+				|| command.equals("d") || command.equals("di")
+				|| command.equals("show") || command.equals("shw")
+				||command.equals("view") || command.equals("v")) {
+			command = "display";
+		} else if (command.equals("a") || command.equals("ad")
+				||command.equals("addd") || command.equals("create")
+				|| command.equals("cr8")) {
+			command = "add";
+		} else if (command.equals("de") || command.equals("del")
+				|| command.equals("dele") || command.equals("remove") || 
+				command.equals("rm") || command.equals("rem") ||
+				command.equals("rmv")) {
+			command = "delete";
+		} else if (command.equals("s") || command.equals("se")
+				|| command.equals("sea") || command.equals("sear")
+				|| command.equals("searc") || command.equals("find")
+				|| command.equals("fd") || command.equals("srh")) {
+			command = "search";
+		} else if (command.equals("u") || command.equals("un")
+				|| command.equals("und") || command.equals("ud")) {
+			command = "undo";
+		} else if (command.equals("r") || command.equals("re")
+				|| command.equals("red") || command.equals("rd")) {
+			command = "redo";
+		} else if (command.equals("e") || command.equals("ed")
+				|| command.equals("edi") || command.equals("update")
+				|| command.equals("upd")|| command.equals("ud")
+				|| command.equals("change") ||command.equals("chge")) {
+			command = "edit";
+		} else if (command.equals("em") || command.equals("ema")
+				|| command.equals("send") || command.equals("sd")) {
+			command = "email";
+		} else if (command.equals("c") || command.equals("cl")
+				|| command.equals("cle") || command.equals("clea")
+				|| command.equals("clr")) {
+			command = "clear";
+		} else if (command.equals("dm") || command.equals("dism")
+				|| command.equals("dispm") || command.equals("displaym")
+				|| command.equals("deadline") || command.equals("dispd")
+				|| command.equals("dd") || command.equals("dead")
+				|| command.equals("dl") || command.equals("deadl")
+				|| command.equals("ends") || command.equals("end")) {
+			command = "displayd";
+		} else if (command.equals("hlp") || command.equals("??")
+				|| command.equals("hp") || command.equals("?")
+				||command.equals("h")){
+				command = "help";
+		} else if (command.equals("sc") || command.equals("scuts")
+				|| command.equals("stct") ||command.equals("scut")){
+				command = "shortcut";
+		}else if (command.equals("ex") || command.equals("q")
+			|| command.equals("quit") || command.equals("qt")){
+			command = "exit";
+		}
+		return command;
+	}
+}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Search.java
+	 */
+
+	/**
+	 * 
+	 * printSearch: Display task details of all tasks in Search Results
+	 * 
+	 * @param void
+	 * @return void
+	 */
+
+	public static String printSearch() {
+		String details = "";
+		if (!searchResults.isEmpty()) {
+			details = "Displaying search results: \n";
+			for (Task task : searchResults) {
+				String print = task.displayTask();
+				details += printTaskWithIndex(task, print);
+			}
+		} else {
+			details = TASK_NOT_FOUND_MESSAGE;
+		}
+		return details;
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Search.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Search.java
+	 */
+
+	/**
+	 * 
+	 * search: Cycle through entire taskList looking for User-specified keyword.
+	 * Add all tasks that contain keyword into the searchResults ArrayList.
+	 * 
+	 * @param void
+	 * @return void
+	 */
+
+	public String searchTaskList(Command c) {
+		boolean isFound = false;
+		resetSearchResults();
+		String searchKeyword = c.getDetails();
+
+		for (Task task : taskList) {
+			if (hasMatchingKeyword(task, searchKeyword)) {
+				searchResults.add(task);
+				isFound = true;
+			}
+		}
+		if (isFound) {
+			return printSearch();
+		} else {
+			return TASK_NOT_FOUND_MESSAGE;
+		}
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Search.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Search.java
+	 */
+
+	/**
+	 * 
+	 * hasMatchingKeyword: checks if a task contains the keyword that a user
+	 * specified in the search command
+	 * 
+	 * @param String
+	 *            [], String
+	 * @return boolean
+	 */
+
+	public static boolean hasMatchingKeyword(Task task, String searchKeyword) {
+		if (task.getDetails().contains(searchKeyword)
+				|| task.getPriority().contains(searchKeyword)
+				|| task.getCategory().contains(searchKeyword)) {
+
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Search.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Search.java
+	 */
+
+	/**
+	 * 
+	 * resetSearchResults: Reinitializes searchResults so it will be empty when
+	 * we search.
+	 * 
+	 * @param void
+	 * @return void
+	 */
+
+	public static void resetSearchResults() {
+		searchResults = new ArrayList<Task>();
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Search.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Search.java
+	 */
+
+	/**
+	 * 
+	 * getSearchResults: Returns searchResultes arrayList<Task>
+	 * 
+	 * @param void
+	 * @return arrayList<Task>
+	 */
+	public static ArrayList<Task> getSearchResults() {
+		return searchResults;
+	}
+
+	/**
+	 * 
+	 * printTaskIndex: print index number of current task
+	 * 
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Search.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\SearchTest.java
+	 */
+
+
+import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+
+import org.junit.Test;
+
+public class SearchTest {
+	ProcessCommand pc = new ProcessCommand();
+	ExeCom ec = ExeCom.getInstance();
+	Search search = new Search(ec.getTaskListInstance());
+	Add a = new Add(ec.getTaskListInstance());
+	ArrayList<Task> testTaskList = ec.getTaskListInstance();
+
+	@Test
+	public void test() throws Exception {
+
+		initializeTestEnvironment(a);
+		
+		//Test for details
+		Command command = new Command();
+		command.setKeyword("search");
+		command.setDetails("lunch");
+		assert (ec.isValidSearchCommand(command));
+		search.searchTaskList(command);
+		assert (search.getSearchResults().size() == 1);
+		assert (search.getSearchResults().get(0).displayToStorage()
+				.equals("lunch 12 04 2014 14 04 2014 13 00 15 00 //location Jurong East //category school //priority high //completed false "));
+		
+		//Test for priority
+	    search = new Search(ec.getTaskListInstance());
+		command = new Command();
+		command.setKeyword("search");
+		command.setDetails("low");
+	    search.searchTaskList(command);
+		assert (search.getSearchResults().size() == 1);
+		assert (search.getSearchResults().get(0).displayToStorage()
+				.equals("dinner 13 05 2014 14 05 2014 13 30 16 00 //location UTown //category personal //priority low //completed false "));
+
+		//Test search for category
+		search = new Search(ec.getTaskListInstance());
+		command = new Command();
+		command.setKeyword("search");
+		command.setDetails("finals");
+	    search.searchTaskList(command);
+		assert (search.getSearchResults().size() == 1);
+		assert (search.getSearchResults().get(0).displayToStorage()
+				.equals("Study for finals 19 04 2014 26 04 2014 13 30 16 00 //location NUS //category finals //priority high //completed false "));
+	}
+	
+	public static void initializeTestEnvironment(Add a) throws Exception {
+		Command addCommand = new Command();
+		addCommand.setKeyword("add");
+		addCommand.setDetails("lunch");
+		addCommand.setStartDay("12");
+		addCommand.setStartMonth("04");
+		addCommand.setStartYear("2014");
+		addCommand.setEndDay("14");
+		addCommand.setEndMonth("04");
+		addCommand.setEndYear("2014");
+		addCommand.setPriority("high");
+		addCommand.setCategory("school");
+		addCommand.setLocation("Jurong East");
+		addCommand.setStartHours("13");
+		addCommand.setStartMins("00");
+		addCommand.setEndHours("15");
+		addCommand.setEndMins("00");
+		a.addToTaskList(addCommand);
+
+		addCommand = new Command();
+		addCommand.setKeyword("add");
+		addCommand.setDetails("dinner");
+		addCommand.setStartDay("13");
+		addCommand.setStartMonth("05");
+		addCommand.setStartYear("2014");
+		addCommand.setEndDay("14");
+		addCommand.setEndMonth("05");
+		addCommand.setEndYear("2014");
+		addCommand.setPriority("low");
+		addCommand.setCategory("personal");
+		addCommand.setLocation("UTown");
+		addCommand.setStartHours("13");
+		addCommand.setStartMins("30");
+		addCommand.setEndHours("16");
+		addCommand.setEndMins("00");
+		a.addToTaskList(addCommand);
+		
+		addCommand = new Command();
+		addCommand.setKeyword("add");
+		addCommand.setDetails("Study for finals");
+		addCommand.setStartDay("19");
+		addCommand.setStartMonth("04");
+		addCommand.setStartYear("2014");
+		addCommand.setEndDay("26");
+		addCommand.setEndMonth("04");
+		addCommand.setEndYear("2014");
+		addCommand.setPriority("high");
+		addCommand.setCategory("finals");
+		addCommand.setLocation("NUS");
+		addCommand.setStartHours("13");
+		addCommand.setStartMins("30");
+		addCommand.setEndHours("16");
+		addCommand.setEndMins("00");
+		a.addToTaskList(addCommand);
+		
+		addCommand = new Command();
+		addCommand.setKeyword("add");
+		addCommand.setDetails("fix computer");
+		addCommand.setStartDay("30");
+		addCommand.setStartMonth("04");
+		addCommand.setStartYear("2014");
+		addCommand.setEndDay("31");
+		addCommand.setEndMonth("04");
+		addCommand.setEndYear("2014");
+		addCommand.setPriority("medium");
+		addCommand.setCategory("school");
+		addCommand.setLocation("Dhoby Ghaut");
+		addCommand.setStartHours("09");
+		addCommand.setStartMins("00");
+		addCommand.setEndHours("11");
+		addCommand.setEndMins("00");
+		a.addToTaskList(addCommand);
+	}
+}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\SearchTest.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\SortDate.java
+	 */
+
+	 * 
+	 * @param void
+	 * 
+	 * @return void
+	 */
+	public static void initializeMonthList() {
+		for (int i = 0; i < 12; i++) {
+			startMonthList[i][0] = new ArrayList<Task>();
+			endMonthList[i][0] = new ArrayList<Task>();
+		}
+	}
+
+	/*
+	 * printSorted: Displays the entire taskList in descending order based on
+	 * start month
+	 * 
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\SortDate.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\SortDate.java
+	 */
+
+	 * 
+	 * @param void
+	 * 
+	 * @return void
+	 */
+	public static void printSorted() {
+		for (Task task : sortedTaskList) {
+			System.out.println(task.displayTask());
+		}
+	}
+
+	/*
+	 * printStartMonthList: Displays all tasks that begin in the specified month
+	 * 
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\SortDate.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\SortDate.java
+	 */
+
+	 * 
+	 * @param int
+	 * 
+	 * @return String
+	 */
+	public String printStartMonthList(int monthIndex) {
+		String output = printStartMonthName(monthIndex);
+		for (int j = 0; j < startMonthList[monthIndex][0].size(); j++) {
+			String print = startMonthList[monthIndex][0].get(j).displayTask();
+			output += printTaskWithIndex(startMonthList[monthIndex][0].get(j),
+					print);
+		}
+		// New Line added to separate display from next command's feedback
+		return output + "\n";
+	}
+
+	/*
+	 * printStartMonthList: Displays all tasks that end in the specified month
+	 * 
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\SortDate.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\SortDate.java
+	 */
+
+	 * 
+	 * @param int
+	 * 
+	 * @return String
+	 */
+	public String printEndMonthList(int monthIndex) {
+		String output = printEndMonthName(monthIndex);
+		for (int j = 0; j < endMonthList[monthIndex][0].size(); j++) {
+			String print = endMonthList[monthIndex][0].get(j).displayTask();
+			output += printTaskWithIndex(endMonthList[monthIndex][0].get(j),
+					print);
+		}
+		// New Line added to separate display from next command's feedback
+		return output + "\n";
+	}
+
+	/*
+	 * sort: Sorts tasks into two lists based on start/end month
+	 * 
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\SortDate.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\SortDate.java
+	 */
+
+	 * 
+	 * @param void
+	 * 
+	 * @return ArrayList<Task>
+	 */
+	public ArrayList<Task> sort() {
+		for (int i = 0; i < months.size() - 1; i++) {
+			for (int j = 0; j < taskList.size(); j++) {
+				if (isMatchingTaskStartMonth(taskList.get(j), months.get(i))) {
+					startMonthList[i][0].add(taskList.get(j));
+					sortedTaskList.add(taskList.get(j));
+				}
+				if (isMatchingTaskEndMonth(taskList.get(j), months.get(i))) {
+					endMonthList[i][0].add(taskList.get(j));
+				}
+			}
+		}
+		return sortedTaskList;
+	}
+
+	/*
+	 * isMatchingTaskStartMonth: Returns True/False depending on if a task
+	 * starts in the specified month
+	 * 
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\SortDate.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\SortDate.java
+	 */
+
+	 * 
+	 * @param Task, String
+	 * 
+	 * @return boolean
+	 */
+	public static boolean isMatchingTaskStartMonth(Task task, String month) {
+		if (!task.getStartMonth().equals("null")) {
+			return month.contains(task.getStartMonth());
+		} else {
+			return false;
+		}
+	}
+
+	/*
+	 * isMatchingTaskEndMonth: Returns True/False depending on if a task ends in
+	 * the specified month
+	 * 
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\SortDate.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\SortDate.java
+	 */
+
+	 * 
+	 * @param Task, String
+	 * 
+	 * @return boolean
+	 */
+	public static boolean isMatchingTaskEndMonth(Task task, String month) {
+		return month.contains(task.getEndMonth());
+	}
+
+	/*
+	 * initializeMonths: Resets months variable and adds the number that
+	 * correlates to each month. (Jan == 01). Note that it contains both because
+	 * the input may come as one or two digits
+	 * 
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\SortDate.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\SortDate.java
+	 */
+
+	 * 
+	 * @param void
+	 * 
+	 * @return void
+	 */
+	public static void initializeMonths() {
+		months = new ArrayList<String>(); // resets months so no overflow
+		/*
+		 * Each time we add single digits, we add 1 and 01 because the user
+		 * might enter may 01 2014 instead. This allows us to catch both. We may
+		 * want to force the month to be a certain way so we don't have to do
+		 * this.
+		 */
+		months.add("1 01");
+		months.add("2 02");
+		months.add("3 03");
+		months.add("4 04");
+		months.add("5 05");
+		months.add("6 06");
+		months.add("7 07");
+		months.add("8 08");
+		months.add("9 09");
+		months.add("10");
+		months.add("11");
+		months.add("12");
+	}
+
+	/*
+	 * printStartMonthName: Prints the display header depending on which month
+	 * we are about to display
+	 * 
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\SortDate.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\SortDate.java
+	 */
+
+	 * 
+	 * @param int
+	 * 
+	 * @return String
+	 */
+	public static String printStartMonthName(int monthIndex) {
+		switch (monthIndex) {
+		case 0:
+			return "Displaying all tasks that start in January: \n";
+		case 1:
+			return "Displaying all tasks that start in February: \n";
+		case 2:
+			return "Displaying all tasks that start in March: \n";
+		case 3:
+			return "Displaying all tasks that start in April: \n";
+		case 4:
+			return "Displaying all tasks that start in May: \n";
+		case 5:
+			return "Displaying all tasks that start in June: \n";
+		case 6:
+			return "Displaying all tasks that start in July: \n";
+		case 7:
+			return "Displaying all tasks that start in August: \n";
+		case 8:
+			return "Displaying all tasks that start in September: \n";
+		case 9:
+			return "Displaying all tasks that start in October: \n";
+		case 10:
+			return "Displaying all tasks that start in November: \n";
+		case 11:
+			return "Displaying all tasks that start in December: \n";
+		}
+		return "";
+	}
+
+	/*
+	 * printEndMonthName: Prints the display header depending on which month we
+	 * are about to display
+	 * 
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\SortDate.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\SortDate.java
+	 */
+
+	 * 
+	 * @param int
+	 * 
+	 * @return String
+	 */
+	public static String printEndMonthName(int monthIndex) {
+		switch (monthIndex) {
+		case 0:
+			return "Displaying all tasks that end in January: \n";
+		case 1:
+			return "Displaying all tasks that end in February: \n";
+		case 2:
+			return "Displaying all tasks that end in March: \n";
+		case 3:
+			return "Displaying all tasks that end in April: \n";
+		case 4:
+			return "Displaying all tasks that end in May: \n";
+		case 5:
+			return "Displaying all tasks that end in June: \n";
+		case 6:
+			return "Displaying all tasks that end in July: \n";
+		case 7:
+			return "Displaying all tasks that end in August: \n";
+		case 8:
+			return "Displaying all tasks that end in September: \n";
+		case 9:
+			return "Displaying all tasks that end in October: \n";
+		case 10:
+			return "Displaying all tasks that end in November: \n";
+		case 11:
+			return "Displaying all tasks that end in December: \n";
+		}
+		return "";
+	}
+
+	/*
+	 * initializeDays: Initializes days ArrayList with each numerical day from
+	 * 1-31
+	 * 
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\SortDate.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\SortDate.java
+	 */
+
+	 * 
+	 * @param void
+	 * 
+	 * @return void
+	 */
+	public static void initializeDays() {
+		days.add("1");
+		days.add("2");
+		days.add("3");
+		days.add("4");
+		days.add("5");
+		days.add("6");
+		days.add("7");
+		days.add("8");
+		days.add("9");
+		days.add("10");
+		days.add("11");
+		days.add("12");
+		days.add("13");
+		days.add("14");
+		days.add("15");
+		days.add("16");
+		days.add("17");
+		days.add("18");
+		days.add("19");
+		days.add("20");
+		days.add("21");
+		days.add("22");
+		days.add("23");
+		days.add("24");
+		days.add("25");
+		days.add("26");
+		days.add("27");
+		days.add("28");
+		days.add("29");
+		days.add("30");
+		days.add("31");
+	}
+
+	/*
+	 * initializeCalender: Initializes start and end Month array
+	 * 
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\SortDate.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\SortDate.java
+	 */
+
+	 * 
+	 * @param void
+	 * 
+	 * @return void
+	 */
+	public static void initializeCalender() {
+		for (int i = 0; i < months.size(); i++) {
+			startMonthList[i][0] = new ArrayList<Task>();
+			endMonthList[i][0] = new ArrayList<Task>();
+		}
+	}
+
+	/**
+	 * 
+	 * printTaskIndex: print index number of current task
+	 * 
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\SortDate.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\UpdateTest.java
+	 */
+
+/*Testing the Update class. 
+ * Specifically, we want to make sure the editContent(Command) method works.
+ */
+import static org.junit.Assert.*;
+import java.util.*;
+
+import org.junit.Test;
+
+public class UpdateTest {
+	ExeCom ec = ExeCom.getInstance();
+	Update update = new Update();
+	Add a = new Add(ec.getTaskListInstance());
+	ArrayList<Task> tempTaskList = ec.getTaskListInstance();
+	ArrayList<String> targetedTasks = new ArrayList<String>();
+	@Test
+	public void test() throws Exception {
+		//Add taskID that we will update.
+		targetedTasks.add("1");
+		Command addCommand = new Command();
+		addCommand.setKeyword("add");
+		addCommand.setDetails("lunch");
+		addCommand.setStartDay("12");
+		addCommand.setStartMonth("04");
+		addCommand.setStartYear("2014");
+		addCommand.setEndDay("14");
+		addCommand.setEndMonth("04");
+		addCommand.setEndYear("2014");
+		addCommand.setPriority("high");
+		addCommand.setCategory("school");
+		addCommand.setLocation("Jurong East");
+		addCommand.setStartHours("13");
+		addCommand.setStartMins("00");
+		addCommand.setEndHours("15");
+		addCommand.setEndMins("00");
+		a.addToTaskList(addCommand);
+		
+		Task taskToUpdate = tempTaskList.get(0);
+		taskToUpdate.setTaskID("1");
+		
+		//original location
+		assert(taskToUpdate.getLocation().equals("Jurong East"));
+		
+
+		Command command = new Command();
+		command.setKeyword("edit");
+		command.setTaskID("1");
+		command.setLocation("home");
+		command.setTargetedTasks(targetedTasks);
+		
+		update.editContent(command);
+		//Show that the location has changed.
+		assert(taskToUpdate.getLocation().equals("home"));
+		
+		//Show original priority
+		assert(taskToUpdate.getPriority().equals("high"));
+		command = new Command();
+		command.setKeyword("edit");
+		command.setTaskID("1");
+		command.setPriority("low");
+		command.setTargetedTasks(targetedTasks);
+		update.editContent(command);
+		
+		//Show that the priority has changed.
+		assert(taskToUpdate.getPriority().equals("low"));
+
+		//Show original details
+		assert(taskToUpdate.getDetails().equals("lunch"));
+		command = new Command();
+		command.setKeyword("edit");
+		command.setTaskID("1");
+		command.setDetails("lunch with Joey");
+		command.setTargetedTasks(targetedTasks);
+		update.editContent(command);
+		
+		//Show that the details have changed.
+		assert(taskToUpdate.getDetails().equals("lunch with Joey"));
+		
+		//Show original start day
+		assert(taskToUpdate.getStartDay().equals("12"));
+		command = new Command();
+		command.setKeyword("edit");
+		command.setTaskID("1");
+		command.setStartDay("13");
+		command.setTargetedTasks(targetedTasks);
+		update.editContent(command);
+		
+		//Show that the start day have changed.
+		assert(taskToUpdate.getStartDay().equals("13"));
+
+	}
+}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\UpdateTest.java
+
+
+
+
+

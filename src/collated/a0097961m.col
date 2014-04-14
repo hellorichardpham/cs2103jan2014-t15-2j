@@ -1,0 +1,761 @@
+//@author: a0097961m
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Alarm.java
+	 */
+
+
+public class Alarm {
+
+	private static final String EQUAL_NULL = "null";
+	private static final String ZERO_ZERO_CONST = "00";
+	private static final String EQUAL_SLASH = "/";
+	private static final String DATE_TIME_FORMAT = "dd/MM/yyyy HH:mm";
+	private static final String EQUAL_BLANK_SPACE = " ";
+	private static final String EQUAL_COLON = ":";
+	private static final String TASKID = "Task id no";
+
+	private static final int THOUSAND_CONST = 1000;
+	private static final int TEN_THOUSAND_CONST = 10000;
+
+	Timer timer;
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Alarm.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Alarm.java
+	 */
+
+	/**
+	 * 
+	 * setAlarm: set alarm by sending the timing to Alarm class
+	 * 
+	 * @param void
+	 * @return void
+	 */
+	public static void setNotification() throws Exception {
+		SimpleDateFormat sdf = new SimpleDateFormat(DATE_TIME_FORMAT);
+
+		Storage s = new Storage();
+		s.loadStorage();
+
+		for (Task t : ExeCom.getTaskListInstance()) {
+			String day, month, year, hours, mins;
+			String input;
+			Date dateTime;
+			long time;
+			Date date = new Date();
+
+			day = t.getStartDay();
+			month = t.getStartMonth();
+			year = t.getStartYear();
+
+			hours = t.getStartHours();
+			mins = t.getStartMins();
+
+			if (t.getStartDay().equals(EQUAL_NULL)) {
+				day = t.getEndDay();
+				month = t.getEndMonth();
+				year = t.getEndYear();
+			}
+			if (t.getStartHours().equals(EQUAL_NULL)) {
+				hours = t.getEndHours();
+				mins = t.getEndMins();
+			}
+			if (t.getEndHours().equals(EQUAL_NULL)) {
+				hours = ZERO_ZERO_CONST;
+				mins = ZERO_ZERO_CONST;
+			}
+
+			input = day + EQUAL_SLASH + month + EQUAL_SLASH + year
+					+ EQUAL_BLANK_SPACE + hours + EQUAL_COLON + mins;
+			dateTime = sdf.parse(input);
+			time = ((dateTime.getTime() - date.getTime()) / THOUSAND_CONST);
+			
+			if (time > 0) {
+				Alarm reminderBeep = new Alarm(time);
+			}
+		}
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Alarm.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Alarm.java
+	 */
+
+	/**
+	 * 
+	 * Alarm: set alarm to the scheduler by creating instance of RemindTask
+	 * class
+	 * 
+	 * @param void
+	 * @return void
+	 */
+	private Alarm(long sec) {
+		timer = new Timer();
+		// delay in milliseconds
+		timer.schedule(new RemindTask(), sec * THOUSAND_CONST);
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Alarm.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Alarm.java
+	 */
+
+	/**
+	 * 
+	 * RemindTask: when a scheduler is called, run() method will be
+	 * automatically and finally the task(s) will be mailed to user(s)
+	 * 
+	 * @param void
+	 * @return void
+	 */
+	class RemindTask extends TimerTask {
+
+		public void run() {
+			try {
+				long currentTime;
+				Date date = new Date();
+
+				SimpleDateFormat sdf = new SimpleDateFormat(DATE_TIME_FORMAT);
+
+				for (Task t : ExeCom.getTaskListInstance()) {
+					String day, month, year, hours, mins;
+					String input;
+					Date dateTime;
+					long time;
+
+					day = t.getStartDay();
+					month = t.getStartMonth();
+					year = t.getStartYear();
+
+					hours = t.getStartHours();
+					mins = t.getStartMins();
+
+					if (t.getStartDay().equals(EQUAL_NULL)) {
+						day = t.getEndDay();
+						month = t.getEndMonth();
+						year = t.getEndYear();
+					}
+					if (t.getStartHours().equals(EQUAL_NULL)) {
+						hours = t.getEndHours();
+						mins = t.getEndMins();
+					}
+					if (t.getEndHours().equals(EQUAL_NULL)) {
+						hours = ZERO_ZERO_CONST;
+						mins = ZERO_ZERO_CONST;
+					}
+					input = day + EQUAL_SLASH + month + EQUAL_SLASH + year
+							+ EQUAL_BLANK_SPACE + hours + EQUAL_COLON + mins;
+					dateTime = sdf.parse(input);
+					currentTime = date.getTime();
+					time = dateTime.getTime();
+
+					if (time >= (currentTime - TEN_THOUSAND_CONST)
+							&& (time <= currentTime + TEN_THOUSAND_CONST)) {
+						String task_info = TASKID + EQUAL_BLANK_SPACE
+								+ (ExeCom.getTaskListInstance().indexOf(t) + 1)
+								+ EQUAL_BLANK_SPACE + t.displayTaskEmail();
+
+						Email em = Email.getTheEmailInstance();
+						em.emailUser(task_info);
+					}
+
+				}
+			} catch (Exception e) {
+
+			}
+		}
+	}
+
+}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Alarm.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+	 */
+
+	/**
+	 * 
+	 * displayUncompleted: display all uncompleted tasks found in the taskList
+	 * 
+	 * @param void
+	 * @return void
+	 */
+	public String displayUncompleted() {
+		String dispOut = "";
+		if (!taskList.isEmpty()) {
+			dispOut = dispOut + printUncompletedListingHeader();
+			for (Task task : taskList) {
+				if (task.isCompleted() == false) {
+					dispOut = setTaskToDisplay(dispOut, task);
+				}
+			}
+		} else if (taskList.isEmpty()) {
+			dispOut = TASKLIST_EMPTY_MESSAGE;
+		}
+		if (dispOut.equals(null) || dispOut.isEmpty() || dispOut.equals(""))
+			return dispOut = TASKLIST_EMPTY_MESSAGE;
+		else
+			return dispOut + "\n";
+	}
+
+	/**
+	 * displayCompleted: prints out all completed tasks in taskList
+	 * 
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Email.java
+	 */
+
+
+public class Email {
+	private static final String NAME = "TaskTracker";
+	private static final String EMAIL = "tasktrackernus@gmail.com";
+	private static final String PASSWORD = "112233445566778899NUS";
+	private static final String SALUTATIONS = "Dear Sir or Madam,\n\n";
+	private static final String DETAILS = "Your notifications details is as follow:\n";
+	private static final String REGARDS = "Regards,\nTaskTracker";
+	private static final String SUBJECT = "Reminder From TaskTracker";
+	
+	private static String userEmail;
+	private static Email theEmail;
+	
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Email.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Email.java
+	 */
+
+	/*
+	 * emailUser: set up of the email name, host, password, recipients
+	 * 
+	 * @param Task
+	 * 
+	 * @return void
+	 */
+	public void emailUser(String task_Info) throws Exception {
+		String name = NAME;
+		String email = EMAIL;
+		String password = PASSWORD;
+
+		// default host
+		String host = "smtp.gmail.com";
+
+		// if (email.contains("gmail.com")) {
+		// host = "smtp.gmail.com";
+		// } else if (email.contains("hotmail.com") ||
+		// email.contains("live.com")) {
+		// host = "smtp.live.com";
+		// }
+
+		// List of recipients to email
+		String[] recipients = new String[] { userEmail };
+
+		String subject = SUBJECT;
+
+		String messageBody = SALUTATIONS + DETAILS + task_Info + "\n\n" + REGARDS;
+
+		if (new MailUtil().sendMail(recipients, subject, messageBody, name,
+				email, password, host)) {
+		}
+	}
+}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Email.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+	 */
+
+		case EDIT:
+		case UPDATE:
+			ArrayList<Integer> conflicts = new ArrayList<Integer>();
+			conflicts = checkConflict();
+			if (conflicts.size() <= 0) {
+				saveToUndoStack();
+				Update u = new Update();
+				feedback = feedback + u.editContent(c);
+			} else {
+				feedback = CONFLICTED_CODE + printConflictedTasks(conflicts)
+						+ "\n";
+				feedback = feedback + "Edit task anyway? (Yes/No): \n";
+			}
+			break;
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+	 */
+
+		case CLEAR:
+			break;
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+	 */
+
+		case EXIT:
+		case QUIT:
+			System.exit(0);
+			break;
+
+		default:
+			feedback = INVALID_COMMAND_MESSAGE + "\n";
+
+		}
+		s.saveStorage();
+		return feedback;
+	}
+	
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+	 */
+
+	/**
+	 * 
+	 * isDisplayUncompleted: Check if user wants to display a list of
+	 * uncompleted tasks
+	 * 
+	 * @param void
+	 * @return boolean
+	 * 
+	 */
+	private boolean isDisplayUncompleted() {
+		if (c.getDetails() != null) {
+			if (c.getDetails().equals("uncompleted")
+					|| c.getDetails().equals("uncompleted tasks")
+					|| c.getDetails().equals("uc")
+					|| c.getDetails().equals("uc tasks")) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Storage.java
+	 */
+
+public class Storage {
+
+	private static final String FILENAME = "Storage.txt";
+	private static final String LOG_FILE_NAME = "MyLogFile.txt";
+	private static final String LOG_START = "Start of retrieving tasks";
+	private static final String LOG_ERROR = "Processing error";
+	private static final String LOG_END = "Retrieve task successful";
+	private static final String EQUAL_LOCATION = "//location";
+	private static final String EQUAL_CATEGORY = "//category";
+	private static final String EQUAL_PRIORITY = "//priority";
+	private static final String EQUAL_COMPLETE = "//completed";
+	private static final String EQUAL_TASKID = "//taskid";
+	private static final String EQUAL_BLANK_SPACE = " ";
+	private static final String EQUAL_EMPTY_STRING = "";
+
+	private static final int ZERO_CONST = 0;
+	private static final int ONE_CONST = 1;
+	private static final int TEN_CONST = 10;
+
+	private static Logger logger = Logger.getLogger("MyLog");
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Storage.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Storage.java
+	 */
+
+	/**
+	 * 
+	 * loadStorage: retrieve tasks found in the external file called Storage.txt
+	 * to taskList
+	 * 
+	 * @param void
+	 * @return void
+	 */
+	public void loadStorage() throws Exception {
+		ExeCom.getTaskListInstance().clear();
+		FileHandler fh;
+		// to disable log message on output console
+		logger.setUseParentHandlers(false);
+		// log message written to MyLogFile.txt
+		fh = new FileHandler(LOG_FILE_NAME);
+
+		BufferedReader fileReader;
+		fileReader = createFileIfNotExist();
+
+		String[] retrieve;
+		int arraySize;
+		int counter;
+		String text;
+		try {
+			logger.addHandler(fh);
+			SimpleFormatter formatter = new SimpleFormatter();
+			fh.setFormatter(formatter);
+			// log message written to MyLogFile.txt during start
+			logger.log(Level.INFO, LOG_START);
+
+			while ((text = fileReader.readLine()) != null) {
+				Task task = new Task();
+
+				String location = EQUAL_EMPTY_STRING;
+				String category = EQUAL_EMPTY_STRING;
+				String priority = EQUAL_EMPTY_STRING;
+				String details = EQUAL_EMPTY_STRING;
+				String complete = EQUAL_EMPTY_STRING;
+
+				int i;
+				int endPosition = ZERO_CONST;
+				int startPosition = ZERO_CONST;
+
+				retrieve = text.split(EQUAL_BLANK_SPACE);
+				arraySize = retrieve.length;
+
+				for (i = ZERO_CONST; i < arraySize; i++) {
+					if (retrieve[i].equals(EQUAL_LOCATION)) {
+						endPosition = i;
+						for (int j = ONE_CONST; j < arraySize; j++) {
+							if (retrieve[j + i].equals(EQUAL_CATEGORY))
+								break;
+							location += retrieve[j + i] + " ";
+						}
+					}
+					if (retrieve[i].equals(EQUAL_CATEGORY)) {
+						for (int j = ONE_CONST; j < arraySize; j++) {
+							if (retrieve[j + i].equals(EQUAL_PRIORITY))
+								break;
+							category += retrieve[j + i] + " ";
+						}
+					}
+					if (retrieve[i].equals(EQUAL_PRIORITY)) {
+						for (int j = ONE_CONST; j < arraySize; j++) {
+							if (retrieve[j + i].equals(EQUAL_COMPLETE))
+								break;
+							priority += retrieve[j + i] + " ";
+						}
+					}
+					if (retrieve[i].equals(EQUAL_COMPLETE)) {
+						for (int j = ONE_CONST; j < arraySize; j++) {
+							if (retrieve[j + i].equals(EQUAL_TASKID))
+								break;
+							complete += retrieve[j + i] + " ";
+						}
+					}
+				}
+				if (location.endsWith(EQUAL_BLANK_SPACE))
+					location = location.substring(ZERO_CONST, location.length()
+							- ONE_CONST);
+				if (category.endsWith(EQUAL_BLANK_SPACE))
+					category = category.substring(ZERO_CONST, category.length()
+							- ONE_CONST);
+				if (priority.endsWith(EQUAL_BLANK_SPACE))
+					priority = priority.substring(ZERO_CONST, priority.length()
+							- ONE_CONST);
+				if (complete.endsWith(EQUAL_BLANK_SPACE))
+					complete = complete.substring(ZERO_CONST, complete.length()
+							- ONE_CONST);
+
+				setLocationToTaskIDAttribute(retrieve, arraySize, task,
+						location, category, priority, complete);
+
+				startPosition = endPosition - TEN_CONST;
+				endPosition = startPosition;
+
+				setDayToMinsAttributes(retrieve, task, startPosition);
+
+				for (counter = ZERO_CONST; counter < endPosition; counter++) {
+					if (counter == endPosition - ONE_CONST) {
+						details += retrieve[counter];
+					} else {
+						details += retrieve[counter] + EQUAL_BLANK_SPACE;
+					}
+				}
+
+				setDetailsAttibutes(task, details);
+				ExeCom.getTaskListInstance().add(task);
+			}
+			fileReader.close();
+		} catch (Exception ex) {
+			// log message written to MyLogFile.txt if error
+			logger.log(Level.WARNING, LOG_ERROR, ex);
+		}
+		// log message written to MyLogFile.txt if successful
+		logger.log(Level.INFO, LOG_END);
+		fh.close();
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Storage.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Storage.java
+	 */
+
+	/**
+	 * 
+	 * setDetailsAttibutes: set attributes for details into arrayList
+	 * 
+	 * @param Task
+	 *            , String
+	 * @return void
+	 */
+	private void setDetailsAttibutes(Task task, String details) {
+		task.setDetails(details);
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Storage.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Storage.java
+	 */
+
+	/**
+	 * 
+	 * setLocationToTaskIDAttribute: set attributes for location, category,
+	 * priority, taskID into arrayList
+	 * 
+	 * @param String
+	 *            [], int, Task, String, String, String
+	 * @return void
+	 */
+	private void setLocationToTaskIDAttribute(String[] retrieve, int arraySize,
+			Task task, String location, String category, String priority,
+			String complete) {
+		task.setLocation(location);
+		task.setCategory(category);
+		task.setPriority(priority);
+		task.setCompleted(complete);
+		task.setTaskID(retrieve[arraySize - ONE_CONST]);
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Storage.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Storage.java
+	 */
+
+	/**
+	 * 
+	 * setDayToMinsAttributes: set attributes for startDay, startMonth,
+	 * startYear, endDay, endMonth, endYear, startHours, startMins, endHours,
+	 * endMins into arrayList to taskList
+	 * 
+	 * @param String
+	 *            [], Task, int
+	 * @return void
+	 */
+	private void setDayToMinsAttributes(String[] retrieve, Task task,
+			int startPosition) {
+		task.setStartDay(retrieve[startPosition]);
+		startPosition++;
+		task.setStartMonth(retrieve[startPosition]);
+		startPosition++;
+		task.setStartYear(retrieve[startPosition]);
+		startPosition++;
+		task.setEndDay(retrieve[startPosition]);
+		startPosition++;
+		task.setEndMonth(retrieve[startPosition]);
+		startPosition++;
+		task.setEndYear(retrieve[startPosition]);
+		startPosition++;
+		task.setStartHours(retrieve[startPosition]);
+		startPosition++;
+		task.setStartMins(retrieve[startPosition]);
+		startPosition++;
+		task.setEndHours(retrieve[startPosition]);
+		startPosition++;
+		task.setEndMins(retrieve[startPosition]);
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Storage.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Storage.java
+	 */
+
+	/**
+	 * 
+	 * saveStorage: save taskList to external file fileName
+	 * 
+	 * @param void
+	 * @return void
+	 */
+	public void saveStorage() throws Exception {
+		File currentFile = new File(FILENAME);
+		currentFile.delete();
+		PrintWriter pw = new PrintWriter(new FileOutputStream(FILENAME));
+		for (Task t : ExeCom.getTaskListInstance()) {
+			pw.println(t.displayToStorage() + EQUAL_TASKID + EQUAL_BLANK_SPACE
+					+ retrieveCurrentTaskID(t));
+
+		}
+		pw.close();
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Storage.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\StorageTest.java
+	 */
+
+/**
+ * testStorage(): a simple test using JUnit by valid or invalid userinput.
+ * 
+ */
+public class StorageTest {
+	@Test
+	public void testStorage() throws Exception {
+		
+		//A valid user input
+		String userInput_Test = "add lunch with dad //location Orchard";
+		
+		//A invalid user input with missing details
+		String userInput_Test2 = "add   0400hrs";
+		
+		Storage s = new Storage();
+		ProcessCommand pc = new ProcessCommand();
+		ExeCom ec = ExeCom.getInstance();
+		
+		//Process user input
+		Command com = pc.process(userInput_Test);
+		Command com2 = pc.process(userInput_Test2);
+		
+		//load all task from Storage.txt
+		s.loadStorage();
+		
+		//Declaring a task list
+		ArrayList<Task> taskList = new ArrayList<Task>();
+		
+		//Getting the current task list
+		taskList = ExeCom.getTaskListInstance();
+		
+		ec.executeCommand(com);
+		ec.executeCommand(com2);
+		
+		int size = taskList.size()-1;
+		
+		// By using assertEquals, we compare the details of userInput 
+		// and the latest addition of the task list
+		Assert.assertEquals(com.getDetails(),taskList.get(size).getDetails());
+		
+		// By using assertNotEquals, we compare the details of userInput2
+		// and the latest addition of the task list
+		// in this case, not equals is true.
+		Assert.assertNotEquals(com2.getDetails(),taskList.get(size).getDetails());
+
+	}
+}
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\StorageTest.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Task.java
+	 */
+
+	/**
+	 * displayToStorage: display task attributes in the correct order
+	 * to be used by saveStorage() method in Storage.java.
+	 * 
+	 * @param void
+	 * @return String
+	 */
+	public String displayToStorage() {
+		return details + " " + startDay + " " + startMonth + " " + startYear
+				+ " " + endDay + " " + endMonth + " " + endYear + " "
+				+ startHours + " " + startMins + " " + endHours + " " + endMins
+				+ " " + "//location " + location + " " + "//category "
+				+ category + " " + "//priority " + priority + " "
+				+ "//completed " + completed + " ";
+	}
+
+}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Task.java
+
+
+
+
+

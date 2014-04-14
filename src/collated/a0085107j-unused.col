@@ -1,0 +1,50 @@
+//@author: a0085107j-unused
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\UI.java
+	 */
+
+	//not used as we switched to a GUI based design
+	/**
+	 * promptUser: get user's command input
+	 * 
+	 * @param void
+	 * @return String
+	 */
+	public String promptUser() {
+		System.out.println("Enter Command: ");
+		String userInput = scanner.nextLine();
+		return userInput;
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\UI.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\UI.java
+	 */
+
+	//not used as we switched to a GUI based design
+	/**
+	 * askForUserResponse: get user input
+	 * 
+	 * @param void
+	 * @return String
+	 */
+	public String askForUserResponse(){
+		String input = scanner.nextLine();
+		return input;
+	}
+}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\UI.java
+
+
+
+
+

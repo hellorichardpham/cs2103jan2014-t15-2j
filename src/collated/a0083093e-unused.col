@@ -1,0 +1,79 @@
+//@author: a0083093e-unused
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Add.java
+	 */
+
+	//not used as we switched to a GUI based design
+	/**
+	 * askIfUserWantToAdd: if user want to add despite conflict
+	 * 
+	 * @param command
+	 * @return void
+	 */
+	private String askIfUserWantToAdd(Command command){
+		UI ui = new UI();
+		System.out.println("Add Task anyway? Enter(Y/N) :");	
+		String input = ui.askForUserResponse();
+		return input;
+	}
+
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Add.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Add.java
+	 */
+
+	//not used as we switched to a GUI based design
+	/**
+	 * isWantToAdd: check if user replied yes to adding task
+	 * 
+	 * @param String
+	 * @return boolean
+	 */
+	boolean isWantToAdd(String input) {
+		if(input=="yes" || input=="y" || input=="yeah" || input=="ya"){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Add.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Add.java
+	 */
+
+	//not used as we switched to a GUI based design
+	/**
+	 * printConflictedTask: print all tasks that conflicts with current task
+	 * 
+	 * @param ArrayList<Integer>
+	 * @return void
+	 */
+	private void printConflictedTasks(ArrayList<Integer> conflicts) {
+		System.out.println("There is a conflict with these tasks: ");
+		for(int i=0 ; i<conflicts.size(); i++) {
+			System.out.print((conflicts.get(i)+1) + ": ");
+			System.out.println(taskList.get(conflicts.get(i)).displayTask());
+		}
+	}
+}
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Add.java
+
+
+
+
+

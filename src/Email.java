@@ -42,6 +42,8 @@ public class Email {
 	}
 	
 	//A0083093E
+	//checks if User email is valid then set as the email
+	//and returns validity statement
 	public static String setUserEmail(String userEm) {
 		if(userEm.contains("@") && userEm.contains(".com")) {
 			if(userEm.indexOf("@") < userEm.indexOf(".com"));

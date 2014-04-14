@@ -3,10 +3,11 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 
-public class DeleteTest {
+public class ProcessTest {
 	//@author A0085107J
 	@Test
 	public void testProcessTime() {
+		
 		//the following methods will test different possibilities that user will input
 		ProcessCommand pc = new ProcessCommand();
 
@@ -27,9 +28,6 @@ public class DeleteTest {
 		assertTrue(cAfter2.getStartMins().equals("00"));
 		assertTrue(cAfter2.getEndHours().equals("15"));
 		assertTrue(cAfter2.getEndMins().equals("59"));
-
-		// found bug in processTime. if user enters one time only, it should be the deadline
-		//i.e end time but method assigns that time to be start time. 
 
 		//user enter only end time with "hr"
 		String timeDetails3 = "1400hr";

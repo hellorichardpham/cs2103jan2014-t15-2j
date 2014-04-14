@@ -18,10 +18,13 @@ public class Email {
 	private static String userEmail;
 	private static Email theEmail;
 	
+	//@author A0083093E
+	//singleton method to get the single instance of email
+	//loads the User's email address from txt file
 	public static Email getTheEmailInstance() throws FileNotFoundException {
 		if(theEmail == null) {
 			theEmail = new Email();
-			userEmail = "";
+			userEmail = "dog@hotmail.com";
 		}
 		BufferedReader input;
 		try {
@@ -39,9 +42,15 @@ public class Email {
 	}
 	
 	//A0083093E
-	//constructor
-	public static void setUserEmail(String userEm) {
-		userEmail = userEm;
+	public static String setUserEmail(String userEm) {
+		if(userEm.contains("@") && userEm.contains(".com")) {
+			if(userEm.indexOf("@") < userEm.indexOf(".com"));
+			userEmail = userEm;
+			return "good";
+		}
+		else {
+			return "Email not valid";
+		}
 	}
 	
 	//A0083093E

@@ -14,13 +14,8 @@ public class ProcessCommand {
 
 	int indexOfDayOfWeek = Integer.MAX_VALUE;
 	int indexOfMonth = Integer.MIN_VALUE;
+
 	private Command c;
-
-	//for testing
-	public Command getCommand() {
-		return c;
-	}
-
 
 	//@author A0083093E
 	/**
@@ -32,30 +27,31 @@ public class ProcessCommand {
 	 * 
 	 */
 	public Command process(String userInput) {
-	
+
 		c = new Command();
-	
+
 		String[] splitInput = new String[100];
 		splitInput = userInput.split(" ");
 		String commandType = splitInput[0];
-	
+
 		processFirstWordAsCommand(splitInput);
 		processPriorityCategoryLocation(splitInput);
 		processLocation(splitInput);
-	
+
+		//	processBy(splitInput);
+
 		String timeDetails = extractTime(splitInput);
 		processTime(timeDetails);
-	
+
 		processDayofWeek(splitInput);
 		processTodayTmr(splitInput);
 		processDate(splitInput, commandType);
 		switchIfDatesAreReversed();
-	
+
 		processDetails(splitInput);
-	
+
 		return c;
 	}
-
 
 	//@author A0083093E
 	/**
@@ -758,12 +754,12 @@ public class ProcessCommand {
 		} else if (command.equals("hlp") || command.equals("??")
 				|| command.equals("hp") || command.equals("?")
 				||command.equals("h")){
-			command = "help";
+				command = "help";
 		} else if (command.equals("sc") || command.equals("scuts")
 				|| command.equals("stct") ||command.equals("scut")){
-			command = "shortcut";
+				command = "shortcut";
 		}else if (command.equals("ex") || command.equals("q")
-				|| command.equals("quit") || command.equals("qt")){
+			|| command.equals("quit") || command.equals("qt")){
 			command = "exit";
 		}
 		return command;

@@ -42,7 +42,6 @@ public class Add {
 	/**
 	 * askIfUserWantToAdd: if user want to add despite conflict
 	 * 
-	 * @author Wei Zhou
 	 * @param command
 	 * @return void
 	 */
@@ -75,7 +74,6 @@ public class Add {
 	/**
 	 * printConflictedTask: print all tasks that conflicts with current task
 	 * 
-	 * @author Wei Zhou
 	 * @param ArrayList<Integer>
 	 * @return void
 	 */

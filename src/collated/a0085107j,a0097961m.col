@@ -1,0 +1,27 @@
+//@author: a0085107j,a0097961m
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+	 */
+
+	 * @param void
+	 * @return void
+	 */
+	public String displayTaskList() {
+		String dispOut = "";
+		if (!taskList.isEmpty()) {
+			dispOut += displayUncompleted();
+		} else if (taskList.isEmpty()) {
+			dispOut = TASKLIST_EMPTY_MESSAGE;
+		}
+		return dispOut + "\n";
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+
+
+
+
+

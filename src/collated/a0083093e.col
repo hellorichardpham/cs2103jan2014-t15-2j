@@ -1,0 +1,1906 @@
+//@author: a0083093e
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Add.java
+	 */
+
+	/**
+	 * handleConflict: print conflicted tasks and ask if user wants to add anyway
+	 * @param Command, ArrayList<Integer>
+	 * @return void
+	 * @throws Exception
+	 */
+	public void handleConflict(Command command, ArrayList<Integer> conflicts){
+		printConflictedTasks(conflicts);
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Add.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Email.java
+	 */
+
+	//singleton method to get the single instance of email
+	//loads the User's email address from txt file
+	public static Email getTheEmailInstance() throws FileNotFoundException {
+		if(theEmail == null) {
+			theEmail = new Email();
+			userEmail = "dog@hotmail.com";
+		}
+		BufferedReader input;
+		try {
+			input = new BufferedReader(new FileReader("emailAddress.txt"));
+		} catch (FileNotFoundException e) {
+			PrintWriter writer = new PrintWriter("emailAddress.txt");
+			input = new BufferedReader(new FileReader("emailAddress.txt"));
+			writer.close();
+		}
+		try {
+			userEmail = input.readLine();
+		} catch (IOException e) {
+		}
+		return theEmail;
+	}
+	
+	//A0083093E
+	//checks if User email is valid then set as the email
+	//and returns validity statement
+	public static String setUserEmail(String userEm) {
+		if(userEm.contains("@") && userEm.contains(".com")) {
+			if(userEm.indexOf("@") < userEm.indexOf(".com"));
+			userEmail = userEm;
+			return "good";
+		}
+		else {
+			return "Email not valid";
+		}
+	}
+	
+	//A0083093E
+	public static String getUserEmail() {
+		return userEmail;
+	}
+	
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Email.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+	 */
+
+	/**
+	 * NOTE: this essential method is contributed by all 4 members throughout
+	 * the whole project period hence are putting the author tag in the method.
+	 * When we collate, this method might be segmented.
+	 * 
+	 * executeCommand: determines which action to perform based on the
+	 * userCommand then calls the appropriate method.
+	 * 
+	 * @param Command
+	 * @return String
+	 * 
+	 */
+	public String executeCommand(Command command) throws Exception {
+
+		feedback = "";
+		c = command;
+		String keyWord = c.getKeyword().toLowerCase();
+
+		Storage s = new Storage();
+		s.loadStorage();
+		Alarm.setNotification();
+
+		switch (keyWord) {
+
+		case JUSTADD:
+			addTask(command);
+			break;
+		// author A0085107J
+		case ADD:
+			if (isValidAddCommand()) {
+				if (isValidTime()) {
+					ArrayList<Integer> conflicts = new ArrayList<Integer>();
+					conflicts = checkConflict();
+					if (conflicts.size() <= 0) {
+						addTask(command);
+					} else {
+						feedback = CONFLICTED_CODE
+								+ printConflictedTasks(conflicts);
+						feedback = feedback + "Add task anyway? (Yes/No): \n\n";
+					}
+				} else {
+					feedback = feedback + INVALID_TIME_MESSAGE + "\n";
+				}
+			} else {
+				feedback = feedback + NO_DETAILS_MESSAGE + "\n";
+			}
+			break;
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+	 */
+
+		case SET:
+			String[] detailsArray = c.getDetails().split(" ");
+			if(detailsArray[0].trim().equals("email")) {
+				String userEmail = detailsArray[1].trim();
+				String message = Email.setUserEmail(userEmail);
+				if(message.equals("good")) {
+					writeEmailToTxtFile(userEmail);
+					feedback += EMAIL_SET_MESSAGE;
+				}
+				else {
+					feedback += EMAIL_INVALID_MESSAGE;
+				}
+			}
+			else {
+				feedback += EMAIL_INVALID_MESSAGE;
+			}
+			break;
+		case HELP:
+		case QUESTION_MARK:
+			Display dis = new Display(getTaskListInstance());
+			feedback += dis.displayHelp();
+			break;
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+	 */
+
+		case JUSTUPDATE:
+		case JUSTEDIT:
+			saveToUndoStack();
+			Update u = new Update();
+			feedback = feedback + u.editContent(c);
+			break;
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+	 */
+
+	//This program stores the email address given by the user to the .txt file
+	private void writeEmailToTxtFile(String userEmail)
+			throws FileNotFoundException {
+		File currentFile = new File("emailAddress.txt");
+		currentFile.delete();
+		PrintWriter pw = new PrintWriter(new FileOutputStream("emailAddress.txt"));
+		pw.println(userEmail);
+		pw.close();
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+	 */
+
+	/**
+	 * addTask: Adds Task to Tasklist and updates the undo and redo tasklists
+	 * 
+	 * @param Command
+	 * @return void
+	 */
+	private void addTask(Command command) throws Exception {
+		Add add = new Add(getTaskListInstance());
+		saveToUndoStack();
+		add.addToTaskList(command);
+		feedback = feedback + ADD_SUCCESSFUL_MESSAGE;
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+	 */
+
+	/**
+	 * checkConflict: check conflict of time and date, return ArrayList<Integer>
+	 * with the elements being the indexes of conflicting tasks in tasklist
+	 * 
+	 * @param void
+	 * @return ArrayList<Integer>
+	 */
+	public static ArrayList<Integer> checkConflict() {
+
+		ArrayList<Integer> conflicts = new ArrayList<Integer>();
+
+		for (int i = 0; i < taskList.size(); i++) {
+
+			Task current = taskList.get(i);
+			int taskStart = setStartSignature(current);
+			int taskEnd = setEndSignature(current);
+			int commandStart = setStartSignature(c);
+			int commandEnd = setEndSignature(c);
+
+			if (taskStart == -1 && commandStart == -1) {
+				if (taskEnd == commandEnd) {
+					conflicts.add(i);
+				}
+			}
+			if (taskStart != -1 && commandStart != -1) {
+				if (commandStart >= taskStart && commandStart < taskEnd) {
+					conflicts.add(i);
+				} else if (commandEnd > taskStart && commandEnd <= taskEnd) {
+					conflicts.add(i);
+				}
+			}
+			if (taskStart != -1 && commandStart == -1) {
+				if (commandEnd > taskStart && commandEnd < taskEnd) {
+					conflicts.add(i);
+				}
+			}
+			if (taskStart == -1 && commandStart != -1) {
+				if (taskEnd > commandStart && taskEnd < commandEnd) {
+					conflicts.add(i);
+				}
+			}
+		}
+		return conflicts;
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+	 */
+
+	/**
+	 * printConflictedTask: print all tasks that conflicts with current task
+	 * 
+	 * @param ArrayList
+	 *            <Integer>
+	 * @return void
+	 */
+	private static String printConflictedTasks(ArrayList<Integer> conflicts) {
+		String conflictList = "";
+		conflictList = conflictList
+				+ "There is a conflict with these tasks: \n";
+		for (int i = 0; i < conflicts.size(); i++) {
+			conflictList = conflictList + (conflicts.get(i) + 1) + ": ";
+			conflictList = conflictList
+					+ taskList.get(conflicts.get(i)).displayTask() + "\n";
+		}
+		return conflictList;
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+	 */
+
+	/**
+	 * setStartSignature: returns an integer value which contains all the end
+	 * date and end time info in a single number used for efficient comparison
+	 * 
+	 * @param Command
+	 * @return int
+	 */
+	private static int setEndSignature(Command comm) {
+		int end = 0;
+		if (comm.getEndYear() == null) {
+			return end;
+		}
+		end += 100000000 * Integer.parseInt(comm.getEndYear());
+		end += 1000000 * Integer.parseInt(comm.getEndMonth());
+		end += 10000 * Integer.parseInt(comm.getEndDay());
+
+		if (comm.getEndHours() == null) {
+			end += 2359;
+		} else {
+			end += 100 * Integer.parseInt(comm.getEndHours());
+			end += Integer.parseInt(comm.getEndMins());
+		}
+
+		return end;
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+	 */
+
+	/**
+	 * setStartSignature: returns an integer value which contains all the start
+	 * date and start time info in a single number used for efficient comparison
+	 * 
+	 * @param Command
+	 * @return int
+	 */
+	private static int setStartSignature(Command comm) {
+
+		int start = -1;
+
+		if (comm.getEndYear() == null) {
+			return Integer.MAX_VALUE;
+		}
+
+		if (comm.getStartYear() != null) {
+			start += 100000000 * Integer.parseInt(comm.getStartYear());
+			start += 1000000 * Integer.parseInt(comm.getStartMonth());
+			start += 10000 * Integer.parseInt(comm.getStartDay());
+		} else if (comm.getStartMins() != null) {
+			start += 100000000 * Integer.parseInt(comm.getEndYear());
+			start += 1000000 * Integer.parseInt(comm.getEndMonth());
+			start += 10000 * Integer.parseInt(comm.getEndDay());
+		} else {
+			return start;
+		}
+
+		if (comm.getStartMins() != null) {
+			start += 100 * Integer.parseInt(comm.getStartHours());
+			start += Integer.parseInt(comm.getStartMins());
+		}
+		return start;
+
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+	 */
+
+	/**
+	 * setEndSignature: returns an integer value which contains all the End date
+	 * and End time details in a single number used for efficient comparison
+	 * 
+	 * @param Task
+	 * @return int
+	 */
+	private static int setEndSignature(Task task) {
+
+		int end = 0;
+
+		end += 100000000 * Integer.parseInt(task.getEndYear());
+		end += 1000000 * Integer.parseInt(task.getEndMonth());
+		end += 10000 * Integer.parseInt(task.getEndDay());
+
+		if (task.getEndHours().equals("null")) {
+			end += 2359;
+		} else {
+			end += 100 * Integer.parseInt(task.getEndHours());
+			end += Integer.parseInt(task.getEndMins());
+		}
+
+		return end;
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+	 */
+
+	/**
+	 * setStartSignature: returns an integer value which contains all the start
+	 * date and start time details in a single number used for efficient
+	 * comparison
+	 * 
+	 * @param Task
+	 * @return int
+	 */
+	private static int setStartSignature(Task task) {
+		int start = -1;
+
+		if (!task.getStartYear().equals("null")) {
+			start += 100000000 * Integer.parseInt(task.getStartYear());
+			start += 1000000 * Integer.parseInt(task.getStartMonth());
+			start += 10000 * Integer.parseInt(task.getStartDay());
+		} else if (!task.getStartMins().equals("null")) {
+			start += 100000000 * Integer.parseInt(task.getEndYear());
+			start += 1000000 * Integer.parseInt(task.getEndMonth());
+			start += 10000 * Integer.parseInt(task.getEndDay());
+		} else {
+			return start;
+		}
+
+		if (!task.getStartMins().equals("null")) {
+			start += 100 * Integer.parseInt(task.getStartHours());
+			start += Integer.parseInt(task.getStartMins());
+		}
+		return start;
+
+	}
+	
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+	 */
+
+	/**
+	 * checkUndoStack: checks if undo stack is empty checkRedoStack: checks if
+	 * redo stack is empty
+	 * 
+	 * @param void
+	 * @return boolean
+	 * 
+	 */
+	public static boolean checkUndoStack() {
+		return !undoStack.empty();
+	}
+
+	public static boolean checkRedoStack() {
+		return !redoStack.empty();
+	}
+}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+	 */
+
+/**
+ * ProcessCommand (class) : This class acts as the language processing unit,
+ * converting what the user inputs as a String to various attributes in the
+ * Command Object
+ * 
+ */
+public class ProcessCommand {
+
+	private static final String EMPTY_STRING = "";
+
+	int indexOfDayOfWeek = Integer.MAX_VALUE;
+	int indexOfMonth = Integer.MIN_VALUE;
+
+	private Command c = new Command();
+
+	public Command getCommand() {
+		return c;
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+	 */
+
+	/**
+	 * process: Extracts information from the userInput String and stores them
+	 * to a Command object
+	 * 
+	 * @param userInput
+	 * @return Command
+	 * 
+	 */
+	public Command process(String userInput) {
+
+		c = new Command();
+
+		String[] splitInput = new String[100];
+		splitInput = userInput.split(" ");
+		String commandType = splitInput[0];
+
+		processFirstWordAsCommand(splitInput);
+		processPriorityCategoryLocation(splitInput);
+		processLocation(splitInput);
+
+		String timeDetails = extractTime(splitInput);
+		processTime(timeDetails);
+
+		processDayofWeek(splitInput);
+		processTodayTmr(splitInput);
+		processDate(splitInput, commandType);
+		switchIfDatesAreReversed();
+
+		processDetails(splitInput);
+
+		return c;
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+	 */
+
+	/**
+	 * processFirstWordAsCommand: Extracts the first word in the userInput
+	 * String as the Command keyword
+	 * 
+	 * @param splitInput
+	 */
+	private String processFirstWordAsCommand(String[] splitInput) {
+
+		String firstWord = splitInput[0];
+		firstWord = convertMultipleCommandKeywords(firstWord);
+
+		c.setKeyword(firstWord);
+		splitInput[0] = EMPTY_STRING;
+
+		switch (firstWord.toLowerCase()) {
+		case "delete":
+		case "completed":
+		case "done":
+			int size = splitInput.length; // number of task specified by user
+			ArrayList<String> specifiedTasks = new ArrayList<String>(size);
+			for (int i = 1; i < size; i++) {
+				specifiedTasks.add(splitInput[i]);
+				splitInput[i] = EMPTY_STRING;
+			}
+			c.setTargetedTasks(specifiedTasks); // assign user specified TaskID
+			break;
+
+		case "edit":
+		case "update":
+			c.setTaskID(splitInput[1]);
+			splitInput[1] = EMPTY_STRING;
+			break;
+		}
+		return firstWord;
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+	 */
+
+	/**
+	 * processProrityCategoryLocation: Extracts Location, Priority and Category
+	 * information by looking for keywords in the splitInput array and stores
+	 * them into the command object
+	 * 
+	 * @param splitInput
+	 */
+	private void processPriorityCategoryLocation(String[] splitInput) {
+		for (int i = 0; i < splitInput.length; i++) {
+			if (splitInput[i] != null) {
+				switch (splitInput[i].toLowerCase()) {
+				case "//location":
+				case "//l":
+					String locationDetails = extractDetails(splitInput, i);
+					c.setLocation(locationDetails);
+					splitInput[i] = EMPTY_STRING;
+					splitInput[i + 1] = EMPTY_STRING;
+					break;
+				case "//priority":
+				case "//p":
+					String priorityDetails = extractDetails(splitInput, i);
+					c.setPriority(priorityDetails);
+					splitInput[i] = EMPTY_STRING;
+					splitInput[i + 1] = EMPTY_STRING;
+					break;
+				case "//category":
+				case "//c":
+					String categoryDetails = extractDetails(splitInput, i);
+					c.setCategory(categoryDetails);
+					splitInput[i] = EMPTY_STRING;
+					splitInput[i + 1] = EMPTY_STRING;
+					break;
+				}
+			}
+		}
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+	 */
+
+	/**
+	 * processLocation: Extracts Location by alternative indentifier (@)
+	 * 
+	 * @param splitInput
+	 */
+	private void processLocation(String[] splitInput) {
+		for (int i = 0; i < splitInput.length; i++) {
+			if (splitInput[i].contains("@") && !splitInput[i].contains(".com")) {
+				c.setLocation(splitInput[i].substring(1));
+				splitInput[i] = EMPTY_STRING;
+			}
+		}
+
+	}
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+	 */
+
+	/**
+	 * processDayOfWeek: Extracts date given the day of the week of user enters
+	 * 
+	 * @param String[] splitInput
+	 * 
+	 */
+	private void processDayofWeek(String[] splitInput) {
+		for (int i = splitInput.length - 1; i > 0; i--) {
+			int inputDay = findDaysofWeek(splitInput[i]);
+
+			if (inputDay != -1) {
+				indexOfDayOfWeek = i;
+				int isNextWeek = 0;
+
+				switch (splitInput[i - 1]) {
+				case "next":
+					isNextWeek = 7;
+				case "this":
+				case "on":
+				case "to":
+				case "from":
+				case "by":
+					splitInput[i - 1] = EMPTY_STRING;
+				}
+
+				if (i - 2 > 0) {
+					if (splitInput[i - 2].equals("-")
+							|| splitInput[i - 2].equals("to")
+							|| splitInput[i - 2].equals("from")
+							|| splitInput[i - 2].equals("frm")) {
+						splitInput[i - 2] = EMPTY_STRING;
+					}
+				}
+
+				splitInput[i] = EMPTY_STRING;
+
+				Calendar cal = Calendar.getInstance();
+				int currentDayOfMonth = cal.get(Calendar.DAY_OF_WEEK);
+				int daysToAdd = inputDay - currentDayOfMonth;
+				if (daysToAdd < 0) {
+					isNextWeek = 7;
+				}
+				if (daysToAdd == 0 && c.getEndHours() != null) {
+					int currentHour = cal.get(Calendar.HOUR_OF_DAY);
+					int currentMin = cal.get(Calendar.MINUTE);
+
+					if (currentHour > Integer.parseInt(c.getEndHours())) {
+						isNextWeek = 7;
+					} else if (currentHour == Integer.parseInt(c.getEndHours())
+							&& currentMin > Integer.parseInt(c.getEndMins())) {
+						isNextWeek = 7;
+					}
+				}
+
+				cal.add(Calendar.DAY_OF_MONTH, daysToAdd + isNextWeek);
+				setDate(cal);
+
+			}
+		}
+
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+	 */
+
+	/**
+	 * findDaysOfWeek: Identifies if a String contains a weekday and returns the
+	 * day of the week as a integer
+	 * 
+	 * @param String ithInput
+	 * @return int day of week
+	 * 
+	 */
+	private int findDaysofWeek(String ithInput) {
+		int days = -1;
+		switch (ithInput.toLowerCase()) {
+		case "sunday":
+		case "sun":
+			days = 1;
+			break;
+		case "monday":
+		case "mon":
+			days = 2;
+			break;
+		case "tues":
+		case "tuesday":
+		case "tue":
+			days = 3;
+			break;
+		case "wednesday":
+		case "wed":
+		case "weds":
+			days = 4;
+			break;
+		case "thurs":
+		case "thur":
+		case "thursday":
+			days = 5;
+			break;
+		case "friday":
+		case "fri":
+			days = 6;
+			break;
+		case "saturday":
+		case "sat":
+			days = 7;
+			break;
+		}
+
+		return days;
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+	 */
+
+	/**
+	 * processTodayTmr: Detects if user types "today" or "tmr" and interpret it
+	 * as a date String as the Command keyword
+	 * 
+	 * @param splitInput
+	 */
+	private void processTodayTmr(String[] splitInput) {
+		for (int i = splitInput.length - 1; i > 0; i--) {
+			Calendar cal = Calendar.getInstance();
+			switch (splitInput[i].toLowerCase()) {
+			case "tommorrow":
+			case "tomorrow":
+			case "tmrw":
+			case "tmr":
+			case "tml":
+				cal.add(Calendar.DAY_OF_MONTH, 1);
+			case "today":
+			case "2day":
+			case "tonight":
+			case "tonite":
+			case "2night":
+			case "2nite":
+
+				setDate(cal);
+				splitInput[i] = EMPTY_STRING;
+				if (i - 2 > 0) {
+					if (splitInput[i - 1].equals("-")
+							|| splitInput[i - 1].equals("to")
+							|| splitInput[i - 1].equals("by")
+							|| splitInput[i - 1].equals("from")
+							|| splitInput[i - 1].equals("frm")) {
+						splitInput[i - 1] = EMPTY_STRING;
+					}
+				}
+			}
+		}
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+	 */
+
+	/**
+	 * processDate: process the splitInput array to Identify month signatures
+	 * and store them into the command object in the correct format
+	 * 
+	 * @param String[] splitInput
+	 * 
+	 */
+	private void processDate(String[] splitInput, String commandType) {
+
+		for (int i = splitInput.length - 1; i > 0; i--) {
+
+			String month = findMonth(splitInput[i]);
+
+			if (!month.equals(EMPTY_STRING)) {
+				indexOfMonth = i;
+				if (c.getEndMonth() == null) {
+					c.setEndMonth(month);
+					c.setEndDay(splitInput[i - 1]);
+					setEndYearIfUserNoInput(splitInput, i);
+				} else {
+					c.setStartMonth(month);
+					c.setStartDay(splitInput[i - 1]);
+					setStartYearIfUserNoInput(splitInput, i);
+				}
+
+				splitInput[i] = EMPTY_STRING;
+				splitInput[i - 1] = EMPTY_STRING;
+
+				if (i - 2 > 0 && (splitInput[i - 2].equals("-") || 
+						splitInput[i - 2].equals("to") ||
+						splitInput[i - 2].equals("by") ||
+						splitInput[i - 2].equals("from"))) {
+					splitInput[i - 2] = EMPTY_STRING;
+				}
+			}
+		}
+
+		if (c.getEndMonth() == null
+				&& !(c.getKeyword().equals("edit") || c.getKeyword().equals("update") || c.getKeyword().equals("display"))) {
+			Calendar cal = Calendar.getInstance();
+			if (c.getEndHours() != null) {
+				if (Integer.parseInt(c.getEndHours()) < cal
+						.get(Calendar.HOUR_OF_DAY)) {
+					cal.add(Calendar.DATE, 1);
+				} else if (Integer.parseInt(c.getEndHours()) == cal
+						.get(Calendar.HOUR_OF_DAY)
+						&& Integer.parseInt(c.getEndMins()) < cal
+						.get(Calendar.MINUTE)) {
+					cal.add(Calendar.DATE, 1);
+				}
+			}
+			setEndDate(cal);
+		}
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+	 */
+
+	/**
+	 * findMonth: identifies if input String is a month and returns integer
+	 * value of month
+	 * 
+	 * @param String
+	 * @return String
+	 */
+	private String findMonth(String ithSplitInput) {
+		String month = EMPTY_STRING;
+		switch (ithSplitInput.toLowerCase()) {
+		case "jan":
+		case "january":
+			month = "01";
+			break;
+		case "feb":
+		case "february":
+			month = "02";
+			break;
+		case "mar":
+		case "march":
+			month = "03";
+			break;
+		case "apr":
+		case "april":
+			month = "04";
+			break;
+		case "may":
+			month = "05";
+			break;
+		case "jun":
+		case "june":
+			month = "06";
+			break;
+		case "july":
+		case "jul":
+			month = "07";
+			break;
+		case "august":
+		case "aug":
+			month = "08";
+			break;
+		case "september":
+		case "sep":
+		case "sept":
+			month = "09";
+			break;
+		case "october":
+		case "oct":
+			month = "10";
+			break;
+		case "november":
+		case "nov":
+			month = "11";
+			break;
+		case "december":
+		case "dec":
+			month = "12";
+			break;
+		}
+		return month;
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+	 */
+
+	/**
+	 * setStartYearIfNoInput: Sets the Start year as current year if the user
+	 * did not input a year
+	 * 
+	 * @param String[], int
+	 */
+	private void setStartYearIfUserNoInput(String[] splitInput, int i) {
+		if (i + 1 < splitInput.length) {
+			try {
+				int year = Integer.parseInt(splitInput[i + 1]);
+				c.setStartYear(year + "");
+				splitInput[i + 1] = EMPTY_STRING;
+			} catch (NumberFormatException e) {
+				setStartAsCurrentYear();
+			}
+		} else {
+			setStartAsCurrentYear();
+		}
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+	 */
+
+	/**
+	 * setStartAsCurrentYEar: Sets the start year as current year
+	 * @param void
+	 * @return void
+	 */
+	private void setStartAsCurrentYear() {
+		Calendar cal = Calendar.getInstance();
+		c.setStartYear(cal.get(Calendar.YEAR) + "");
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+	 */
+
+	/**
+	 * setEndAsCurrentYEar: Sets the end year as current year
+	 * @param void
+	 * @return void
+	 */
+	private void setEndAsCurrentYear() {
+		Calendar cal = Calendar.getInstance();
+		c.setEndYear(cal.get(Calendar.YEAR) + "");
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+	 */
+
+	/**
+	 * setEndYearIfNoInput: Sets the end year as current year if the user did
+	 * not input a year
+	 * 
+	 * @param String[], int
+	 * @return void
+	 */
+	private void setEndYearIfUserNoInput(String[] splitInput, int i) {
+		if (i + 1 < splitInput.length) {
+			try {
+				int year = Integer.parseInt(splitInput[i + 1]);
+				c.setEndYear(year + "");
+				splitInput[i + 1] = EMPTY_STRING;
+			} catch (NumberFormatException e) {
+				setEndAsCurrentYear();
+			}
+		} else {
+			setEndAsCurrentYear();
+		}
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+	 */
+
+	/**
+	 * switchIfDateAreReversed: Handles case where user inputs weekday followed
+	 * by month as date input. Or when end date is earlier than start date.
+	 * Switches mixed up attributes
+	 * 
+	 */
+	private void switchIfDatesAreReversed() {
+		if (indexOfMonth > indexOfDayOfWeek || ifEndDateEarlierThanStart()) {
+			String tempDay = c.getStartDay();
+			String tempMonth = c.getStartMonth();
+			String tempYear = c.getStartYear();
+
+			c.setStartDay(c.getEndDay());
+			c.setStartMonth(c.getEndMonth());
+			c.setStartYear(c.getEndYear());
+
+			c.setEndDay(tempDay);
+			c.setEndMonth(tempMonth);
+			c.setEndYear(tempYear);
+		}
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+	 */
+
+	/**
+	 * processDetails: Extracts Task details and stores them into Command object
+	 * 
+	 * @param String[]
+	 */
+	private void processDetails(String[] splitInput) {
+		String details = "";
+		for (int i = 0; i < splitInput.length; i++) {
+			if (!splitInput[i].equals("")) {
+				details = details + splitInput[i] + " ";
+			}
+		}
+		details = details.trim();
+		if (!details.equals("")) {
+			c.setDetails(details);
+		} else {
+			c.setDetails(null);
+		}
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+	 */
+
+	/**
+	 * ifEndDateEarlierThanStart: Checks if the user input end date is earlier
+	 * than the start date
+	 * 
+	 * @return boolean
+	 * 
+	 */
+	private boolean ifEndDateEarlierThanStart() {
+		if (c.getStartYear() != null) {
+			if (Integer.parseInt(c.getEndYear()) < Integer.parseInt(c
+					.getStartYear())) {
+				return true;
+			}
+			if (Integer.parseInt(c.getEndMonth()) < Integer.parseInt(c
+					.getStartMonth())) {
+				return true;
+			}
+			if (Integer.parseInt(c.getEndDay()) < Integer.parseInt(c
+					.getStartDay())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+	 */
+
+	/**
+	 * extractDetails: Extracts Location/Priority/Category details by
+	 * concatenating Strings in between // identifier
+	 * 
+	 * @param String[], int
+	 */
+	private String extractDetails(String[] splitInput, int i) {
+		String details = EMPTY_STRING;
+		for (int j = i + 1; j < splitInput.length
+				&& !splitInput[j].contains("//"); j++) {
+			details = details + splitInput[j] + " ";
+			splitInput[j] = EMPTY_STRING;
+		}
+		return details.trim();
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessTest.java
+	 */
+
+	@Test
+	public void testExtractTime(){
+		String[] splitInput = {"add", "lunch", "1400hrs","to", "1500hrs"};
+		ProcessCommand pc = new ProcessCommand();
+		String result = pc.extractTime(splitInput);
+		assert(result.equals("1400hrs1500hrs"));
+		
+		String[] splitInput2 = {"add", "lunch", "1400hrs","-", "1500hrs"};
+		String result2 = pc.extractTime(splitInput2);
+		assert(result2.equals("1400hrs1500hrs"));
+
+		String[] splitInput3 = {"add", "lunch", "1400hrs", "1500hrs"};
+		String result3 = pc.extractTime(splitInput3);
+		assert(result3.equals("1400hrs1500hrs"));
+	}
+	
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessTest.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessTest.java
+	 */
+
+	@Test
+	public void testExtractLocation() {
+		String userInput = "add lunch with dad @home";
+		ProcessCommand pc = new ProcessCommand();
+		Command test = pc.process(userInput);
+		assert(test.getLocation().equals("home"));
+		
+		String userInput2 = "add lunch with dad //location Outram Park at NUS //priority high";
+		Command test2 = pc.process(userInput);
+		assert(test.getLocation().equals("Outram Park at NUS"));
+	}
+	
+}//end class
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessTest.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Storage.java
+	 */
+
+	/**
+	 * 
+	 * createFileIfNotExist: automatically creates an external .txt file for
+	 * user if storage.txt is not found
+	 * 
+	 * @param void
+	 * @return Buffered Reader
+	 */
+	private BufferedReader createFileIfNotExist() throws FileNotFoundException {
+		BufferedReader input;
+		try {
+			input = new BufferedReader(new FileReader(FILENAME));
+		} catch (FileNotFoundException ex) {
+			PrintWriter writer = new PrintWriter(FILENAME);
+			input = new BufferedReader(new FileReader(FILENAME));
+			writer.close();
+		}
+		return input;
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Storage.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\TaskTrackerGUI.java
+	 */
+
+/**
+ * Class TaskTrackerGUI This class acts as the GUI class to handle user events
+ */
+public class TaskTrackerGUI extends javax.swing.JFrame implements KeyListener {
+
+	private static final long serialVersionUID = 1L;
+	// code placed at front of feedback for GUI to recognize there is a conflict
+	private final static String CONFLICTED_CODE = "-cs2103--conflicted";
+	private final static String CANCELLED = "cancel";
+	private final static String WELCOME_MESSAGE = "======= Welcome to TaskTracker! =======\n";
+
+	private static StyledDocument doc;
+	private static Style blue1;
+	private static Style blue2;
+	private static Style green;
+	private static Style black;
+	private static Style gray;
+	private static Style red;
+	private static Style header;
+
+	private String conflictedUserInput;
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\TaskTrackerGUI.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\TaskTrackerGUI.java
+	 */
+
+	/**
+	 * Creates new form TaskTrackerGUI
+	 */
+	public TaskTrackerGUI() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage("src\\icon.png"));
+		setTitle("TaskTracker");
+		try {
+			initComponents();
+			Alarm.setNotification();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\TaskTrackerGUI.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\TaskTrackerGUI.java
+	 */
+
+	/**
+	 * This method prints the welcome message
+	 */
+	private void displayWelcomeMessage(){
+		printLine(WELCOME_MESSAGE, header);
+		displayTaskForTheDay();
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\TaskTrackerGUI.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\TaskTrackerGUI.java
+	 */
+
+	/**
+	 * This method prints the string onto the displaybox in the specified style with a newline
+	 * @param string
+	 * @param style
+	 */
+	private void printLine(String s, Style style) {
+		try {
+			doc.insertString(doc.getLength(), s + "\n", style);
+		} catch (BadLocationException e1) {
+			e1.printStackTrace();
+		}
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\TaskTrackerGUI.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\TaskTrackerGUI.java
+	 */
+
+	/**
+	 * This method prints the string onto the displaybox in the specified style without a newline
+	 * @param string
+	 * @param style
+	 */
+	private void print(String s, Style style) {
+		try {
+			doc.insertString(doc.getLength(), s, style);
+		} catch(BadLocationException e1) {
+			e1.printStackTrace();
+		}
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\TaskTrackerGUI.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\TaskTrackerGUI.java
+	 */
+
+	/**
+	 * This method sets the styles available for printing
+	 */
+	private void setStyles() {
+	
+		Color darkBlue = new Color(27,67,118);
+		blue1 = displayTextBox.addStyle("This prints in dark blue", null);
+		StyleConstants.setForeground(blue1, darkBlue);
+		StyleConstants.setFontSize(blue1, 15);
+		StyleConstants.setFontFamily(blue1, "arial");
+
+		Color lighterBlue = new Color(96,117,158);
+		blue2 = displayTextBox.addStyle("This prints in lighter blue", null);
+		StyleConstants.setForeground(blue2, lighterBlue);
+		StyleConstants.setFontSize(blue2, 15);
+		StyleConstants.setFontFamily(blue2, "arial");
+
+		Color greenish = new Color(46,139,87);
+		green = displayTextBox.addStyle("This prints in green", null);
+		StyleConstants.setForeground(green, greenish);
+		StyleConstants.setFontSize(green, 15);
+		StyleConstants.setFontFamily(green, "arial");
+
+		Color darkRed = new Color(128,0,128);
+		red = displayTextBox.addStyle("This prints in red",null);
+		StyleConstants.setForeground(red, darkRed);
+		StyleConstants.setFontSize(red, 15);
+		StyleConstants.setFontFamily(red, "arial");
+
+		black = displayTextBox.addStyle("This prints in black", null);
+		StyleConstants.setForeground(black, Color.black);
+		StyleConstants.setFontSize(black, 15);
+		StyleConstants.setFontFamily(black, "arial");
+
+		gray = displayTextBox.addStyle("This prints in gray", null);
+		StyleConstants.setForeground(gray, Color.gray);
+		StyleConstants.setFontSize(gray, 15);
+		StyleConstants.setFontFamily(gray, "arial");
+
+		Color dark = new Color(154,50,50);
+		header = displayTextBox.addStyle("This prints the headers",null);
+		StyleConstants.setForeground(header, dark);
+		StyleConstants.setFontFamily(header, "times new roman");
+		StyleConstants.setFontSize(header, 20);
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\TaskTrackerGUI.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\TaskTrackerGUI.java
+	 */
+
+	/**
+	 * This method describes the action taken by the program when the user enters
+	 * a line of command
+	 */
+	private void commandLineActionPerformed(java.awt.event.ActionEvent evt) {
+		String userInput = commandLine.getText().trim();
+		commandLine.setText("");
+
+		ProcessCommand pc = new ProcessCommand();
+		ExeCom ec = ExeCom.getInstance();
+		Command com = pc.process(userInput);
+
+		if (com.getKeyword().contains("clear")) {
+			displayTextBox.setText("");
+			printLine(WELCOME_MESSAGE,header);
+		}
+
+		if (conflictedUserInput != null) {
+			switch (userInput.toLowerCase()) {
+			case "yes":
+			case "y":
+			case "ya":
+			case "yeah":
+				com = pc.process(conflictedUserInput);
+				conflictedUserInput = null;
+				break;
+			default :
+				com.setKeyword(CANCELLED);
+				conflictedUserInput = null;
+			}
+		}
+
+		try {
+			ec.executeCommand(com);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		String feedback;
+		feedback = ExeCom.getFeedback();
+
+		feedback = replaceConflictCode(userInput, feedback);
+		setUndoRedoButtons();	
+		printFeedback(feedback);
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\TaskTrackerGUI.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\TaskTrackerGUI.java
+	 */
+
+	/**
+	 * This method stamps the "just" keyword over the original add or edit keyword so that ExeCom executes
+	 * the command without checking for conflicts
+	 * Subsequently, it removes the codeword for printing
+	 * 
+	 * @param String,String
+	 * @return String
+	 */
+	private String replaceConflictCode(String userInput, String feedback) {
+		if (feedback.contains(CONFLICTED_CODE)) {
+			// change command keyword to justadd
+			conflictedUserInput = "just" + userInput;
+			feedback = feedback.replace(CONFLICTED_CODE, "").trim();
+		}
+		return feedback;
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\TaskTrackerGUI.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\TaskTrackerGUI.java
+	 */
+
+	/**
+	 * This method describes the action taken by the program when the user clicks
+	 * on the Undo button
+	 */
+	private void undoButtonActionPerformed(java.awt.event.ActionEvent evt) {
+		ExeCom ec = ExeCom.getInstance();
+		Command command = new Command();
+		command.setKeyword("undo");
+		try {
+			ec.executeCommand(command);
+		} catch (Exception e) {
+			System.out.println("Could not perform undo command");
+		}
+		String feedback = ExeCom.getFeedback();
+		printFeedback(feedback);
+		setUndoRedoButtons();
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\TaskTrackerGUI.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\TaskTrackerGUI.java
+	 */
+
+	/**
+	 * This method describes the action taken by the program when the user clicks
+	 * on the Redo button
+	 */
+	private void redoButtonActionPerformed(java.awt.event.ActionEvent evt) {
+		ExeCom ec = ExeCom.getInstance();
+		Command command = new Command();
+		command.setKeyword("redo");
+		try {
+			ec.executeCommand(command);
+		} catch (Exception e) {
+			System.out.println("Could not perform redo command");
+		}
+		String feedback = ExeCom.getFeedback();
+		printFeedback(feedback);
+		setUndoRedoButtons();
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\TaskTrackerGUI.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\TaskTrackerGUI.java
+	 */
+
+	/**
+	 * This method checks the undo and redo Stacks and updates the buttons accordingly
+	 */
+	private void setUndoRedoButtons() {
+		undoButton.setEnabled(ExeCom.checkUndoStack());
+		redoButton.setEnabled(ExeCom.checkRedoStack());
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\TaskTrackerGUI.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\TaskTrackerGUI.java
+	 */
+
+	/**
+	 * This method prints the String feedback returned by ExeCom
+	 * @param String
+	 */
+	private void printFeedback(String feedback) {
+		String[] feedbackArray = feedback.split("\n");
+
+		for(int i=0;i<feedbackArray.length;i++) {
+			if(feedbackArray[i].length()!=0 && Character.isDigit(feedbackArray[i].charAt(0))) {
+
+				String details = "";
+				String startDate = "";
+				String endDate = "";
+				String startTime = "";
+				String endTime = "";
+				String location = "";	
+				String priority = "";
+				String category = "";
+
+				//print index
+				print(feedbackArray[i].substring(0,feedbackArray[i].indexOf(":")) + ". ",black);
+				String[] componentArray = feedbackArray[i].split("//");
+				for(int j=0;j<componentArray.length;j++) {
+					if(componentArray[j].contains("DECS2103:")) {
+						details = componentArray[j].substring(10);
+					}
+					if(componentArray[j].contains("SDCS2103:")) {
+						startDate = componentArray[j].substring(10);
+					}
+					if(componentArray[j].contains("EDCS2103:")) {
+						endDate = componentArray[j].substring(10);
+					}
+					if(componentArray[j].contains("STCS2103:")) {
+						startTime = componentArray[j].substring(10);
+					}
+					if(componentArray[j].contains("ETCS2103:")) {
+						endTime = componentArray[j].substring(10);
+					}
+					if(componentArray[j].contains("LOCS2103:")) {
+						location = componentArray[j].substring(10);
+					}
+					if(componentArray[j].contains("CACS2103:")) {
+						category = componentArray[j].substring(10);
+					}
+					if(componentArray[j].contains("PRCS2103:")) {
+						priority = componentArray[j].substring(10);
+					}
+				}
+				printTime(startTime,endTime);
+				printDetails(details);
+				printLocation(location);
+				printDate(startDate,endDate);
+				printCategory(category);
+				printPriority(priority);
+				printLine("",black);
+
+			}
+			else if(feedbackArray[i].contains("=====")) {
+				printLine(feedbackArray[i],header);
+			}
+			else {
+				printLine(feedbackArray[i],blue1);
+			}
+		}
+
+		printLine("",black);
+		displayTextBox.setCaretPosition(displayTextBox.getDocument().getLength());
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\TaskTrackerGUI.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\TaskTrackerGUI.java
+	 */
+
+	/**
+	 * printDetails: displays detail attribute on the GUI
+	 * 
+	 * @param String
+	 * @return void
+	 */
+	private void printDetails(String details) {
+		print(details,blue1);
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\TaskTrackerGUI.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\TaskTrackerGUI.java
+	 */
+
+	/**
+	 * printPriority: displays priority attribute on the GUI
+	 * 
+	 * @param String
+	 * @return void
+	 */
+	private void printPriority(String priority) {
+		if(!priority.equals("")) {
+			print("[" + priority + "]",red);
+		}
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\TaskTrackerGUI.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\TaskTrackerGUI.java
+	 */
+
+	/**
+	 * printCategory: displays category attribute on the GUI
+	 * 
+	 * @param String
+	 * @return void
+	 */
+	private void printCategory(String category) {
+		if(!category.equals("")) {
+			print(" {" + category + "} ",blue2);
+		}
+
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\TaskTrackerGUI.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\TaskTrackerGUI.java
+	 */
+
+	/**
+	 * printLocation: displays location attribute on the GUI
+	 * 
+	 * @param String
+	 * @return void
+	 */
+	private void printLocation(String location) {
+		if(!location.equals("")) {
+			print(" @" + location,red);
+		}
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\TaskTrackerGUI.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\TaskTrackerGUI.java
+	 */
+
+	/**
+	 * printDate: displays date attributes on the GUI
+	 * 
+	 * @param String, String
+	 * @return void
+	 */
+	private void printDate(String startDate, String endDate) {
+		if(startDate.equals("")) {
+			print(" on " + endDate , green);
+		} else {
+			print(" from " + startDate + " to " + endDate , green);
+		}
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\TaskTrackerGUI.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\TaskTrackerGUI.java
+	 */
+
+	/**
+	 * printTime: displays time attributes on the GUI
+	 * 
+	 * @param String, String
+	 * @return void
+	 */
+	private void printTime(String startTime, String endTime) {
+		if(startTime.equals("") && endTime.equals("")) {
+			return;
+		}
+		else if(!startTime.equals("") && !endTime.equals("")) {
+			print("[" + startTime + "-" + endTime + "] ",gray);
+		}
+		else if(!startTime.equals("")) {
+			print("[" + startTime + "] ",gray);
+		}
+		else {
+			print("[" + endTime + "] ",gray);
+		}
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\TaskTrackerGUI.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\TaskTrackerGUI.java
+	 */
+
+	/**
+	 * This line closes the program when the user clicks on the Exit button
+	 */
+	private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {
+		System.exit(0);
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\TaskTrackerGUI.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\TaskTrackerGUI.java
+	 */
+
+	/**
+	 * This method allows User to press the up and down directional keys to scroll the textField
+	 * @Override
+	 **/
+	public void keyPressed(KeyEvent e) {
+		int keyCode = e.getKeyCode();
+		//if User presses UP key
+		if(keyCode==38) {
+			jScrollPane.getVerticalScrollBar().setValue(jScrollPane.getVerticalScrollBar().getValue()-30);
+		}
+		//if User presses DOWN key
+		if(keyCode==40) {
+			jScrollPane.getVerticalScrollBar().setValue(jScrollPane.getVerticalScrollBar().getValue()+30);
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// Do Nothing
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// Do Nothing
+
+	}
+}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\TaskTrackerGUI.java
+
+
+
+
+

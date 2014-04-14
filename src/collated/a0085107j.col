@@ -1,0 +1,2168 @@
+//@author: a0085107j
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Command.java
+	 */
+
+/**
+ * Command (class) : This class acts as a blueprint for any task object. It contains
+ * information regarding a single task.
+ */
+
+public class Command {
+
+	private String keyword;
+	private String details;
+	private String startDay;
+	private String startMonth;
+	private String startYear;
+	private String endDay;
+	private String endMonth;
+	private String endYear;
+	private String startHours;
+	private String startMins;
+	private String endHours;
+	private String endMins;
+	private String location;
+	private String priority;
+	private String category;
+	private String taskID; //for update as each update command can only have 1 taskID
+	private ArrayList<String> TargetedTasks; //for deleting/searching
+
+	public String getKeyword() {
+		return keyword;
+	}
+
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
+	}
+
+	public String getDetails() {
+		return details;
+	}
+
+	public void setDetails(String details) {
+		this.details = details;
+	}
+
+	public String getStartDay() {
+		return startDay;
+	}
+
+	public void setStartDay(String startDay) {
+		this.startDay = startDay;
+	}
+
+	public String getStartMonth() {
+		return startMonth;
+	}
+
+	public void setStartMonth(String startMonth) {
+		this.startMonth = startMonth;
+	}
+
+	public String getStartYear() {
+		return startYear;
+	}
+
+	public void setStartYear(String startYear) {
+		this.startYear = startYear;
+	}
+
+	public String getEndDay() {
+		return endDay;
+	}
+
+	public void setEndDay(String endDay) {
+		this.endDay = endDay;
+	}
+
+	public String getEndMonth() {
+		return endMonth;
+	}
+
+	public void setEndMonth(String endMonth) {
+		this.endMonth = endMonth;
+	}
+
+	public String getEndYear() {
+		return endYear;
+	}
+
+	public void setEndYear(String endYear) {
+		this.endYear = endYear;
+	}
+
+	public String getStartHours() {
+		return startHours;
+	}
+
+	public void setStartHours(String startHours) {
+		this.startHours = startHours;
+	}
+
+	public String getStartMins() {
+		return startMins;
+	}
+
+	public void setStartMins(String startMins) {
+		this.startMins = startMins;
+	}
+
+	public String getEndHours() {
+		return endHours;
+	}
+
+	public void setEndHours(String endHours) {
+		this.endHours = endHours;
+	}
+
+	public String getEndMins() {
+		return endMins;
+	}
+
+	public void setEndMins(String endMins) {
+		this.endMins = endMins;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public String getPriority() {
+		return priority;
+	}
+
+	public void setPriority(String priority) {
+		this.priority = priority.toLowerCase();
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
+	public String getTaskID() {
+		return taskID;
+	}
+
+	public void setTaskID(String taskID) {
+		this.taskID = taskID;
+	}
+
+	public ArrayList<String> getTargetedTasks() {
+		return TargetedTasks;
+	}
+
+	public void setTargetedTasks(ArrayList<String> targetedTasks) {
+		this.TargetedTasks = targetedTasks;
+	}
+}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Command.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Completed.java
+	 */
+
+/**
+ * completed class: contains all methods related to completed feature
+ */
+
+public class Completed {
+	private final static String TASKID_NOT_FOUND_MESSAGE = "That Task ID Number was not found";;
+	private ArrayList<Task> taskList;
+
+	public Completed(){
+		taskList = ExeCom.getTaskListInstance();
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Completed.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Completed.java
+	 */
+
+	/**
+	 * markCompleted: marks a set of tasks as completed
+	 * 
+	 * @param Command
+	 * @return String
+	 * 
+	 */
+	public String markCompleted(Command c) {
+		String feedback = "";
+		for(String target : c.getTargetedTasks()){
+			feedback += markSpecificTaskCompleted(target);
+		}
+		return feedback;
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Completed.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Completed.java
+	 */
+
+	/**
+	 * markSpecificTaskCompleted: marks a task as completed
+	 * 
+	 * @param Command
+	 * @return String
+	 * 
+	 */
+	private String markSpecificTaskCompleted(String target) {
+		ExeCom ec = new ExeCom();
+		int taskIdNumber = ec.retrieveTaskIdNumber(target);
+		boolean isFound = false;
+		String output = "";
+		//loop thru whole taskList to find for the user-specified task
+		for (int i = 0; i < taskList.size(); i++) {
+			if (isTaskFound(ec, taskIdNumber, i)) {
+				output += "This task is marked as completed: " + taskList.get(i).getDetails() + "\n";
+				Task task = taskList.get(i);
+				task.setCompleted("true");
+				isFound = true;
+			}
+		}
+		if (!isFound) {
+			output = TASKID_NOT_FOUND_MESSAGE;
+		}
+		return output;
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Completed.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Completed.java
+	 */
+
+	/**
+	 * isTaskFound: checks if a particular task matches specified taskID
+	 * @param ExeCom, int, int
+	 * @return boolean
+	 */
+	private boolean isTaskFound(ExeCom ec, int taskIdNumber, int i) {
+		return ec.isTaskIDMatch(taskList.get(i).getTaskID(), taskIdNumber);
+	}
+}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Completed.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\CompletedTest.java
+	 */
+
+	/**
+	 * testMarkCompleted: test if markCompleted methods will mark completed attribute to true
+	 * 
+	 * NOTE:As the markCompleted() edit the original taskList, this method has to retrieve the updated instance of the taskList
+	 * after every step that edits the taskList.
+	 *
+	 * @param void
+	 * @return void
+	 */
+	@Test
+	public void testMarkCompleted() {
+		taskListTest = ExeCom.getTaskListInstance();
+		Add add = new Add(taskListTest);
+		Command c = generateCommandForAddingTask(taskListTest);
+		try {
+			taskId = dummyAdd(add, c);
+			markTask();	
+			checkifTaskIsCompleted();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\CompletedTest.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\CompletedTest.java
+	 */
+
+	/**
+	 * markTask: mark task based on taskId
+	 * @param void
+	 * @return void
+	 */
+	private void markTask() {
+		Command c;
+		c = generateCommandTargetedTask(taskId);
+		completed.markCompleted(c);
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\CompletedTest.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\CompletedTest.java
+	 */
+
+	/**
+	 * checkifTaskIsCompleted: assert if completed attribute is true
+	 * @param void
+	 * @return void
+	 */
+	private void checkifTaskIsCompleted() {
+		taskListTest = ExeCom.getTaskListInstance();
+		int index = Integer.parseInt(taskId) - 1;
+		assert(taskListTest.get(index).isCompleted());
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\CompletedTest.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\CompletedTest.java
+	 */
+
+	/**
+	 * dummyAdd: used for testing MarkCompleted()
+	 * 
+	 * @param add, c
+	 * @return String
+	 * @throws Exception
+	 */
+	private String dummyAdd(Add add, Command c) throws Exception {
+		String taskId = add.addToTaskList(c);
+		taskListTest = ExeCom.getTaskListInstance();
+		return taskId;
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\CompletedTest.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\CompletedTest.java
+	 */
+
+	/**
+	 * generateCommandTargetedTask: generate command used for testing markCompleted()
+	 * 
+	 * @param String
+	 * @return Command
+	 */
+	private Command generateCommandTargetedTask(String taskId) {
+		Command c = new Command();
+		ArrayList<String> target = generateArrayListForTargetedTask(taskId);
+		c.setTargetedTasks(target);
+		return c;
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\CompletedTest.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\CompletedTest.java
+	 */
+
+	/**
+	 * generateArrayListForTargetedTask: generate arraylist used for setting targetedTask attribute
+	 * 
+	 * @param String
+	 * @return ArrayList<String>
+	 */
+	private ArrayList<String> generateArrayListForTargetedTask(String taskId) {
+		ArrayList<String> target = new ArrayList<String>();
+		target.add(taskId);
+		return target;
+	}
+
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\CompletedTest.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\CompletedTest.java
+	 */
+
+	/**
+	 * generateCommand: creates a dummy command
+	 * @param void
+	 * @return Command
+	 */
+	private Command generateCommandForAddingTask(ArrayList<Task> list) {
+		Command c = new Command();
+		c.setDetails("testingMarkCompleted");
+		String taskID = list.size() + 1 + "";
+		c.setTaskID(taskID);
+		return c;
+	}
+
+}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\CompletedTest.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Delete.java
+	 */
+
+	/**
+	 * 
+	 * delete: Go through taskList and remove task with matching taskID
+	 * 
+	 * @param command
+	 * @return string
+	 * 
+	 */
+
+	public String delete(Command c) {
+		String feedback = "";
+		for (String target : c.getTargetedTasks()) {
+			if (isInteger(target)) {
+				feedback += deleteSpecifiedTask(target);
+			} else { 
+				// element is a string containing location/priority/category
+				if (deleteSpecifiedLocationPriorityCategory(target)) {
+					feedback = DELETE_CATEGORYPRIORITYLOCATION_SUCCESSFUL;
+				} else {
+					feedback = DELETE_CATEGORYPRIORITYLOCATION_UNSUCCESSFUL;
+				}
+			}
+		}
+		return feedback + "\n";
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Delete.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Delete.java
+	 */
+
+	/**
+	 * 
+	 * deleteSpecifiedLocationPriorityCategory: Determine target string belongs
+	 * to location, priority or category and delete all related tasks from
+	 * taskList
+	 * 
+	 * @param String
+	 * @return void
+	 * 
+	 */
+	private boolean deleteSpecifiedLocationPriorityCategory(String target) {
+		target = target.toLowerCase();
+		boolean isDeleted = false;
+		switch (target) {
+		// priority
+		case "low":
+		case "medium":
+		case "high":
+			for (int i = 0; i < taskList.size(); i++) {
+				Task currentTask = taskList.get(i);
+				if (currentTask.getPriority().equals(target)) {
+					taskList.remove(i);
+					isDeleted = true;
+				}
+			}
+			break;
+
+			// category
+		case "family":
+		case "work":
+		case "friends":
+		case "personal":
+			for (int i = 0; i < taskList.size(); i++) {
+				Task currentTask = taskList.get(i);
+				if (currentTask.getCategory().equals(target)) {
+					taskList.remove(i);
+					isDeleted = true;
+				}
+			}
+			break;
+
+			// location
+		default:
+			for (int i = 0; i < taskList.size(); i++) {
+				Task currentTask = taskList.get(i);
+				if (currentTask.getLocation().equals(target)) {
+					taskList.remove(i);
+					isDeleted = true;
+				}
+			}
+			break;
+		}
+		return isDeleted;
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Delete.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Delete.java
+	 */
+
+	/**
+	 * 
+	 * deleteSpecifiedTask: Deletes one Task from TaskList
+	 * 
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Delete.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Delete.java
+	 */
+
+	 * @param String
+	 * @return void
+	 * 
+	 */
+	private String deleteSpecifiedTask(String target) {
+		ExeCom ec = ExeCom.getInstance();
+		int taskIdNumber = ec.retrieveTaskIdNumber(target);
+		boolean isFound = false;
+
+		// loop thru whole taskList to find for the user specified task
+		String output = "Succesfully Deleted: \n";
+		for (int i = 0; i < taskList.size(); i++) {
+			if (ec.isTaskIDMatch(taskList.get(i).getTaskID(), taskIdNumber)) {
+				output += taskList.get(i).getDetails();
+				taskList.remove(taskList.get(i));
+				isFound = true;
+			}
+		}
+		if (!isFound) {
+			output = TASKID_NOT_FOUND_MESSAGE;
+		}
+		return output + "\n";
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Delete.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Delete.java
+	 */
+
+	/**
+	 * isInteger: Checks whether the string in TargetedTask[] is an integer or not
+	 * 
+	 * @param String
+	 * @return boolean
+	 * 
+	 */
+	public static boolean isInteger(String s) {
+		try {
+			Integer.parseInt(s);
+			return true;
+		} catch (NumberFormatException e) {
+			return false;
+		}
+	}
+	
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Delete.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+	 */
+
+	 * @param void
+	 * @return void
+	 */
+	public String displayCompleted() {
+		String dispOut = "";
+		if (!taskList.isEmpty()) {
+			dispOut = dispOut + printCompletedListingHeader();
+			for (Task task : taskList) {
+				if (task.isCompleted()) {
+					dispOut = setTaskToDisplay(dispOut, task);
+				}
+			}
+		} else {
+			dispOut = TASKLIST_EMPTY_MESSAGE;
+		}
+		return dispOut + "\n";
+	}
+
+	/**
+	 * displayDate: display all tasks that matches input date, if any.
+	 * 
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+	 */
+
+	 * @param void
+	 * @return string
+	 */
+	public String displayDate() {
+		String dispOut = "";
+		if (!taskList.isEmpty()) {
+			if (haveTasksWithMatchingDates()) {
+				dispOut = setTasksWithMatchingDates();
+			} else {
+				dispOut = NO_RELATED_TASKS_MESSAGE;
+			}
+		} else {
+			dispOut = TASKLIST_EMPTY_MESSAGE;
+		}
+		return dispOut + "\n";
+	}
+
+	/**
+	 * setTasksWithMatchingDates: collates all related tasks with matching dates
+	 * into one string
+	 * 
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+	 */
+
+	 * @param void
+	 * @return string
+	 */
+	private String setTasksWithMatchingDates() {
+		String dispOut = "";
+		dispOut = dispOut + "The following tasks are related to input date: \n";
+		for (Task task : taskList) {
+			if (isMatchingStartDate(task) || isMatchingEndDate(task)) {
+				dispOut = setTaskToDisplay(dispOut, task);
+			}
+		}
+		return dispOut;
+	}
+
+	/**
+	 * haveTasksWithMatchingDates: check if taskList has any tasks that is
+	 * related to the input date
+	 * 
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+	 */
+
+	 * @param void
+	 * @return boolean
+	 */
+	private boolean haveTasksWithMatchingDates() {
+		for (Task task : taskList) {
+			if (isMatchingStartDate(task) || isMatchingEndDate(task)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * setTaskToDisplay: Given a single task, it formats the string to sent for
+	 * printing including task index and all attributes.
+	 * 
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+	 */
+
+	 * @param dispOut
+	 * @param task
+	 * @return String
+	 */
+	private String setTaskToDisplay(String dispOut, Task task) {
+		String info = task.displayTask();
+		dispOut = dispOut + printTaskWithIndex(task, info);
+		return dispOut;
+	}
+
+	/**
+	 * displayTaskForToday: Format string to contain all information of tasks that ends today
+	 * 
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+	 */
+
+	 * @param void
+	 * @return String
+	 */
+	public String displayTaskForToday() {
+			String dispOut = "";
+			if (!taskList.isEmpty()) {
+				dispOut = dispOut + printTaskForTodayHeader();
+				for (Task task : taskList) {
+					if (isEndingToday(task)) {
+						dispOut = setTaskToDisplay(dispOut, task);
+					}
+				}
+			} else {
+				dispOut = TASKLIST_EMPTY_MESSAGE;
+			}
+			return dispOut + "\n";
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+	 */
+
+	/**
+	 * displayHelp: prints out basic information on how to user the program
+	 * 
+	 * @param void
+	 * @return String
+	 */
+	public String displayHelp() {
+		String feedback=EMPTY_STRING;
+		feedback += "=====Help====\n"
+				+ "List of keywords:\n"
+				+ "Add, Delete,  Edit, Search, Display, Deadline, Done, Undo, Redo, "
+				+ "Clear, Exit\n \n"
+
+				+ "Possible tasks attributes:\n"
+				+ "Time, Date, Priority, Location, Category\n \n"
+
+				+ "List of possible shortcuts:\n"
+				+ "Add: a, ad, create, cr8\n"
+				+ "Delete: d, del, remove, rmv, rem, rm,\n"
+				+ "Edit: e, ed, update, upd, ud, change, chge\n"
+				+ "Search: s,srh, find, fd\n"
+				+ "Displayd: dm, dispm, displaym, deadline, dd, dl, ends, end\n"
+				+ "Display: d, dis, disp, show, shw, view, v\n"
+				+ "Undo: u, un, und\n"
+				+ "Redo: r, re, rd\n"
+				+ "Clear: c, cl, clr\n"
+				+ "Help: h, hp, hlp, ?, ??\n"
+				+ "Email: em, send, sd\n"
+				+ "Exit: ex, quit, qt, q\n \n"
+
+				+ "Adding Format:\n"
+				+ "    1. Details are necessary.\n"
+				+ "    2. Input time should have 24-hour format and have 'hrs' e.g 2359hrs\n"
+				+ "    3. Put \"//\" before location, priority and category. They can be represented by their first letter\n"
+				+ "       e.g //priority high or //p high\n"
+				+ "    4. For location, can replace \"//\" with \"@\" \n"
+				+ "       e.g @school\n"
+;
+		return feedback;
+	}
+
+	/**
+	 * displayTaskForToday: checks if a particular task's end date is today
+	 * 
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+	 */
+
+	 * @param Task
+	 * @return boolean
+	 */
+	private boolean isEndingToday(Task task) {
+		Calendar cal = Calendar.getInstance();
+		String currentDay = cal.get(Calendar.DAY_OF_MONTH) + "";
+		String currentMonth = cal.get(Calendar.MONTH) + 1 + "";
+		String currentYear = cal.get(Calendar.YEAR) + "";
+		if (task.getEndDay().equals(currentDay) && task.getEndMonth().equals(currentMonth) 
+				&& task.getEndYear().equals(currentYear))
+			return true;
+		else {
+			return false;
+		}
+	}
+	
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+	 */
+
+	 * @param void
+	 * @return string
+	 */
+	private String printCompletedListingHeader() {
+		return "== Listing of completed tasks =====\n";
+	}
+
+	/**
+	 * printTaskForTodayHeader: print header for today's tasks
+	 * 
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+	 */
+
+	 * @param void
+	 * @return string
+	 */
+	private String printTaskForTodayHeader() {
+		
+		return "== Today's Tasks =====\n";
+	}
+
+	/**
+	 * printUncompletedListingHeader: print header for uncompleted listing
+	 * 
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+	 */
+
+	 * @param void
+	 * @return String
+	 */
+	private String printUncompletedListingHeader() {
+		return "== Listing of pending tasks =====\n";
+	}
+
+	/**
+	 * 
+	 * printTaskIndex: print index number of current task
+	 * 
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+	 */
+
+	 * @param Task
+	 *            , String
+	 * @return String
+	 */
+	private static String printTaskWithIndex(Task task, String print) {
+		return (taskList.indexOf(task) + 1) + ": " + print + "\n";
+	}
+
+	/**
+	 * isMatchingStartDate: checks if the command's start date is same as task's
+	 * start date
+	 * 
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+	 */
+
+	 * @param task
+	 * @return boolean
+	 */
+	private boolean isMatchingStartDate(Task task) {
+		if (isMatchingStartDay(task) && isMatchingStartMonth(task)
+				&& isMatchingStartYear(task)) {
+			return true;
+		} else {
+			return false;
+
+		}
+	}
+
+	/**
+	 * isMatchingStartDay: checks if the command's start day is same as task's
+	 * start day
+	 * 
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+	 */
+
+	 * @param task
+	 * @return boolean
+	 */
+	private boolean isMatchingStartDay(Task task) {
+		if (task.getStartDay().equals(command.getStartDay())) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * isMatchingStartMonth: checks if the command's start month is same as
+	 * task's start month
+	 * 
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+	 */
+
+	 * @param task
+	 * @return boolean
+	 */
+	private boolean isMatchingStartMonth(Task task) {
+		if (task.getStartMonth().equals(command.getStartMonth())) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * isMatchingStartYear: checks if the command's start year is same as task's
+	 * start year
+	 * 
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+	 */
+
+	 * @param task
+	 * @return boolean
+	 */
+	private boolean isMatchingStartYear(Task task) {
+		if (task.getStartYear().equals(command.getStartYear())) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * isMatchingEndDate: checks if the command's end date is same as task's end
+	 * date (including day,month and year)
+	 * 
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+	 */
+
+	 * @param task
+	 * @return boolean
+	 */
+	private boolean isMatchingEndDate(Task task) {
+		if (isMatchingEndDay(task) && isMatchingEndMonth(task)
+				&& isMatchingEndYear(task)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * isMatchingEndDay: checks if the command's end day is same as task's end
+	 * day
+	 * 
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+	 */
+
+	 * @param task
+	 * @return boolean
+	 */
+	private boolean isMatchingEndDay(Task task) {
+		if (task.getEndDay().equals(command.getEndDay())) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * isMatchingEndMonth: checks if the command's end month is same as task's
+	 * end month
+	 * 
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+	 */
+
+	 * @param task
+	 * @return boolean
+	 */
+	private boolean isMatchingEndMonth(Task task) {
+		if (task.getEndMonth().equals(command.getEndMonth())) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * isMatchingEndYear: checks if the command's end year is same as task's end
+	 * year
+	 * 
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+	 */
+
+	 * @param task
+	 * @return boolean
+	 */
+	private boolean isMatchingEndYear(Task task) {
+		if (task.getEndYear().equals(command.getEndYear())) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Display.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+	 */
+
+	/**
+	 * getTaskListInstance: singleton pattern as all parts of the program should
+	 * access the same tasklist. Creating a new one will cause user to lose data
+	 * 
+	 * @param void
+	 * @return ArrayList<Task>
+	 * 
+	 */
+	public static ArrayList<Task> getTaskListInstance() {
+		if (taskList == null) {
+			taskList = new ArrayList<Task>();
+		}
+		return taskList;
+	}
+
+	public ExeCom() {
+		if (taskList == null) {
+			taskList = new ArrayList<Task>();
+		}
+		undoStack = new Stack<ArrayList<Task>>();
+		redoStack = new Stack<ArrayList<Task>>();
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+	 */
+
+	/**
+	 * 
+	 * isValidAddCommand: Check if user keyed in details (mandatory)
+	 * 
+	 * @param void
+	 * @return boolean
+	 * 
+	 */
+	private boolean isValidAddCommand() {
+		if (c.getDetails() != null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+	 */
+
+	/**
+	 * 
+	 * isDisplayDate: Check if user wants to display a list of tasks of a
+	 * particular date
+	 * 
+	 * @param void
+	 * @return boolean
+	 * 
+	 */
+	private static boolean isValidDisplayDateCommand() {
+		if (c.getEndMonth() != null
+				&& (!c.getEndDay().equals(EMPTY_STRING) || c.getEndDay()
+						.equals(null))) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+	 */
+
+	/**
+	 * isValidTime: check if user entered valid time which is from 0000 t0 2359
+	 * 
+	 * @param void
+	 * @return boolean
+	 * 
+	 */
+	private boolean isValidTime() {
+		if (isValidHours() && isValidMins()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+	 */
+
+	/**
+	 * isValidhours: check if user entered between 0 to 23 hours
+	 * 
+	 * @param void
+	 * @return boolean
+	 * 
+	 */
+	private boolean isValidHours() {
+		if (c.getStartHours() != null) {
+			int startHours = Integer.parseInt(c.getStartHours());
+			if (0 > startHours || startHours >= 24) {
+				return false;
+			}
+		}
+
+		if (c.getEndHours() != null) {
+			int endHours = Integer.parseInt(c.getEndHours());
+			if (0 > endHours || endHours >= 24) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+	 */
+
+	/**
+	 * isValidMins: check if user entered between 0 to 59 minutes
+	 * 
+	 * @param void
+	 * @return boolean
+	 * 
+	 */
+	private boolean isValidMins() {
+		if (c.getStartMins() != null) {
+			int startMins = Integer.parseInt(c.getStartMins());
+			if (0 > startMins || startMins > 59) {
+				return false;
+			}
+		}
+
+		if (c.getEndMins() != null) {
+			int endMins = Integer.parseInt(c.getEndMins());
+			if (0 > endMins || endMins > 59) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+	 */
+
+	/**
+	 * 
+	 * isDisplayCompleted: Check if user wants to display list of completed
+	 * tasks
+	 * 
+	 * @param void
+	 * @return boolean
+	 * 
+	 */
+	private boolean isDisplayCompleted() {
+		if (c.getDetails() != null) {
+			if (c.getDetails().equals("completed")
+					|| c.getDetails().equals("completed tasks")) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+	 */
+
+	/**
+	 * 
+	 * isTaskIDMatch: Checks if a task's taskID is equal to the userSpecified
+	 * taskIdNumber that he's searching for.
+	 * 
+	 * @param String
+	 *            , int
+	 * @return boolean
+	 * 
+	 */
+
+	public boolean isTaskIDMatch(String specifiedTaskID, int taskIdNumber) {
+		return Integer.parseInt(specifiedTaskID) == taskIdNumber;
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+	 */
+
+	/**
+	 * retrieveTaskIdNumber: retrieves user-specified taskID.
+	 * 
+	 * @param String
+	 * @return int
+	 * 
+	 */
+	public int retrieveTaskIdNumber(String taskID) {
+		return Integer.parseInt(taskID);
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ExeCom.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+	 */
+
+	/**
+	 * extractTime: Extracts initial time data from the userInput String and
+	 * includes cases for flexible input. Reformats data and returns as standard
+	 * String.
+	 * 
+	 * @param splitInput
+	 */
+	String extractTime(String[] splitInput) {
+		String time = EMPTY_STRING;
+		for (int i = 2; i < splitInput.length; i++) {
+			if (splitInput[i].contains("hrs")) {
+				time = time + splitInput[i];
+				splitInput[i] = EMPTY_STRING;
+				if(splitInput[i-1].equals("by")){
+					splitInput[i-1] = EMPTY_STRING;
+				}
+				if (i + 1 < splitInput.length
+						&& splitInput[i + 1].contains("hrs")) {
+					time = time + splitInput[i + 1];
+					splitInput[i + 1] = EMPTY_STRING;
+				} else if (i + 2 < splitInput.length
+						&& splitInput[i + 2].contains("hrs")) {
+					time = time + splitInput[i + 2];
+					splitInput[i + 1] = EMPTY_STRING;
+					splitInput[i + 2] = EMPTY_STRING;
+				}else if (splitInput[i].indexOf("hrs")!=splitInput[i].lastIndexOf("hrs")){
+					time = splitInput[i].replace("-", EMPTY_STRING);
+				}
+				return time;
+			}
+		}
+		return null;
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+	 */
+
+	/**
+	 * processTime: process the timeDetails String to extract out the time in
+	 * the correct format String and store in into the command object
+	 * 
+	 * @param timeDetails
+	 */
+	public void processTime(String timeDetails) {
+		// if user did not provide any time in input
+		if (timeDetails == null) {
+			c.setStartHours(null);
+			c.setStartMins(null);
+			c.setEndHours(null);
+			c.setEndMins(null);
+		} else {
+			// check if user input end time only or both the start and end time
+			if (isRange(timeDetails)) {
+				// extract and set start time
+				int index = timeDetails.indexOf("hr");
+				String startHours = timeDetails.substring(index - 4, index - 2);
+				String startMins = timeDetails.substring(index - 2, index);
+				c.setStartHours(startHours);
+				c.setStartMins(startMins);
+
+				// extract and set end time
+				index = timeDetails.indexOf("hr", index + 1);
+				String endHours = timeDetails.substring(index - 4, index - 2);
+				String endMins = timeDetails.substring(index - 2, index);
+				c.setEndHours(endHours);
+				c.setEndMins(endMins);
+
+			} else { // user only enter end time
+				// assume 4 characters before "hr" will be the time
+				int index = timeDetails.indexOf("hr");
+				String endHours = timeDetails.substring(index - 4, index - 2);
+				String endMins = timeDetails.substring(index - 2, index);
+				c.setEndHours(endHours);
+				c.setEndMins(endMins);
+				c.setStartHours(null);
+				c.setStartMins(null);
+			}
+		}
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+	 */
+
+	/**
+	 * isRange: checks if the input time is a range or just an end time
+	 * 
+	 * @param String
+	 * @return boolean
+	 */
+	private boolean isRange(String timeDetails) {
+		if (timeDetails.length() > 7) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+	 */
+
+	/**
+	 * setDate: set the appropriate date attributes depending on calendar
+	 * 
+	 * @param Calendar
+	 * @return void
+	 */
+	private void setDate(Calendar cal) {
+		if (c.getEndYear() == null) {
+			setEndDate(cal);
+		} else {
+			setStartDate(cal);
+		}
+	}
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+	 */
+
+	/**
+	 * setStartDate: set start date of command depending on calendar
+	 * 
+	 * @param Calendar
+	 * @return void
+	 */
+	private void setStartDate(Calendar cal) {
+		c.setStartYear(cal.get(Calendar.YEAR) + "");
+		c.setStartMonth(cal.get(Calendar.MONTH) + 1 + "");
+		c.setStartDay(cal.get(Calendar.DAY_OF_MONTH) + "");
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+	 */
+
+	/**
+	 * setEndDate: set end date of command depending on calendar
+	 * 
+	 * @param Calendar
+	 * @return void
+	 */
+	private void setEndDate(Calendar cal) {
+		c.setEndYear(cal.get(Calendar.YEAR) + "");
+		c.setEndMonth(cal.get(Calendar.MONTH) + 1 + "");
+		c.setEndDay(cal.get(Calendar.DAY_OF_MONTH) + "");
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessCommand.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessTest.java
+	 */
+
+	@Test
+	public void testProcessTime() {
+		
+		//the following methods will test different possibilities that user will input
+		ProcessCommand pc = new ProcessCommand();
+
+		//user enter range with "hrs"
+		String timeDetails = "1400hrs1559hrs";
+		pc.processTime(timeDetails);
+		Command cAfter = pc.getCommand();	
+		assertTrue(cAfter.getStartHours().equals("14"));
+		assertTrue(cAfter.getStartMins().equals("00"));
+		assertTrue(cAfter.getEndHours().equals("15"));
+		assertTrue(cAfter.getEndMins().equals("59"));
+
+		//user enter range with "hr"
+		String timeDetails2 = "1400hr1559hr";
+		pc.processTime(timeDetails2);
+		Command cAfter2 = pc.getCommand();	
+		assertTrue(cAfter2.getStartHours().equals("14"));
+		assertTrue(cAfter2.getStartMins().equals("00"));
+		assertTrue(cAfter2.getEndHours().equals("15"));
+		assertTrue(cAfter2.getEndMins().equals("59"));
+
+		//user enter only end time with "hr"
+		String timeDetails3 = "1400hr";
+		pc.processTime(timeDetails3);
+		Command cAfter3 = pc.getCommand();	
+		assertTrue(cAfter3.getStartHours() == null);
+		assertTrue(cAfter3.getStartMins() == null);
+		assertTrue(cAfter3.getEndHours().equals("14"));
+		assertTrue(cAfter3.getEndMins().equals("00"));
+
+		//user enter only end time with "hrs"
+		String timeDetails4 = "1400hrs";
+		pc.processTime(timeDetails4);
+		Command cAfter4 = pc.getCommand();	
+		assertTrue(cAfter4.getStartHours() == null);
+		assertTrue(cAfter4.getStartMins() == null);
+		assertTrue(cAfter4.getEndHours().equals("14"));
+		assertTrue(cAfter4.getEndMins().equals("00"));
+
+	}
+	
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\ProcessTest.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Search.java
+	 */
+
+	 * @param Task
+	 *            , String
+	 * @return String
+	 */
+	private static String printTaskWithIndex(Task task, String print) {
+		return (taskList.indexOf(task) + 1) + ": " + print + "\n";
+	}
+}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Search.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\SortDate.java
+	 */
+
+	 * @param Task, String
+	 * @return void
+	 */
+	private static String printTaskWithIndex(Task task, String print) {
+		return (taskList.indexOf(task) + 1) + ": " + print + "\n";
+	}
+}
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\SortDate.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Storage.java
+	 */
+
+	/**
+	 * printTaskIdToStorage: return task ID of current Task
+	 * 
+	 * @param Task
+	 * @return int
+	 */
+	private int retrieveCurrentTaskID(Task t) {
+		return ExeCom.getTaskListInstance().indexOf(t) + ONE_CONST;
+	}
+}
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Storage.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Task.java
+	 */
+
+
+/**
+ * Task (class) : This class acts as a blueprint for any task object. It
+ * contains information regarding a single task.
+ * 
+ */
+
+public class Task {
+	protected String details;
+	protected String startDay;
+	protected String startMonth;
+	protected String startYear;
+	protected String endDay;
+	protected String endMonth;
+	protected String endYear;
+	protected String startHours;
+	protected String startMins;
+	protected String endHours;
+	protected String endMins;
+	protected String location;
+	protected String priority;
+	protected String category;
+	protected String taskID;
+	protected String completed;
+
+	// constructor
+	public Task(Command c) {
+		details = c.getDetails();
+		startDay = c.getStartDay();
+		startMonth = c.getStartMonth();
+		startYear = c.getStartYear();
+		endDay = c.getEndDay();
+		endMonth = c.getEndMonth();
+		endYear = c.getEndYear();
+		startHours = c.getStartHours();
+		startMins = c.getStartMins();
+		endHours = c.getEndHours();
+		endMins = c.getEndMins();
+		location = c.getLocation();
+		priority = c.getPriority();
+		category = c.getCategory();
+		completed= "false";
+
+	}
+
+	public Task(Task task) {
+		this.details = task.getDetails();
+		this.startDay = task.getStartDay();
+		this.startMonth = task.getStartMonth();
+		this.startYear = task.getStartYear();
+		this.endDay = task.getEndDay();
+		this.endMonth = task.getEndMonth();
+		this.endYear = task.getEndYear();
+		this.startHours = task.getStartHours();
+		this.startMins = task.getStartMins();
+		this.endHours = task.getEndHours();
+		this.endMins = task.getEndMins();
+		this.location = task.getLocation();
+		this.priority = task.getPriority();
+		this.category = task.getCategory();
+		this.taskID = task.getTaskID();
+	}
+
+	public Task() {
+	}
+
+	public String getDetails() {
+		return details;
+	}
+
+	public void setDetails(String details) {
+		this.details = details;
+	}
+
+	public String getStartDay() {
+		return startDay;
+	}
+
+	public void setStartDay(String startDay) {
+		this.startDay = startDay;
+	}
+
+	public String getStartMonth() {
+		return startMonth;
+	}
+
+	public void setStartMonth(String startMonth) {
+		this.startMonth = startMonth;
+	}
+
+	public String getStartYear() {
+		return startYear;
+	}
+
+	public void setStartYear(String startYear) {
+		this.startYear = startYear;
+	}
+
+	public String getEndDay() {
+		return endDay;
+	}
+
+	public void setEndDay(String endDay) {
+		this.endDay = endDay;
+	}
+
+	public String getEndMonth() {
+		return endMonth;
+	}
+
+	public void setEndMonth(String endMonth) {
+		this.endMonth = endMonth;
+	}
+
+	public String getEndYear() {
+		return endYear;
+	}
+
+	public void setEndYear(String endYear) {
+		this.endYear = endYear;
+	}
+
+	public String getStartHours() {
+		return startHours;
+	}
+
+	public void setStartHours(String startHours) {
+		this.startHours = startHours;
+	}
+
+	public String getStartMins() {
+		return startMins;
+	}
+
+	public void setStartMins(String startMins) {
+		this.startMins = startMins;
+	}
+
+	public String getEndHours() {
+		return endHours;
+	}
+
+	public void setEndHours(String endHours) {
+		this.endHours = endHours;
+	}
+
+	public String getEndMins() {
+		return endMins;
+	}
+
+	public void setEndMins(String endMins) {
+		this.endMins = endMins;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public String getPriority() {
+		return priority;
+	}
+
+	public void setPriority(String priority) {
+		this.priority = priority;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
+	public String getTaskID() {
+		return taskID;
+	}
+
+	public void setTaskID(String taskID) {
+		this.taskID = taskID;
+	}
+
+	public boolean isCompleted() {
+		if (completed.equals("true")) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public void setCompleted(String completed) {
+		this.completed = completed;
+	}
+	
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Task.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Task.java
+	 */
+
+	/**
+	 * displayTask: display non-empty task attributes and their headers
+	 * 
+	 * @param void
+	 * @return String
+	 */
+	public String displayTask() {
+		String info = null;
+		if (!details.equals("null")) {
+			info = "//DECS2103: " + details;
+		}
+
+		if ((!startDay.equals("null") && !startMonth.equals("null") && !startYear
+				.equals("null"))) {
+			info = info.concat("//SDCS2103: " + startDay + "/" + startMonth
+					+ "/" + startYear);
+		}
+
+		if ((!endDay.equals("null") && !endMonth.equals("null") && !endYear
+				.equals("null"))
+				|| (endDay != null && endMonth != null && endYear != null)) {
+			info = info.concat("//EDCS2103: " + endDay + "/" + endMonth + "/"
+					+ endYear);
+		}
+
+		if (!startHours.equals("null") && !startMins.equals("null")) {
+			info = info.concat("//STCS2103: " + startHours + ":" + startMins);
+		}
+		if ((!endHours.equals("null") && !endMins.equals("null"))) {
+			info = info.concat("//ETCS2103: " + endHours + ":" + endMins);
+		}
+
+		if (!location.equals("null")) {
+			info = info.concat("//LOCS2103: " + location);
+		}
+
+		if (!category.equals("null")) {
+			info = info.concat("//CACS2103: " + category);
+		}
+		if (!priority.equals("null")) {
+			info = info.concat("//PRCS2103: " + priority);
+		}
+
+		return info;
+	}
+	
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Task.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Task.java
+	 */
+
+	/**
+	 * displayTaskEmail: display non-empty task attributes and their headers
+	 * 
+	 * @param void
+	 * @return String
+	 */
+	public String displayTaskEmail() {
+		String info = null;
+		if (!details.equals("null")) {
+			info = "Details: " + details;
+		}
+
+		if ((!startDay.equals("null") && !startMonth.equals("null") && !startYear
+				.equals("null"))) {
+			info = info.concat(" Start Date: " + startDay + "/" + startMonth
+					+ "/" + startYear);
+		}
+
+		if ((!endDay.equals("null") && !endMonth.equals("null") && !endYear
+				.equals("null"))
+				|| (endDay != null && endMonth != null && endYear != null)) {
+			info = info.concat(" End Date: " + endDay + "/" + endMonth + "/"
+					+ endYear);
+		}
+
+		if (!startHours.equals("null") && !startMins.equals("null")) {
+			info = info.concat(" Start Time: " + startHours + ":" + startMins);
+		}
+		if ((!endHours.equals("null") && !endMins.equals("null"))) {
+			info = info.concat(" End Time: " + endHours + ":" + endMins);
+		}
+
+		if (!location.equals("null")) {
+			info = info.concat(" Location: " + location);
+		}
+
+		if (!category.equals("null")) {
+			info = info.concat(" Category: " + category);
+		}
+		if (!priority.equals("null")) {
+			info = info.concat(" Priority: " + priority);
+		}
+
+		return info;
+	}
+
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Task.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\TaskTrackerGUI.java
+	 */
+
+	/**
+	 * displayTaskForTheDay: displays tasks that ends today
+	 * 
+	 * @param void
+	 * @return void
+	 */
+	private void displayTaskForTheDay() {
+		Storage s = new Storage();
+		try {
+			s.loadStorage();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		ArrayList<Task> taskList = ExeCom.getTaskListInstance();
+		Display d = new Display(taskList);
+
+		String feedback = d.displayTaskForToday();
+		printFeedback(feedback);
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\TaskTrackerGUI.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Update.java
+	 */
+
+	/**
+	 * editContent: edit content of specific task using the taskID based on
+	 * user's input
+	 * 
+	 * @param void
+	 * @return void
+	 */
+	public String editContent(Command c) {
+		ExeCom ec = ExeCom.getInstance();
+		int id = Integer.parseInt(c.getTaskID()); // user specified task ID
+		String feedback = "";
+		// loop through taskList to find matching task object
+		int size = ExeCom.getTaskListInstance().size();
+		for (int i = 0; i < size; i++) {
+			Task currentTask = ExeCom.getTaskListInstance().get(i);
+			int currentTaskID = Integer.parseInt(currentTask.getTaskID());
+			if (currentTaskID == id) {
+				currentTask.setDetails(merge(c.getDetails(),
+						currentTask.getDetails()));
+
+				currentTask.setStartDay(merge(c.getStartDay(),
+						currentTask.getStartDay()));
+				currentTask.setStartMonth(merge(c.getStartMonth(),
+						currentTask.getStartMonth()));
+				currentTask.setStartYear(merge(c.getStartYear(),
+						currentTask.getStartYear()));
+
+				currentTask.setEndDay(merge(c.getEndDay(),
+						currentTask.getEndDay()));
+				currentTask.setEndMonth(merge(c.getEndMonth(),
+						currentTask.getEndMonth()));
+				currentTask.setEndYear(merge(c.getEndYear(),
+						currentTask.getEndYear()));
+
+				currentTask.setStartHours(merge(c.getStartHours(),
+						currentTask.getStartHours()));
+				currentTask.setStartMins(merge(c.getStartMins(),
+						currentTask.getStartMins()));
+
+				currentTask.setEndHours(merge(c.getEndHours(),
+						currentTask.getEndHours()));
+				currentTask.setEndMins(merge(c.getEndMins(),
+						currentTask.getEndMins()));
+
+				currentTask.setLocation(merge(c.getLocation(),
+						currentTask.getLocation()));
+				currentTask.setCategory(merge(c.getCategory(),
+						currentTask.getCategory()));
+				currentTask.setPriority(merge(c.getPriority(),
+						currentTask.getPriority()));
+
+				int index = currentTaskID - 1;
+				ExeCom.getTaskListInstance().set(index, currentTask);
+
+				feedback = "Succesfully Updated: "
+						+ ExeCom.getTaskListInstance().get(i).getDetails()
+						+ "\n";
+
+				return feedback;
+			}
+		}
+		return feedback;
+	}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Update.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Update.java
+	 */
+
+	/**
+	 * merge: returns selected information from either command object or task
+	 * object.
+	 * 
+	 * @param String, String
+	 * @return String
+	 */
+	private static String merge(String fromCommand, String fromTask) {
+		// user did not specify this attribute to be updated
+		if (fromCommand == null) {
+			// use back the same information from task object
+			return fromTask;
+		} else {
+			// update information from command object
+			return fromCommand;
+		}
+	}
+}
+
+	// End of segment: C:\Users\Khaleef\workspace\cs2103jan2014-t15-2j\src\Update.java
+
+
+
+
+

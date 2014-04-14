@@ -3,7 +3,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 
-public class DeleteTest {
+public class ProcessTest {
 	//@author A0085107J
 	@Test
 	public void testProcessTime() {

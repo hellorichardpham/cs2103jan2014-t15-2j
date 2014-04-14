@@ -1,4 +1,5 @@
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -163,17 +164,19 @@ public class ExeCom {
 			}
 			break;
 			
+		//@author A0083093E
 		case SET:
 			String[] detailsArray = c.getDetails().split(" ");
 			if(detailsArray[0].trim().equals("email")) {
 				String userEmail = detailsArray[1].trim();
-				Email.setUserEmail(userEmail);
-				File currentFile = new File("emailAddress.txt");
-				currentFile.delete();
-				PrintWriter pw = new PrintWriter(new FileOutputStream("emailAddress.txt"));
-				pw.println(userEmail);
-				pw.close();
-				feedback += EMAIL_SET_MESSAGE;
+				String message = Email.setUserEmail(userEmail);
+				if(message.equals("good")) {
+					writeEmailToTxtFile(userEmail);
+					feedback += EMAIL_SET_MESSAGE;
+				}
+				else {
+					feedback += EMAIL_INVALID_MESSAGE;
+				}
 			}
 			else {
 				feedback += EMAIL_INVALID_MESSAGE;
@@ -266,6 +269,17 @@ public class ExeCom {
 		}
 		s.saveStorage();
 		return feedback;
+	}
+	
+	//@author A0083093E
+	//This program stores the email address given by the user to the .txt file
+	private void writeEmailToTxtFile(String userEmail)
+			throws FileNotFoundException {
+		File currentFile = new File("emailAddress.txt");
+		currentFile.delete();
+		PrintWriter pw = new PrintWriter(new FileOutputStream("emailAddress.txt"));
+		pw.println(userEmail);
+		pw.close();
 	}
 
 	// @author A0083093E

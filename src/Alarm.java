@@ -141,7 +141,9 @@ public class Alarm {
 						String task_info = TASKID + EQUAL_BLANK_SPACE
 								+ (ExeCom.getTaskListInstance().indexOf(t) + 1)
 								+ EQUAL_BLANK_SPACE + t.displayTaskEmail();
-						Email.emailUser(task_info);
+						
+						Email em = Email.getTheEmailInstance();
+						em.emailUser(task_info);
 					}
 
 				}

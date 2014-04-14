@@ -1,3 +1,6 @@
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Stack;
@@ -30,6 +33,7 @@ public class ExeCom {
 	private final static String JUSTADD = "justadd";
 	private final static String JUSTEDIT = "justedit";
 	private final static String JUSTUPDATE = "justupdate";
+	private final static String SET = "set";
 	private final static String EXIT = "exit";
 	private final static String QUIT = "quit";
 	private final static String ADD_SUCCESSFUL_MESSAGE = "That task has successfully been added to the Task List.\n";
@@ -41,6 +45,8 @@ public class ExeCom {
 	private static final String NO_DETAILS_MESSAGE = "No details detected! This task is not added to the task list\n";
 	private static final String INVALID_TIME_MESSAGE = "Time entered is invalid! This task is not added to the task list.\n";
 	private static final String CANCELLED_ACTION_MESSAGE = "The action has been cancelled.\n";
+	private static final String EMAIL_SET_MESSAGE = "The email address has been sucessfully set.\n";
+	private static final String EMAIL_INVALID_MESSAGE = "The email address is invalid.\n";
 	private static final String DISPLAYD = "displayd";
 	private static final Object EMPTY_STRING = "";
 
@@ -156,7 +162,23 @@ public class ExeCom {
 				feedback += INVALID_COMMAND_MESSAGE;
 			}
 			break;
-
+			
+		case SET:
+			String[] detailsArray = c.getDetails().split(" ");
+			if(detailsArray[0].trim().equals("email")) {
+				String userEmail = detailsArray[1].trim();
+				Email.setUserEmail(userEmail);
+				File currentFile = new File("emailAddress.txt");
+				currentFile.delete();
+				PrintWriter pw = new PrintWriter(new FileOutputStream("emailAddress.txt"));
+				pw.println(userEmail);
+				pw.close();
+				feedback += EMAIL_SET_MESSAGE;
+			}
+			else {
+				feedback += EMAIL_INVALID_MESSAGE;
+			}
+			break;
 		case HELP:
 		case QUESTION_MARK:
 			Display dis = new Display(getTaskListInstance());
@@ -210,7 +232,7 @@ public class ExeCom {
 				feedback = feedback + "Edit task anyway? (Yes/No): \n";
 			}
 			break;
-
+		// @author A0083093E
 		case JUSTUPDATE:
 		case JUSTEDIT:
 			saveToUndoStack();

@@ -138,7 +138,7 @@ public class ProcessCommand {
 	 */
 	private void processLocation(String[] splitInput) {
 		for (int i = 0; i < splitInput.length; i++) {
-			if (splitInput[i].contains("@")) {
+			if (splitInput[i].contains("@") && !splitInput[i].contains(".com")) {
 				c.setLocation(splitInput[i].substring(1));
 				splitInput[i] = EMPTY_STRING;
 			}
